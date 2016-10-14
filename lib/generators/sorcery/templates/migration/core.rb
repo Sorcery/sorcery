@@ -10,5 +10,7 @@ class SorceryCore < <%= migration_class_name %>
     end
 
     add_index :<%= model_class_name.tableize %>, :email, unique: true
+    add_index :<%= model_class_name.tableize %>, :username, unique: true
+
   end
 end

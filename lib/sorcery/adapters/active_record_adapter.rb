@@ -106,6 +106,5 @@ module Sorcery
       end
     end
 
-
   end
 end

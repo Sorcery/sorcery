@@ -148,12 +148,12 @@ module Sorcery
 
       # Calls the configured encryption provider to compare the supplied password with the encrypted one.
       def valid_password?(pass)
-        _crypted = self.send(sorcery_config.crypted_password_attribute_name)  
-        return _crypted == pass if sorcery_config.encryption_provider.nil?
+        crypted = self.send(sorcery_config.crypted_password_attribute_name)
+        return crypted == pass if sorcery_config.encryption_provider.nil?
 
-        _salt = self.send(sorcery_config.salt_attribute_name) unless sorcery_config.salt_attribute_name.nil?
+        salt = self.send(sorcery_config.salt_attribute_name) unless sorcery_config.salt_attribute_name.nil?
 
-        sorcery_config.encryption_provider.matches?(_crypted, pass, _salt)
+        sorcery_config.encryption_provider.matches?(crypted, pass, salt)
       end
 
       protected

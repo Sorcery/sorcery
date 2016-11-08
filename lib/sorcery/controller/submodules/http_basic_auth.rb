@@ -37,7 +37,7 @@ module Sorcery
           # To overcome this, we set a session when requesting the password, which logout will
           # reset, and that's how we know if we need to request for HTTP auth again.
           def require_login_from_http_basic
-            (request_http_basic_authentication(realm_name_by_controller) and (session[:http_authentication_used] = true) and return) if (request.authorization.nil? || session[:http_authentication_used].nil?)
+            (request_http_basic_authentication(realm_name_by_controller) && (session[:http_authentication_used] = true) && return) if (request.authorization.nil? || session[:http_authentication_used].nil?)
             require_login
             session[:http_authentication_used] = nil unless logged_in?
           end

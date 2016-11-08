@@ -40,7 +40,7 @@ module Sorcery
             end
           end
           User.authenticates_with_sorcery!
-          if defined?(DataMapper) and User.ancestors.include?(DataMapper::Resource)
+          if defined?(DataMapper) && User.ancestors.include?(DataMapper::Resource)
             DataMapper.auto_migrate!
             User.finalize
             Authentication.finalize

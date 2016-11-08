@@ -46,7 +46,7 @@ module Sorcery
 
             update_options = { config.remember_me_token_expires_at_attribute_name => Time.now.in_time_zone + config.remember_me_for }
 
-            unless config.remember_me_token_persist_globally and has_remember_me_token?
+            unless config.remember_me_token_persist_globally && has_remember_me_token?
               update_options.merge!(config.remember_me_token_attribute_name => TemporaryToken.generate_random_token)
             end
 
@@ -60,7 +60,7 @@ module Sorcery
           # You shouldn't really use this one yourself - it's called by the controller's 'forget_me!' method.
           # We only clear the token value if remember_me_token_persist_globally = true.
           def forget_me!
-            sorcery_config.remember_me_token_persist_globally or force_forget_me!
+            sorcery_config.remember_me_token_persist_globally || force_forget_me!
           end
 
           # You shouldn't really use this one yourself - it's called by the controller's 'force_forget_me!' method.

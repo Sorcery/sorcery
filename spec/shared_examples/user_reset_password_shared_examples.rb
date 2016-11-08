@@ -142,7 +142,7 @@ shared_examples_for "rails_3_reset_password_model" do
 
     it "'deliver_reset_password_instructions! returns a Mail::Message object" do
       expect(user.deliver_reset_password_instructions!).to be_an_instance_of Mail::Message
-    end 
+    end
 
     it "the reset_password_token is random" do
       sorcery_model_property_set(:reset_password_time_between_emails, 0)

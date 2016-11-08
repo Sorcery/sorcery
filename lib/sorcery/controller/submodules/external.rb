@@ -141,7 +141,7 @@ module Sorcery
             current_user.add_provider_to_user(provider_name.to_s, @user_hash[:uid].to_s)
           end
 
-          # Initialize new user from provider informations.
+          # Initialize new user from provider informations.
           # If a provider doesn't give required informations or username/email is already taken,
           # we store provider/user infos into a session and can be rendered into registration form
           def create_and_validate_from(provider_name)

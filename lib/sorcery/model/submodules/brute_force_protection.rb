@@ -18,7 +18,7 @@ module Sorcery
                           :unlock_token_attribute_name,               # Unlock token attribute name
                           :unlock_token_email_method_name,            # Mailer method name
                           :unlock_token_mailer_disabled,              # When true, dont send unlock token via email
-                          :unlock_token_mailer                        # Mailer class
+                          :unlock_token_mailer                        # Mailer class
           end
 
           base.sorcery_config.instance_eval do

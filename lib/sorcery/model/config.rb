@@ -59,7 +59,7 @@ module Sorcery
           :@subclasses_inherit_config            => false,
           :@before_authenticate                  => [],
           :@after_config                         => [],
-          :@email_delivery_method                => default_email_delivery_method,
+          :@email_delivery_method                => default_email_delivery_method
         }
         reset!
       end

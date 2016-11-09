@@ -101,7 +101,7 @@ module Sorcery
               uri = URI.parse(request.url.gsub(/\?.*$/,''))
               uri.path = ''
               uri.query = nil
-              uri.scheme = 'https' if(request.env['HTTP_X_FORWARDED_PROTO'] == 'https')
+              uri.scheme = 'https' if request.env['HTTP_X_FORWARDED_PROTO'] == 'https'
               host = uri.to_s
               provider.callback_url = "#{host}#{@provider.original_callback_url}"
             end

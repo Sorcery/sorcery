@@ -532,8 +532,8 @@ shared_examples_for "external_user" do
 
     after(:all) do
       if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
         ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
+        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
       end
     end
 

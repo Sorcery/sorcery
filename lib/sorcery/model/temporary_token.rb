@@ -12,7 +12,7 @@ module Sorcery
 
       # Random code, used for salt and temporary tokens.
       def self.generate_random_token
-        SecureRandom.base64(15).tr('+/=lIO0', 'pqrsxyz')
+        SecureRandom.urlsafe_base64(15).tr('lIO0', 'sxyz')
       end
 
       module ClassMethods

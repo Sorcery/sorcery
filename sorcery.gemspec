@@ -30,7 +30,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency "timecop"
   s.add_development_dependency "simplecov", ">= 0.3.8"
-  s.add_development_dependency "rspec", "~> 3.1.0"
-  s.add_development_dependency "rspec-rails", "~> 3.1.0"
+  s.add_development_dependency "rspec-rails", "~> 3.5.0"
   s.add_development_dependency "test-unit", "~> 3.1.0"
 end

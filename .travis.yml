@@ -2,9 +2,9 @@ language: ruby
 rvm:
   - jruby
   - 2.0.0
-  - 2.1
-  - 2.2
-  - 2.3.0
+  - 2.1.10
+  - 2.2.6
+  - 2.3.3
 
 env:
   global:
@@ -34,14 +34,14 @@ matrix:
     - rvm: 2.0.0
       gemfile: Gemfile
 
-    - rvm: 2.1
+    - rvm: 2.1.10
       gemfile: Gemfile
+
+    - rvm: 2.2.6
+      gemfile: gemfiles/active_record-rails40.gemfile
+
+    - rvm: 2.3.3
+      gemfile: gemfiles/active_record-rails40.gemfile
 
     - rvm: jruby
       gemfile: Gemfile
-
-    - rvm: 2.2
-      gemfile: gemfiles/active_record-rails40.gemfile
-
-    - rvm: 2.3.0
-      gemfile: gemfiles/active_record-rails40.gemfile

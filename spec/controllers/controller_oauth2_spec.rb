@@ -2,7 +2,7 @@ require 'spec_helper'
 
 # require 'shared_examples/controller_oauth2_shared_examples'
 
-describe SorceryController, :active_record => true do
+describe SorceryController, :active_record => true, :type => :controller do
   before(:all) do
     if SORCERY_ORM == :active_record
       ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")

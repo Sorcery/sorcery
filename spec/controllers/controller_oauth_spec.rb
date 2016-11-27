@@ -21,7 +21,7 @@ def stub_all_oauth_requests!
   allow(acc_token).to receive(:get) { response }
 end
 
-describe SorceryController do
+describe SorceryController, :type => :controller do
 
   let(:user) { double('user', id: 42) }
 

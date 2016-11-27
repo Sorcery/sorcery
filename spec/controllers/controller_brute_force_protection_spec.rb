@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SorceryController do
+describe SorceryController, :type => :controller do
 
   let(:user) { double('user', id: 42, email: 'bla@bla.com') }
 

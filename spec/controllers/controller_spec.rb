@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SorceryController do
+describe SorceryController, :type => :controller do
   describe "plugin configuration" do
     before(:all) do
       sorcery_reload!

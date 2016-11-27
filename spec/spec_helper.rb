@@ -38,4 +38,10 @@ RSpec.configure do |config|
 
   config.include ::Sorcery::TestHelpers::Internal
   config.include ::Sorcery::TestHelpers::Internal::Rails
+
+  if ((Module.const_defined?('::Rails::Controller::Testing') rescue false))
+    config.include ::Rails::Controller::Testing::TestProcess,        :type => :controller
+    config.include ::Rails::Controller::Testing::TemplateAssertions, :type => :controller
+    config.include ::Rails::Controller::Testing::Integration,        :type => :controller
+  end
 end

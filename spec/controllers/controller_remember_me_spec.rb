@@ -27,7 +27,7 @@ describe SorceryController, :type => :controller do
       expect(User).to receive(:authenticate).with('bla@bla.com', 'secret').and_return(user)
       expect(user).to receive(:remember_me!)
 
-      post :test_login_with_remember, :email => 'bla@bla.com', :password => 'secret'
+      post :test_login_with_remember, :params => { :email => 'bla@bla.com', :password => 'secret' }
 
       expect(cookies.signed["remember_me_token"]).to eq assigns[:current_user].remember_me_token
     end
@@ -51,7 +51,7 @@ describe SorceryController, :type => :controller do
       expect(user).to receive(:remember_me!)
       expect(user).to receive(:remember_me_token).and_return('abracadabra').twice
 
-      post :test_login_with_remember_in_login, :email => 'bla@bla.com', :password => 'secret', :remember => "1"
+      post :test_login_with_remember_in_login, :params => { :email => 'bla@bla.com', :password => 'secret', :remember => "1" }
 
       expect(cookies.signed["remember_me_token"]).not_to be_nil
       expect(cookies.signed["remember_me_token"]).to eq assigns[:user].remember_me_token
@@ -88,13 +88,13 @@ describe SorceryController, :type => :controller do
     end
 
     it "doest not remember_me! when not asked to, even if third parameter is used" do
-      post :test_login_with_remember_in_login, :email => 'bla@bla.com', :password => 'secret', :remember => "0"
+      post :test_login_with_remember_in_login, :params => { :email => 'bla@bla.com', :password => 'secret', :remember => "0" }
 
       expect(cookies["remember_me_token"]).to be_nil
     end
 
     it "doest not remember_me! when not asked to" do
-      post :test_login, :email => 'bla@bla.com', :password => 'secret'
+      post :test_login, :params => { :email => 'bla@bla.com', :password => 'secret' }
       expect(cookies["remember_me_token"]).to be_nil
     end
 

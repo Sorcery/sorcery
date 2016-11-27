@@ -27,7 +27,7 @@ describe SorceryController, :type => :controller do
 
       @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64::encode64("#{user.email}:secret")}"
       expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
-      get :test_http_basic_auth, nil, http_authentication_used: true
+      get :test_http_basic_auth, :params => {}, session: { :http_authentication_used => true }
 
       expect(response).to be_a_success
     end
@@ -35,7 +35,7 @@ describe SorceryController, :type => :controller do
     it "fails authentication if credentials are wrong" do
       @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64::encode64("#{user.email}:wrong!")}"
       expect(User).to receive('authenticate').with('bla@bla.com', 'wrong!').and_return(nil)
-      get :test_http_basic_auth, nil, http_authentication_used: true
+      get :test_http_basic_auth, :params => {}, session: { :http_authentication_used => true }
 
       expect(response).to redirect_to root_url
     end
@@ -60,7 +60,7 @@ describe SorceryController, :type => :controller do
       @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64::encode64("#{user.email}:secret")}"
       expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
 
-      get :test_http_basic_auth, nil, http_authentication_used: true
+      get :test_http_basic_auth, :params => {}, session: { :http_authentication_used => true }
 
       expect(session[:user_id]).to eq "42"
     end

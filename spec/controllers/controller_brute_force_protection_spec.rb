@@ -5,7 +5,7 @@ describe SorceryController, :type => :controller do
   let(:user) { double('user', id: 42, email: 'bla@bla.com') }
 
   def request_test_login
-    get :test_login, email: 'bla@bla.com', password: 'blabla'
+    get :test_login, :params => { email: 'bla@bla.com', password: 'blabla' }
   end
 
   # ----------------- SESSION TIMEOUT -----------------------
@@ -37,7 +37,7 @@ describe SorceryController, :type => :controller do
       allow(User).to receive(:authenticate).and_return(user)
       expect(user).to receive_message_chain(:sorcery_adapter, :update_attribute).with(:failed_logins_count, 0)
 
-      get :test_login, email: 'bla@bla.com', password: 'secret'
+      get :test_login, :params => { email: 'bla@bla.com', password: 'secret' }
     end
   end
 end

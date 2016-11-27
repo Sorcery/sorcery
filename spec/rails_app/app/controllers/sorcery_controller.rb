@@ -72,7 +72,7 @@ class SorceryController < ActionController::Base
   end
 
   def test_not_authenticated_action
-    render text: 'test_not_authenticated_action'
+    head :ok
   end
 
   def test_should_be_logged_in
@@ -80,7 +80,7 @@ class SorceryController < ActionController::Base
   end
 
   def test_http_basic_auth
-    render text: 'HTTP Basic Auth'
+    head :ok
   end
 
   def login_at_test_twitter

@@ -136,7 +136,7 @@ describe SorceryController, :type => :controller do
       sorcery_controller_property_set(:not_authenticated_action, :test_not_authenticated_action)
       get :test_logout
 
-      expect(response.body).to eq "test_not_authenticated_action"
+      expect(response).to be_a_success
     end
 
     it "require_login before_action saves the url that the user originally wanted" do

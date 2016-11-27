@@ -31,6 +31,12 @@ matrix:
     - rvm: 2.0.0
       gemfile: gemfiles/active_record-rails42.gemfile
 
+    - rvm: 2.0.0
+      gemfile: Gemfile
+
+    - rvm: 2.1
+      gemfile: Gemfile
+
     - rvm: jruby
       gemfile: Gemfile
 

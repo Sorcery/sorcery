@@ -10,24 +10,24 @@ class SorceryController < ActionController::Base
   end
 
   def some_action
-    render nothing: true
+    head :ok
   end
 
   def some_action_making_a_non_persisted_change_to_the_user
     current_user.email = 'to_be_ignored'
-    render nothing: true
+    head :ok
   end
 
   def test_login
     @user = login(params[:email], params[:password])
-    render nothing: true
+    head :ok
   end
 
   def test_auto_login
     @user = User.first
     auto_login(@user)
     @result = current_user
-    render nothing: true
+    head :ok
   end
 
   def test_return_to
@@ -37,38 +37,38 @@ class SorceryController < ActionController::Base
 
   def test_logout
     logout
-    render nothing: true
+    head :ok
   end
 
   def test_logout_with_remember
     remember_me!
     logout
-    render nothing: true
+    head :ok
   end
 
   def test_logout_with_force_forget_me
     remember_me!
     force_forget_me!
     logout
-    render nothing: true
+    head :ok
   end
 
   def test_login_with_remember
     @user = login(params[:email], params[:password])
     remember_me!
 
-    render nothing: true
+    head :ok
   end
 
   def test_login_with_remember_in_login
     @user = login(params[:email], params[:password], params[:remember])
 
-    render nothing: true
+    head :ok
   end
 
   def test_login_from_cookie
     @user = current_user
-    render nothing: true
+    head :ok
   end
 
   def test_not_authenticated_action
@@ -76,7 +76,7 @@ class SorceryController < ActionController::Base
   end
 
   def test_should_be_logged_in
-    render nothing: true
+    head :ok
   end
 
   def test_http_basic_auth

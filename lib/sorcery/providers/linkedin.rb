@@ -26,7 +26,7 @@ module Sorcery
       # Override included get_consumer method to provide authorize_path
       def get_consumer
         # Add access permissions to request token path
-        @configuration[:request_token_path] += '?scope=' + access_permissions.join('+') unless access_permissions.blank? or @configuration[:request_token_path].include? '?scope='
+        @configuration[:request_token_path] += '?scope=' + access_permissions.join('+') unless access_permissions.blank? or @configuration[:request_token_path].include?('?scope=')
         ::OAuth::Consumer.new(@key, @secret, @configuration)
       end
 

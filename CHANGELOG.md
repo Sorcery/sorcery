@@ -9,6 +9,7 @@
 * Deprecated Rails 3
   * Deprecated using `callback_filter` in favor of `callback_action`
   * Added null: false to migrations
+* Added support for Rails 5 by @kyuden
 
 ## 0.9.1
 

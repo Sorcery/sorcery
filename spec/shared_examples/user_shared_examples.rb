@@ -175,7 +175,9 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     it 'encrypts password when a new user is saved' do
-      expect(User.sorcery_config.encryption_provider.matches?(crypted_password, 'secret', user.salt)).to be true
+      expect(
+        User.sorcery_config.encryption_provider.matches?(crypted_password, 'secret', user.salt)
+      ).to be true
     end
 
     it 'clears the virtual password field if the encryption process worked' do
@@ -184,7 +186,8 @@ shared_examples_for 'rails_3_core_model' do
 
     it 'does not clear the virtual password field if save failed due to validity' do
       User.class_eval do
-        validates_format_of :email, with: /\A(.)+@(.)+\Z/, if: proc { |r| r.email }, message: 'is invalid'
+        validates_format_of :email, with: /\A(.)+@(.)+\Z/,
+                                    if: proc { |r| r.email }, message: 'is invalid'
       end
 
       user.password = 'blupush'
@@ -212,14 +215,18 @@ shared_examples_for 'rails_3_core_model' do
       user.email = 'blup@bla.com'
       user.save
 
-      expect(User.sorcery_config.encryption_provider.matches?(crypted_password, 'secret', user.salt)).to be true
+      expect(
+        User.sorcery_config.encryption_provider.matches?(crypted_password, 'secret', user.salt)
+      ).to be true
     end
 
     it 'replaces the crypted_password in case a new password is set' do
       user.password = 'new_secret'
       user.save
 
-      expect(User.sorcery_config.encryption_provider.matches?(crypted_password, 'secret', user.salt)).to be false
+      expect(
+        User.sorcery_config.encryption_provider.matches?(crypted_password, 'secret', user.salt)
+      ).to be false
     end
 
     describe 'when user has password_confirmation_defined' do
@@ -233,7 +240,11 @@ shared_examples_for 'rails_3_core_model' do
       end
 
       it 'clears the virtual password field if the encryption process worked' do
-        user = create_new_user(username: 'u', password: 'secret', password_confirmation: 'secret', email: 'email@example.com')
+        user = create_new_user(
+          username: 'u',
+          password: 'secret', password_confirmation: 'secret',
+          email: 'email@example.com'
+        )
 
         expect(user.password_confirmation).to be_nil
       end
@@ -242,7 +253,11 @@ shared_examples_for 'rails_3_core_model' do
         User.class_eval do
           validates_format_of :email, with: /\A(.)+@(.)+\Z/
         end
-        user = build_new_user(username: 'u', password: 'secret', password_confirmation: 'secret', email: 'asd')
+        user = build_new_user(
+          username: 'u',
+          password: 'secret', password_confirmation: 'secret',
+          email: 'asd'
+        )
         user.save
 
         expect(user.password_confirmation).not_to be_nil
@@ -251,7 +266,9 @@ shared_examples_for 'rails_3_core_model' do
   end
 
   describe 'password validation' do
-    let(:user_with_pass) { create_new_user(username: 'foo_bar', email: 'foo@bar.com', password: 'foobar') }
+    let(:user_with_pass) do
+      create_new_user(username: 'foo_bar', email: 'foo@bar.com', password: 'foobar')
+    end
 
     specify { expect(user_with_pass).to respond_to :valid_password? }
 
@@ -280,8 +297,15 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     it 'use deliver_later' do
-      sorcery_reload!([:user_activation, :user_activation_mailer, :activation_needed_email_method_name, :email_delivery_method],
-                      user_activation_mailer: SorceryMailer, activation_needed_email_method_name: nil, email_delivery_method: :deliver_later)
+      sorcery_reload!(
+        [
+          :user_activation, :user_activation_mailer,
+          :activation_needed_email_method_name, :email_delivery_method
+        ],
+        user_activation_mailer: SorceryMailer,
+        activation_needed_email_method_name: nil,
+        email_delivery_method: :deliver_later
+      )
 
       expect(@mail).to receive(:deliver_later).once
       user.activate!
@@ -290,16 +314,30 @@ shared_examples_for 'rails_3_core_model' do
     describe 'email_delivery_method is default' do
       it 'use deliver_now if rails version 4.2+' do
         allow(Rails).to receive(:version).and_return('4.2.0')
-        sorcery_reload!([:user_activation, :user_activation_mailer, :activation_needed_email_method_name],
-                        user_activation_mailer: SorceryMailer, activation_needed_email_method_name: nil)
+        sorcery_reload!(
+          [
+            :user_activation, :user_activation_mailer,
+            :activation_needed_email_method_name
+          ],
+          user_activation_mailer: SorceryMailer,
+          activation_needed_email_method_name: nil
+        )
+
         expect(@mail).to receive(:deliver_now).once
         user.activate!
       end
 
       it 'use deliver if rails version < 4.2' do
         allow(Rails).to receive(:version).and_return('4.1.0')
-        sorcery_reload!([:user_activation, :user_activation_mailer, :activation_needed_email_method_name],
-                        user_activation_mailer: SorceryMailer, activation_needed_email_method_name: nil)
+        sorcery_reload!(
+          [
+            :user_activation, :user_activation_mailer,
+            :activation_needed_email_method_name
+          ],
+          user_activation_mailer: SorceryMailer,
+          activation_needed_email_method_name: nil
+        )
+
         expect(@mail).to receive(:deliver).once
         user.activate!
       end
@@ -490,7 +528,10 @@ shared_examples_for 'external_user' do
     it 'supports nested attributes' do
       sorcery_model_property_set(:authentications_class, Authentication)
 
-      expect { User.create_from_provider('facebook', '123', username: 'Noam Ben Ari') }.to change { User.count }.by(1)
+      expect do
+        User.create_from_provider('facebook', '123', username: 'Noam Ben Ari')
+      end.to change { User.count }.by(1)
+
       expect(User.first.username).to eq 'Noam Ben Ari'
     end
 

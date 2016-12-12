@@ -10,10 +10,10 @@ module Sorcery
           base.sorcery_config.class_eval do
             attr_accessor :failed_logins_count_attribute_name,        # failed logins attribute name.
                           :lock_expires_at_attribute_name,            # this field indicates whether user
-                                                                      # is banned and when it will be active again.
+                          # is banned and when it will be active again.
                           :consecutive_login_retries_amount_limit,    # how many failed logins allowed.
                           :login_lock_time_period,                    # how long the user should be banned.
-                                                                      # in seconds. 0 for permanent.
+                          # in seconds. 0 for permanent.
 
                           :unlock_token_attribute_name,               # Unlock token attribute name
                           :unlock_token_email_method_name,            # Mailer method name
@@ -43,14 +43,14 @@ module Sorcery
         module ClassMethods
           def load_from_unlock_token(token)
             return nil if token.blank?
-            user = sorcery_adapter.find_by_token(sorcery_config.unlock_token_attribute_name,token)
+            user = sorcery_adapter.find_by_token(sorcery_config.unlock_token_attribute_name, token)
             user
           end
 
           protected
 
           def define_brute_force_protection_fields
-            sorcery_adapter.define_field sorcery_config.failed_logins_count_attribute_name, Integer, :default => 0
+            sorcery_adapter.define_field sorcery_config.failed_logins_count_attribute_name, Integer, default: 0
             sorcery_adapter.define_field sorcery_config.lock_expires_at_attribute_name, Time
             sorcery_adapter.define_field sorcery_config.unlock_token_attribute_name, String
           end
@@ -61,11 +61,11 @@ module Sorcery
           # Calls 'lock!' if login retries limit was reached.
           def register_failed_login!
             config = sorcery_config
-            return if !unlocked?
+            return unless unlocked?
 
             sorcery_adapter.increment(config.failed_logins_count_attribute_name)
 
-            if self.send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
+            if send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
               lock!
             end
           end
@@ -75,9 +75,9 @@ module Sorcery
           # /!\
           def unlock!
             config = sorcery_config
-            attributes = {config.lock_expires_at_attribute_name => nil,
-                          config.failed_logins_count_attribute_name => 0,
-                          config.unlock_token_attribute_name => nil}
+            attributes = { config.lock_expires_at_attribute_name => nil,
+                           config.failed_logins_count_attribute_name => 0,
+                           config.unlock_token_attribute_name => nil }
             sorcery_adapter.update_attributes(attributes)
           end
 
@@ -89,8 +89,8 @@ module Sorcery
 
           def lock!
             config = sorcery_config
-            attributes = {config.lock_expires_at_attribute_name => Time.now.in_time_zone + config.login_lock_time_period,
-                          config.unlock_token_attribute_name => TemporaryToken.generate_random_token}
+            attributes = { config.lock_expires_at_attribute_name => Time.now.in_time_zone + config.login_lock_time_period,
+                           config.unlock_token_attribute_name => TemporaryToken.generate_random_token }
             sorcery_adapter.update_attributes(attributes)
 
             unless config.unlock_token_mailer_disabled || config.unlock_token_mailer.nil?
@@ -100,7 +100,7 @@ module Sorcery
 
           def unlocked?
             config = sorcery_config
-            self.send(config.lock_expires_at_attribute_name).nil?
+            send(config.lock_expires_at_attribute_name).nil?
           end
 
           def send_unlock_token_email!
@@ -113,8 +113,8 @@ module Sorcery
           # Runs as a hook before authenticate.
           def prevent_locked_user_login
             config = sorcery_config
-            if !self.unlocked? && config.login_lock_time_period != 0
-              self.unlock! if self.send(config.lock_expires_at_attribute_name) <= Time.now.in_time_zone
+            if !unlocked? && config.login_lock_time_period != 0
+              unlock! if send(config.lock_expires_at_attribute_name) <= Time.now.in_time_zone
             end
             unlocked?
           end

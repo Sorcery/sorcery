@@ -1,4 +1,4 @@
-require "digest/sha1"
+require 'digest/sha1'
 
 module Sorcery
   module CryptoProviders
@@ -8,7 +8,7 @@ module Sorcery
       include Common
       class << self
         def join_token
-          @join_token ||= "--"
+          @join_token ||= '--'
         end
 
         # Turns your raw password into a Sha1 hash.

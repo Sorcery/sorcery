@@ -1,4 +1,4 @@
-require "digest/md5"
+require 'digest/md5'
 
 module Sorcery
   module CryptoProviders

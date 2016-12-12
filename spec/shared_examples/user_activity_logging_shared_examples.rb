@@ -1,5 +1,5 @@
-shared_examples_for "rails_3_activity_logging_model" do
-  context "loaded plugin configuration" do
+shared_examples_for 'rails_3_activity_logging_model' do
+  context 'loaded plugin configuration' do
     before(:all) do
       sorcery_reload!([:activity_logging])
     end
@@ -102,6 +102,5 @@ shared_examples_for "rails_3_activity_logging_model" do
       user.set_last_logout_at(now)
       expect(user.online?).to eq(false)
     end
-
   end
 end

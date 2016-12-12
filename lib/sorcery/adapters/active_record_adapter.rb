@@ -61,11 +61,11 @@ module Sorcery
               condition = @klass.arel_table[attribute].eq(credentials[0])
             end
 
-            if relation.nil?
-              relation = condition
-            else
-              relation = relation.or(condition)
-            end
+            relation = if relation.nil?
+                         condition
+                       else
+                         relation.or(condition)
+                       end
           end
 
           @klass.where(relation).first
@@ -105,6 +105,5 @@ module Sorcery
         end
       end
     end
-
   end
 end

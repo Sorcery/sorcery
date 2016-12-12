@@ -1,4 +1,4 @@
-require "digest/sha2"
+require 'digest/sha2'
 
 module Sorcery
   # The activate_sorcery method has a custom_crypto_provider configuration option.

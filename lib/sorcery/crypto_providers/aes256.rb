@@ -1,4 +1,4 @@
-require "openssl"
+require 'openssl'
 
 module Sorcery
   module CryptoProviders
@@ -24,7 +24,7 @@ module Sorcery
         def encrypt(*tokens)
           aes.encrypt
           aes.key = @key
-          [aes.update(tokens.join) + aes.final].pack("m").chomp
+          [aes.update(tokens.join) + aes.final].pack('m').chomp
         end
 
         def matches?(crypted, *tokens)
@@ -36,14 +36,14 @@ module Sorcery
         def decrypt(crypted)
           aes.decrypt
           aes.key = @key
-          (aes.update(crypted.unpack("m").first) + aes.final)
+          (aes.update(crypted.unpack('m').first) + aes.final)
         end
 
         private
 
         def aes
-          raise ArgumentError.new("#{name} expects a 32 bytes long key. Please use Sorcery::Model::Config.encryption_key to set it.") if ( @key.nil? || @key == "" )
-          @aes ||= OpenSSL::Cipher::Cipher.new("AES-256-ECB")
+          raise ArgumentError, "#{name} expects a 32 bytes long key. Please use Sorcery::Model::Config.encryption_key to set it." if @key.nil? || @key == ''
+          @aes ||= OpenSSL::Cipher::Cipher.new('AES-256-ECB')
         end
       end
     end

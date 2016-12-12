@@ -2,7 +2,7 @@ require 'spec_helper'
 
 # require 'shared_examples/controller_activity_logging_shared_examples'
 
-describe SorceryController do
+describe SorceryController, :type => :controller do
   after(:all) do
     sorcery_controller_property_set(:register_login_time, true)
     sorcery_controller_property_set(:register_logout_time, true)

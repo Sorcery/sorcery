@@ -2,7 +2,7 @@ require 'spec_helper'
 
 # require 'shared_examples/controller_oauth2_shared_examples'
 
-describe SorceryController, :active_record => true do
+describe SorceryController, :active_record => true, :type => :controller do
   before(:all) do
     if SORCERY_ORM == :active_record
       ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
@@ -29,7 +29,7 @@ describe SorceryController, :active_record => true do
       sorcery_controller_external_property_set(:facebook, :user_info_mapping, { username: 'name' })
 
       expect(User).to receive(:create_from_provider).with('facebook', '123', {username: 'Noam Ben Ari'})
-      get :test_create_from_provider, provider: 'facebook'
+      get :test_create_from_provider, :params => { provider: 'facebook' }
     end
 
     it 'supports nested attributes' do
@@ -37,7 +37,7 @@ describe SorceryController, :active_record => true do
       sorcery_controller_external_property_set(:facebook, :user_info_mapping, { username: 'hometown/name' })
       expect(User).to receive(:create_from_provider).with('facebook', '123', {username: 'Haifa, Israel'})
 
-      get :test_create_from_provider, provider: 'facebook'
+      get :test_create_from_provider, :params => { provider: 'facebook' }
     end
 
     it 'does not crash on missing nested attributes' do
@@ -46,7 +46,7 @@ describe SorceryController, :active_record => true do
 
       expect(User).to receive(:create_from_provider).with('facebook', '123', {username: 'Noam Ben Ari'})
 
-      get :test_create_from_provider, provider: 'facebook'
+      get :test_create_from_provider, :params => { provider: 'facebook' }
     end
 
     describe 'with a block' do
@@ -57,7 +57,7 @@ describe SorceryController, :active_record => true do
         u = double('user')
         expect(User).to receive(:create_from_provider).with('facebook', '123', {username: 'Noam Ben Ari'}).and_return(u).and_yield(u)
         # test_create_from_provider_with_block in controller will check for uniqueness of username
-        get :test_create_from_provider_with_block, provider: 'facebook'
+        get :test_create_from_provider_with_block, :params => { provider: 'facebook' }
       end
     end
   end
@@ -146,7 +146,7 @@ describe SorceryController, :active_record => true do
 
       sorcery_model_property_set(:authentications_class, Authentication)
       expect(User).to receive(:load_from_provider).with(:facebook, '123').and_return(user)
-      get :test_return_to_with_external_facebook, {}, :return_to_url => "fuu"
+      get :test_return_to_with_external_facebook, :params => {}, session: { :return_to_url => "fuu" }
 
       expect(response).to redirect_to("fuu")
       expect(flash[:notice]).to eq "Success!"
@@ -188,7 +188,7 @@ describe SorceryController, :active_record => true do
 
           sorcery_model_property_set(:authentications_class, Authentication)
           expect(User).to receive(:load_from_provider).with(provider, '123').and_return(user)
-          get :"test_return_to_with_external_#{provider}", {}, :return_to_url => "fuu"
+          get :"test_return_to_with_external_#{provider}", :params => {}, session: { :return_to_url => "fuu" }
 
           expect(response).to redirect_to "fuu"
           expect(flash[:notice]).to eq "Success!"
@@ -237,6 +237,7 @@ describe SorceryController, :active_record => true do
 
     after(:all) do
       if SORCERY_ORM == :active_record
+        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
         ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
       end
     end

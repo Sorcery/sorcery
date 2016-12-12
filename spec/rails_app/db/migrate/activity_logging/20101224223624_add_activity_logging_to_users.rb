@@ -1,4 +1,4 @@
-class AddActivityLoggingToUsers < ActiveRecord::Migration
+class AddActivityLoggingToUsers < ActiveRecord::CompatibleLegacyMigration.migration_class
   def self.up
     add_column :users, :last_login_at,     :datetime, :default => nil
     add_column :users, :last_logout_at,    :datetime, :default => nil

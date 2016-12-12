@@ -62,6 +62,14 @@ module Sorcery
         def clear_user_without_logout
           subject.instance_variable_set(:@current_user,nil)
         end
+
+        if ::Rails.version < '5.0.0'
+          %w( get post put ).each do |method|
+            define_method(method) do |action, options={}|
+              super action, options[:params] || {}, options[:session]
+            end
+          end
+        end
       end
     end
   end

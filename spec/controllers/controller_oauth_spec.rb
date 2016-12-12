@@ -21,7 +21,7 @@ def stub_all_oauth_requests!
   allow(acc_token).to receive(:get) { response }
 end
 
-describe SorceryController do
+describe SorceryController, :type => :controller do
 
   let(:user) { double('user', id: 42) }
 
@@ -72,20 +72,20 @@ describe SorceryController do
     it "logins if user exists" do
       expect(User).to receive(:load_from_provider).with(:twitter, '123').and_return(user)
 
-      get :test_login_from, :oauth_verifier => "blablaRERASDFcxvSDFA"
+      get :test_login_from, :params => { :oauth_verifier => "blablaRERASDFcxvSDFA" }
       expect(flash[:notice]).to eq "Success!"
     end
 
     it "'login_from' fails if user doesn't exist" do
       expect(User).to receive(:load_from_provider).with(:twitter, '123').and_return(nil)
 
-      get :test_login_from, :oauth_verifier => "blablaRERASDFcxvSDFA"
+      get :test_login_from, :params => { :oauth_verifier => "blablaRERASDFcxvSDFA" }
       expect(flash[:alert]).to eq "Failed!"
     end
 
     it "on successful 'login_from' the user is redirected to the url he originally wanted" do
       expect(User).to receive(:load_from_provider).with(:twitter, '123').and_return(user)
-      get :test_return_to_with_external, {}, :return_to_url => "fuu"
+      get :test_return_to_with_external, params: {}, :session => { :return_to_url => "fuu" }
       expect(response).to redirect_to("fuu")
       expect(flash[:notice]).to eq "Success!"
     end
@@ -111,7 +111,7 @@ describe SorceryController do
         expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
         expect(User).to receive(:create_from_provider).with('twitter', '123', {username: 'nbenari'}).and_return(user)
 
-        get :test_create_from_provider, :provider => "twitter"
+        get :test_create_from_provider, :params => { :provider => "twitter" }
       end
 
       it "supports nested attributes" do
@@ -119,7 +119,7 @@ describe SorceryController do
         expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
         expect(User).to receive(:create_from_provider).with('twitter', '123', {username: 'coming soon to sorcery gem: twitter and facebook authentication support.'}).and_return(user)
 
-        get :test_create_from_provider, :provider => "twitter"
+        get :test_create_from_provider, :params => { :provider => "twitter" }
       end
 
       it "does not crash on missing nested attributes" do
@@ -127,7 +127,7 @@ describe SorceryController do
         expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
         expect(User).to receive(:create_from_provider).with('twitter', '123', {username: 'coming soon to sorcery gem: twitter and facebook authentication support.'}).and_return(user)
 
-        get :test_create_from_provider, :provider => "twitter"
+        get :test_create_from_provider, :params => { :provider => "twitter" }
       end
 
       it "binds new provider" do
@@ -138,7 +138,7 @@ describe SorceryController do
         login_user(user)
 
         expect(user).to receive(:add_provider_to_user).with('twitter', '123')
-        get :test_add_second_provider, :provider => "twitter"
+        get :test_add_second_provider, :params => { :provider => "twitter" }
       end
 
       describe "with a block" do
@@ -150,7 +150,7 @@ describe SorceryController do
           expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
           expect(User).to receive(:create_from_provider).with('twitter', '123', {username: 'nbenari'}).and_return(u).and_yield(u)
 
-          get :test_create_from_provider_with_block, :provider => "twitter"
+          get :test_create_from_provider_with_block, :params => { :provider => "twitter" }
         end
 
       end

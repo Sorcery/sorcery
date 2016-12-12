@@ -247,6 +247,7 @@ shared_examples_for "rails_3_reset_password_model" do
       user.save!
 
       expect(user.reset_password_token).to be_nil
+      expect(user.reset_password_email_sent_at).to be_nil
     end
 
     it "returns false if time between emails has not passed since last email" do

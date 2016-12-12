@@ -64,7 +64,6 @@ module Sorcery
           base.extend(ClassMethods)
           base.send(:include, InstanceMethods)
 
-
         end
 
         module ClassMethods
@@ -82,7 +81,7 @@ module Sorcery
           # when activation_mailer_disabled is false
           def validate_mailer_defined
             msg = "To use user_activation submodule, you must define a mailer (config.user_activation_mailer = YourMailerClass)."
-            raise ArgumentError, msg if @sorcery_config.user_activation_mailer == nil and @sorcery_config.activation_mailer_disabled == false
+            raise ArgumentError, msg if @sorcery_config.user_activation_mailer == nil && @sorcery_config.activation_mailer_disabled == false
           end
 
           def define_user_activation_fields

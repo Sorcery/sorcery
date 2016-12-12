@@ -2,7 +2,7 @@ module Sorcery
   module TestHelpers
     module Rails
       module Integration
-        
+
         #Accepts arguments for user to login, route to use and HTTP method
         #Defaults - @user, 'sessions_url' and POST
         def login_user(user = nil, route = nil, http_method = :post)

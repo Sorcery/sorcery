@@ -53,13 +53,13 @@ module Sorcery
           def online?
             return false if self.send(sorcery_config.last_activity_at_attribute_name).nil?
 
-            logged_in? and self.send(sorcery_config.last_activity_at_attribute_name) > sorcery_config.activity_timeout.seconds.ago
+            logged_in? && self.send(sorcery_config.last_activity_at_attribute_name) > sorcery_config.activity_timeout.seconds.ago
           end
 
           #  shows if user is logged in, but it not show if user is online - see online?
           def logged_in?
             return false if self.send(sorcery_config.last_login_at_attribute_name).nil?
-            return true if self.send(sorcery_config.last_login_at_attribute_name).present? and self.send(sorcery_config.last_logout_at_attribute_name).nil?
+            return true if self.send(sorcery_config.last_login_at_attribute_name).present? && self.send(sorcery_config.last_logout_at_attribute_name).nil?
 
             self.send(sorcery_config.last_login_at_attribute_name) > self.send(sorcery_config.last_logout_at_attribute_name)
           end

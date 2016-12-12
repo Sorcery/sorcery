@@ -13,7 +13,7 @@ module Sorcery
         @user_info_mapping = {}
       end
 
-      def auth_hash(access_token, hash={})
+      def auth_hash(access_token, hash = {})
         return hash if access_token.nil?
 
         token_hash = hash.dup

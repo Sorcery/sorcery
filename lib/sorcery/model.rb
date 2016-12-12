@@ -49,7 +49,7 @@ module Sorcery
         @sorcery_config.submodules = ::Sorcery::Controller::Config.submodules
         @sorcery_config.submodules.each do |mod|
           begin
-            include Submodules.const_get(mod.to_s.split('_').map {|p| p.capitalize}.join)
+            include Submodules.const_get(mod.to_s.split('_').map(&:capitalize).join)
           rescue NameError
             # don't stop on a missing submodule. Needed because some submodules are only defined
             # in the controller side.
@@ -113,11 +113,11 @@ module Sorcery
 
       protected
 
-      def set_encryption_attributes()
+      def set_encryption_attributes
         @sorcery_config.encryption_provider.stretches = @sorcery_config.stretches if @sorcery_config.encryption_provider.respond_to?(:stretches) && @sorcery_config.stretches
         @sorcery_config.encryption_provider.join_token = @sorcery_config.salt_join_token if @sorcery_config.encryption_provider.respond_to?(:join_token) && @sorcery_config.salt_join_token
       end
-      
+
       def add_config_inheritance
         self.class_eval do
           def self.inherited(subclass)
@@ -148,12 +148,12 @@ module Sorcery
 
       # Calls the configured encryption provider to compare the supplied password with the encrypted one.
       def valid_password?(pass)
-        _crypted = self.send(sorcery_config.crypted_password_attribute_name)  
-        return _crypted == pass if sorcery_config.encryption_provider.nil?
+        crypted = self.send(sorcery_config.crypted_password_attribute_name)
+        return crypted == pass if sorcery_config.encryption_provider.nil?
 
-        _salt = self.send(sorcery_config.salt_attribute_name) unless sorcery_config.salt_attribute_name.nil?
+        salt = self.send(sorcery_config.salt_attribute_name) unless sorcery_config.salt_attribute_name.nil?
 
-        sorcery_config.encryption_provider.matches?(_crypted, pass, _salt)
+        sorcery_config.encryption_provider.matches?(crypted, pass, salt)
       end
 
       protected
@@ -180,7 +180,7 @@ module Sorcery
       def generic_send_email(method, mailer)
         config = sorcery_config
         mail = config.send(mailer).send(config.send(method),self)
-        if defined?(ActionMailer) and config.send(mailer).kind_of?(Class) and config.send(mailer) < ActionMailer::Base
+        if defined?(ActionMailer) && config.send(mailer).kind_of?(Class) && config.send(mailer) < ActionMailer::Base
           mail.send(config.email_delivery_method)
         end
       end

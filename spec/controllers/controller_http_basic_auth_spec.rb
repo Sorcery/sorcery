@@ -25,7 +25,7 @@ describe SorceryController, :type => :controller do
       # dirty hack for rails 4
       allow(subject).to receive(:register_last_activity_time_to_db)
 
-      @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64::encode64("#{user.email}:secret")}"
+      @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64.encode64("#{user.email}:secret")}"
       expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
       get :test_http_basic_auth, :params => {}, session: { :http_authentication_used => true }
 
@@ -33,7 +33,7 @@ describe SorceryController, :type => :controller do
     end
 
     it "fails authentication if credentials are wrong" do
-      @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64::encode64("#{user.email}:wrong!")}"
+      @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64.encode64("#{user.email}:wrong!")}"
       expect(User).to receive('authenticate').with('bla@bla.com', 'wrong!').and_return(nil)
       get :test_http_basic_auth, :params => {}, session: { :http_authentication_used => true }
 
@@ -57,7 +57,7 @@ describe SorceryController, :type => :controller do
       # dirty hack for rails 4
       allow(controller).to receive(:register_last_activity_time_to_db)
 
-      @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64::encode64("#{user.email}:secret")}"
+      @request.env["HTTP_AUTHORIZATION"] = "Basic #{Base64.encode64("#{user.email}:secret")}"
       expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
 
       get :test_http_basic_auth, :params => {}, session: { :http_authentication_used => true }

@@ -50,8 +50,8 @@ module Sorcery
         # Fix: replace default oauth2 options, specially to prevent the Faraday gem which
         # concatenates with "/", removing the Facebook api version
         options = {
-          site:          File::join(@site, api_version.to_s),
-          authorize_url: File::join(@auth_site, api_version.to_s, auth_path),
+          site:          File.join(@site, api_version.to_s),
+          authorize_url: File.join(@auth_site, api_version.to_s, auth_path),
           token_url:     token_url
         }
 

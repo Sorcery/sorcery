@@ -13,7 +13,6 @@ module Sorcery
       attr_accessor :access_token_path, :authorize_path, :request_token_path,
                     :user_info_path, :site, :signature_method, :private_key_file, :callback_url
 
-
       def initialize
         @configuration = {
             authorize_path: '/authorize',

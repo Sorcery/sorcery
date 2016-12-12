@@ -34,7 +34,6 @@ module Sorcery
                                                         # Default: :deliver (Rails version < 4.2) or :deliver_now (Rails version 4.2+)
                                                         # method to send email related
 
-
                     :after_config                       # an array of method names to call after configuration by user.
                                                         # used internally.
 
@@ -60,7 +59,7 @@ module Sorcery
           :@subclasses_inherit_config            => false,
           :@before_authenticate                  => [],
           :@after_config                         => [],
-          :@email_delivery_method                => default_email_delivery_method,
+          :@email_delivery_method                => default_email_delivery_method
         }
         reset!
       end

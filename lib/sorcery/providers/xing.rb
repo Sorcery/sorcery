@@ -13,7 +13,6 @@ module Sorcery
       attr_accessor :access_token_path, :authorize_path, :request_token_path,
                     :user_info_path
 
-
       def initialize
         @configuration = {
             site: 'https://api.xing.com/v1',

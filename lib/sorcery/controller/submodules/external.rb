@@ -101,7 +101,7 @@ module Sorcery
               uri = URI.parse(request.url.gsub(/\?.*$/,''))
               uri.path = ''
               uri.query = nil
-              uri.scheme = 'https' if(request.env['HTTP_X_FORWARDED_PROTO'] == 'https')
+              uri.scheme = 'https' if request.env['HTTP_X_FORWARDED_PROTO'] == 'https'
               host = uri.to_s
               provider.callback_url = "#{host}#{@provider.original_callback_url}"
             end
@@ -141,7 +141,7 @@ module Sorcery
             current_user.add_provider_to_user(provider_name.to_s, @user_hash[:uid].to_s)
           end
 
-          # Initialize new user from provider informations.
+          # Initialize new user from provider informations.
           # If a provider doesn't give required informations or username/email is already taken,
           # we store provider/user infos into a session and can be rendered into registration form
           def create_and_validate_from(provider_name)

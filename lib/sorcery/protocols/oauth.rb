@@ -8,7 +8,7 @@ module Sorcery
         '1.0'
       end
 
-      def get_request_token(token=nil,secret=nil)
+      def get_request_token(token = nil,secret = nil)
         return ::OAuth::RequestToken.new(get_consumer, token, secret) if token && secret
         get_consumer.get_request_token(oauth_callback: @callback_url)
       end

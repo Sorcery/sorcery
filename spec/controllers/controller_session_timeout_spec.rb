@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SorceryController do
+describe SorceryController, :type => :controller do
 
   let!(:user) { double('user', id: 42) }
 
@@ -42,7 +42,7 @@ describe SorceryController do
       # TODO: ???
       expect(User).to receive(:authenticate).with('bla@bla.com', 'secret').and_return(user)
 
-      get :test_login, :email => 'bla@bla.com', :password => 'secret'
+      get :test_login, :params => { :email => 'bla@bla.com', :password => 'secret' }
 
       expect(session[:user_id]).not_to be_nil
       expect(response).to be_a_success
@@ -53,7 +53,7 @@ describe SorceryController do
         sorcery_controller_property_set(:session_timeout_from_last_action, true)
         expect(User).to receive(:authenticate).with('bla@bla.com', 'secret').and_return(user)
 
-        get :test_login, :email => 'bla@bla.com', :password => 'secret'
+        get :test_login, :params => { :email => 'bla@bla.com', :password => 'secret' }
         Timecop.travel(Time.now.in_time_zone+0.3)
         get :test_should_be_logged_in
 
@@ -68,7 +68,7 @@ describe SorceryController do
 
       it "with 'session_timeout_from_last_action' logs out if there was no activity" do
         sorcery_controller_property_set(:session_timeout_from_last_action, true)
-        get :test_login, :email => 'bla@bla.com', :password => 'secret'
+        get :test_login, :params => { :email => 'bla@bla.com', :password => 'secret' }
         Timecop.travel(Time.now.in_time_zone+0.6)
         get :test_should_be_logged_in
 

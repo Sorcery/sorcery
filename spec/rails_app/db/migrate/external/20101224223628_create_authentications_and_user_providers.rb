@@ -1,4 +1,4 @@
-class CreateAuthenticationsAndUserProviders < ActiveRecord::Migration
+class CreateAuthenticationsAndUserProviders < ActiveRecord::CompatibleLegacyMigration.migration_class
   def self.up
     create_table :authentications do |t|
       t.integer :user_id, null: false

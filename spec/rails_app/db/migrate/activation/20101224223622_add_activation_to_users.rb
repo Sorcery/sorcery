@@ -1,4 +1,4 @@
-class AddActivationToUsers < ActiveRecord::Migration
+class AddActivationToUsers < ActiveRecord::CompatibleLegacyMigration.migration_class
   def self.up
     add_column :users, :activation_state, :string, :default => nil
     add_column :users, :activation_token, :string, :default => nil

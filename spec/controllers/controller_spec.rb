@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe SorceryController do
+describe SorceryController, :type => :controller do
   describe "plugin configuration" do
     before(:all) do
       sorcery_reload!
@@ -55,7 +55,7 @@ describe SorceryController do
       context "when succeeds" do
         before do
           expect(User).to receive(:authenticate).with('bla@bla.com', 'secret').and_return(user)
-          get :test_login, :email => 'bla@bla.com', :password => 'secret'
+          get :test_login, :params => { :email => 'bla@bla.com', :password => 'secret' }
         end
 
         it "assigns user to @user variable" do
@@ -75,7 +75,7 @@ describe SorceryController do
       context "when fails" do
         before do
           expect(User).to receive(:authenticate).with('bla@bla.com', 'opensesame!').and_return(nil)
-          get :test_login, :email => 'bla@bla.com', :password => 'opensesame!'
+          get :test_login, :params => { :email => 'bla@bla.com', :password => 'opensesame!' }
         end
 
         it "sets @user variable to nil" do
@@ -136,7 +136,7 @@ describe SorceryController do
       sorcery_controller_property_set(:not_authenticated_action, :test_not_authenticated_action)
       get :test_logout
 
-      expect(response.body).to eq "test_not_authenticated_action"
+      expect(response).to be_a_success
     end
 
     it "require_login before_action saves the url that the user originally wanted" do
@@ -156,7 +156,7 @@ describe SorceryController do
 
     it "on successful login the user is redirected to the url he originally wanted" do
       session[:return_to_url] = "http://test.host/some_action"
-      post :test_return_to, :email => 'bla@bla.com', :password => 'secret'
+      post :test_return_to, :params => { :email => 'bla@bla.com', :password => 'secret' }
 
       expect(response).to redirect_to("http://test.host/some_action")
       expect(flash[:notice]).to eq "haha!"

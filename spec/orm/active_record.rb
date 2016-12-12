@@ -17,5 +17,5 @@ def teardown_orm
 end
 
 def migrations_path
-  Rails.root.join("db", "migrate", "core")
+  Rails.root.join('db', 'migrate', 'core')
 end

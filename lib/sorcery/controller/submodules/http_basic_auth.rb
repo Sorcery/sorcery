@@ -11,10 +11,10 @@ module Sorcery
           base.send(:include, InstanceMethods)
           Config.module_eval do
             class << self
-              attr_accessor :controller_to_realm_map            # What realm to display for which controller name.
+              attr_accessor :controller_to_realm_map # What realm to display for which controller name.
 
               def merge_http_basic_auth_defaults!
-                @defaults.merge!(:@controller_to_realm_map  => {"application" => "Application"})
+                @defaults.merge!(:@controller_to_realm_map => { 'application' => 'Application' })
               end
             end
             merge_http_basic_auth_defaults!
@@ -23,7 +23,6 @@ module Sorcery
         end
 
         module InstanceMethods
-
           protected
 
           # to be used as a before_action.
@@ -37,7 +36,7 @@ module Sorcery
           # To overcome this, we set a session when requesting the password, which logout will
           # reset, and that's how we know if we need to request for HTTP auth again.
           def require_login_from_http_basic
-            (request_http_basic_authentication(realm_name_by_controller) && (session[:http_authentication_used] = true) && return) if (request.authorization.nil? || session[:http_authentication_used].nil?)
+            (request_http_basic_authentication(realm_name_by_controller) && (session[:http_authentication_used] = true) && return) if request.authorization.nil? || session[:http_authentication_used].nil?
             require_login
             session[:http_authentication_used] = nil unless logged_in?
           end
@@ -62,12 +61,10 @@ module Sorcery
               end
               nil
             else
-              Config.controller_to_realm_map["application"]
+              Config.controller_to_realm_map['application']
             end
           end
-
         end
-
       end
     end
   end

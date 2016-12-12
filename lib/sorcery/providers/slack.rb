@@ -3,7 +3,6 @@ module Sorcery
     # This class adds support for OAuth with slack.com.
 
     class Slack < Base
-
       include Protocols::Oauth2
 
       attr_accessor :auth_path, :scope, :token_url, :user_info_path
@@ -29,12 +28,12 @@ module Sorcery
 
       # calculates and returns the url to which the user should be redirected,
       # to get authenticated at the external provider's site.
-      def login_url(params, session)
-        authorize_url({ authorize_url: auth_path })
+      def login_url(_params, _session)
+        authorize_url(authorize_url: auth_path)
       end
 
       # tries to login the user from access token
-      def process_callback(params, session)
+      def process_callback(params, _session)
         args = {}.tap do |a|
           a[:code] = params[:code] if params[:code]
         end

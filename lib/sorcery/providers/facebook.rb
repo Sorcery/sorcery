@@ -7,7 +7,6 @@ module Sorcery
     #   ...
     #
     class Facebook < Base
-
       include Protocols::Oauth2
 
       attr_reader   :mode, :param_name, :parse
@@ -40,13 +39,12 @@ module Sorcery
 
       # calculates and returns the url to which the user should be redirected,
       # to get authenticated at the external provider's site.
-      def login_url(params, session)
+      def login_url(_params, _session)
         authorize_url
       end
 
       # overrides oauth2#authorize_url to allow customized scope.
       def authorize_url
-
         # Fix: replace default oauth2 options, specially to prevent the Faraday gem which
         # concatenates with "/", removing the Facebook api version
         options = {
@@ -60,15 +58,14 @@ module Sorcery
       end
 
       # tries to login the user from access token
-      def process_callback(params, session)
+      def process_callback(params, _session)
         args = {}.tap do |a|
           a[:code] = params[:code] if params[:code]
         end
 
         get_access_token(args, token_url: token_url, mode: mode,
-          param_name: param_name, parse: parse)
+                               param_name: param_name, parse: parse)
       end
-
     end
   end
 end

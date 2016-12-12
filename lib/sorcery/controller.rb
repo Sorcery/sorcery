@@ -20,9 +20,9 @@ module Sorcery
       # Will trigger auto-login attempts via the call to logged_in?
       # If all attempts to auto-login fail, the failure callback will be called.
       def require_login
-        if !logged_in?
+        unless logged_in?
           session[:return_to_url] = request.url if Config.save_return_to_url && request.get? && !request.xhr?
-          self.send(Config.not_authenticated_action)
+          send(Config.not_authenticated_action)
         end
       end
 
@@ -34,7 +34,7 @@ module Sorcery
         if user
           old_session = session.dup.to_hash
           reset_sorcery_session
-          old_session.each_pair do |k,v|
+          old_session.each_pair do |k, v|
             session[k.to_sym] = v
           end
           form_authenticity_token
@@ -87,7 +87,7 @@ module Sorcery
       # used when a user tries to access a page while logged out, is asked to login,
       # and we want to return him back to the page he originally wanted.
       def redirect_back_or_to(url, flash_hash = {})
-        redirect_to(session[:return_to_url] || url, :flash => flash_hash)
+        redirect_to(session[:return_to_url] || url, flash: flash_hash)
         session[:return_to_url] = nil
       end
 
@@ -102,7 +102,7 @@ module Sorcery
       #
       # @param [<User-Model>] user the user instance.
       # @return - do not depend on the return value.
-      def auto_login(user, should_remember = false)
+      def auto_login(user, _should_remember = false)
         session[:user_id] = user.id.to_s
         @current_user = user
       end
@@ -132,26 +132,24 @@ module Sorcery
       end
 
       def after_login!(user, credentials = [])
-        Config.after_login.each {|c| self.send(c, user, credentials)}
+        Config.after_login.each { |c| send(c, user, credentials) }
       end
 
       def after_failed_login!(credentials)
-        Config.after_failed_login.each {|c| self.send(c, credentials)}
+        Config.after_failed_login.each { |c| send(c, credentials) }
       end
 
       def before_logout!
-        Config.before_logout.each {|c| self.send(c)}
+        Config.before_logout.each { |c| send(c) }
       end
 
       def after_logout!(user)
-        Config.after_logout.each {|c| self.send(c, user)}
+        Config.after_logout.each { |c| send(c, user) }
       end
 
       def user_class
         @user_class ||= Config.user_class.to_s.constantize
       end
-
     end
-
   end
 end

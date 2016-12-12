@@ -89,16 +89,15 @@ module Sorcery
           end
 
           # for backwards compatibility
-          def access_token(*args)
+          def access_token(*_args)
             @access_token
           end
-
 
           # this method should be somewhere else.  It only does something once per application per provider.
           def sorcery_fixup_callback_url(provider)
             provider.original_callback_url ||= provider.callback_url
             if provider.original_callback_url.present? && provider.original_callback_url[0] == '/'
-              uri = URI.parse(request.url.gsub(/\?.*$/,''))
+              uri = URI.parse(request.url.gsub(/\?.*$/, ''))
               uri.path = ''
               uri.query = nil
               uri.scheme = 'https' if request.env['HTTP_X_FORWARDED_PROTO'] == 'https'
@@ -152,12 +151,14 @@ module Sorcery
 
             user, saved = user_class.create_and_validate_from_provider(provider_name, @user_hash[:uid], attrs)
 
-            session[:incomplete_user] = {
-              :provider => {config.provider_uid_attribute_name => @user_hash[:uid], config.provider_attribute_name => provider_name},
-              :user_hash => attrs
-            } unless saved
+            unless saved
+              session[:incomplete_user] = {
+                provider: { config.provider_uid_attribute_name => @user_hash[:uid], config.provider_attribute_name => provider_name },
+                user_hash: attrs
+              }
+            end
 
-            return user
+            user
           end
 
           # this method automatically creates a new user from the data in the external user hash.
@@ -186,15 +187,19 @@ module Sorcery
 
           def user_attrs(user_info_mapping, user_hash)
             attrs = {}
-            user_info_mapping.each do |k,v|
-              if (varr = v.split("/")).size > 1
-                attribute_value = varr.inject(user_hash[:user_info]) {|hash, value| hash[value]} rescue nil
+            user_info_mapping.each do |k, v|
+              if (varr = v.split('/')).size > 1
+                attribute_value = begin
+                                    varr.inject(user_hash[:user_info]) { |hash, value| hash[value] }
+                                  rescue
+                                    nil
+                                  end
                 attribute_value.nil? ? attrs : attrs.merge!(k => attribute_value)
               else
                 attrs.merge!(k => user_hash[:user_info][v])
               end
             end
-            return attrs
+            attrs
           end
         end
       end

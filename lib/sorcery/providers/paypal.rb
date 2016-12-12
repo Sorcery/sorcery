@@ -7,7 +7,6 @@ module Sorcery
     #   ...
     #
     class Paypal < Base
-
       include Protocols::Oauth2
 
       attr_accessor :auth_url, :scope, :token_url, :user_info_url
@@ -45,18 +44,17 @@ module Sorcery
         )
       end
 
-      def login_url(params, session)
-        authorize_url({ authorize_url: auth_url })
+      def login_url(_params, _session)
+        authorize_url(authorize_url: auth_url)
       end
 
-      def process_callback(params, session)
+      def process_callback(params, _session)
         args = {}.tap do |a|
           a[:code] = params[:code] if params[:code]
         end
 
         get_access_token(args, token_url: token_url, token_method: :post)
       end
-
     end
   end
 end

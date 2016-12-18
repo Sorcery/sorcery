@@ -215,9 +215,9 @@ your thanks via a donation, my PayPal email is in the contact details.
 
 Feel free to ask questions using these contact details:
 
-- Noam Ben-Ari: [Email (also PayPal)](nbenari@gmail.com), [Twitter](https://twitter.com/nbenari)
-- Kir Shatrov: [Email](shatrov@me.com), [Twitter](https://twitter.com/Kiiiir)
-- Grzegorz Witek: [Email](arnvald.to@gmail.com), [Twitter](https://twitter.com/arnvald)
+- Noam Ben-Ari: [nbenari@gmail.com](mailto:nbenari@gmail.com) (also PayPal), [Twitter](https://twitter.com/nbenari)
+- Kir Shatrov: [shatrov@me.com](mailto:shatrov@me.com), [Twitter](https://twitter.com/Kiiiir)
+- Grzegorz Witek: [arnvald.to@gmail.com](mailto:arnvald.to@gmail.com), [Twitter](https://twitter.com/arnvald)
 
 ## License
 

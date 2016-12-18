@@ -44,48 +44,48 @@ explaining and the rest are commented:
 ### Core
 
 ```ruby
-require_login # this is a before action
+require_login # This is a before action
 login(email, password, remember_me = false)
-auto_login(user) # login without credentials
+auto_login(user) # Login without credentials
 logout
-logged_in?      # available to view
-current_user    # available to view
-redirect_back_or_to # used when a user tries to access a page while logged out, is asked to login, and we want to return him back to the page he originally wanted.
-@user.external? # external users, such as Facebook, Twitter, etc.
-@user.active_for_authentication? # add this method to define behaviour that will prevent selected users from signing in
-@user.valid_password?('secret') # compares 'secret' with the actual @user's password, returns true if they match
+logged_in? # Available in views
+current_user # Available in views
+redirect_back_or_to # Use when a user tries to access a page while logged out, is asked to login, and we want to return him back to the page he originally wanted
+@user.external? # Users who signed up using Facebook, Twitter, etc.
+@user.active_for_authentication? # Add this method to define behaviour that will prevent selected users from signing in
+@user.valid_password?('secret') # Compares 'secret' with the actual user's password, returns true if they match
 User.authenticates_with_sorcery!
 ```
 
 ### HTTP Basic Auth
 
 ```ruby
-require_login_from_http_basic # this is a before action
+require_login_from_http_basic # This is a before action
 ```
 
 ### External
 
 ```ruby
-login_at(provider) # sends the user to an external service (twitter etc.) to authenticate.
-login_from(provider) # tries to login from the external provider's callback.
-create_from(provider) # create the user in the local app db.
+login_at(provider) # Sends the user to an external service (Facebook, Twitter, etc.) to authenticate
+login_from(provider) # Tries to login from the external provider's callback
+create_from(provider) # Create the user in the local app database
 ```
 
 ### Remember Me
 
 ```ruby
-auto_login(user, should_remember=false)  # login without credentials, optional remember_me
+auto_login(user, should_remember = false) # Login without credentials, optional remember_me
 remember_me!
 forget_me!
-force_forget_me!    # completely forgets all sessions by clearing the token, even if remember_me_token_persist_globally is true
+force_forget_me! # Forgets all sessions by clearing the token, even if remember_me_token_persist_globally is set to true
 ```
 
 ### Reset Password
 
 ```ruby
 User.load_from_reset_password_token(token)
-@user.generate_reset_password_token! # if you want to send the email by youself
-@user.deliver_reset_password_instructions! # generates the token and sends the email
+@user.generate_reset_password_token! # Use if you want to send the email by yourself
+@user.deliver_reset_password_instructions! # Generates the token and sends the email
 @user.change_password!(new_password)
 ```
 

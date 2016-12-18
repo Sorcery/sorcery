@@ -6,8 +6,7 @@ class SorceryController < ActionController::Base
   before_action :require_login_from_http_basic, only: [:test_http_basic_auth]
   before_action :require_login, only: [:test_logout, :test_logout_with_force_forget_me, :test_should_be_logged_in, :some_action]
 
-  def index
-  end
+  def index; end
 
   def some_action
     head :ok
@@ -87,7 +86,7 @@ class SorceryController < ActionController::Base
     login_at(:twitter)
   end
 
-  alias :login_at_test :login_at_test_twitter
+  alias login_at_test login_at_test_twitter
 
   def login_at_test_facebook
     login_at(:facebook)
@@ -126,7 +125,7 @@ class SorceryController < ActionController::Base
   end
 
   def login_at_test_with_state
-    login_at(:facebook, {state: 'bla'})
+    login_at(:facebook, state: 'bla')
   end
 
   def test_login_from_twitter
@@ -137,7 +136,7 @@ class SorceryController < ActionController::Base
     end
   end
 
-  alias :test_login_from :test_login_from_twitter
+  alias test_login_from test_login_from_twitter
 
   def test_login_from_facebook
     if @user = login_from(:facebook)
@@ -227,7 +226,7 @@ class SorceryController < ActionController::Base
     end
   end
 
-  alias :test_return_to_with_external :test_return_to_with_external_twitter
+  alias test_return_to_with_external test_return_to_with_external_twitter
 
   def test_return_to_with_external_facebook
     if @user = login_from(:facebook)
@@ -307,9 +306,9 @@ class SorceryController < ActionController::Base
     provider = params[:provider]
     if logged_in?
       if @user = add_provider_to_user(provider)
-        redirect_to "bla", :notice => "Success!"
+        redirect_to 'bla', notice: 'Success!'
       else
-        redirect_to "blu", :alert => "Failed!"
+        redirect_to 'blu', alert: 'Failed!'
       end
     end
   end
@@ -317,7 +316,7 @@ class SorceryController < ActionController::Base
   def test_create_from_provider_with_block
     provider = params[:provider]
     login_from(provider)
-    @user = create_from(provider) do |user|
+    @user = create_from(provider) do |_user|
       # check uniqueness of email
       # User.where(email: user.email).empty?
       false
@@ -328,5 +327,4 @@ class SorceryController < ActionController::Base
       redirect_to 'blu', alert: 'Failed!'
     end
   end
-
 end

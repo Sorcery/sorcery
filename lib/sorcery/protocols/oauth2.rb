@@ -3,7 +3,6 @@ require 'oauth2'
 module Sorcery
   module Protocols
     module Oauth2
-
       def oauth_version
         '2.0'
       end
@@ -41,7 +40,6 @@ module Sorcery
           defaults.merge!(options)
         )
       end
-
     end
   end
 end

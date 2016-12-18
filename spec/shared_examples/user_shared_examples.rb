@@ -1,10 +1,8 @@
-shared_examples_for "rails_3_core_model" do
-
+shared_examples_for 'rails_3_core_model' do
   let(:user) { create_new_user }
   let(:crypted_password) { user.send User.sorcery_config.crypted_password_attribute_name }
 
-  describe "loaded plugin configuration" do
-
+  describe 'loaded plugin configuration' do
     after(:each) { User.sorcery_config.reset! }
 
     it "enables configuration option 'username_attribute_names'" do
@@ -57,7 +55,7 @@ shared_examples_for "rails_3_core_model" do
     end
 
     it "enables configuration option 'salt_join_token'" do
-      salt_join_token = "--%%*&-"
+      salt_join_token = '--%%*&-'
       sorcery_model_property_set(:salt_join_token, salt_join_token)
 
       expect(User.sorcery_config.salt_join_token).to eq salt_join_token
@@ -80,118 +78,116 @@ shared_examples_for "rails_3_core_model" do
     end
   end
 
-  describe "when activated with sorcery" do
+  describe 'when activated with sorcery' do
     before(:all) { sorcery_reload! }
     before(:each) { User.sorcery_adapter.delete_all }
 
-    it "does not add authenticate method to base class", active_record: true do
+    it 'does not add authenticate method to base class', active_record: true do
       expect(ActiveRecord::Base).not_to respond_to(:authenticate) if defined?(ActiveRecord)
     end
 
-    it "responds to class method authenticate" do
+    it 'responds to class method authenticate' do
       expect(User).to respond_to :authenticate
     end
 
-    describe "#authenticate" do
-      it "returns user if credentials are good" do
-        expect(User.authenticate user.email, 'secret').to eq user
+    describe '#authenticate' do
+      it 'returns user if credentials are good' do
+        expect(User.authenticate(user.email, 'secret')).to eq user
       end
 
-      it "returns nil if credentials are bad" do
-        expect(User.authenticate user.email, 'wrong!').to be nil
+      it 'returns nil if credentials are bad' do
+        expect(User.authenticate(user.email, 'wrong!')).to be nil
       end
 
-      context "downcasing username" do
+      context 'downcasing username' do
         after do
           sorcery_reload!
         end
 
-        context "when downcasing set to false" do
+        context 'when downcasing set to false' do
           before do
             sorcery_model_property_set(:downcase_username_before_authenticating, false)
           end
 
-          it "does not find user with wrongly capitalized username" do
+          it 'does not find user with wrongly capitalized username' do
             expect(User.authenticate(user.email.capitalize, 'secret')).to be_nil
           end
 
-          it "finds user with correctly capitalized username" do
+          it 'finds user with correctly capitalized username' do
             expect(User.authenticate(user.email, 'secret')).to eq user
           end
-
         end
 
-        context "when downcasing set to true" do
+        context 'when downcasing set to true' do
           before do
             sorcery_model_property_set(:downcase_username_before_authenticating, true)
           end
 
-          it "does not find user with wrongly capitalized username" do
+          it 'does not find user with wrongly capitalized username' do
             expect(User.authenticate(user.email.capitalize, 'secret')).to eq user
           end
 
-          it "finds user with correctly capitalized username" do
+          it 'finds user with correctly capitalized username' do
             expect(User.authenticate(user.email, 'secret')).to eq user
           end
-
         end
       end
 
-      context "and model implements active_for_authentication?" do
-
-        it "authenticates returns user if active_for_authentication? returns true" do
+      context 'and model implements active_for_authentication?' do
+        it 'authenticates returns user if active_for_authentication? returns true' do
           allow_any_instance_of(User).to receive(:active_for_authentication?) { true }
 
-          expect(User.authenticate user.email, 'secret').to eq user
+          expect(User.authenticate(user.email, 'secret')).to eq user
         end
 
-        it "authenticate returns nil if active_for_authentication? returns false" do
+        it 'authenticate returns nil if active_for_authentication? returns false' do
           allow_any_instance_of(User).to receive(:active_for_authentication?) { false }
 
-          expect(User.authenticate user.email, 'secret').to be_nil
+          expect(User.authenticate(user.email, 'secret')).to be_nil
         end
       end
     end
 
     specify { expect(User).to respond_to(:encrypt) }
 
-    it "subclass inherits config if defined so" do
-      sorcery_reload!([],{:subclasses_inherit_config => true})
+    it 'subclass inherits config if defined so' do
+      sorcery_reload!([], subclasses_inherit_config: true)
       class Admin < User; end
 
       expect(Admin.sorcery_config).not_to be_nil
       expect(Admin.sorcery_config).to eq User.sorcery_config
     end
 
-    it "subclass does not inherit config if not defined so" do
-      sorcery_reload!([],{:subclasses_inherit_config => false})
+    it 'subclass does not inherit config if not defined so' do
+      sorcery_reload!([], subclasses_inherit_config: false)
       class Admin2 < User; end
 
       expect(Admin2.sorcery_config).to be_nil
     end
   end
 
-
-  describe "registration" do
-
+  describe 'registration' do
     before(:all) { sorcery_reload! }
     before(:each) { User.sorcery_adapter.delete_all }
 
-    it "by default, encryption_provider is not nil" do
+    it 'by default, encryption_provider is not nil' do
       expect(User.sorcery_config.encryption_provider).not_to be_nil
     end
 
-    it "encrypts password when a new user is saved" do
-      expect(User.sorcery_config.encryption_provider.matches? crypted_password, 'secret', user.salt).to be true
+    it 'encrypts password when a new user is saved' do
+      expect(
+        User.sorcery_config.encryption_provider.matches?(crypted_password, 'secret', user.salt)
+      ).to be true
     end
 
-    it "clears the virtual password field if the encryption process worked" do
+    it 'clears the virtual password field if the encryption process worked' do
       expect(user.password).to be_nil
     end
 
-    it "does not clear the virtual password field if save failed due to validity" do
+    it 'does not clear the virtual password field if save failed due to validity' do
       User.class_eval do
-        validates_format_of :email, :with => /\A(.)+@(.)+\Z/, :if => Proc.new {|r| r.email}, :message => "is invalid"
+        validates_format_of :email, with: /\A(.)+@(.)+\Z/,
+                                    if: proc { |r| r.email }, message: 'is invalid'
       end
 
       user.password = 'blupush'
@@ -201,7 +197,7 @@ shared_examples_for "rails_3_core_model" do
       expect(user.password).not_to be_nil
     end
 
-    it "does not clear the virtual password field if save failed due to exception" do
+    it 'does not clear the virtual password field if save failed due to exception' do
       user.password = '4blupush'
       user.username = nil
 
@@ -215,21 +211,25 @@ shared_examples_for "rails_3_core_model" do
       expect(user.password).not_to be_nil
     end
 
-    it "does not encrypt the password twice when a user is updated" do
-      user.email = "blup@bla.com"
+    it 'does not encrypt the password twice when a user is updated' do
+      user.email = 'blup@bla.com'
       user.save
 
-      expect(User.sorcery_config.encryption_provider.matches? crypted_password, 'secret', user.salt).to be true
+      expect(
+        User.sorcery_config.encryption_provider.matches?(crypted_password, 'secret', user.salt)
+      ).to be true
     end
 
-    it "replaces the crypted_password in case a new password is set" do
+    it 'replaces the crypted_password in case a new password is set' do
       user.password = 'new_secret'
       user.save
 
-      expect(User.sorcery_config.encryption_provider.matches? crypted_password, 'secret', user.salt).to be false
+      expect(
+        User.sorcery_config.encryption_provider.matches?(crypted_password, 'secret', user.salt)
+      ).to be false
     end
 
-    describe "when user has password_confirmation_defined" do
+    describe 'when user has password_confirmation_defined' do
       before(:all) do
         update_model { attr_accessor :password_confirmation }
       end
@@ -239,17 +239,25 @@ shared_examples_for "rails_3_core_model" do
         User.send(:remove_method, :password_confirmation=)
       end
 
-      it "clears the virtual password field if the encryption process worked" do
-        user = create_new_user(username: "u", password: "secret", password_confirmation: "secret", email: "email@example.com")
+      it 'clears the virtual password field if the encryption process worked' do
+        user = create_new_user(
+          username: 'u',
+          password: 'secret', password_confirmation: 'secret',
+          email: 'email@example.com'
+        )
 
         expect(user.password_confirmation).to be_nil
       end
 
-      it "does not clear the virtual password field if save failed due to validity" do
+      it 'does not clear the virtual password field if save failed due to validity' do
         User.class_eval do
-          validates_format_of :email, :with => /\A(.)+@(.)+\Z/
+          validates_format_of :email, with: /\A(.)+@(.)+\Z/
         end
-        user = build_new_user(username: "u", password: "secret", password_confirmation: "secret", email: "asd")
+        user = build_new_user(
+          username: 'u',
+          password: 'secret', password_confirmation: 'secret',
+          email: 'asd'
+        )
         user.save
 
         expect(user.password_confirmation).not_to be_nil
@@ -257,22 +265,23 @@ shared_examples_for "rails_3_core_model" do
     end
   end
 
-  describe "password validation" do
-
-    let(:user_with_pass) { create_new_user({:username => 'foo_bar', :email => "foo@bar.com", :password => 'foobar'})}
+  describe 'password validation' do
+    let(:user_with_pass) do
+      create_new_user(username: 'foo_bar', email: 'foo@bar.com', password: 'foobar')
+    end
 
     specify { expect(user_with_pass).to respond_to :valid_password? }
 
-    it "returns true if password is correct" do
-      expect(user_with_pass.valid_password?("foobar")).to be true
+    it 'returns true if password is correct' do
+      expect(user_with_pass.valid_password?('foobar')).to be true
     end
 
-    it "returns false if password is incorrect" do
-      expect(user_with_pass.valid_password?("foobug")).to be false
+    it 'returns false if password is incorrect' do
+      expect(user_with_pass.valid_password?('foobug')).to be false
     end
   end
 
-  describe "generic send email" do
+  describe 'generic send email' do
     before(:all) do
       ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
       User.reset_column_information
@@ -287,37 +296,58 @@ shared_examples_for "rails_3_core_model" do
       allow(::SorceryMailer).to receive(:activation_success_email).and_return(@mail)
     end
 
-    it "use deliver_later" do
-      sorcery_reload!([:user_activation, :user_activation_mailer, :activation_needed_email_method_name, :email_delivery_method],
-      user_activation_mailer: SorceryMailer ,activation_needed_email_method_name: nil, email_delivery_method: :deliver_later)
+    it 'use deliver_later' do
+      sorcery_reload!(
+        [
+          :user_activation, :user_activation_mailer,
+          :activation_needed_email_method_name, :email_delivery_method
+        ],
+        user_activation_mailer: SorceryMailer,
+        activation_needed_email_method_name: nil,
+        email_delivery_method: :deliver_later
+      )
 
       expect(@mail).to receive(:deliver_later).once
       user.activate!
     end
 
     describe 'email_delivery_method is default' do
-      it "use deliver_now if rails version 4.2+" do
+      it 'use deliver_now if rails version 4.2+' do
         allow(Rails).to receive(:version).and_return('4.2.0')
-        sorcery_reload!([:user_activation, :user_activation_mailer, :activation_needed_email_method_name],
-        user_activation_mailer: SorceryMailer ,activation_needed_email_method_name: nil)
+        sorcery_reload!(
+          [
+            :user_activation, :user_activation_mailer,
+            :activation_needed_email_method_name
+          ],
+          user_activation_mailer: SorceryMailer,
+          activation_needed_email_method_name: nil
+        )
+
         expect(@mail).to receive(:deliver_now).once
         user.activate!
       end
 
-      it "use deliver if rails version < 4.2" do
+      it 'use deliver if rails version < 4.2' do
         allow(Rails).to receive(:version).and_return('4.1.0')
-        sorcery_reload!([:user_activation, :user_activation_mailer, :activation_needed_email_method_name],
-        user_activation_mailer: SorceryMailer ,activation_needed_email_method_name: nil)
+        sorcery_reload!(
+          [
+            :user_activation, :user_activation_mailer,
+            :activation_needed_email_method_name
+          ],
+          user_activation_mailer: SorceryMailer,
+          activation_needed_email_method_name: nil
+        )
+
         expect(@mail).to receive(:deliver).once
         user.activate!
       end
     end
   end
 
-  describe "special encryption cases" do
+  describe 'special encryption cases' do
     before(:all) do
-      sorcery_reload!()
-      @text = "Some Text!"
+      sorcery_reload!
+      @text = 'Some Text!'
     end
 
     before(:each) do
@@ -328,20 +358,20 @@ shared_examples_for "rails_3_core_model" do
       User.sorcery_config.reset!
     end
 
-    it "works with no password encryption" do
+    it 'works with no password encryption' do
       sorcery_model_property_set(:encryption_algorithm, :none)
       username = user.send(User.sorcery_config.username_attribute_names.first)
 
-      expect(User.authenticate username, 'secret').to be_truthy
+      expect(User.authenticate(username, 'secret')).to be_truthy
     end
 
-    it "works with custom password encryption" do
+    it 'works with custom password encryption' do
       class MyCrypto
         def self.encrypt(*tokens)
-          tokens.flatten.join('').gsub(/e/,'A')
+          tokens.flatten.join('').tr('e', 'A')
         end
 
-        def self.matches?(crypted,*tokens)
+        def self.matches?(crypted, *tokens)
           crypted == encrypt(*tokens)
         end
       end
@@ -350,87 +380,87 @@ shared_examples_for "rails_3_core_model" do
 
       username = user.send(User.sorcery_config.username_attribute_names.first)
 
-      expect(User.authenticate username, 'secret').to be_truthy
+      expect(User.authenticate(username, 'secret')).to be_truthy
     end
 
-    it "if encryption algo is aes256, it sets key to crypto provider" do
+    it 'if encryption algo is aes256, it sets key to crypto provider' do
       sorcery_model_property_set(:encryption_algorithm, :aes256)
       sorcery_model_property_set(:encryption_key, nil)
 
       expect { User.encrypt @text }.to raise_error(ArgumentError)
 
-      sorcery_model_property_set(:encryption_key, "asd234dfs423fddsmndsflktsdf32343")
+      sorcery_model_property_set(:encryption_key, 'asd234dfs423fddsmndsflktsdf32343')
 
       expect { User.encrypt @text }.not_to raise_error
     end
 
-    it "if encryption algo is aes256, it sets key to crypto provider, even if attributes are set in reverse" do
+    it 'if encryption algo is aes256, it sets key to crypto provider, even if attributes are set in reverse' do
       sorcery_model_property_set(:encryption_key, nil)
       sorcery_model_property_set(:encryption_algorithm, :none)
-      sorcery_model_property_set(:encryption_key, "asd234dfs423fddsmndsflktsdf32343")
+      sorcery_model_property_set(:encryption_key, 'asd234dfs423fddsmndsflktsdf32343')
       sorcery_model_property_set(:encryption_algorithm, :aes256)
 
       expect { User.encrypt @text }.not_to raise_error
     end
 
-    it "if encryption algo is md5 it works" do
+    it 'if encryption algo is md5 it works' do
       sorcery_model_property_set(:encryption_algorithm, :md5)
 
-      expect(User.encrypt @text).to eq Sorcery::CryptoProviders::MD5.encrypt(@text)
+      expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::MD5.encrypt(@text)
     end
 
-    it "if encryption algo is sha1 it works" do
+    it 'if encryption algo is sha1 it works' do
       sorcery_model_property_set(:encryption_algorithm, :sha1)
 
-      expect(User.encrypt @text).to eq Sorcery::CryptoProviders::SHA1.encrypt(@text)
+      expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA1.encrypt(@text)
     end
 
-    it "if encryption algo is sha256 it works" do
+    it 'if encryption algo is sha256 it works' do
       sorcery_model_property_set(:encryption_algorithm, :sha256)
 
-      expect(User.encrypt @text).to eq Sorcery::CryptoProviders::SHA256.encrypt(@text)
+      expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA256.encrypt(@text)
     end
 
-    it "if encryption algo is sha512 it works" do
+    it 'if encryption algo is sha512 it works' do
       sorcery_model_property_set(:encryption_algorithm, :sha512)
 
-      expect(User.encrypt @text).to eq Sorcery::CryptoProviders::SHA512.encrypt(@text)
+      expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA512.encrypt(@text)
     end
 
-    it "salt is random for each user and saved in db" do
+    it 'salt is random for each user and saved in db' do
       sorcery_model_property_set(:salt_attribute_name, :salt)
 
       expect(user.salt).not_to be_nil
     end
 
-    it "if salt is set uses it to encrypt" do
+    it 'if salt is set uses it to encrypt' do
       sorcery_model_property_set(:salt_attribute_name, :salt)
       sorcery_model_property_set(:encryption_algorithm, :sha512)
 
       expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::SHA512.encrypt('secret')
-      expect(user.crypted_password).to eq Sorcery::CryptoProviders::SHA512.encrypt('secret',user.salt)
+      expect(user.crypted_password).to eq Sorcery::CryptoProviders::SHA512.encrypt('secret', user.salt)
     end
 
-    it "if salt_join_token is set uses it to encrypt" do
+    it 'if salt_join_token is set uses it to encrypt' do
       sorcery_model_property_set(:salt_attribute_name, :salt)
-      sorcery_model_property_set(:salt_join_token, "-@=>")
+      sorcery_model_property_set(:salt_join_token, '-@=>')
       sorcery_model_property_set(:encryption_algorithm, :sha512)
 
       expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::SHA512.encrypt('secret')
 
-      Sorcery::CryptoProviders::SHA512.join_token = ""
+      Sorcery::CryptoProviders::SHA512.join_token = ''
 
-      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::SHA512.encrypt('secret',user.salt)
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::SHA512.encrypt('secret', user.salt)
 
       Sorcery::CryptoProviders::SHA512.join_token = User.sorcery_config.salt_join_token
 
-      expect(user.crypted_password).to eq Sorcery::CryptoProviders::SHA512.encrypt('secret',user.salt)
+      expect(user.crypted_password).to eq Sorcery::CryptoProviders::SHA512.encrypt('secret', user.salt)
     end
   end
 
-  describe "ORM adapter" do
+  describe 'ORM adapter' do
     before(:all) do
-      sorcery_reload!()
+      sorcery_reload!
       User.sorcery_adapter.delete_all
     end
 
@@ -441,26 +471,25 @@ shared_examples_for "rails_3_core_model" do
       User.sorcery_config.reset!
     end
 
-
-    it "find_by_username works as expected" do
+    it 'find_by_username works as expected' do
       sorcery_model_property_set(:username_attribute_names, [:username])
 
-      expect(User.sorcery_adapter.find_by_username "gizmo").to eq user
+      expect(User.sorcery_adapter.find_by_username('gizmo')).to eq user
     end
 
-    it "find_by_username works as expected with multiple username attributes" do
+    it 'find_by_username works as expected with multiple username attributes' do
       sorcery_model_property_set(:username_attribute_names, [:username, :email])
 
-      expect(User.sorcery_adapter.find_by_username "gizmo").to eq user
+      expect(User.sorcery_adapter.find_by_username('gizmo')).to eq user
     end
 
-    it "find_by_email works as expected" do
-      expect(User.sorcery_adapter.find_by_email "bla@bla.com").to eq user
+    it 'find_by_email works as expected' do
+      expect(User.sorcery_adapter.find_by_email('bla@bla.com')).to eq user
     end
   end
 end
 
-shared_examples_for "external_user" do
+shared_examples_for 'external_user' do
   let(:user) { create_new_user }
   let(:external_user) { create_new_external_user :twitter }
 
@@ -472,16 +501,15 @@ shared_examples_for "external_user" do
     expect(user).to respond_to(:external?)
   end
 
-  it "external? is false for regular users" do
+  it 'external? is false for regular users' do
     expect(user.external?).to be false
   end
 
-  it "external? is true for external users" do
+  it 'external? is true for external users' do
     expect(external_user.external?).to be true
   end
 
-  describe ".create_from_provider" do
-
+  describe '.create_from_provider' do
     before(:all) do
       if SORCERY_ORM == :active_record
         ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
@@ -500,24 +528,26 @@ shared_examples_for "external_user" do
     it 'supports nested attributes' do
       sorcery_model_property_set(:authentications_class, Authentication)
 
-      expect { User.create_from_provider('facebook', '123', {username: 'Noam Ben Ari'}) }.to change { User.count }.by(1)
+      expect do
+        User.create_from_provider('facebook', '123', username: 'Noam Ben Ari')
+      end.to change { User.count }.by(1)
+
       expect(User.first.username).to eq 'Noam Ben Ari'
     end
 
     context 'with block' do
       it 'create user when block return true' do
-        expect {
-          User.create_from_provider('facebook', '123', {username: 'Noam Ben Ari'}) { true }
-        }.to change { User.count }.by(1)
+        expect do
+          User.create_from_provider('facebook', '123', username: 'Noam Ben Ari') { true }
+        end.to change { User.count }.by(1)
       end
 
       it 'does not create user when block return false' do
-        expect {
-          User.create_from_provider('facebook', '123', {username: 'Noam Ben Ari'}) { false }
-        }.not_to change { User.count }
+        expect do
+          User.create_from_provider('facebook', '123', username: 'Noam Ben Ari') { false }
+        end.not_to change { User.count }
       end
     end
-
   end
 
   describe 'activation' do
@@ -527,7 +557,7 @@ shared_examples_for "external_user" do
         ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
       end
 
-      sorcery_reload!([:user_activation,:external], :user_activation_mailer => ::SorceryMailer)
+      sorcery_reload!([:user_activation, :external], user_activation_mailer: ::SorceryMailer)
     end
 
     after(:all) do
@@ -542,15 +572,14 @@ shared_examples_for "external_user" do
     end
 
     [:facebook, :github, :google, :liveid, :slack].each do |provider|
-
-      it "does not send activation email to external users" do
+      it 'does not send activation email to external users' do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user(provider)
 
         expect(ActionMailer::Base.deliveries.size).to eq old_size
       end
 
-      it "does not send external users an activation success email" do
+      it 'does not send external users an activation success email' do
         sorcery_model_property_set(:activation_success_email_method_name, nil)
         create_new_external_user(provider)
         old_size = ActionMailer::Base.deliveries.size
@@ -559,6 +588,5 @@ shared_examples_for "external_user" do
         expect(ActionMailer::Base.deliveries.size).to eq old_size
       end
     end
-
   end
 end

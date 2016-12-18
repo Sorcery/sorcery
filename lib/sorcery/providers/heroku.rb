@@ -1,6 +1,5 @@
 module Sorcery
   module Providers
-
     # This class adds support for OAuth with heroku.com.
 
     # config.heroku.key = <key>
@@ -13,7 +12,6 @@ module Sorcery
     # The full path must be set for OAuth Callback URL when configuring the API Client Information on Heroku.
 
     class Heroku < Base
-
       include Protocols::Oauth2
 
       attr_accessor :auth_path, :scope, :token_url, :user_info_path
@@ -40,14 +38,14 @@ module Sorcery
         end
       end
 
-      def login_url(params, session)
-        authorize_url({ authorize_url: auth_path })
+      def login_url(_params, _session)
+        authorize_url(authorize_url: auth_path)
       end
 
       # tries to login the user from access token
-      def process_callback(params, session)
-        raise "Invalid state. Potential Cross Site Forgery" if params[:state] != state
-        args = { }.tap do |a|
+      def process_callback(params, _session)
+        raise 'Invalid state. Potential Cross Site Forgery' if params[:state] != state
+        args = {}.tap do |a|
           a[:code] = params[:code] if params[:code]
         end
         get_access_token(args, token_url: token_url, token_method: :post)

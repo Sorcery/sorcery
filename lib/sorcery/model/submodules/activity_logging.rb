@@ -12,12 +12,16 @@ module Sorcery
           base.send(:include, InstanceMethods)
 
           base.sorcery_config.class_eval do
-            attr_accessor :last_login_at_attribute_name,                  # last login attribute name.
-                          :last_logout_at_attribute_name,                 # last logout attribute name.
-                          :last_activity_at_attribute_name,               # last activity attribute name.
-                          :last_login_from_ip_address_name,               # last activity login source
-                          :activity_timeout                               # how long since last activity is
-                                                                          # the user defined offline
+            # last login attribute name.
+            attr_accessor :last_login_at_attribute_name
+            # last logout attribute name.
+            attr_accessor :last_logout_at_attribute_name
+            # last activity attribute name.
+            attr_accessor :last_activity_at_attribute_name
+            # last activity login source
+            attr_accessor :last_login_from_ip_address_name
+            # how long since last activity is the user defined offline
+            attr_accessor :activity_timeout
           end
 
           base.sorcery_config.instance_eval do
@@ -51,28 +55,27 @@ module Sorcery
 
           # online method shows if user is active (logout action makes user inactive too)
           def online?
-            return false if self.send(sorcery_config.last_activity_at_attribute_name).nil?
+            return false if send(sorcery_config.last_activity_at_attribute_name).nil?
 
-            logged_in? and self.send(sorcery_config.last_activity_at_attribute_name) > sorcery_config.activity_timeout.seconds.ago
+            logged_in? && send(sorcery_config.last_activity_at_attribute_name) > sorcery_config.activity_timeout.seconds.ago
           end
 
           #  shows if user is logged in, but it not show if user is online - see online?
           def logged_in?
-            return false if self.send(sorcery_config.last_login_at_attribute_name).nil?
-            return true if self.send(sorcery_config.last_login_at_attribute_name).present? and self.send(sorcery_config.last_logout_at_attribute_name).nil?
+            return false if send(sorcery_config.last_login_at_attribute_name).nil?
+            return true if send(sorcery_config.last_login_at_attribute_name).present? && send(sorcery_config.last_logout_at_attribute_name).nil?
 
-            self.send(sorcery_config.last_login_at_attribute_name) > self.send(sorcery_config.last_logout_at_attribute_name)
+            send(sorcery_config.last_login_at_attribute_name) > send(sorcery_config.last_logout_at_attribute_name)
           end
 
           def logged_out?
-            not logged_in?
+            !logged_in?
           end
-
         end
 
         module ClassMethods
-
           protected
+
           def define_activity_logging_fields
             sorcery_adapter.define_field sorcery_config.last_login_at_attribute_name,    Time
             sorcery_adapter.define_field sorcery_config.last_logout_at_attribute_name,   Time

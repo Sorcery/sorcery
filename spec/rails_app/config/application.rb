@@ -1,8 +1,8 @@
 require File.expand_path('../boot', __FILE__)
 
-require "action_controller/railtie"
-require "action_mailer/railtie"
-require "rails/test_unit/railtie"
+require 'action_controller/railtie'
+require 'action_mailer/railtie'
+require 'rails/test_unit/railtie'
 
 Bundler.require :default, SORCERY_ORM
 
@@ -11,12 +11,12 @@ begin
 rescue LoadError
 end
 
-require "sorcery"
+require 'sorcery'
 
 module AppRoot
   class Application < Rails::Application
-    config.autoload_paths.reject!{ |p| p =~ /\/app\/(\w+)$/ && !%w(controllers helpers mailers views).include?($1) }
-    config.autoload_paths += [ "#{config.root}/app/#{SORCERY_ORM}" ]
+    config.autoload_paths.reject! { |p| p =~ /\/app\/(\w+)$/ && !%w(controllers helpers mailers views).include?(Regexp.last_match(1)) }
+    config.autoload_paths += ["#{config.root}/app/#{SORCERY_ORM}"]
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
@@ -44,7 +44,7 @@ module AppRoot
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
 
     # Configure the default encoding used in templates for Ruby 1.9.
-    config.encoding = "utf-8"
+    config.encoding = 'utf-8'
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]

@@ -7,7 +7,6 @@ module Sorcery
     #   ...
     #
     class Liveid < Base
-
       include Protocols::Oauth2
 
       attr_accessor :auth_url, :token_path, :user_info_url, :scope
@@ -34,20 +33,18 @@ module Sorcery
 
       # calculates and returns the url to which the user should be redirected,
       # to get authenticated at the external provider's site.
-      def login_url(params, session)
-        self.authorize_url({ authorize_url: auth_url })
+      def login_url(_params, _session)
+        authorize_url(authorize_url: auth_url)
       end
 
       # tries to login the user from access token
-      def process_callback(params, session)
+      def process_callback(params, _session)
         args = {}.tap do |a|
           a[:code] = params[:code] if params[:code]
         end
 
-        get_access_token(args, access_token_path: token_path,
-          access_token_method: :post)
+        get_access_token(args, access_token_path: token_path, access_token_method: :post)
       end
-
     end
   end
 end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 # require 'shared_examples/controller_oauth2_shared_examples'
 
-describe SorceryController, :active_record => true, :type => :controller do
+describe SorceryController, active_record: true, type: :controller do
   before(:all) do
     if SORCERY_ORM == :active_record
       ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
@@ -26,45 +26,44 @@ describe SorceryController, :active_record => true, :type => :controller do
 
     it 'creates a new user' do
       sorcery_model_property_set(:authentications_class, Authentication)
-      sorcery_controller_external_property_set(:facebook, :user_info_mapping, { username: 'name' })
+      sorcery_controller_external_property_set(:facebook, :user_info_mapping, username: 'name')
 
-      expect(User).to receive(:create_from_provider).with('facebook', '123', {username: 'Noam Ben Ari'})
-      get :test_create_from_provider, :params => { provider: 'facebook' }
+      expect(User).to receive(:create_from_provider).with('facebook', '123', username: 'Noam Ben Ari')
+      get :test_create_from_provider, params: { provider: 'facebook' }
     end
 
     it 'supports nested attributes' do
       sorcery_model_property_set(:authentications_class, Authentication)
-      sorcery_controller_external_property_set(:facebook, :user_info_mapping, { username: 'hometown/name' })
-      expect(User).to receive(:create_from_provider).with('facebook', '123', {username: 'Haifa, Israel'})
+      sorcery_controller_external_property_set(:facebook, :user_info_mapping, username: 'hometown/name')
+      expect(User).to receive(:create_from_provider).with('facebook', '123', username: 'Haifa, Israel')
 
-      get :test_create_from_provider, :params => { provider: 'facebook' }
+      get :test_create_from_provider, params: { provider: 'facebook' }
     end
 
     it 'does not crash on missing nested attributes' do
       sorcery_model_property_set(:authentications_class, Authentication)
-      sorcery_controller_external_property_set(:facebook, :user_info_mapping, { username: 'name', created_at: 'does/not/exist' })
+      sorcery_controller_external_property_set(:facebook, :user_info_mapping, username: 'name', created_at: 'does/not/exist')
 
-      expect(User).to receive(:create_from_provider).with('facebook', '123', {username: 'Noam Ben Ari'})
+      expect(User).to receive(:create_from_provider).with('facebook', '123', username: 'Noam Ben Ari')
 
-      get :test_create_from_provider, :params => { provider: 'facebook' }
+      get :test_create_from_provider, params: { provider: 'facebook' }
     end
 
     describe 'with a block' do
       it 'does not create user' do
         sorcery_model_property_set(:authentications_class, Authentication)
-        sorcery_controller_external_property_set(:facebook, :user_info_mapping, { username: 'name' })
+        sorcery_controller_external_property_set(:facebook, :user_info_mapping, username: 'name')
 
         u = double('user')
-        expect(User).to receive(:create_from_provider).with('facebook', '123', {username: 'Noam Ben Ari'}).and_return(u).and_yield(u)
+        expect(User).to receive(:create_from_provider).with('facebook', '123', username: 'Noam Ben Ari').and_return(u).and_yield(u)
         # test_create_from_provider_with_block in controller will check for uniqueness of username
-        get :test_create_from_provider_with_block, :params => { provider: 'facebook' }
+        get :test_create_from_provider_with_block, params: { provider: 'facebook' }
       end
     end
   end
 
   # ----------------- OAuth -----------------------
-  context "with OAuth features" do
-
+  context 'with OAuth features' do
     let(:user) { double('user', id: 42) }
 
     before(:each) do
@@ -76,30 +75,30 @@ describe SorceryController, :active_record => true, :type => :controller do
       Authentication.sorcery_adapter.delete_all
     end
 
-    context "when callback_url begin with /" do
+    context 'when callback_url begin with /' do
       before do
-        sorcery_controller_external_property_set(:facebook, :callback_url, "/oauth/twitter/callback")
+        sorcery_controller_external_property_set(:facebook, :callback_url, '/oauth/twitter/callback')
       end
-      it "login_at redirects correctly" do
+      it 'login_at redirects correctly' do
         get :login_at_test_facebook
         expect(response).to be_a_redirect
         expect(response).to redirect_to("https://www.facebook.com/dialog/oauth?client_id=#{::Sorcery::Controller::Config.facebook.key}&display=page&redirect_uri=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&response_type=code&scope=email&state")
       end
 
-      it "logins with state" do
+      it 'logins with state' do
         get :login_at_test_with_state
         expect(response).to be_a_redirect
         expect(response).to redirect_to("https://www.facebook.com/dialog/oauth?client_id=#{::Sorcery::Controller::Config.facebook.key}&display=page&redirect_uri=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&response_type=code&scope=email&state=bla")
       end
 
-      it "logins with Graph API version" do
-        sorcery_controller_external_property_set(:facebook, :api_version, "v2.2")
+      it 'logins with Graph API version' do
+        sorcery_controller_external_property_set(:facebook, :api_version, 'v2.2')
         get :login_at_test_with_state
         expect(response).to be_a_redirect
         expect(response).to redirect_to("https://www.facebook.com/v2.2/dialog/oauth?client_id=#{::Sorcery::Controller::Config.facebook.key}&display=page&redirect_uri=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&response_type=code&scope=email&state=bla")
       end
 
-      it "logins without state after login with state" do
+      it 'logins without state after login with state' do
         get :login_at_test_with_state
         expect(response).to redirect_to("https://www.facebook.com/v2.2/dialog/oauth?client_id=#{::Sorcery::Controller::Config.facebook.key}&display=page&redirect_uri=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&response_type=code&scope=email&state=bla")
 
@@ -108,12 +107,12 @@ describe SorceryController, :active_record => true, :type => :controller do
       end
 
       after do
-        sorcery_controller_external_property_set(:facebook, :callback_url, "http://blabla.com")
+        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://blabla.com')
       end
     end
 
-    context "when callback_url begin with http://" do
-      it "login_at redirects correctly" do
+    context 'when callback_url begin with http://' do
+      it 'login_at redirects correctly' do
         create_new_user
         get :login_at_test_facebook
         expect(response).to be_a_redirect
@@ -129,7 +128,7 @@ describe SorceryController, :active_record => true, :type => :controller do
       expect(User).to receive(:load_from_provider).with(:facebook, '123').and_return(user)
       get :test_login_from_facebook
 
-      expect(flash[:notice]).to eq "Success!"
+      expect(flash[:notice]).to eq 'Success!'
     end
 
     it "'login_from' fails if user doesn't exist" do
@@ -137,30 +136,28 @@ describe SorceryController, :active_record => true, :type => :controller do
       expect(User).to receive(:load_from_provider).with(:facebook, '123').and_return(nil)
       get :test_login_from_facebook
 
-      expect(flash[:alert]).to eq "Failed!"
+      expect(flash[:alert]).to eq 'Failed!'
     end
 
-    it "on successful login_from the user is redirected to the url he originally wanted" do
+    it 'on successful login_from the user is redirected to the url he originally wanted' do
       # dirty hack for rails 4
       allow(subject).to receive(:register_last_activity_time_to_db)
 
       sorcery_model_property_set(:authentications_class, Authentication)
       expect(User).to receive(:load_from_provider).with(:facebook, '123').and_return(user)
-      get :test_return_to_with_external_facebook, :params => {}, session: { :return_to_url => "fuu" }
+      get :test_return_to_with_external_facebook, params: {}, session: { return_to_url: 'fuu' }
 
-      expect(response).to redirect_to("fuu")
-      expect(flash[:notice]).to eq "Success!"
+      expect(response).to redirect_to('fuu')
+      expect(flash[:notice]).to eq 'Success!'
     end
 
     [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack].each do |provider|
-
       describe "with #{provider}" do
-
-        it "login_at redirects correctly" do
+        it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
 
           expect(response).to be_a_redirect
-          expect(response).to redirect_to(provider_url provider)
+          expect(response).to redirect_to(provider_url(provider))
         end
 
         it "'login_from' logins if user exists" do
@@ -171,7 +168,7 @@ describe SorceryController, :active_record => true, :type => :controller do
           expect(User).to receive(:load_from_provider).with(provider, '123').and_return(user)
           get :"test_login_from_#{provider}"
 
-          expect(flash[:notice]).to eq "Success!"
+          expect(flash[:notice]).to eq 'Success!'
         end
 
         it "'login_from' fails if user doesn't exist" do
@@ -179,7 +176,7 @@ describe SorceryController, :active_record => true, :type => :controller do
           expect(User).to receive(:load_from_provider).with(provider, '123').and_return(nil)
           get :"test_login_from_#{provider}"
 
-          expect(flash[:alert]).to eq "Failed!"
+          expect(flash[:alert]).to eq 'Failed!'
         end
 
         it "on successful login_from the user is redirected to the url he originally wanted (#{provider})" do
@@ -188,52 +185,50 @@ describe SorceryController, :active_record => true, :type => :controller do
 
           sorcery_model_property_set(:authentications_class, Authentication)
           expect(User).to receive(:load_from_provider).with(provider, '123').and_return(user)
-          get :"test_return_to_with_external_#{provider}", :params => {}, session: { :return_to_url => "fuu" }
+          get :"test_return_to_with_external_#{provider}", params: {}, session: { return_to_url: 'fuu' }
 
-          expect(response).to redirect_to "fuu"
-          expect(flash[:notice]).to eq "Success!"
+          expect(response).to redirect_to 'fuu'
+          expect(flash[:notice]).to eq 'Success!'
         end
       end
     end
-
   end
 
-  describe "OAuth with User Activation features" do
+  describe 'OAuth with User Activation features' do
     before(:all) do
       if SORCERY_ORM == :active_record
         ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
       end
 
-      sorcery_reload!([:user_activation,:external], :user_activation_mailer => ::SorceryMailer)
+      sorcery_reload!([:user_activation, :external], user_activation_mailer: ::SorceryMailer)
       sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack])
 
-      sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:facebook, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:facebook, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:github, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:github, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:github, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:google, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:google, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:google, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:liveid, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:liveid, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:liveid, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:vk, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:vk, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:vk, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:salesforce, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:salesforce, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:salesforce, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:paypal, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:paypal, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:paypal, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:slack, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:slack, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:slack, :callback_url, "http://blabla.com")
+      # TODO: refactor
+      sorcery_controller_external_property_set(:facebook, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:facebook, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:facebook, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:github, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:github, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:github, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:google, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:google, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:google, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:liveid, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:liveid, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:liveid, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:vk, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:vk, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:vk, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:salesforce, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:salesforce, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:salesforce, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:paypal, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:paypal, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:paypal, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:slack, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:slack, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:slack, :callback_url, 'http://blabla.com')
     end
-
-
 
     after(:all) do
       if SORCERY_ORM == :active_record
@@ -246,14 +241,14 @@ describe SorceryController, :active_record => true, :type => :controller do
       User.sorcery_adapter.delete_all
     end
 
-    it "does not send activation email to external users" do
+    it 'does not send activation email to external users' do
       old_size = ActionMailer::Base.deliveries.size
       create_new_external_user(:facebook)
 
       expect(ActionMailer::Base.deliveries.size).to eq old_size
     end
 
-    it "does not send external users an activation success email" do
+    it 'does not send external users an activation success email' do
       sorcery_model_property_set(:activation_success_email_method_name, nil)
       create_new_external_user(:facebook)
       old_size = ActionMailer::Base.deliveries.size
@@ -278,8 +273,7 @@ describe SorceryController, :active_record => true, :type => :controller do
     end
   end
 
-  describe "OAuth with user activation features"  do
-
+  describe 'OAuth with user activation features' do
     let(:user) { double('user', id: 42) }
 
     before(:all) do
@@ -304,7 +298,7 @@ describe SorceryController, :active_record => true, :type => :controller do
           sorcery_model_property_set(:authentications_class, Authentication)
         end
 
-        it "registers login time" do
+        it 'registers login time' do
           now = Time.now.in_time_zone
           Timecop.freeze(now)
           expect(User).to receive(:load_from_provider).and_return(user)
@@ -313,20 +307,19 @@ describe SorceryController, :active_record => true, :type => :controller do
           Timecop.return
         end
 
-        it "does not register login time if configured so" do
+        it 'does not register login time if configured so' do
           sorcery_controller_property_set(:register_login_time, false)
           now = Time.now.in_time_zone
           Timecop.freeze(now)
           expect(User).to receive(:load_from_provider).and_return(user)
           expect(user).to receive(:set_last_login_at).never
           get "test_login_from_#{provider}".to_sym
-
         end
       end
     end
   end
 
-  describe "OAuth with session timeout features" do
+  describe 'OAuth with session timeout features' do
     before(:all) do
       sorcery_reload!([:session_timeout, :external])
     end
@@ -337,7 +330,7 @@ describe SorceryController, :active_record => true, :type => :controller do
       context "when #{provider}" do
         before(:each) do
           sorcery_model_property_set(:authentications_class, Authentication)
-          sorcery_controller_property_set(:session_timeout,0.5)
+          sorcery_controller_property_set(:session_timeout, 0.5)
           stub_all_oauth2_requests!
         end
 
@@ -345,19 +338,19 @@ describe SorceryController, :active_record => true, :type => :controller do
           Timecop.return
         end
 
-        it "does not reset session before session timeout" do
+        it 'does not reset session before session timeout' do
           expect(User).to receive(:load_from_provider).with(provider.to_sym, '123').and_return(user)
           get "test_login_from_#{provider}".to_sym
 
           expect(session[:user_id]).not_to be_nil
-          expect(flash[:notice]).to eq "Success!"
+          expect(flash[:notice]).to eq 'Success!'
         end
 
-        it "resets session after session timeout" do
+        it 'resets session after session timeout' do
           expect(User).to receive(:load_from_provider).with(provider.to_sym, '123').and_return(user)
           get "test_login_from_#{provider}".to_sym
-          expect(session[:user_id]).to eq "42"
-          Timecop.travel(Time.now.in_time_zone+0.6)
+          expect(session[:user_id]).to eq '42'
+          Timecop.travel(Time.now.in_time_zone + 0.6)
           get :test_should_be_logged_in
 
           expect(session[:user_id]).to be_nil
@@ -368,73 +361,74 @@ describe SorceryController, :active_record => true, :type => :controller do
   end
 
   def stub_all_oauth2_requests!
-    access_token    = double(OAuth2::AccessToken)
+    access_token = double(OAuth2::AccessToken)
     allow(access_token).to receive(:token_param=)
-    response        = double(OAuth2::Response)
-    allow(response).to receive(:body) { {
-      "id"=>"123",
-      "user_id"=>"123", # Needed for Salesforce
-      "name"=>"Noam Ben Ari",
-      "first_name"=>"Noam",
-      "last_name"=>"Ben Ari",
-      "link"=>"http://www.facebook.com/nbenari1",
-      "hometown"=>{"id"=>"110619208966868", "name"=>"Haifa, Israel"},
-      "location"=>{"id"=>"106906559341067", "name"=>"Pardes Hanah, Hefa, Israel"},
-      "bio"=>"I'm a new daddy, and enjoying it!",
-      "gender"=>"male",
-      "email"=>"nbenari@gmail.com",
-      "timezone"=>2,
-      "locale"=>"en_US",
-      "languages"=>[{"id"=>"108405449189952", "name"=>"Hebrew"}, {"id"=>"106059522759137", "name"=>"English"}, {"id"=>"112624162082677", "name"=>"Russian"}],
-      "verified"=>true,
-      "updated_time"=>"2011-02-16T20:59:38+0000",
-      # response for VK auth
-      "response"=>[
-          {
-            "uid"=>"123",
-            "first_name"=>"Noam",
-            "last_name"=>"Ben Ari"
-            }
-        ],
-      "user"=> {
-          "name"=>"Sonny Whether",
-          "id"=>"123",
-          "email"=>"bobby@example.com"
-      }
-      }.to_json }
+    response = double(OAuth2::Response)
+    allow(response).to receive(:body) {
+                         {
+                           'id' => '123',
+                           'user_id' => '123', # Needed for Salesforce
+                           'name' => 'Noam Ben Ari',
+                           'first_name' => 'Noam',
+                           'last_name' => 'Ben Ari',
+                           'link' => 'http://www.facebook.com/nbenari1',
+                           'hometown' => { 'id' => '110619208966868', 'name' => 'Haifa, Israel' },
+                           'location' => { 'id' => '106906559341067', 'name' => 'Pardes Hanah, Hefa, Israel' },
+                           'bio' => "I'm a new daddy, and enjoying it!",
+                           'gender' => 'male',
+                           'email' => 'nbenari@gmail.com',
+                           'timezone' => 2,
+                           'locale' => 'en_US',
+                           'languages' => [{ 'id' => '108405449189952', 'name' => 'Hebrew' }, { 'id' => '106059522759137', 'name' => 'English' }, { 'id' => '112624162082677', 'name' => 'Russian' }],
+                           'verified' => true,
+                           'updated_time' => '2011-02-16T20:59:38+0000',
+                           # response for VK auth
+                           'response' => [
+                             {
+                               'uid' => '123',
+                               'first_name' => 'Noam',
+                               'last_name' => 'Ben Ari'
+                             }
+                           ],
+                           'user' => {
+                             'name' => 'Sonny Whether',
+                             'id' => '123',
+                             'email' => 'bobby@example.com'
+                           }
+                         }.to_json }
     allow(access_token).to receive(:get) { response }
-    allow(access_token).to receive(:token) { "187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3" }
+    allow(access_token).to receive(:token) { '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3' }
     # access_token params for VK auth
-    allow(access_token).to receive(:params) { { "user_id"=>"100500", "email"=>"nbenari@gmail.com" } }
+    allow(access_token).to receive(:params) { { 'user_id' => '100500', 'email' => 'nbenari@gmail.com' } }
     allow_any_instance_of(OAuth2::Strategy::AuthCode).to receive(:get_token) { access_token }
   end
 
   def set_external_property
     sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack])
-    sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:facebook, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:facebook, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:github, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:github, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:github, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:google, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:google, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:google, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:liveid, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:liveid, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:liveid, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:vk, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:vk, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:vk, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:salesforce, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:salesforce, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:salesforce, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:paypal, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:paypal, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:paypal, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:slack, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:slack, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:slack, :callback_url, "http://blabla.com")
+    sorcery_controller_external_property_set(:facebook, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:facebook, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:facebook, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:github, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:github, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:github, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:google, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:google, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:google, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:liveid, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:liveid, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:liveid, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:vk, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:vk, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:vk, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:salesforce, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:salesforce, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:salesforce, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:paypal, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:paypal, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:paypal, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:slack, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:slack, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:slack, :callback_url, 'http://blabla.com')
   end
 
   def provider_url(provider)

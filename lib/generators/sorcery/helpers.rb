@@ -4,16 +4,16 @@ module Sorcery
       private
 
       def sorcery_config_path
-        "config/initializers/sorcery.rb"
+        'config/initializers/sorcery.rb'
       end
 
       # Either return the model passed in a classified form or return the default "User".
       def model_class_name
-        options[:model] ? options[:model].classify : "User"
+        options[:model] ? options[:model].classify : 'User'
       end
 
       def model_path
-        @model_path ||= File.join("app", "models", "#{file_path}.rb")
+        @model_path ||= File.join('app', 'models', "#{file_path}.rb")
       end
 
       def file_path
@@ -33,7 +33,7 @@ module Sorcery
           [namespace.to_s] + [model_class_name]
         else
           [model_class_name]
-        end.join("::")
+        end.join('::')
       end
     end
   end

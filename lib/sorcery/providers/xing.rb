@@ -7,19 +7,17 @@ module Sorcery
     #   ...
     #
     class Xing < Base
-
       include Protocols::Oauth
 
       attr_accessor :access_token_path, :authorize_path, :request_token_path,
                     :user_info_path
 
-
       def initialize
         @configuration = {
-            site: 'https://api.xing.com/v1',
-            authorize_path: '/authorize',
-            request_token_path: '/request_token',
-            access_token_path: '/access_token'
+          site: 'https://api.xing.com/v1',
+          authorize_path: '/authorize',
+          request_token_path: '/request_token',
+          access_token_path: '/access_token'
         }
         @user_info_path = '/users/me'
       end
@@ -40,11 +38,11 @@ module Sorcery
 
       # calculates and returns the url to which the user should be redirected,
       # to get authenticated at the external provider's site.
-      def login_url(params, session)
+      def login_url(_params, session)
         req_token = get_request_token
         session[:request_token]         = req_token.token
         session[:request_token_secret]  = req_token.secret
-        authorize_url({ request_token: req_token.token, request_token_secret: req_token.secret })
+        authorize_url(request_token: req_token.token, request_token_secret: req_token.secret)
       end
 
       # tries to login the user from access token
@@ -55,10 +53,9 @@ module Sorcery
           request_token_secret: session[:request_token_secret]
         }
 
-        args.merge!({ code: params[:code] }) if params[:code]
+        args[:code] = params[:code] if params[:code]
         get_access_token(args)
       end
-
     end
   end
 end

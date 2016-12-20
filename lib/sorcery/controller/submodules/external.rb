@@ -21,6 +21,7 @@ module Sorcery
           require 'sorcery/providers/salesforce'
           require 'sorcery/providers/paypal'
           require 'sorcery/providers/slack'
+          require 'sorcery/providers/wechat'
 
           Config.module_eval do
             class << self

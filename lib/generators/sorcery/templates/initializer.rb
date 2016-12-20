@@ -121,6 +121,10 @@ Rails.application.config.sorcery.configure do |config|
   # config.paypal.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=paypal"
   # config.paypal.user_info_mapping = {:email => "email"}
   #
+  # config.wechat.key = ""
+  # config.wechat.secret = ""
+  # config.wechat.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=wechat"
+  #
   # config.google.key = ""
   # config.google.secret = ""
   # config.google.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=google"

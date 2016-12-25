@@ -115,7 +115,7 @@ describe 'Crypto Providers wrappers' do
 
   describe Sorcery::CryptoProviders::AES256 do
     before(:all) do
-      aes = OpenSSL::Cipher::Cipher.new('AES-256-ECB')
+      aes = OpenSSL::Cipher.new('AES-256-ECB')
       aes.encrypt
       @key = 'asd234dfs423fddsmndsflktsdf32343'
       aes.key = @key
@@ -137,7 +137,7 @@ describe 'Crypto Providers wrappers' do
     end
 
     it 'can be decrypted' do
-      aes = OpenSSL::Cipher::Cipher.new('AES-256-ECB')
+      aes = OpenSSL::Cipher.new('AES-256-ECB')
       aes.decrypt
       aes.key = @key
       expect(aes.update(@digest.unpack('m').first) + aes.final).to eq 'Noam Ben-Ari'

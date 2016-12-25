@@ -43,7 +43,7 @@ module Sorcery
 
         def aes
           raise ArgumentError, "#{name} expects a 32 bytes long key. Please use Sorcery::Model::Config.encryption_key to set it." if @key.nil? || @key == ''
-          @aes ||= OpenSSL::Cipher::Cipher.new('AES-256-ECB')
+          @aes ||= OpenSSL::Cipher.new('AES-256-ECB')
         end
       end
     end

@@ -5,6 +5,7 @@ rvm:
   - 2.1.10
   - 2.2.6
   - 2.3.3
+  - 2.4.0
 
 env:
   global:
@@ -42,6 +43,15 @@ matrix:
 
     - rvm: 2.3.3
       gemfile: gemfiles/active_record-rails40.gemfile
+
+    - rvm: 2.4.0
+      gemfile: gemfiles/active_record-rails40.gemfile
+
+    - rvm: 2.4.0
+      gemfile: gemfiles/active_record-rails41.gemfile
+
+    - rvm: 2.4.0
+      gemfile: gemfiles/active_record-rails42.gemfile
 
     - rvm: jruby
       gemfile: Gemfile

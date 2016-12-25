@@ -24,9 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'oauth2', '>= 0.8.0'
   s.add_dependency 'bcrypt', '~> 3.1'
 
-  s.add_development_dependency 'json', '>= 1.7.7'
   s.add_development_dependency 'yard', '~> 0.6.0'
-
   s.add_development_dependency 'timecop'
   s.add_development_dependency 'simplecov', '>= 0.3.8'
   s.add_development_dependency 'rspec-rails', '~> 3.5.0'

@@ -10,6 +10,7 @@
   * Deprecated using `callback_filter` in favor of `callback_action`
   * Added null: false to migrations
 * Added support for Rails 5 by @kyuden
+* Added WeChat provider to external submodule.
 
 ## 0.9.1
 

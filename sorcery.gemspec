@@ -5,8 +5,8 @@ require 'sorcery/version'
 Gem::Specification.new do |s|
   s.name = 'sorcery'
   s.version = Sorcery::VERSION
-  s.authors = ['Noam Ben Ari', 'Kir Shatrov', 'Grzegorz Witek']
-  s.email = 'nbenari@gmail.com'
+  s.authors = ['Noam Ben Ari', 'Kir Shatrov', 'Grzegorz Witek', 'Chase Gilliam']
+  s.email = 'chase.gilliam@gmail.com'
   s.description = 'Provides common authentication needs such as signing in/out, activating by email and resetting password.'
   s.summary = 'Magical authentication for Rails 3 & 4 applications'
   s.homepage = 'https://github.com/Sorcery/sorcery'

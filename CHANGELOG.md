@@ -11,6 +11,7 @@
   * Added null: false to migrations
 * Added support for Rails 5 by @kyuden
 * Added WeChat provider to external submodule.
+* Added support for Ruby 2.4 by @kyuden
 
 ## 0.9.1
 

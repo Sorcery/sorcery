@@ -7,13 +7,13 @@
 * Adapters (Mongoid, MongoMapper, DataMapper) are now separated from the core Sorcery repo and moved under `sorcery-rails` organization. Special thanks to @juike!
 * `current_users` method was removed
 * Added `logged_in?` `logged_out?` `online?` to activity_logging instance methods
-* PayPal provider added to external submodule
+* Added support for PayPal OAuth (thanks to @rubenmoya)
 * Deprecated Rails 3
   * Deprecated using `callback_filter` in favor of `callback_action`
   * Added null: false to migrations
-* Added support for Rails 5 by @kyuden
-* Added WeChat provider to external submodule.
-* Added support for Ruby 2.4 by @kyuden
+* Added support for Rails 5 (thanks to @kyuden)
+* Added support for WeChat OAuth (thanks to @Darmody)
+* Added support for Ruby 2.4 (thanks to @kyuden)
 
 ## 0.9.1
 

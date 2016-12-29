@@ -58,22 +58,22 @@ module Sorcery
 
         module InstanceMethods
           # Called by the controller to increment the failed logins counter.
-          # Calls 'lock!' if login retries limit was reached.
+          # Calls 'login_lock!' if login retries limit was reached.
           def register_failed_login!
             config = sorcery_config
-            return unless unlocked?
+            return unless login_unlocked?
 
             sorcery_adapter.increment(config.failed_logins_count_attribute_name)
 
             if send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
-              lock!
+              login_lock!
             end
           end
 
           # /!\
           # Moved out of protected for use like activate! in controller
           # /!\
-          def unlock!
+          def login_unlock!
             config = sorcery_config
             attributes = { config.lock_expires_at_attribute_name => nil,
                            config.failed_logins_count_attribute_name => 0,
@@ -81,13 +81,13 @@ module Sorcery
             sorcery_adapter.update_attributes(attributes)
           end
 
-          def locked?
-            !unlocked?
+          def login_locked?
+            !login_unlocked?
           end
 
           protected
 
-          def lock!
+          def login_lock!
             config = sorcery_config
             attributes = { config.lock_expires_at_attribute_name => Time.now.in_time_zone + config.login_lock_time_period,
                            config.unlock_token_attribute_name => TemporaryToken.generate_random_token }
@@ -98,7 +98,7 @@ module Sorcery
             end
           end
 
-          def unlocked?
+          def login_unlocked?
             config = sorcery_config
             send(config.lock_expires_at_attribute_name).nil?
           end
@@ -113,10 +113,10 @@ module Sorcery
           # Runs as a hook before authenticate.
           def prevent_locked_user_login
             config = sorcery_config
-            if !unlocked? && config.login_lock_time_period != 0
-              unlock! if send(config.lock_expires_at_attribute_name) <= Time.now.in_time_zone
+            if !login_unlocked? && config.login_lock_time_period != 0
+              login_unlock! if send(config.lock_expires_at_attribute_name) <= Time.now.in_time_zone
             end
-            unlocked?
+            login_unlocked?
           end
         end
       end

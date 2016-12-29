@@ -73,7 +73,7 @@ module Sorcery
           # /!\
           # Moved out of protected for use like activate! in controller
           # /!\
-          def unlock!
+          def login_unlock!
             config = sorcery_config
             attributes = { config.lock_expires_at_attribute_name => nil,
                            config.failed_logins_count_attribute_name => 0,
@@ -114,7 +114,7 @@ module Sorcery
           def prevent_locked_user_login
             config = sorcery_config
             if !unlocked? && config.login_lock_time_period != 0
-              unlock! if send(config.lock_expires_at_attribute_name) <= Time.now.in_time_zone
+              login_unlock! if send(config.lock_expires_at_attribute_name) <= Time.now.in_time_zone
             end
             unlocked?
           end

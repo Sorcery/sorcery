@@ -81,7 +81,7 @@ module Sorcery
             sorcery_adapter.update_attributes(attributes)
           end
 
-          def locked?
+          def login_locked?
             !unlocked?
           end
 

@@ -11,10 +11,12 @@
 * Added support for Slack OAuth (thanks to @youzik)
 * Added support for WeChat OAuth (thanks to @Darmody)
 * Deprecated Rails 3
-  * Deprecated using `callback_filter` in favor of `callback_action`
-  * Added null: false to migrations
+* Deprecated using `callback_filter` in favor of `callback_action`
+* Added null: false to migrations
 * Added support for Rails 5 (thanks to @kyuden)
 * Added support for Ruby 2.4 (thanks to @kyuden)
+* Added WeChat provider to external submodule.
+* Namespace login lock/unlock methods to fix conflicts with Rails lock/unlock (thanks to @kyuden)
 
 ## 0.9.1
 

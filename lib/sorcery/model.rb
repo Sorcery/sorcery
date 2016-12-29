@@ -17,7 +17,7 @@ module Sorcery
       include_required_submodules!
 
       # This runs the options block set in the initializer on the model class.
-      ::Sorcery::Controller::Config.user_config.tap{|blk| blk.call(@sorcery_config) if blk}
+      ::Sorcery::Controller::Config.user_config.tap { |blk| blk.call(@sorcery_config) if blk }
 
       define_base_fields
       init_orm_hooks!
@@ -29,7 +29,7 @@ module Sorcery
     private
 
     def define_base_fields
-      self.class_eval do
+      class_eval do
         sorcery_config.username_attribute_names.each do |username|
           sorcery_adapter.define_field username, String, length: 255
         end
@@ -39,17 +39,16 @@ module Sorcery
         sorcery_adapter.define_field sorcery_config.crypted_password_attribute_name, String, length: 255
         sorcery_adapter.define_field sorcery_config.salt_attribute_name, String, length: 255
       end
-
     end
 
     # includes required submodules into the model class,
     # which usually is called User.
     def include_required_submodules!
-      self.class_eval do
+      class_eval do
         @sorcery_config.submodules = ::Sorcery::Controller::Config.submodules
         @sorcery_config.submodules.each do |mod|
           begin
-            include Submodules.const_get(mod.to_s.split('_').map {|p| p.capitalize}.join)
+            include Submodules.const_get(mod.to_s.split('_').map(&:capitalize).join)
           rescue NameError
             # don't stop on a missing submodule. Needed because some submodules are only defined
             # in the controller side.
@@ -60,11 +59,11 @@ module Sorcery
 
     # add virtual password accessor and ORM callbacks.
     def init_orm_hooks!
-      sorcery_adapter.define_callback :before, :validation, :encrypt_password, if: Proc.new {|record|
+      sorcery_adapter.define_callback :before, :validation, :encrypt_password, if: proc { |record|
         record.send(sorcery_config.password_attribute_name).present?
       }
 
-      sorcery_adapter.define_callback :after, :save, :clear_virtual_password, if: Proc.new {|record|
+      sorcery_adapter.define_callback :after, :save, :clear_virtual_password, if: proc { |record|
         record.send(sorcery_config.password_attribute_name).present?
       }
 
@@ -82,7 +81,7 @@ module Sorcery
       # Finds the user by the username and compares the user's password to the one supplied to the method.
       # returns the user if success, nil otherwise.
       def authenticate(*credentials)
-        raise ArgumentError, "at least 2 arguments required" if credentials.size < 2
+        raise ArgumentError, 'at least 2 arguments required' if credentials.size < 2
 
         return false if credentials[0].blank?
 
@@ -93,19 +92,19 @@ module Sorcery
         user = sorcery_adapter.find_by_credentials(credentials)
 
         if user.respond_to?(:active_for_authentication?)
-          return nil if !user.active_for_authentication?
+          return nil unless user.active_for_authentication?
         end
 
         set_encryption_attributes
 
-        user if user && @sorcery_config.before_authenticate.all? {|c| user.send(c)} && user.valid_password?(credentials[1])
+        user if user && @sorcery_config.before_authenticate.all? { |c| user.send(c) } && user.valid_password?(credentials[1])
       end
 
       # encrypt tokens using current encryption_provider.
       def encrypt(*tokens)
         return tokens.first if @sorcery_config.encryption_provider.nil?
 
-        set_encryption_attributes()
+        set_encryption_attributes
 
         CryptoProviders::AES256.key = @sorcery_config.encryption_key
         @sorcery_config.encryption_provider.encrypt(*tokens)
@@ -113,13 +112,13 @@ module Sorcery
 
       protected
 
-      def set_encryption_attributes()
+      def set_encryption_attributes
         @sorcery_config.encryption_provider.stretches = @sorcery_config.stretches if @sorcery_config.encryption_provider.respond_to?(:stretches) && @sorcery_config.stretches
         @sorcery_config.encryption_provider.join_token = @sorcery_config.salt_join_token if @sorcery_config.encryption_provider.respond_to?(:join_token) && @sorcery_config.salt_join_token
       end
-      
+
       def add_config_inheritance
-        self.class_eval do
+        class_eval do
           def self.inherited(subclass)
             subclass.class_eval do
               class << self
@@ -131,7 +130,6 @@ module Sorcery
           end
         end
       end
-
     end
 
     module InstanceMethods
@@ -148,12 +146,12 @@ module Sorcery
 
       # Calls the configured encryption provider to compare the supplied password with the encrypted one.
       def valid_password?(pass)
-        _crypted = self.send(sorcery_config.crypted_password_attribute_name)  
-        return _crypted == pass if sorcery_config.encryption_provider.nil?
+        crypted = send(sorcery_config.crypted_password_attribute_name)
+        return crypted == pass if sorcery_config.encryption_provider.nil?
 
-        _salt = self.send(sorcery_config.salt_attribute_name) unless sorcery_config.salt_attribute_name.nil?
+        salt = send(sorcery_config.salt_attribute_name) unless sorcery_config.salt_attribute_name.nil?
 
-        sorcery_config.encryption_provider.matches?(_crypted, pass, _salt)
+        sorcery_config.encryption_provider.matches?(crypted, pass, salt)
       end
 
       protected
@@ -162,16 +160,16 @@ module Sorcery
       # encrypts password with salt and saves it.
       def encrypt_password
         config = sorcery_config
-        self.send(:"#{config.salt_attribute_name}=", new_salt = TemporaryToken.generate_random_token) if !config.salt_attribute_name.nil?
-        self.send(:"#{config.crypted_password_attribute_name}=", self.class.encrypt(self.send(config.password_attribute_name),new_salt))
+        send(:"#{config.salt_attribute_name}=", new_salt = TemporaryToken.generate_random_token) unless config.salt_attribute_name.nil?
+        send(:"#{config.crypted_password_attribute_name}=", self.class.encrypt(send(config.password_attribute_name), new_salt))
       end
 
       def clear_virtual_password
         config = sorcery_config
-        self.send(:"#{config.password_attribute_name}=", nil)
+        send(:"#{config.password_attribute_name}=", nil)
 
         if respond_to?(:"#{config.password_attribute_name}_confirmation=")
-          self.send(:"#{config.password_attribute_name}_confirmation=", nil)
+          send(:"#{config.password_attribute_name}_confirmation=", nil)
         end
       end
 
@@ -179,12 +177,11 @@ module Sorcery
       # supports both the ActionMailer 3 way of calling, and the plain old Ruby object way.
       def generic_send_email(method, mailer)
         config = sorcery_config
-        mail = config.send(mailer).send(config.send(method),self)
-        if defined?(ActionMailer) and config.send(mailer).kind_of?(Class) and config.send(mailer) < ActionMailer::Base
+        mail = config.send(mailer).send(config.send(method), self)
+        if defined?(ActionMailer) && config.send(mailer).is_a?(Class) && config.send(mailer) < ActionMailer::Base
           mail.send(config.email_delivery_method)
         end
       end
     end
-
   end
 end

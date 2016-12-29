@@ -12,13 +12,13 @@ module Sorcery
 
       # Random code, used for salt and temporary tokens.
       def self.generate_random_token
-        SecureRandom.base64(15).tr('+/=lIO0', 'pqrsxyz')
+        SecureRandom.urlsafe_base64(15).tr('lIO0', 'sxyz')
       end
 
       module ClassMethods
         def load_from_token(token, token_attr_name, token_expiration_date_attr)
           return nil if token.blank?
-          user = sorcery_adapter.find_by_token(token_attr_name,token)
+          user = sorcery_adapter.find_by_token(token_attr_name, token)
           if !user.blank? && !user.send(token_expiration_date_attr).nil?
             return Time.now.in_time_zone < user.send(token_expiration_date_attr) ? user : nil
           end

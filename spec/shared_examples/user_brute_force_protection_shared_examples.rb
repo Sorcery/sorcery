@@ -1,12 +1,10 @@
-shared_examples_for "rails_3_brute_force_protection_model" do
+shared_examples_for 'rails_3_brute_force_protection_model' do
   let(:user) { create_new_user }
   before(:each) do
     User.sorcery_adapter.delete_all
   end
 
-
-  context "loaded plugin configuration" do
-
+  context 'loaded plugin configuration' do
     let(:config) { User.sorcery_config }
 
     before(:all) do
@@ -40,21 +38,21 @@ shared_examples_for "rails_3_brute_force_protection_model" do
       expect(config.login_lock_time_period).to eq 2.hours
     end
 
-    describe "#locked?" do
-      it "is locked" do
+    describe '#login_locked?' do
+      it 'is locked' do
         user.send("#{config.lock_expires_at_attribute_name}=", Time.now + 5.days)
-        expect(user).to be_locked
+        expect(user).to be_login_locked
       end
 
       it "isn't locked" do
         user.send("#{config.lock_expires_at_attribute_name}=", nil)
-        expect(user).not_to be_locked
+        expect(user).not_to be_login_locked
       end
     end
   end
 
-  describe "#register_failed_login!" do
-    it "locks user when number of retries reached the limit" do
+  describe '#register_failed_login!' do
+    it 'locks user when number of retries reached the limit' do
       expect(user.lock_expires_at).to be_nil
 
       sorcery_model_property_set(:consecutive_login_retries_amount_limit, 1)
@@ -64,8 +62,8 @@ shared_examples_for "rails_3_brute_force_protection_model" do
       expect(lock_expires_at).not_to be_nil
     end
 
-    context "unlock_token_mailer_disabled is true" do
-      it "does not automatically send unlock email" do
+    context 'unlock_token_mailer_disabled is true' do
+      it 'does not automatically send unlock email' do
         sorcery_model_property_set(:unlock_token_mailer_disabled, true)
         sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
         sorcery_model_property_set(:login_lock_time_period, 0)
@@ -74,11 +72,10 @@ shared_examples_for "rails_3_brute_force_protection_model" do
         3.times { user.register_failed_login! }
 
         expect(ActionMailer::Base.deliveries.size).to eq 0
-
       end
     end
 
-    context "unlock_token_mailer_disabled is false" do
+    context 'unlock_token_mailer_disabled is false' do
       before do
         sorcery_model_property_set(:unlock_token_mailer_disabled, false)
         sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
@@ -86,13 +83,13 @@ shared_examples_for "rails_3_brute_force_protection_model" do
         sorcery_model_property_set(:unlock_token_mailer, SorceryMailer)
       end
 
-      it "does not automatically send unlock email" do
+      it 'does not automatically send unlock email' do
         3.times { user.register_failed_login! }
 
         expect(ActionMailer::Base.deliveries.size).to eq 1
       end
 
-      it "generates unlock token before mail is sent" do
+      it 'generates unlock token before mail is sent' do
         3.times { user.register_failed_login! }
 
         expect(ActionMailer::Base.deliveries.last.body.to_s.match(user.unlock_token)).not_to be_nil
@@ -100,9 +97,8 @@ shared_examples_for "rails_3_brute_force_protection_model" do
     end
   end
 
-  context ".authenticate" do
-
-    it "unlocks after lock time period passes" do
+  context '.authenticate' do
+    it 'unlocks after lock time period passes' do
       sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
       sorcery_model_property_set(:login_lock_time_period, 0.2)
       2.times { user.register_failed_login! }
@@ -118,7 +114,7 @@ shared_examples_for "rails_3_brute_force_protection_model" do
       Timecop.return
     end
 
-    it "doest not unlock if time period is 0 (permanent lock)" do
+    it 'doest not unlock if time period is 0 (permanent lock)' do
       sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
       sorcery_model_property_set(:login_lock_time_period, 0)
 
@@ -132,11 +128,10 @@ shared_examples_for "rails_3_brute_force_protection_model" do
       expect(user.lock_expires_at.to_s).to eq unlock_date.to_s
       Timecop.return
     end
-
   end
 
-  describe "#unlock!" do
-    it "unlocks after entering unlock token" do
+  describe '#login_unlock!' do
+    it 'unlocks after entering unlock token' do
       sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
       sorcery_model_property_set(:login_lock_time_period, 0)
       sorcery_model_property_set(:unlock_token_mailer, SorceryMailer)
@@ -149,7 +144,7 @@ shared_examples_for "rails_3_brute_force_protection_model" do
 
       expect(user).not_to be_nil
 
-      user.unlock!
+      user.login_unlock!
       expect(User.load_from_unlock_token(user.unlock_token)).to be_nil
     end
   end

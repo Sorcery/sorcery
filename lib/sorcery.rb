@@ -1,7 +1,6 @@
 require 'sorcery/version'
 
 module Sorcery
-
   require 'sorcery/model'
 
   module Adapters
@@ -11,7 +10,6 @@ module Sorcery
   module Model
     require 'sorcery/model/temporary_token'
     require 'sorcery/model/config'
-
 
     module Submodules
       require 'sorcery/model/submodules/user_activation'
@@ -64,7 +62,6 @@ module Sorcery
     module Internal
       require 'sorcery/test_helpers/internal/rails'
     end
-
   end
 
   require 'sorcery/adapters/base_adapter'

@@ -1,38 +1,35 @@
 module Sorcery
   module Providers
-    # This class adds support for OAuth with salesforce.com.
-    #
-    #   config.salesforce.key = <key>
-    #   config.salesforce.secret = <secret>
-    #   ...
-    #
-    class Salesforce < Base
+    # This class adds support for OAuth with slack.com.
+
+    class Slack < Base
       include Protocols::Oauth2
 
-      attr_accessor :auth_url, :token_url, :scope
+      attr_accessor :auth_path, :scope, :token_url, :user_info_path
 
       def initialize
         super
 
-        @site          = 'https://login.salesforce.com'
-        @auth_url      = '/services/oauth2/authorize'
-        @token_url     = '/services/oauth2/token'
+        @scope          = 'identity.basic, identity.email'
+        @site           = 'https://slack.com/'
+        @user_info_path = 'https://slack.com/api/users.identity'
+        @auth_path      = '/oauth/authorize'
+        @token_url      = '/api/oauth.access'
       end
 
       def get_user_hash(access_token)
-        user_info_url = access_token.params['id']
-        response = access_token.get(user_info_url)
-
+        response = access_token.get(user_info_path, params: { token: access_token.token })
         auth_hash(access_token).tap do |h|
           h[:user_info] = JSON.parse(response.body)
-          h[:uid] = h[:user_info]['user_id']
+          h[:user_info]['email'] = h[:user_info]['user']['email']
+          h[:uid] = h[:user_info]['user']['id']
         end
       end
 
       # calculates and returns the url to which the user should be redirected,
       # to get authenticated at the external provider's site.
       def login_url(_params, _session)
-        authorize_url(authorize_url: auth_url)
+        authorize_url(authorize_url: auth_path)
       end
 
       # tries to login the user from access token

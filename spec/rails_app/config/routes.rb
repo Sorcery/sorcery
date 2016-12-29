@@ -1,5 +1,5 @@
 AppRoot::Application.routes.draw do
-  root :to => "application#index"
+  root to: 'application#index'
 
   controller :sorcery do
     get :test_login
@@ -21,31 +21,37 @@ AppRoot::Application.routes.draw do
     get :test_login_from_facebook
     get :test_login_from_github
     get :test_login_from_paypal
+    get :test_login_from_wechat
     get :test_login_from_google
     get :test_login_from_liveid
     get :test_login_from_vk
     get :test_login_from_jira
     get :test_login_from_salesforce
+    get :test_login_from_slack
     get :login_at_test
     get :login_at_test_twitter
     get :login_at_test_facebook
     get :login_at_test_github
     get :login_at_test_paypal
+    get :login_at_test_wechat
     get :login_at_test_google
     get :login_at_test_liveid
     get :login_at_test_vk
     get :login_at_test_jira
     get :login_at_test_salesforce
+    get :login_at_test_slack
     get :test_return_to_with_external
     get :test_return_to_with_external_twitter
     get :test_return_to_with_external_facebook
     get :test_return_to_with_external_github
     get :test_return_to_with_external_paypal
+    get :test_return_to_with_external_wechat
     get :test_return_to_with_external_google
     get :test_return_to_with_external_liveid
     get :test_return_to_with_external_vk
     get :test_return_to_with_external_jira
     get :test_return_to_with_external_salesforce
+    get :test_return_to_with_external_slack
     get :test_http_basic_auth
     get :some_action_making_a_non_persisted_change_to_the_user
     post :test_login_with_remember

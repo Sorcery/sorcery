@@ -8,10 +8,10 @@ module Sorcery
           base.send(:include, InstanceMethods)
           Config.module_eval do
             class << self
-              attr_accessor :session_timeout,                     # how long in seconds to keep the session alive.
-
-                            :session_timeout_from_last_action     # use the last action as the beginning of session
-                                                                  # timeout.
+              # how long in seconds to keep the session alive.
+              attr_accessor :session_timeout
+              # use the last action as the beginning of session timeout.
+              attr_accessor :session_timeout_from_last_action
 
               def merge_session_timeout_defaults!
                 @defaults.merge!(:@session_timeout                      => 3600, # 1.hour
@@ -29,7 +29,7 @@ module Sorcery
 
           # Registers last login to be used as the timeout starting point.
           # Runs as a hook after a successful login.
-          def register_login_time(user, credentials)
+          def register_login_time(_user, _credentials)
             session[:login_time] = session[:last_action_time] = Time.now.in_time_zone
           end
 
@@ -48,7 +48,6 @@ module Sorcery
           def sorcery_session_expired?(time)
             Time.now.in_time_zone - time > Config.session_timeout
           end
-
         end
       end
     end

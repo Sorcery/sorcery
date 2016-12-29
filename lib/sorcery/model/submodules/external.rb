@@ -20,7 +20,6 @@ module Sorcery
                           :authentications_user_id_attribute_name,
                           :provider_attribute_name,
                           :provider_uid_attribute_name
-
           end
 
           base.sorcery_config.instance_eval do
@@ -34,12 +33,11 @@ module Sorcery
 
           base.send(:include, InstanceMethods)
           base.extend(ClassMethods)
-
         end
 
         module ClassMethods
           # takes a provider and uid and finds a user by them.
-          def load_from_provider(provider,uid)
+          def load_from_provider(provider, uid)
             config = sorcery_config
             authentication = config.authentications_class.sorcery_adapter.find_by_oauth_credentials(provider, uid)
             user = sorcery_adapter.find_by_id(authentication.send(config.authentications_user_id_attribute_name)) if authentication
@@ -57,7 +55,7 @@ module Sorcery
 
           def create_from_provider(provider, uid, attrs)
             user = new
-            attrs.each do |k,v|
+            attrs.each do |k, v|
               user.send(:"#{k}=", v)
             end
 
@@ -66,7 +64,7 @@ module Sorcery
             end
 
             sorcery_adapter.transaction do
-              user.sorcery_adapter.save(:validate => false)
+              user.sorcery_adapter.save(validate: false)
               sorcery_config.authentications_class.create!(
                 sorcery_config.authentications_user_id_attribute_name => user.id,
                 sorcery_config.provider_attribute_name => provider,
@@ -91,9 +89,7 @@ module Sorcery
 
             user
           end
-
         end
-
       end
     end
   end

@@ -58,7 +58,7 @@ module Sorcery
 
         module InstanceMethods
           # Called by the controller to increment the failed logins counter.
-          # Calls 'lock!' if login retries limit was reached.
+          # Calls 'login_lock!' if login retries limit was reached.
           def register_failed_login!
             config = sorcery_config
             return unless unlocked?
@@ -66,7 +66,7 @@ module Sorcery
             sorcery_adapter.increment(config.failed_logins_count_attribute_name)
 
             if send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
-              lock!
+              login_lock!
             end
           end
 
@@ -87,7 +87,7 @@ module Sorcery
 
           protected
 
-          def lock!
+          def login_lock!
             config = sorcery_config
             attributes = { config.lock_expires_at_attribute_name => Time.now.in_time_zone + config.login_lock_time_period,
                            config.unlock_token_attribute_name => TemporaryToken.generate_random_token }

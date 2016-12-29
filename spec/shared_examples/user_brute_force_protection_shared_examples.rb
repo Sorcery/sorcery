@@ -38,15 +38,15 @@ shared_examples_for 'rails_3_brute_force_protection_model' do
       expect(config.login_lock_time_period).to eq 2.hours
     end
 
-    describe '#locked?' do
+    describe '#login_locked?' do
       it 'is locked' do
         user.send("#{config.lock_expires_at_attribute_name}=", Time.now + 5.days)
-        expect(user).to be_locked
+        expect(user).to be_login_locked
       end
 
       it "isn't locked" do
         user.send("#{config.lock_expires_at_attribute_name}=", nil)
-        expect(user).not_to be_locked
+        expect(user).not_to be_login_locked
       end
     end
   end
@@ -130,7 +130,7 @@ shared_examples_for 'rails_3_brute_force_protection_model' do
     end
   end
 
-  describe '#unlock!' do
+  describe '#login_unlock!' do
     it 'unlocks after entering unlock token' do
       sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
       sorcery_model_property_set(:login_lock_time_period, 0)
@@ -144,7 +144,7 @@ shared_examples_for 'rails_3_brute_force_protection_model' do
 
       expect(user).not_to be_nil
 
-      user.unlock!
+      user.login_unlock!
       expect(User.load_from_unlock_token(user.unlock_token)).to be_nil
     end
   end

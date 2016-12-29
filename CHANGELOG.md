@@ -12,7 +12,7 @@
 * Added support for Rails 5 by @kyuden
 * Added WeChat provider to external submodule.
 * Added support for Ruby 2.4 by @kyuden
-* Renamed #lock!, #unlock!, #locked?, #unlocked? to #login_lock!, #login_unlock!, #login_locked?, #login_unlocked? by @kyuden
+* Namespace login lock/unlock methods to fix conflicts with Rails lock/unlock (thanks to @kyuden)
 
 ## 0.9.1
 

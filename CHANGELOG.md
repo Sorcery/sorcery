@@ -1,4 +1,6 @@
 # Changelog
+## 0.10.1
+* Fixed LinkedIn bug [#36](https://github.com/Sorcery/sorcery/pull/36)
 
 ## 0.10.0
 

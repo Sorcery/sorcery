@@ -30,8 +30,10 @@ module Sorcery
       end
 
       def get_user_hash(access_token)
-        fields = user_info_fields.join(',')
-        response = access_token.get("#{@user_info_path}:(id,#{fields})", 'x-li-format' => 'json')
+        # Always include id for provider uid and prevent accidental duplication via setting `user_info_field = ['id']` (needed in Sorcery 0.9.1)
+        info_fields = user_info_fields ? user_info_fields.reject{|n| n == 'id'} : []
+        fields = info_fields.any? ? 'id,' + info_fields.join(',') : 'id'
+        response = access_token.get("#{@user_info_path}:(#{fields})", 'x-li-format' => 'json')
 
         auth_hash(access_token).tap do |h|
           h[:user_info] = JSON.parse(response.body)

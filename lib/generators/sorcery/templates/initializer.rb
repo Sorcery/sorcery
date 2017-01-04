@@ -139,7 +139,7 @@ Rails.application.config.sorcery.configure do |config|
   # config.microsoft.secret = ""
   # config.microsoft.callback_url = "http://0.0.0.0:3000/oauth/callback/microsoft"
   # config.microsoft.user_info_mapping = {:email => "userPrincipalName", :username => "displayName"}
-  # config.microsoft.scope = "openid email profile https://graph.microsoft.com/User.Read"
+  # config.microsoft.scope = "openid email https://graph.microsoft.com/User.Read"
   #
   # config.vk.key = ""
   # config.vk.secret = ""

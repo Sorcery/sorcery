@@ -2,11 +2,11 @@ module Sorcery
   module Providers
     # This class adds support for OAuth with Microsoft Graph.
     #
-    #   config.graph.key = <key>
-    #   config.graph.secret = <secret>
+    #   config.microsoft.key = <key>
+    #   config.microsoft.secret = <secret>
     #   ...
     #
-    class Graph < Base
+    class Microsoft < Base
       include Protocols::Oauth2
 
       attr_accessor :auth_url, :scope, :token_url, :user_info_url

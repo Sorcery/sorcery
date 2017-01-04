@@ -104,8 +104,8 @@ class SorceryController < ActionController::Base
     login_at(:wechat)
   end
 
-  def login_at_test_graph
-    login_at(:graph)
+  def login_at_test_microsoft
+    login_at(:microsoft)
   end
 
   def login_at_test_google
@@ -178,8 +178,8 @@ class SorceryController < ActionController::Base
     end
   end
 
-  def test_login_from_graph
-    if @user = login_from(:graph)
+  def test_login_from_microsoft
+    if @user = login_from(:microsoft)
       redirect_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
@@ -284,8 +284,8 @@ class SorceryController < ActionController::Base
     end
   end
 
-  def test_return_to_with_external_graph
-    if @user = login_from(:graph)
+  def test_return_to_with_external_microsoft
+    if @user = login_from(:microsoft)
       redirect_back_or_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'

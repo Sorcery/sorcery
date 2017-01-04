@@ -22,7 +22,7 @@ AppRoot::Application.routes.draw do
     get :test_login_from_github
     get :test_login_from_paypal
     get :test_login_from_wechat
-    get :test_login_from_graph
+    get :test_login_from_microsoft
     get :test_login_from_google
     get :test_login_from_liveid
     get :test_login_from_vk
@@ -35,7 +35,7 @@ AppRoot::Application.routes.draw do
     get :login_at_test_github
     get :login_at_test_paypal
     get :login_at_test_wechat
-    get :login_at_test_graph
+    get :login_at_test_microsoft
     get :login_at_test_google
     get :login_at_test_liveid
     get :login_at_test_vk
@@ -48,7 +48,7 @@ AppRoot::Application.routes.draw do
     get :test_return_to_with_external_github
     get :test_return_to_with_external_paypal
     get :test_return_to_with_external_wechat
-    get :test_return_to_with_external_graph
+    get :test_return_to_with_external_microsoft
     get :test_return_to_with_external_google
     get :test_return_to_with_external_liveid
     get :test_return_to_with_external_vk

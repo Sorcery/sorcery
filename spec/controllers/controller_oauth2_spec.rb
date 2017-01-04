@@ -151,7 +151,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(flash[:notice]).to eq 'Success!'
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :graph].each do |provider|
+    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft].each do |provider|
       describe "with #{provider}" do
         it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
@@ -201,7 +201,7 @@ describe SorceryController, active_record: true, type: :controller do
       end
 
       sorcery_reload!([:user_activation,:external], :user_activation_mailer => ::SorceryMailer)
-      sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :graph])
+      sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft])
 
       # TODO: refactor
       sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
@@ -231,9 +231,9 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:wechat, :key, "eYVNBjBDi33aa9GkA3w")
       sorcery_controller_external_property_set(:wechat, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
       sorcery_controller_external_property_set(:wechat, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:graph, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:graph, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:graph, :callback_url, "http://blabla.com")
+      sorcery_controller_external_property_set(:microsoft, :key, "eYVNBjBDi33aa9GkA3w")
+      sorcery_controller_external_property_set(:microsoft, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
+      sorcery_controller_external_property_set(:microsoft, :callback_url, "http://blabla.com")
     end
 
     after(:all) do
@@ -263,7 +263,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(ActionMailer::Base.deliveries.size).to eq old_size
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :wechat, :graph].each do |provider|
+    [:github, :google, :liveid, :vk, :salesforce, :paypal, :wechat, :microsoft].each do |provider|
       it "does not send activation email to external users (#{provider})" do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user provider
@@ -412,7 +412,7 @@ describe SorceryController, active_record: true, type: :controller do
   end
 
   def set_external_property
-    sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :graph])
+    sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft])
     sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
     sorcery_controller_external_property_set(:facebook, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
     sorcery_controller_external_property_set(:facebook, :callback_url, "http://blabla.com")
@@ -440,9 +440,9 @@ describe SorceryController, active_record: true, type: :controller do
     sorcery_controller_external_property_set(:wechat, :key, "eYVNBjBDi33aa9GkA3w")
     sorcery_controller_external_property_set(:wechat, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
     sorcery_controller_external_property_set(:wechat, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:graph, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:graph, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:graph, :callback_url, "http://blabla.com")
+    sorcery_controller_external_property_set(:microsoft, :key, "eYVNBjBDi33aa9GkA3w")
+    sorcery_controller_external_property_set(:microsoft, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
+    sorcery_controller_external_property_set(:microsoft, :callback_url, "http://blabla.com")
   end
 
   def provider_url(provider)
@@ -455,7 +455,7 @@ describe SorceryController, active_record: true, type: :controller do
       salesforce: "https://login.salesforce.com/services/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.salesforce.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope#{'=' + ::Sorcery::Controller::Config.salesforce.scope unless ::Sorcery::Controller::Config.salesforce.scope.nil?}&state",
       slack: "https://slack.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.slack.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=identity.basic%2C+identity.email&state",
       wechat: "https://open.weixin.qq.com/connect/qrconnect?appid=#{::Sorcery::Controller::Config.wechat.key}&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=snsapi_login&state=#wechat_redirect",
-      graph: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.graph.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email+https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state"
+      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email+https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state"
     }[provider]
   end
 end

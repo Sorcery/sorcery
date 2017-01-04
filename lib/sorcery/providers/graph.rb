@@ -18,7 +18,17 @@ module Sorcery
         @auth_url      = '/common/oauth2/v2.0/authorize'
         @token_url     = '/common/oauth2/v2.0/token'
         @user_info_url = 'https://graph.microsoft.com/v1.0/me'
-        @scope         = 'openid email profile https://graph.microsoft.com/User.Read'
+        @scope         = 'openid email https://graph.microsoft.com/User.Read'
+        @state         = SecureRandom.hex(16)
+      end
+
+      def authorize_url(options = {})
+        oauth_params = {
+          client_id: @key,
+          response_type: 'code'
+        }
+        options.merge!(oauth_params)
+        super(options)
       end
 
       def get_user_hash(access_token)

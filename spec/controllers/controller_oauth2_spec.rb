@@ -455,7 +455,7 @@ describe SorceryController, active_record: true, type: :controller do
       salesforce: "https://login.salesforce.com/services/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.salesforce.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope#{'=' + ::Sorcery::Controller::Config.salesforce.scope unless ::Sorcery::Controller::Config.salesforce.scope.nil?}&state",
       slack: "https://slack.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.slack.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=identity.basic%2C+identity.email&state",
       wechat: "https://open.weixin.qq.com/connect/qrconnect?appid=#{::Sorcery::Controller::Config.wechat.key}&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=snsapi_login&state=#wechat_redirect",
-      graph: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.graph.key}&response_type=code&redirect_uri=http%3A%2F%2Fblabla.com&response_mode=query&scope=openid%20offline_access%20https%3A%2F%2Fgraph.microsoft.com%2Fmail.read&state=12345"
+      graph: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.graph.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email+https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state"
     }[provider]
   end
 end

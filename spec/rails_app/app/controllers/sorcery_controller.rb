@@ -104,6 +104,10 @@ class SorceryController < ActionController::Base
     login_at(:wechat)
   end
 
+  def login_at_test_graph
+    login_at(:graph)
+  end
+
   def login_at_test_google
     login_at(:google)
   end
@@ -168,6 +172,14 @@ class SorceryController < ActionController::Base
 
   def test_login_from_wechat
     if @user = login_from(:wechat)
+      redirect_to 'bla', notice: 'Success!'
+    else
+      redirect_to 'blu', alert: 'Failed!'
+    end
+  end
+
+  def test_login_from_graph
+    if @user = login_from(:graph)
       redirect_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
@@ -266,6 +278,14 @@ class SorceryController < ActionController::Base
 
   def test_return_to_with_external_wechat
     if @user = login_from(:wechat)
+      redirect_back_or_to 'bla', notice: 'Success!'
+    else
+      redirect_to 'blu', alert: 'Failed!'
+    end
+  end
+
+  def test_return_to_with_external_graph
+    if @user = login_from(:graph)
       redirect_back_or_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'

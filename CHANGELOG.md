@@ -1,5 +1,11 @@
 # Changelog
+
+## 0.10.2
+
+* Added support for Microsoft OAuth (thanks to @athix) [#37](https://github.com/Sorcery/sorcery/pull/37)
+
 ## 0.10.1
+
 * Fixed LinkedIn bug [#36](https://github.com/Sorcery/sorcery/pull/36)
 
 ## 0.10.0
@@ -77,7 +83,7 @@
 
 ## 0.8.4
 
-  * Few security fixes in `external` module
+* Few security fixes in `external` module
 
 ## 0.8.3 (yanked because of bad Jeweler release)
 
@@ -85,38 +91,9 @@
 
 * Activity logging feature has a new column called `last_login_from_ip_address` (string type). If you use ActiveRecord, you will have to add this column to DB ([#465](https://github.com/NoamB/sorcery/issues/465))
 
-## 0.8.1
-<!-- TO BE WRITTEN -->
+## 0.7.5-0.8.1
 
-## 0.8.0
-<!-- TO BE WRITTEN -->
-
-## 0.7.13
-<!-- TO BE WRITTEN -->
-
-## 0.7.12
-<!-- TO BE WRITTEN -->
-
-## 0.7.11
-<!-- TO BE WRITTEN -->
-
-## 0.7.10
-<!-- TO BE WRITTEN -->
-
-## 0.7.9
-<!-- TO BE WRITTEN -->
-
-## 0.7.8
-<!-- TO BE WRITTEN -->
-
-## 0.7.7
-<!-- TO BE WRITTEN -->
-
-## 0.7.6
-<!-- TO BE WRITTEN -->
-
-## 0.7.5
-<!-- TO BE WRITTEN -->
+<!-- HERE BE DRAGONS (Changelogs never written) -->
 
 ## 0.7.1-0.7.4
 

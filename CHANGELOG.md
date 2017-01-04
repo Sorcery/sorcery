@@ -2,7 +2,7 @@
 
 ## 0.10.2
 
-* Added support for Microsoft OAuth (thanks to @athix)
+* Added support for Microsoft OAuth (thanks to @athix) [#37](https://github.com/Sorcery/sorcery/pull/37)
 
 ## 0.10.1
 

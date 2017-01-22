@@ -27,7 +27,7 @@ module Sorcery
             return token_response(user: user, failure: :token_expired, &block)
           end
 
-          token_response(user: user, return_value: :user, &block)
+          token_response(user: user, return_value: user, &block)
         end
 
         protected

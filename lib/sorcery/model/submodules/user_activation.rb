@@ -132,7 +132,7 @@ module Sorcery
           def prevent_non_active_login
             config = sorcery_config
 
-            if config.prevent_non_active_login
+            if config.prevent_non_active_users_to_login
               unless send(config.activation_state_attribute_name) == 'active'
                 return false, :inactive
               end

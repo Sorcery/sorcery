@@ -59,6 +59,11 @@ module Sorcery
               user.send(:"#{k}=", v)
             end
 
+            # For external services that don't offer an email like twitter.
+            unless attrs.has_key?(:email) && user.attributes.has_key?('email')
+              user.send(:'email=', '')
+            end
+
             if block_given?
               return false unless yield user
             end

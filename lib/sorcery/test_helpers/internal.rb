@@ -35,7 +35,7 @@ module Sorcery
       end
 
       def create_new_external_user(provider, attributes_hash = nil)
-        user_attributes_hash = attributes_hash || { username: 'gizmo' }
+        user_attributes_hash = attributes_hash || { username: 'gizmo', email: '' }
         @user = User.new(user_attributes_hash)
         @user.sorcery_adapter.save(raise_on_failure: true)
         @user.authentications.create!(provider: provider, uid: 123)

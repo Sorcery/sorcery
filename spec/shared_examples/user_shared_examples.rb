@@ -560,6 +560,26 @@ shared_examples_for 'external_user' do
       expect(User.first.username).to eq 'Noam Ben Ari'
     end
 
+    context 'with email' do
+      it 'sets passed email' do
+        expect do
+          User.create_from_provider('facebook', '123', username: 'Noam Ben Ari', email: 'bla@bla.com') { true }
+        end.to change { User.count }.by(1)
+    
+        expect(User.first.email).to eq 'bla@bla.com'
+      end
+    end
+    
+    context 'without email' do
+      it 'sets an empty string to email' do
+        expect do
+          User.create_from_provider('facebook', '123', username: 'Noam Ben Ari') { true }
+        end.to change { User.count }.by(1)
+    
+        expect(User.first.email).to eq ''
+      end
+    end
+
     context 'with block' do
       it 'create user when block return true' do
         expect do

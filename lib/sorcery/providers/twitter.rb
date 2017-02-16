@@ -16,6 +16,8 @@ module Sorcery
 
         @site           = 'https://api.twitter.com'
         @user_info_path = '/1.1/account/verify_credentials.json'
+        @request_token = nil
+        @request_token_secret = nil
       end
 
       # Override included get_consumer method to provide authorize_path
@@ -34,19 +36,19 @@ module Sorcery
 
       # calculates and returns the url to which the user should be redirected,
       # to get authenticated at the external provider's site.
-      def login_url(_params, session)
+      def login_url(_params, _session)
         req_token = get_request_token
-        session[:request_token]         = req_token.token
-        session[:request_token_secret]  = req_token.secret
+        @request_token         = req_token.token
+        @request_token_secret  = req_token.secret
         authorize_url(request_token: req_token.token, request_token_secret: req_token.secret)
       end
 
       # tries to login the user from access token
-      def process_callback(params, session)
+      def process_callback(params, _session)
         args = {
-          oauth_verifier:       params[:oauth_verifier],
-          request_token:        session[:request_token],
-          request_token_secret: session[:request_token_secret]
+            oauth_verifier:       params[:oauth_verifier],
+            request_token:        @request_token,
+            request_token_secret: @request_token_secret
         }
 
         args[:code] = params[:code] if params[:code]

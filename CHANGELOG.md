@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.3
+
+* Add new function: `build_from` (allows building a user instance from OAuth without saving)
+
 ## 0.10.2
 
 * Added support for Microsoft OAuth (thanks to @athix) [#37](https://github.com/Sorcery/sorcery/pull/37)

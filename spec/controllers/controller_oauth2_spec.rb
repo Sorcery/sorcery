@@ -151,7 +151,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(flash[:notice]).to eq 'Success!'
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft].each do |provider|
+    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :instagram].each do |provider|
       describe "with #{provider}" do
         it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
@@ -201,7 +201,7 @@ describe SorceryController, active_record: true, type: :controller do
       end
 
       sorcery_reload!([:user_activation,:external], :user_activation_mailer => ::SorceryMailer)
-      sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft])
+      sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :instagram])
 
       # TODO: refactor
       sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
@@ -234,6 +234,9 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:microsoft, :key, "eYVNBjBDi33aa9GkA3w")
       sorcery_controller_external_property_set(:microsoft, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
       sorcery_controller_external_property_set(:microsoft, :callback_url, "http://blabla.com")
+      sorcery_controller_external_property_set(:instagram, :key, "eYVNBjBDi33aa9GkA3w")
+      sorcery_controller_external_property_set(:instagram, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
+      sorcery_controller_external_property_set(:instagram, :callback_url, "http://blabla.com")
     end
 
     after(:all) do
@@ -263,7 +266,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(ActionMailer::Base.deliveries.size).to eq old_size
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :wechat, :microsoft].each do |provider|
+    [:github, :google, :liveid, :vk, :salesforce, :paypal, :wechat, :microsoft, :instagram].each do |provider|
       it "does not send activation email to external users (#{provider})" do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user provider
@@ -369,6 +372,8 @@ describe SorceryController, active_record: true, type: :controller do
   def stub_all_oauth2_requests!
     access_token = double(OAuth2::AccessToken)
     allow(access_token).to receive(:token_param=)
+    # Needed for Instagram
+    allow(access_token).to receive(:[]).with(:client_id){"eYVNBjBDi33aa9GkA3w"}
     response = double(OAuth2::Response)
     allow(response).to receive(:body) {
                          {
@@ -403,6 +408,16 @@ describe SorceryController, active_record: true, type: :controller do
                            },
                            # response for wechat auth
                            'unionid' => '123',
+                           # response for instagram
+                           'data' => {
+                            'username' => 'pnmahoney',
+                            'bio' => 'turn WHAT down?',
+                            'website' => '',
+                            'profile_picture' => 'http://photos-d.ak.instagram.com/hphotos-ak-xpa1/10454121_417985815007395_867850883_a.jpg',
+                            'full_name' => 'Patrick Mahoney',
+                            'counts' => {'media' => 2, 'followed_by' => 100, 'follows' => 71},
+                            'id'=>'123'
+                          }
                          }.to_json }
     allow(access_token).to receive(:get) { response }
     allow(access_token).to receive(:token) { '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3' }
@@ -412,7 +427,7 @@ describe SorceryController, active_record: true, type: :controller do
   end
 
   def set_external_property
-    sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft])
+    sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :instagram])
     sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
     sorcery_controller_external_property_set(:facebook, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
     sorcery_controller_external_property_set(:facebook, :callback_url, "http://blabla.com")
@@ -443,6 +458,9 @@ describe SorceryController, active_record: true, type: :controller do
     sorcery_controller_external_property_set(:microsoft, :key, "eYVNBjBDi33aa9GkA3w")
     sorcery_controller_external_property_set(:microsoft, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
     sorcery_controller_external_property_set(:microsoft, :callback_url, "http://blabla.com")
+    sorcery_controller_external_property_set(:instagram, :key, "eYVNBjBDi33aa9GkA3w")
+    sorcery_controller_external_property_set(:instagram, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
+    sorcery_controller_external_property_set(:instagram, :callback_url, "http://blabla.com")
   end
 
   def provider_url(provider)
@@ -455,7 +473,8 @@ describe SorceryController, active_record: true, type: :controller do
       salesforce: "https://login.salesforce.com/services/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.salesforce.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope#{'=' + ::Sorcery::Controller::Config.salesforce.scope unless ::Sorcery::Controller::Config.salesforce.scope.nil?}&state",
       slack: "https://slack.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.slack.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=identity.basic%2C+identity.email&state",
       wechat: "https://open.weixin.qq.com/connect/qrconnect?appid=#{::Sorcery::Controller::Config.wechat.key}&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=snsapi_login&state=#wechat_redirect",
-      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email+https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state"
+      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email+https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state",
+      instagram: "https://api.instagram.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.instagram.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=#{::Sorcery::Controller::Config.instagram.scope}&state"
     }[provider]
   end
 end

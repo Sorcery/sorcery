@@ -111,6 +111,12 @@ Rails.application.config.sorcery.configure do |config|
   # config.facebook.display = "page"
   # config.facebook.api_version = "v2.2"
   #
+  # config.instagram.key = ""
+  # config.instagram.secret = ""
+  # config.instagram.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=instagram"
+  # config.instagram.user_info_mapping = {:email => "username"}
+  # config.instagram.access_permissions = ["basic", "public_content", "follower_list", "comments", "relationships", "likes"]
+  #
   # config.github.key = ""
   # config.github.secret = ""
   # config.github.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=github"

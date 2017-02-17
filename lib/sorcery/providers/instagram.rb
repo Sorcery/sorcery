@@ -1,10 +1,6 @@
 module Sorcery
   module Providers
     # This class adds support for OAuth with Instagram.com.
-    #
-    #  config.instagram.key
-    #  config.instagram.secret
-    #  config.instagram.access_permissions
 
     class Instagram < Base
 
@@ -23,8 +19,7 @@ module Sorcery
         @token_url = '/oauth/access_token'
         @authorization_path = '/oauth/authorize/'
         @user_info_path = '/v1/users/self'
-        @scope = build_access_scope!
-        super
+        @scope = 'basic'
       end
 
       def self.included(base)
@@ -37,11 +32,11 @@ module Sorcery
       end
 
 
-      # @override of Base#authorize_url
-      # def authorize_url(opts={})
-      #   @scope = build_access_scope!
-      #   super(opts.merge(:token_url => @token_url))
-      # end
+      # overrides oauth2#authorize_url to allow customized scope.
+      def authorize_url(opts = {})
+        @scope = access_permissions.present? ? access_permissions.join(' ') : scope
+        super(opts.merge(:token_url => @token_url))
+      end
 
       # pass oauth2 param `code` provided by instgrm server
       def process_callback(params, session)
@@ -70,40 +65,10 @@ module Sorcery
             "#{user_info_path}?#{call_api_params.to_param}"
         )
 
-
         _user_attrs = Hash.new
         _user_attrs[:user_info] = JSON.parse(response.body)['data']
         _user_attrs[:uid] = _user_attrs[:user_info]['id']
         _user_attrs
-      end
-
-
-      private
-
-      # build access scope attribute for instagram
-      # e.g. whether to access for `likes` or just basic
-      def build_access_scope!
-        valid = /\A(basic|comments|relationships|likes)$/
-
-        if !access_permissions.present?
-          _scopes = ["basic"]
-        elsif access_permissions.kind_of?(Array)
-          _scopes = access_permissions
-                        .map(&:to_s)
-                        .grep(valid)
-        elsif access_permissions.kind_of?(String)
-          _scopes = access_permissions
-                        .split(/\W+/)
-                        .grep(valid)
-        end
-
-        # basic IS required
-        # b/c instagram fails on blank values
-        # and requires `basic` for any additional scope
-        _scopes.push('basic')
-
-        _scopes.uniq.join(' ')
-
       end
 
     end

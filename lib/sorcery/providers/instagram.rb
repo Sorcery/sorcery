@@ -27,7 +27,7 @@ module Sorcery
       end
 
       # provider implements method to build Oauth client
-      def login_url(params, session)
+      def login_url(_params, _session)
         authorize_url(token_url: @token_url)
       end
 
@@ -39,7 +39,7 @@ module Sorcery
       end
 
       # pass oauth2 param `code` provided by instgrm server
-      def process_callback(params, session)
+      def process_callback(params, _session)
         args = {}.tap do |a|
           a[:code] = params[:code] if params[:code]
         end

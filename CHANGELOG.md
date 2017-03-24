@@ -2,7 +2,7 @@
 
 ## 0.10.3
 
-* Revert removal of MongoID Adapter (breaks Sorcery for MongoID users until separate gem is created)
+* Revert removal of MongoID Adapter (breaks Sorcery for MongoID users until separate gem is created) [#45](https://github.com/Sorcery/sorcery/pull/45)
 
 ## 0.10.2
 

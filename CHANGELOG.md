@@ -1,6 +1,6 @@
 # Changelog
 ## HEAD
-
+* Resurrect block authentication, showing auth failure reason. [#41](https://github.com/Sorcery/sorcery/pull/41)
 * Add github scope option to initializer.rb [#50](https://github.com/Sorcery/sorcery/pull/50)
 
 ## 0.10.3

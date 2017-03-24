@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.3
+
+* Revert removal of MongoID Adapter (breaks Sorcery for MongoID users until separate gem is created)
+
 ## 0.10.2
 
 * Added support for Microsoft OAuth (thanks to @athix) [#37](https://github.com/Sorcery/sorcery/pull/37)

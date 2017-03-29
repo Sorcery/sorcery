@@ -2,14 +2,11 @@
 ## HEAD
 * Resurrect block authentication, showing auth failure reason. [#41](https://github.com/Sorcery/sorcery/pull/41)
 * Add github scope option to initializer.rb [#50](https://github.com/Sorcery/sorcery/pull/50)
+* Add new function: `build_from` (allows building a user instance from OAuth without saving)
 
 ## 0.10.3
 
 * Revert removal of MongoID Adapter (breaks Sorcery for MongoID users until separate gem is created) [#45](https://github.com/Sorcery/sorcery/pull/45)
-
-## 0.10.3
-
-* Add new function: `build_from` (allows building a user instance from OAuth without saving)
 
 ## 0.10.2
 

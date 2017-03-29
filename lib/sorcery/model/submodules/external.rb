@@ -76,7 +76,7 @@ module Sorcery
 
           # NOTE: Should this build the authentication as well and return [user, auth]?
           # Currently, users call this function for the user and call add_provider_to_user after saving
-          def build_from_provider(provider, uid, attrs)
+          def build_from_provider(_provider, uid, attrs)
             user = new
             attrs.each do |k, v|
               user.send(:"#{k}=", v)

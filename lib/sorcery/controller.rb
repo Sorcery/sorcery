@@ -30,8 +30,16 @@ module Sorcery
       # Runs hooks after login or failed login.
       def login(*credentials)
         @current_user = nil
-        user = user_class.authenticate(*credentials)
-        if user
+
+        user_class.authenticate(*credentials) do |user, failure_reason|
+          if failure_reason
+            after_failed_login!(credentials)
+
+            yield(user, failure_reason) if block_given?
+
+            return
+          end
+
           old_session = session.dup.to_hash
           reset_sorcery_session
           old_session.each_pair do |k, v|
@@ -41,10 +49,8 @@ module Sorcery
 
           auto_login(user)
           after_login!(user, credentials)
-          current_user
-        else
-          after_failed_login!(credentials)
-          nil
+
+          block_given? ? yield(current_user, nil) : current_user
         end
       end
 

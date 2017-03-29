@@ -128,6 +128,71 @@ shared_examples_for 'rails_3_reset_password_model' do
       expect(User.load_from_reset_password_token('')).to be_nil
     end
 
+    describe '#load_from_reset_password_token' do
+      context 'in block mode' do
+        it 'yields user when token is found' do
+          user.generate_reset_password_token!
+          updated_user = User.sorcery_adapter.find(user.id)
+
+          User.load_from_reset_password_token(user.reset_password_token) do |user2, failure|
+            expect(user2).to eq updated_user
+            expect(failure).to be_nil
+          end
+        end
+
+        it 'does NOT yield user when token is NOT found' do
+          user.generate_reset_password_token!
+
+          User.load_from_reset_password_token('a') do |user2, failure|
+            expect(user2).to be_nil
+            expect(failure).to eq :user_not_found
+          end
+        end
+
+        it 'yields user when token is found and not expired' do
+          sorcery_model_property_set(:reset_password_expiration_period, 500)
+          user.generate_reset_password_token!
+          updated_user = User.sorcery_adapter.find(user.id)
+
+          User.load_from_reset_password_token(user.reset_password_token) do |user2, failure|
+            expect(user2).to eq updated_user
+            expect(failure).to be_nil
+          end
+        end
+
+        it 'yields user and failure reason when token is found and expired' do
+          sorcery_model_property_set(:reset_password_expiration_period, 0.1)
+          user.generate_reset_password_token!
+          Timecop.travel(Time.now.in_time_zone + 0.5)
+
+          User.load_from_reset_password_token(user.reset_password_token) do |user2, failure|
+            expect(user2).to eq user
+            expect(failure).to eq :token_expired
+          end
+        end
+
+        it 'is always valid if expiration period is nil' do
+          sorcery_model_property_set(:reset_password_expiration_period, nil)
+          user.generate_reset_password_token!
+          updated_user = User.sorcery_adapter.find(user.id)
+
+          User.load_from_reset_password_token(user.reset_password_token) do |user2, failure|
+            expect(user2).to eq updated_user
+            expect(failure).to be_nil
+          end
+        end
+
+        it 'returns nil if token is blank' do
+          [nil, ''].each do |token|
+            User.load_from_reset_password_token(token) do |user2, failure|
+              expect(user2).to be_nil
+              expect(failure).to eq :invalid_token
+            end
+          end
+        end
+      end
+    end
+
     it "'deliver_reset_password_instructions!' generates a reset_password_token" do
       expect(user.reset_password_token).to be_nil
 

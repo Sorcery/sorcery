@@ -80,10 +80,12 @@ module Sorcery
       # Takes a username and password,
       # Finds the user by the username and compares the user's password to the one supplied to the method.
       # returns the user if success, nil otherwise.
-      def authenticate(*credentials)
+      def authenticate(*credentials, &block)
         raise ArgumentError, 'at least 2 arguments required' if credentials.size < 2
 
-        return false if credentials[0].blank?
+        if credentials[0].blank?
+          return authentication_response(return_value: false, failure: :invalid_login, &block)
+        end
 
         if @sorcery_config.downcase_username_before_authenticating
           credentials[0].downcase!
@@ -91,13 +93,29 @@ module Sorcery
 
         user = sorcery_adapter.find_by_credentials(credentials)
 
-        if user.respond_to?(:active_for_authentication?)
-          return nil unless user.active_for_authentication?
+        unless user
+          return authentication_response(failure: :invalid_login, &block)
         end
 
         set_encryption_attributes
 
-        user if user && @sorcery_config.before_authenticate.all? { |c| user.send(c) } && user.valid_password?(credentials[1])
+        unless user.valid_password?(credentials[1])
+          return authentication_response(user: user, failure: :invalid_password, &block)
+        end
+
+        if user.respond_to?(:active_for_authentication?) && !user.active_for_authentication?
+          return authentication_response(user: user, failure: :inactive, &block)
+        end
+
+        @sorcery_config.before_authenticate.each do |callback|
+          success, reason = user.send(callback)
+
+          unless success
+            return authentication_response(user: user, failure: reason, &block)
+          end
+        end
+
+        authentication_response(user: user, return_value: user, &block)
       end
 
       # encrypt tokens using current encryption_provider.
@@ -111,6 +129,12 @@ module Sorcery
       end
 
       protected
+
+      def authentication_response(options = {})
+        yield(options[:user], options[:failure]) if block_given?
+
+        options[:return_value]
+      end
 
       def set_encryption_attributes
         @sorcery_config.encryption_provider.stretches = @sorcery_config.stretches if @sorcery_config.encryption_provider.respond_to?(:stretches) && @sorcery_config.stretches

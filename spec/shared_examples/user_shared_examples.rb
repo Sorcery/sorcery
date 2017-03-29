@@ -146,6 +146,31 @@ shared_examples_for 'rails_3_core_model' do
           expect(User.authenticate(user.email, 'secret')).to be_nil
         end
       end
+
+      context 'in block mode' do
+        it 'yields the user if credentials are good' do
+          User.authenticate(user.email, 'secret') do |user2, failure|
+            expect(user2).to eq user
+            expect(failure).to be_nil
+          end
+        end
+
+        it 'yields the user and proper error if credentials are bad' do
+          User.authenticate(user.email, 'wrong!') do |user2, failure|
+            expect(user2).to eq user
+            expect(failure).to eq :invalid_password
+          end
+        end
+
+        it 'yields the proper error if no user exists' do
+          [nil, '', 'not@a.user'].each do |email|
+            User.authenticate(email, 'wrong!') do |user2, failure|
+              expect(user2).to be_nil
+              expect(failure).to eq :invalid_login
+            end
+          end
+        end
+      end
     end
 
     specify { expect(User).to respond_to(:encrypt) }

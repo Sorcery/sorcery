@@ -9,9 +9,9 @@ module Sorcery
     class Facebook < Base
       include Protocols::Oauth2
 
-      attr_reader   :mode, :param_name, :parse
+      attr_reader   :mode, :param_name
       attr_accessor :access_permissions, :display, :scope, :token_url,
-                    :user_info_path, :auth_path, :api_version
+                    :user_info_path, :auth_path, :api_version, :parse
 
       def initialize
         super
@@ -24,7 +24,7 @@ module Sorcery
         @token_url      = 'oauth/access_token'
         @auth_path      = 'dialog/oauth'
         @mode           = :query
-        @parse          = :query
+        @parse          = :json
         @param_name     = 'access_token'
       end
 

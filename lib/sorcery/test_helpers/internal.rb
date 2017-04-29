@@ -67,7 +67,7 @@ module Sorcery
       # reload user class between specs
       # so it will be possible to test the different submodules in isolation
       def reload_user_class
-        Object.send(:remove_const, 'User')
+        User && Object.send(:remove_const, 'User')
         load 'user.rb'
         if User.respond_to?(:reset_column_information)
           User.reset_column_information

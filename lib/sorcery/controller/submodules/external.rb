@@ -193,7 +193,7 @@ module Sorcery
             config = user_class.sorcery_config
 
             attrs = user_attrs(@provider.user_info_mapping, @user_hash)
-            @user = user_class.build_from_provider(provider_name, @user_hash[:uid], attrs, &block)
+            @user = user_class.build_from_provider(attrs, &block)
           end
 
           def user_attrs(user_info_mapping, user_hash)

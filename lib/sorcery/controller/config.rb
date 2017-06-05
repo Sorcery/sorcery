@@ -18,6 +18,7 @@ module Sorcery
         attr_accessor :after_failed_login
         attr_accessor :before_logout
         attr_accessor :after_logout
+        attr_accessor :jwt_user_params
 
         def init!
           @defaults = {
@@ -30,7 +31,8 @@ module Sorcery
             :@before_logout                        => [],
             :@after_logout                         => [],
             :@save_return_to_url                   => true,
-            :@cookie_domain                        => nil
+            :@cookie_domain                        => nil,
+            :@jwt_user_params                      => [:id]
           }
         end
 

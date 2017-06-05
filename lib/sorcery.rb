@@ -32,6 +32,7 @@ module Sorcery
       require 'sorcery/controller/submodules/http_basic_auth'
       require 'sorcery/controller/submodules/activity_logging'
       require 'sorcery/controller/submodules/external'
+      require 'sorcery/controller/submodules/jwt_auth'
     end
   end
 

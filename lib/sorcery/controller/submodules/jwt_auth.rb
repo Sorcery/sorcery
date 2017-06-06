@@ -13,7 +13,8 @@ module Sorcery
               user_params = Config.jwt_user_params.each_with_object({}) do |val, acc|
                 acc[val] = user.public_send(val)
               end
-              jwt_encode(user_params)
+              { Config.jwt_user_data_key => user_params,
+                Config.jwt_auth_token_key => jwt_encode(user_params) }
             end
           end
 
@@ -22,28 +23,11 @@ module Sorcery
           end
 
           def authenticate_request!
-            not_authenticated && return unless user_id?
+            not_authenticated && return unless user_id
 
             @current_user = User.find(user_id)
           rescue JWT::VerificationError, JWT::DecodeError
             not_authenticated && return
-          end
-
-          def http_token
-            @http_token ||= request.headers['Authorization']&.split(' ')&.last
-          end
-
-          def auth_token
-            @auth_token ||= jwt_decode(http_token)
-          end
-
-          def user_id
-            return if auth_token[:id].blank?
-            auth_token[:id].to_i
-          end
-
-          def user_id?
-            http_token && auth_token && user_id
           end
 
           def jwt_encode(payload)
@@ -54,11 +38,21 @@ module Sorcery
             HashWithIndifferentAccess.new(
               JWT.decode(token, Rails.application.secrets.secret_key_base)[0]
             )
-          rescue JWT::DecodeError => e
-            e
+          rescue JWT::DecodeError
+            nil
           end
 
-          attr_reader :current_user
+          def jwt_from_header
+            @header_token ||= request.headers[Config.jwt_headers_key]
+          end
+
+          def user_data(token = jwt_from_header)
+            @user_data ||= jwt_decode(token)
+          end
+
+          def user_id
+            user_data.try(:[], :id)
+          end
         end
       end
     end

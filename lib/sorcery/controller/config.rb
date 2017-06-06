@@ -19,6 +19,12 @@ module Sorcery
         attr_accessor :before_logout
         attr_accessor :after_logout
         attr_accessor :jwt_user_params
+        attr_accessor :jwt_headers_key
+        attr_accessor :jwt_user_data_key
+        attr_accessor :jwt_auth_token_key
+        # If true, will set user by request to db.
+        # If false will use data from jwt_user_params without executing db requests.
+        attr_accessor :jwt_set_user
 
         def init!
           @defaults = {
@@ -32,7 +38,11 @@ module Sorcery
             :@after_logout                         => [],
             :@save_return_to_url                   => true,
             :@cookie_domain                        => nil,
-            :@jwt_user_params                      => [:id]
+            :@jwt_user_params                      => [:id],
+            :@jwt_headers_key                      => 'Authorization',
+            :@jwt_user_data_key                    => :user_data,
+            :@jwt_auth_token_key                   => :auth_token,
+            :@jwt_set_user                         => true
           }
         end
 

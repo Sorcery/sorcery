@@ -21,7 +21,7 @@ module Sorcery
           def jwt_require_auth
             jwt_not_authenticated && return unless jwt_user_id
 
-            @current_user = User.find jwt_user_id
+            @current_user = Config.jwt_set_user ? User.find(jwt_user_id) : jwt_user_data
           rescue JWT::VerificationError, JWT::DecodeError
             jwt_not_authenticated && return
           end

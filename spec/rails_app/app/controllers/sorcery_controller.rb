@@ -5,6 +5,7 @@ class SorceryController < ActionController::Base
 
   before_action :require_login_from_http_basic, only: [:test_http_basic_auth]
   before_action :require_login, only: [:test_logout, :test_logout_with_force_forget_me, :test_should_be_logged_in, :some_action]
+  before_action :require_jwt_auth, only: [:some_action_jwt]
 
   def index; end
 
@@ -366,5 +367,14 @@ class SorceryController < ActionController::Base
     else
       redirect_to 'blu', alert: 'Failed!'
     end
+  end
+
+  def test_jwt_auth
+    @token = login_for_jwt(params[:email], params[:password])
+    head :ok
+  end
+
+  def some_action_jwt
+    head :ok
   end
 end

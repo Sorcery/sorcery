@@ -23,11 +23,11 @@ module Sorcery
           end
 
           def authenticate_request!
-            not_authenticated && return unless user_id
+            jwt_not_authenticated && return unless user_id
 
             @current_user = User.find(user_id)
           rescue JWT::VerificationError, JWT::DecodeError
-            not_authenticated && return
+            jwt_not_authenticated && return
           end
 
           def jwt_encode(payload)
@@ -52,6 +52,13 @@ module Sorcery
 
           def user_id
             user_data.try(:[], :id)
+          end
+
+          def jwt_not_authenticated
+            respond_to do |format|
+              format.html { not_authenticated }
+              format.json { render json: { status: 401 }, status: 401 }
+            end
           end
         end
       end

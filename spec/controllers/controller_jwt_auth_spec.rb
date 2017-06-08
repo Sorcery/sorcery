@@ -8,7 +8,7 @@ describe SorceryController, type: :controller do
       sorcery_reload!([:jwt_auth])
     end
 
-    describe '#login_for_jwt' do
+    describe '#jwt_login' do
       context 'when success' do
         let(:user_email) { 'test@test.test' }
         let(:user_password) { 'testpass' }

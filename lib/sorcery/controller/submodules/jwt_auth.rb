@@ -7,7 +7,7 @@ module Sorcery
         end
 
         module InstanceMethods
-          def login_for_jwt(*credentials)
+          def jwt_login(*credentials)
             user = user_class.authenticate(*credentials)
             if user
               user_params = Config.jwt_user_params.each_with_object({}) do |val, acc|
@@ -18,14 +18,10 @@ module Sorcery
             end
           end
 
-          def require_jwt_auth
-            authenticate_request!
-          end
+          def jwt_require_auth
+            jwt_not_authenticated && return unless jwt_user_id
 
-          def authenticate_request!
-            jwt_not_authenticated && return unless user_id
-
-            @current_user = User.find(user_id)
+            @current_user = User.find jwt_user_id
           rescue JWT::VerificationError, JWT::DecodeError
             jwt_not_authenticated && return
           end
@@ -43,15 +39,15 @@ module Sorcery
           end
 
           def jwt_from_header
-            @header_token ||= request.headers[Config.jwt_headers_key]
+            @jwt_header_token ||= request.headers[Config.jwt_headers_key]
           end
 
-          def user_data(token = jwt_from_header)
-            @user_data ||= jwt_decode(token)
+          def jwt_user_data(token = jwt_from_header)
+            @jwt_user_data ||= jwt_decode(token)
           end
 
-          def user_id
-            user_data.try(:[], :id)
+          def jwt_user_id
+            jwt_user_data.try(:[], :id)
           end
 
           def jwt_not_authenticated

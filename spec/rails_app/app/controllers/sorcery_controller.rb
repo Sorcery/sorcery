@@ -5,7 +5,7 @@ class SorceryController < ActionController::Base
 
   before_action :require_login_from_http_basic, only: [:test_http_basic_auth]
   before_action :require_login, only: [:test_logout, :test_logout_with_force_forget_me, :test_should_be_logged_in, :some_action]
-  before_action :require_jwt_auth, only: [:some_action_jwt]
+  before_action :jwt_require_auth, only: [:some_action_jwt]
 
   def index; end
 
@@ -370,7 +370,7 @@ class SorceryController < ActionController::Base
   end
 
   def test_jwt_auth
-    @token = login_for_jwt(params[:email], params[:password])
+    @token = jwt_login(params[:email], params[:password])
     head :ok
   end
 

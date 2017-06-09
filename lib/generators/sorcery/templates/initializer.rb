@@ -469,6 +469,11 @@ Rails.application.config.sorcery.configure do |config|
     # Default: true
     #
     # config.jwt_set_user =
+
+    #
+    # Default: nil
+    #
+    # config.jwt_secret_key = '<%= SecureRandom.hex(64) %>'
   end
 
   # This line must come after the 'user config' block.

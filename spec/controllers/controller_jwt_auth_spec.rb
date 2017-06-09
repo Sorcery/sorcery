@@ -15,7 +15,7 @@ describe SorceryController, type: :controller do
         let(:response_data) do
           {
             user_data: { id: user.id },
-            auth_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDJ9.mAd7vnXsLOwacr2AbfDAG6S0C-3pBHPrdYIoevtVRsw'
+            auth_token: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDJ9.rrjj-sXvbIjT8y4MLGb88Cv7XvfpJXj-HEgaBimT_-0'
           }
         end
 

@@ -27,12 +27,12 @@ module Sorcery
           end
 
           def jwt_encode(payload)
-            JWT.encode(payload, Rails.application.secrets.secret_key_base)
+            JWT.encode(payload, Config.jwt_secret_key)
           end
 
           def jwt_decode(token)
             HashWithIndifferentAccess.new(
-              JWT.decode(token, Rails.application.secrets.secret_key_base)[0]
+              JWT.decode(token, Config.jwt_secret_key)[0]
             )
           rescue JWT::DecodeError
             nil

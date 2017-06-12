@@ -445,32 +445,32 @@ Rails.application.config.sorcery.configure do |config|
 
     # -- jwt_auth --
 
-    #
+    # Parameters passed for generating payload part of token
     # Default: [:id]
     #
     # config.jwt_user_params =
 
-    #
+    # Header name which will parsed
     # Default: `Authorization`
     #
     # config.jwt_headers_key =
 
-    #
+    # Key on which returned user data
     # Default: :user_data
     #
     # config.jwt_user_data_key =
 
-    #
+    # Key on which returned token
     # Default: :auth_token
     #
     # config.jwt_auth_token_key =
 
-    #
+    # A flag that specifies whether to perform a database query to set the current_user
     # Default: true
     #
     # config.jwt_set_user =
 
-    #
+    # Secret key for token generation
     # Default: nil
     #
     # config.jwt_secret_key = '<%= SecureRandom.hex(64) %>'

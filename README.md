@@ -209,9 +209,6 @@ Have an idea? Let us know, and it might get into the gem!
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/Sorcery/sorcery.
 
-If you feel sorcery has made your life easier, and you would like to express
-your thanks via a donation, my PayPal email is in the contact details.
-
 ## Contact
 
 Feel free to ask questions using these contact details:

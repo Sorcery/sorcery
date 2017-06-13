@@ -22,6 +22,18 @@ Sorcery is a stripped-down, bare-bones authentication library, with which you ca
 - Configuration over Confusion - Centralized (1 file), Simple & short configuration as possible, not drowning in syntactic sugar.
 - Keep MVC cleanly separated - DB is for models, sessions are for controllers. Models stay unaware of sessions.
 
+## Table of Contents
+
+1. [Useful Links](#useful-links)
+2. [API Summary](#api-summary)
+3. [Installation](#installation)
+4. [Configuration](#configuration)
+5. [Full Features List by Module](#full-features-list-by-module)
+6. [Planned Features](#planned-features)
+7. [Contributing](#contributing)
+8. [Contact](#contact)
+9. [License](#license)
+
 ## Useful Links
 
 - [Documentation](http://rubydoc.info/gems/sorcery)

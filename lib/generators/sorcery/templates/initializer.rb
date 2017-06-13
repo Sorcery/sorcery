@@ -250,6 +250,12 @@ Rails.application.config.sorcery.configure do |config|
     #
     # user.subclasses_inherit_config =
 
+    # Set token randomness.
+    # The length of the result string is about 4/3 of `token_randomness`.
+    # Default: `15`
+    #
+    # user.token_randomness =
+
     # -- remember_me --
     # How long in seconds the session length will be
     # Default: `604800`

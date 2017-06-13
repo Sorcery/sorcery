@@ -82,7 +82,7 @@ require_login_from_http_basic # This is a before action
 login_at(provider) # Sends the user to an external service (Facebook, Twitter, etc.) to authenticate
 login_from(provider) # Tries to login from the external provider's callback
 create_from(provider) # Create the user in the local app database
-build_from(provider) # Build user instance using info field mappings
+build_from(provider) # Build user instance using user_info_mappings
 ```
 
 ### Remember Me

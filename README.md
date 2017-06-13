@@ -222,6 +222,9 @@ Have an idea? Let us know, and it might get into the gem!
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/Sorcery/sorcery.
 
+- [Git Workflow](https://github.com/Sorcery/sorcery/wiki/Git-Workflow)
+- [Running the specs](https://github.com/Sorcery/sorcery/wiki/Running-the-specs)
+
 ## Contact
 
 Feel free to ask questions using these contact details:

@@ -216,9 +216,16 @@ your thanks via a donation, my PayPal email is in the contact details.
 
 Feel free to ask questions using these contact details:
 
-- Noam Ben-Ari: [nbenari@gmail.com](mailto:nbenari@gmail.com) (also PayPal), [Twitter](https://twitter.com/nbenari)
-- Kir Shatrov: [shatrov@me.com](mailto:shatrov@me.com), [Twitter](https://twitter.com/Kiiiir)
-- Grzegorz Witek: [arnvald.to@gmail.com](mailto:arnvald.to@gmail.com), [Twitter](https://twitter.com/arnvald)
+**Current Maintainers:**
+
+- Chase Gilliam (@Ch4s3) | [Email](mailto:chase.gilliam@gmail.com)
+- Josh Buker (@athix) | [Email](mailto:jbuker@aeonsplice.com)
+
+**Past Maintainers:**
+
+- Noam Ben-Ari (@NoamB) | [Email](mailto:nbenari@gmail.com) | [Twitter](https://twitter.com/nbenari)
+- Kir Shatrov (@kirs) | [Email](mailto:shatrov@me.com) | [Twitter](https://twitter.com/Kiiiir)
+- Grzegorz Witek (@arnvald) | [Email](mailto:arnvald.to@gmail.com) | [Twitter](https://twitter.com/arnvald)
 
 ## License
 

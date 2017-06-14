@@ -64,10 +64,24 @@ describe SorceryController, type: :controller do
         let(:user_email) { 'test@test.test' }
         let(:user_password) { 'testpass' }
 
-        it 'does return 401' do
-          get :some_action_jwt, format: :json
+        context 'without auth header' do
+          it 'does return 401' do
+            get :some_action_jwt, format: :json
 
-          expect(response.status).to eq(401)
+            expect(response.status).to eq(401)
+          end
+        end
+
+        context 'with incorrect auth header' do
+          let(:incorrect_header) { '123.123.123' }
+
+          it 'does return 401' do
+            request.headers.merge! Authorization: incorrect_header
+
+            get :some_action_jwt, format: :json
+
+            expect(response.status).to eq(401)
+          end
         end
       end
     end

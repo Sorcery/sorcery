@@ -370,7 +370,7 @@ class SorceryController < ActionController::Base
   end
 
   def test_jwt_auth
-    @token = jwt_login(params[:email], params[:password])
+    @token = jwt_auth(params[:email], params[:password])
     head :ok
   end
 

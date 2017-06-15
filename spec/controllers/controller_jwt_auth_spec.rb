@@ -18,7 +18,7 @@ describe SorceryController, type: :controller do
       sorcery_reload!([:jwt_auth])
     end
 
-    describe '#jwt_login' do
+    describe '#jwt_auth' do
       context 'when success' do
         before do
           allow(User).to receive(:authenticate).with(user_email, user_password).and_return(user)

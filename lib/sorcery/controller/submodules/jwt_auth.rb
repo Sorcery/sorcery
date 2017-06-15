@@ -8,7 +8,7 @@ module Sorcery
 
         module InstanceMethods
           # This method return generated token if user can be authenticated
-          def jwt_login(*credentials)
+          def jwt_auth(*credentials)
             user = user_class.authenticate(*credentials)
             if user
               user_params = Config.jwt_user_params.each_with_object({}) do |val, acc|

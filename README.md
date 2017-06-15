@@ -72,6 +72,20 @@ login_from(provider) # Tries to login from the external provider's callback
 create_from(provider) # Create the user in the local app database
 ```
 
+### JWT authentication
+
+```ruby
+jwt_require_auth # This is a before action
+jwt_auth(email, password) # => return json web token
+jwt_encode # This method creating JWT token by payload
+jwt_decode # This method decoding JWT token
+jwt_from_header # Take token from header, by key defined in config
+jwt_user_data(token = jwt_from_header) # Return user data which decoded from token
+jwt_user_id # Return user id from user data if id present.
+jwt_not_authenticated # This method called if user not authenticated
+
+```
+
 ### Remember Me
 
 ```ruby

@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Add facebook user_info_path option to initializer.rb [#63](https://github.com/Sorcery/sorcery/pull/63)
+
 ## 0.11.0
 
 * Refer to User before calling remove_const to avoid NameError [#58](https://github.com/Sorcery/sorcery/pull/58)

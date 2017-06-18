@@ -3,7 +3,7 @@ module Sorcery
     module Submodules
       module JwtAuth
         def self.included(base)
-          base.include(InstanceMethods)
+          base.send(:include, InstanceMethods)
         end
 
         module InstanceMethods

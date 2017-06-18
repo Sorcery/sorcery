@@ -2,6 +2,9 @@ require 'spec_helper'
 
 describe SorceryController, type: :controller do
   let!(:user) { double('user', id: 42) }
+  before(:each) do
+    request.env['HTTP_ACCEPT'] = "application/json" if ::Rails.version < '5.0.0'
+  end
 
   describe 'with jwt auth features' do
     let(:user_email) { 'test@test.test' }

@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Add configuration for token randomness [#67](https://github.com/Sorcery/sorcery/pull/67)
+
 ## 0.11.0
 
 * Refer to User before calling remove_const to avoid NameError [#58](https://github.com/Sorcery/sorcery/pull/58)

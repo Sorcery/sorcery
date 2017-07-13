@@ -29,6 +29,12 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.remember_me_httponly =
 
+  # Set token randomness. (e.g. user activation tokens)
+  # The length of the result string is about 4/3 of `token_randomness`.
+  # Default: `15`
+  #
+  # config.token_randomness =
+
   # -- session timeout --
   # How long in seconds to keep the session alive.
   # Default: `3600`
@@ -249,12 +255,6 @@ Rails.application.config.sorcery.configure do |config|
     # Default: `false`
     #
     # user.subclasses_inherit_config =
-
-    # Set token randomness.
-    # The length of the result string is about 4/3 of `token_randomness`.
-    # Default: `15`
-    #
-    # user.token_randomness =
 
     # -- remember_me --
     # How long in seconds the session length will be

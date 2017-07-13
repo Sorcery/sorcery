@@ -22,6 +22,18 @@ Sorcery is a stripped-down, bare-bones authentication library, with which you ca
 - Configuration over Confusion - Centralized (1 file), Simple & short configuration as possible, not drowning in syntactic sugar.
 - Keep MVC cleanly separated - DB is for models, sessions are for controllers. Models stay unaware of sessions.
 
+## Table of Contents
+
+1. [Useful Links](#useful-links)
+2. [API Summary](#api-summary)
+3. [Installation](#installation)
+4. [Configuration](#configuration)
+5. [Full Features List by Module](#full-features-list-by-module)
+6. [Planned Features](#planned-features)
+7. [Contributing](#contributing)
+8. [Contact](#contact)
+9. [License](#license)
+
 ## Useful Links
 
 - [Documentation](http://rubydoc.info/gems/sorcery)
@@ -70,6 +82,7 @@ require_login_from_http_basic # This is a before action
 login_at(provider) # Sends the user to an external service (Facebook, Twitter, etc.) to authenticate
 login_from(provider) # Tries to login from the external provider's callback
 create_from(provider) # Create the user in the local app database
+build_from(provider) # Build user instance using user_info_mappings
 ```
 
 ### Remember Me
@@ -209,16 +222,23 @@ Have an idea? Let us know, and it might get into the gem!
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/Sorcery/sorcery.
 
-If you feel sorcery has made your life easier, and you would like to express
-your thanks via a donation, my PayPal email is in the contact details.
+- [Git Workflow](https://github.com/Sorcery/sorcery/wiki/Git-Workflow)
+- [Running the specs](https://github.com/Sorcery/sorcery/wiki/Running-the-specs)
 
 ## Contact
 
 Feel free to ask questions using these contact details:
 
-- Noam Ben-Ari: [nbenari@gmail.com](mailto:nbenari@gmail.com) (also PayPal), [Twitter](https://twitter.com/nbenari)
-- Kir Shatrov: [shatrov@me.com](mailto:shatrov@me.com), [Twitter](https://twitter.com/Kiiiir)
-- Grzegorz Witek: [arnvald.to@gmail.com](mailto:arnvald.to@gmail.com), [Twitter](https://twitter.com/arnvald)
+**Current Maintainers:**
+
+- Chase Gilliam ([@Ch4s3](https://github.com/Ch4s3)) | [Email](mailto:chase.gilliam@gmail.com)
+- Josh Buker ([@athix](https://github.com/athix)) | [Email](mailto:jbuker@aeonsplice.com)
+
+**Past Maintainers:**
+
+- Noam Ben-Ari ([@NoamB](https://github.com/NoamB)) | [Email](mailto:nbenari@gmail.com) | [Twitter](https://twitter.com/nbenari)
+- Kir Shatrov ([@kirs](https://github.com/kirs)) | [Email](mailto:shatrov@me.com) | [Twitter](https://twitter.com/Kiiiir)
+- Grzegorz Witek ([@arnvald](https://github.com/arnvald)) | [Email](mailto:arnvald.to@gmail.com) | [Twitter](https://twitter.com/arnvald)
 
 ## License
 

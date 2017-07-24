@@ -8,6 +8,7 @@
 * Refer to User before calling remove_const to avoid NameError [#58](https://github.com/Sorcery/sorcery/pull/58)
 * Resurrect block authentication, showing auth failure reason. [#41](https://github.com/Sorcery/sorcery/pull/41)
 * Add github scope option to initializer.rb [#50](https://github.com/Sorcery/sorcery/pull/50)
+* Fix Facebook being broken due to API deprecation [#53](https://github.com/Sorcery/sorcery/pull/53)
 
 ## 0.10.3
 

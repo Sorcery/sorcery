@@ -1,12 +1,15 @@
 # Changelog
 ## HEAD
 
+* Add facebook user_info_path option to initializer.rb [#63](https://github.com/Sorcery/sorcery/pull/63)
+* Add new function: `build_from` (allows building a user instance from OAuth without saving)
+
 ## 0.11.0
 
 * Refer to User before calling remove_const to avoid NameError [#58](https://github.com/Sorcery/sorcery/pull/58)
 * Resurrect block authentication, showing auth failure reason. [#41](https://github.com/Sorcery/sorcery/pull/41)
 * Add github scope option to initializer.rb [#50](https://github.com/Sorcery/sorcery/pull/50)
-* Add new function: `build_from` (allows building a user instance from OAuth without saving)
+* Fix Facebook being broken due to API deprecation [#53](https://github.com/Sorcery/sorcery/pull/53)
 
 ## 0.10.3
 

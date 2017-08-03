@@ -1,6 +1,7 @@
 # Changelog
 ## HEAD
 
+* Add configuration for token randomness [#67](https://github.com/Sorcery/sorcery/pull/67)
 * Add facebook user_info_path option to initializer.rb [#63](https://github.com/Sorcery/sorcery/pull/63)
 
 ## 0.11.0

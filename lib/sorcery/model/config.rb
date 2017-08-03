@@ -35,6 +35,8 @@ module Sorcery
       attr_accessor :email_delivery_method
       # an array of method names to call after configuration by user. used internally.
       attr_accessor :after_config
+      # Set token randomness
+      attr_accessor :token_randomness
 
       # change default encryption_provider.
       attr_reader :encryption_provider
@@ -61,7 +63,8 @@ module Sorcery
           :@subclasses_inherit_config            => false,
           :@before_authenticate                  => [],
           :@after_config                         => [],
-          :@email_delivery_method                => default_email_delivery_method
+          :@email_delivery_method                => default_email_delivery_method,
+          :@token_randomness                     => 15
         }
         reset!
       end

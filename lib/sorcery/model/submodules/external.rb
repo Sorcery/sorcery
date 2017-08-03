@@ -73,6 +73,21 @@ module Sorcery
             end
             user
           end
+
+          # NOTE: Should this build the authentication as well and return [user, auth]?
+          # Currently, users call this function for the user and call add_provider_to_user after saving
+          def build_from_provider(attrs)
+            user = new
+            attrs.each do |k, v|
+              user.send(:"#{k}=", v)
+            end
+
+            if block_given?
+              return false unless yield user
+            end
+
+            user
+          end
         end
 
         module InstanceMethods

@@ -119,7 +119,7 @@ module Sorcery
       end
 
       # encrypt tokens using current encryption_provider.
-      def encrypt(*tokens)
+      def sorcery_encrypt(*tokens)
         return tokens.first if @sorcery_config.encryption_provider.nil?
 
         set_encryption_attributes
@@ -185,7 +185,7 @@ module Sorcery
       def encrypt_password
         config = sorcery_config
         send(:"#{config.salt_attribute_name}=", new_salt = TemporaryToken.generate_random_token) unless config.salt_attribute_name.nil?
-        send(:"#{config.crypted_password_attribute_name}=", self.class.encrypt(send(config.password_attribute_name), new_salt))
+        send(:"#{config.crypted_password_attribute_name}=", self.class.sorcery_encrypt(send(config.password_attribute_name), new_salt))
       end
 
       def clear_virtual_password

@@ -1,8 +1,6 @@
 language: ruby
 rvm:
   - jruby
-  - 2.0.0
-  - 2.1.10
   - 2.2.6
   - 2.3.3
   - 2.4.0
@@ -29,15 +27,6 @@ matrix:
     - rvm: jruby
 
   exclude:
-    - rvm: 2.0.0
-      gemfile: gemfiles/active_record-rails42.gemfile
-
-    - rvm: 2.0.0
-      gemfile: Gemfile
-
-    - rvm: 2.1.10
-      gemfile: Gemfile
-
     - rvm: 2.2.6
       gemfile: gemfiles/active_record-rails40.gemfile
 

@@ -2,7 +2,7 @@
 ## HEAD
 
 * Add facebook user_info_path option to initializer.rb [#63](https://github.com/Sorcery/sorcery/pull/63)
-* Add new function: `build_from` (allows building a user instance from OAuth without saving)
+* Add new function: `build_from` (allows building a user instance from OAuth without saving) [#54](https://github.com/Sorcery/sorcery/pull/54)
 
 ## 0.11.0
 

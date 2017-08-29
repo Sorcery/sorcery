@@ -193,6 +193,10 @@ Rails.application.config.sorcery.configure do |config|
   # config.salesforce.scope = "full"
   # config.salesforce.user_info_mapping = {:email => "email"}
 
+  # config.line.key = ""
+  # config.line.secret = ""
+  # config.line.callback_url = "http://mydomain.com:3000/oauth/callback?provider=line"
+
   # --- user config ---
   config.user_config do |user|
     # -- core --

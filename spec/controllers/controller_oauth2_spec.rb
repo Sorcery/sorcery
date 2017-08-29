@@ -151,7 +151,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(flash[:notice]).to eq 'Success!'
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft].each do |provider|
+    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :line].each do |provider|
       describe "with #{provider}" do
         it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
@@ -201,7 +201,7 @@ describe SorceryController, active_record: true, type: :controller do
       end
 
       sorcery_reload!([:user_activation,:external], :user_activation_mailer => ::SorceryMailer)
-      sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft])
+      sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :line])
 
       # TODO: refactor
       sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")

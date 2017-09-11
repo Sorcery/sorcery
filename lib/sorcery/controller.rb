@@ -155,6 +155,8 @@ module Sorcery
 
       def user_class
         @user_class ||= Config.user_class.to_s.constantize
+      rescue NameError
+        raise ArgumentError, 'You define wrong user_class or forgot to define it in intitializer file (config.user_class = \'User\').'
       end
     end
   end

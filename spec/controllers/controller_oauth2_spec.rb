@@ -151,7 +151,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(flash[:notice]).to eq 'Success!'
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :line].each do |provider|
+    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft].each do |provider|
       describe "with #{provider}" do
         it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
@@ -462,8 +462,7 @@ describe SorceryController, active_record: true, type: :controller do
       salesforce: "https://login.salesforce.com/services/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.salesforce.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope#{'=' + ::Sorcery::Controller::Config.salesforce.scope unless ::Sorcery::Controller::Config.salesforce.scope.nil?}&state",
       slack: "https://slack.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.slack.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=identity.basic%2C+identity.email&state",
       wechat: "https://open.weixin.qq.com/connect/qrconnect?appid=#{::Sorcery::Controller::Config.wechat.key}&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=snsapi_login&state=#wechat_redirect",
-      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email+https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state",
-      line: "https://access.line.me/dialog/oauth/weblogin?client_id=#{::Sorcery::Controller::Config.line.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope&state"
+      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email+https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state"
     }[provider]
   end
 end

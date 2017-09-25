@@ -22,6 +22,7 @@ module Sorcery
           require 'sorcery/providers/paypal'
           require 'sorcery/providers/slack'
           require 'sorcery/providers/wechat'
+          require 'sorcery/providers/qq'
           require 'sorcery/providers/microsoft'
           require 'sorcery/providers/instagram'
           require 'sorcery/providers/auth0'

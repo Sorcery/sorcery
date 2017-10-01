@@ -39,7 +39,7 @@ module Sorcery
                              :@magic_login_token_expires_at_attribute_name => :magic_login_token_expires_at,
                              :@magic_login_email_sent_at_attribute_name    => :magic_login_email_sent_at,
                              :@magic_login_mailer                          => nil,
-                             :@magic_login_mailer_disabled                 => false,
+                             :@magic_login_mailer_disabled                 => true,
                              :@magic_login_email_method_name               => :magic_login_email,
                              :@magic_login_expiration_period               => 15 * 60,
                              :@magic_login_time_between_emails             => 5 * 60 )

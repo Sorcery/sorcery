@@ -381,7 +381,7 @@ Rails.application.config.sorcery.configure do |config|
     # when true sorcery will not automatically
     # email magic login details and allow you to
     # manually handle how and when email is sent
-    # Default: `false`
+    # Default: `true`
     #
     # user.magic_login_mailer_disabled =
 

@@ -33,8 +33,8 @@ shared_examples_for "magic_login_model" do
       
       it do
         TestMailerClass = Class.new # need a mailer class to test
-        sorcery_model_property_set(:magic_login_mailer, TestMailerClass)
-        expect(config.magic_login_mailer).to eq TestMailerClass
+        sorcery_model_property_set(:magic_login_mailer_class, TestMailerClass)
+        expect(config.magic_login_mailer_class).to eq TestMailerClass
       end
       
       it do

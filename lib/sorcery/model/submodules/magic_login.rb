@@ -17,7 +17,7 @@ module Sorcery
                           :magic_login_email_sent_at_attribute_name,      # when was email sent, used for hammering
                                                                              # protection.
 
-                          :magic_login_mailer,                            # mailer class. Needed.
+                          :magic_login_mailer_class,                            # mailer class. Needed.
 
                           :magic_login_mailer_disabled,                   # when true sorcery will not automatically
                                                                              # email magic login details and allow you to
@@ -38,7 +38,7 @@ module Sorcery
             @defaults.merge!(:@magic_login_token_attribute_name            => :magic_login_token,
                              :@magic_login_token_expires_at_attribute_name => :magic_login_token_expires_at,
                              :@magic_login_email_sent_at_attribute_name    => :magic_login_email_sent_at,
-                             :@magic_login_mailer                          => nil,
+                             :@magic_login_mailer_class                          => nil,
                              :@magic_login_mailer_disabled                 => true,
                              :@magic_login_email_method_name               => :magic_login_email,
                              :@magic_login_expiration_period               => 15 * 60,
@@ -70,8 +70,8 @@ module Sorcery
           # This submodule requires the developer to define his own mailer class to be used by it
           # when magic_login_mailer_disabled is false
           def validate_mailer_defined
-            msg = "To use magic_login submodule, you must define a mailer (config.magic_login_mailer = YourMailerClass)."
-            raise ArgumentError, msg if @sorcery_config.magic_login_mailer.nil? and @sorcery_config.magic_login_mailer_disabled == false
+            msg = "To use magic_login submodule, you must define a mailer (config.magic_login_mailer_class = YourMailerClass)."
+            raise ArgumentError, msg if @sorcery_config.magic_login_mailer_class.nil? and @sorcery_config.magic_login_mailer_disabled == false
           end
 
           def define_magic_login_fields
@@ -118,7 +118,7 @@ module Sorcery
           protected
 
           def send_magic_login_email!
-            generic_send_email(:magic_login_email_method_name, :magic_login_mailer)
+            generic_send_email(:magic_login_email_method_name, :magic_login_mailer_class)
           end
         end
 

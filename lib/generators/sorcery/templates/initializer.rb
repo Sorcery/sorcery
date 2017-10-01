@@ -369,7 +369,7 @@ Rails.application.config.sorcery.configure do |config|
     # mailer class. Needed.
     # Default: `nil`
     #
-    # user.magic_login_mailer =
+    # user.magic_login_mailer_class =
 
 
     # magic login email method on your mailer class.

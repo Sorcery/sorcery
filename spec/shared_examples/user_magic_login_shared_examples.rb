@@ -57,5 +57,25 @@ shared_examples_for "magic_login_model" do
         expect(config.magic_login_time_between_emails).to eq 100000000
       end
     end
+
+    describe "#generate_magic_login_token!" do
+      context "magic_login_token is nil" do
+        it do
+          token_before = user.magic_login_token
+          user.generate_magic_login_token!
+          expect(user.magic_login_token).not_to eq token_before
+          expect(user.magic_login_token_expires_at).not_to be_nil
+          expect(user.magic_login_email_sent_at).not_to be_nil
+        end
+      end
+      
+      context "magic_login_token is not nil" do
+        it "changes `user.magic_login_token`" do
+          token_before = user.magic_login_token
+          user.generate_magic_login_token!
+          expect(user.magic_login_token).not_to eq token_before
+        end
+      end
+    end
   end
 end

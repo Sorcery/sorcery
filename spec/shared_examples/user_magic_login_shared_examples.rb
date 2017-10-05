@@ -77,5 +77,17 @@ shared_examples_for "magic_login_model" do
         end
       end
     end
+    
+    describe "#clear_magic_login_token!" do
+      it "makes magic_login_token_attribute_name and magic_login_token_expires_at_attribute_name nil" do
+        user.magic_login_token = "test_token"
+        user.magic_login_token_expires_at = Time.now
+        
+        user.clear_magic_login_token!
+
+        expect(user.magic_login_token).to eq nil
+        expect(user.magic_login_token_expires_at).to eq nil
+      end
+    end
   end
 end

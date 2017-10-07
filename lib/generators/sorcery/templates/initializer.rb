@@ -126,9 +126,10 @@ Rails.application.config.sorcery.configure do |config|
   # config.wechat.secret = ""
   # config.wechat.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=wechat"
   #
-  # config.wechat.key = ""
-  # config.wechat.secret = ""
-  # config.wechat.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=qq"
+  # config.qq.key = ""
+  # config.qq.secret = ""
+  # config.qq.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=qq"
+  # config.qq.user_info_mapping = {:username => "nickname"}
   #
   # config.google.key = ""
   # config.google.secret = ""

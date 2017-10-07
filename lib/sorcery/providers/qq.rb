@@ -5,6 +5,7 @@ module Sorcery
     class Qq < Base
       include Protocols::Oauth2
 
+      attr_reader   :parse
       attr_accessor :auth_url, :scope, :token_url, :user_info_path, :openid_path
 
       def initialize
@@ -15,8 +16,8 @@ module Sorcery
         @openid_path = 'https://graph.qq.com/oauth2.0/me'
         @user_info_path = 'https://graph.qq.com/user/get_user_info'
         @token_url = 'https://graph.qq.com/oauth2.0/token'
+        @parse = :query
         @state = SecureRandom.hex(16)
-        @grant_type = 'authorization_code'
       end
 
       def authorize_url(options = {})
@@ -32,27 +33,29 @@ module Sorcery
 
       def get_user_hash(access_token)
         openid_response = access_token.get(openid_path, params: {
-          access_token: access_token.token,
+          access_token: access_token.token
         })
 
-        openid = JSON.parse(openid_response.body).fetch('openid')
+        openid = openid_response.body.match(/"openid":"(\w{3,32})"/) || [nil, '']
 
         info_response = access_token.get(user_info_path, params: {
           access_token: access_token.token,
-          openid: openid
+          oauth_consumer_key: @key,
+          openid: openid[1]
         })
 
         {}.tap do |h|
           h[:user_info] = JSON.parse(info_response.body)
-          h[:uid] = openid
+          h[:uid] = openid[1]
         end
       end
 
       def get_access_token(args, options = {})
         client = build_client(options)
+
         client.auth_code.get_token(
           args[:code],
-          { client_id: @key, client_secret: @secret, grant_type: @grant_type, redirect_uri: @callback_url},
+          { client_id: @key, client_secret: @secret, redirect_uri: @callback_url, parse: @parse},
           options
         )
       end

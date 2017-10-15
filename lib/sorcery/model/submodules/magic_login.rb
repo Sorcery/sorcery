@@ -98,7 +98,9 @@ module Sorcery
             mail = false
             config = sorcery_config
             # hammering protection
-            return false if config.magic_login_time_between_emails.present? && self.send(config.magic_login_email_sent_at_attribute_name) && self.send(config.magic_login_email_sent_at_attribute_name) > config.magic_login_time_between_emails.seconds.ago.utc
+            return false if !config.magic_login_time_between_emails.nil? &&
+                self.send(config.magic_login_email_sent_at_attribute_name) &&
+                self.send(config.magic_login_email_sent_at_attribute_name) > config.magic_login_time_between_emails.seconds.ago
             self.class.sorcery_adapter.transaction do
               generate_magic_login_token!
               mail = send_magic_login_email! unless config.magic_login_mailer_disabled

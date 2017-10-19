@@ -79,6 +79,26 @@ shared_examples_for "magic_login_model" do
     end
     
     describe "#deliver_magic_login_instructions!" do
+      context "success" do
+        before do
+          sorcery_model_property_set(:magic_login_time_between_emails, 30*60)
+          sorcery_model_property_set(:magic_login_mailer_disabled, false)
+          Timecop.travel(10.days.ago) do
+            user.send(:"#{config.magic_login_email_sent_at_attribute_name}=", DateTime.now)
+          end
+          sorcery_model_property_set(:magic_login_mailer_class, ::SorceryMailer)
+        end
+        
+        it do
+          user.deliver_magic_login_instructions!
+          expect(ActionMailer::Base.deliveries.size).to eq 1
+        end
+        
+        it do
+          expect(user.deliver_magic_login_instructions!).to eq true
+        end
+      end
+
       context "failure" do
         context "magic_login_time_between_emails is nil" do
           it "returns false" do

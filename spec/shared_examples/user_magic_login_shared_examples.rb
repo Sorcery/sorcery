@@ -16,7 +16,7 @@ shared_examples_for "magic_login_model" do
     end
     
     describe "enables configuration options" do
-      it  do
+      it do
         sorcery_model_property_set(:magic_login_token_attribute_name, :test_magic_login_token)
         expect(config.magic_login_token_attribute_name).to eq :test_magic_login_token
       end
@@ -60,12 +60,16 @@ shared_examples_for "magic_login_model" do
 
     describe "#generate_magic_login_token!" do
       context "magic_login_token is nil" do
-        it do
+        it "magic_login_token_expires_at and magic_login_email_sent_at aren't nil " do
+          user.generate_magic_login_token!
+          expect(user.magic_login_token_expires_at).not_to be_nil
+          expect(user.magic_login_email_sent_at).not_to be_nil
+        end
+        
+        it "magic_login_token is different from the one before" do
           token_before = user.magic_login_token
           user.generate_magic_login_token!
           expect(user.magic_login_token).not_to eq token_before
-          expect(user.magic_login_token_expires_at).not_to be_nil
-          expect(user.magic_login_email_sent_at).not_to be_nil
         end
       end
       

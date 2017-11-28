@@ -232,9 +232,9 @@ Rails.application.config.sorcery.configure do |config|
     # user.salt_attribute_name =
 
     # how many times to apply encryption to the password.
-    # Default: `nil`
+    # Default: 1 in test env, `nil` otherwise
     #
-    # user.stretches =
+    user.stretches = 1 if Rails.env.test?
 
     # encryption key used to encrypt reversible encryptions such as AES256.
     # WARNING: If used for users' passwords, changing this key will leave passwords undecryptable!

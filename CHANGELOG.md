@@ -1,6 +1,6 @@
 # Changelog
 ## HEAD
-
+* Added a new ArgumentError for not defined user_class in config [#82](https://github.com/Sorcery/sorcery/pull/82)
 * Updated Required Ruby version to 2.2 [#85](https://github.com/Sorcery/sorcery/pull/85)
 * Add configuration for token randomness [#67](https://github.com/Sorcery/sorcery/pull/67)
 * Add facebook user_info_path option to initializer.rb [#63](https://github.com/Sorcery/sorcery/pull/63)

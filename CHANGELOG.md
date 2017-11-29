@@ -1,5 +1,7 @@
 # Changelog
 ## HEAD
+
+* Add tests to the magic login submodule [#95](https://github.com/Sorcery/sorcery/pull/95)
 * Set user.stretches to 1 in test env by default [#81](https://github.com/Sorcery/sorcery/pull/81)
 * Allow user to be loaded from other source when session expires. fix #89 [#94](https://github.com/Sorcery/sorcery/pull/94)
 * Added a new ArgumentError for not defined user_class in config [#82](https://github.com/Sorcery/sorcery/pull/82)

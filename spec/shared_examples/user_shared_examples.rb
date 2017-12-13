@@ -576,7 +576,7 @@ shared_examples_for 'external_user' do
           User.create_from_provider('facebook', '123', username: 'Noam Ben Ari') { true }
         end.to change { User.count }.by(1)
     
-        expect(User.first.email).to eq ''
+        expect(User.first.email).not_to be_empty
       end
     end
 

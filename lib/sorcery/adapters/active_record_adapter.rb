@@ -6,7 +6,8 @@ module Sorcery
           @model.send(:"#{name}=", value)
         end
         primary_key = @model.class.primary_key
-        @model.class.where(:"#{primary_key}" => @model.send(:"#{primary_key}")).update_all(attrs)
+        updated_count = @model.class.where(:"#{primary_key}" => @model.send(:"#{primary_key}")).update_all(attrs)
+        updated_count == 1
       end
 
       def save(options = {})

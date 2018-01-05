@@ -1,6 +1,6 @@
 # Changelog
 ## HEAD
-
+* Update YARD dependency [#100](https://github.com/Sorcery/sorcery/pull/100)
 * Make `#update_attributes` behave like `#update` [#98](https://github.com/Sorcery/sorcery/pull/98)
 * Add tests to the magic login submodule [#95](https://github.com/Sorcery/sorcery/pull/95)
 * Set user.stretches to 1 in test env by default [#81](https://github.com/Sorcery/sorcery/pull/81)

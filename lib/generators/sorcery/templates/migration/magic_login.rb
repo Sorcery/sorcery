@@ -1,4 +1,4 @@
-class SorceryMagicLogin < ActiveRecord::Migration
+class SorceryMagicLogin < <%= migration_class_name %>
   def change
     add_column :<%= model_class_name.tableize %>, :magic_login_token, :string, :default => nil
     add_column :<%= model_class_name.tableize %>, :magic_login_token_expires_at, :datetime, :default => nil

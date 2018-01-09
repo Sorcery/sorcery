@@ -1,5 +1,7 @@
 # Changelog
 ## HEAD
+
+* Fix magic_login not inheriting from migration_class_name [#99](https://github.com/Sorcery/sorcery/pull/99)
 * Update YARD dependency [#100](https://github.com/Sorcery/sorcery/pull/100)
 * Make `#update_attributes` behave like `#update` [#98](https://github.com/Sorcery/sorcery/pull/98)
 * Add tests to the magic login submodule [#95](https://github.com/Sorcery/sorcery/pull/95)
@@ -10,7 +12,6 @@
 * Add configuration for token randomness [#67](https://github.com/Sorcery/sorcery/pull/67)
 * Add facebook user_info_path option to initializer.rb [#63](https://github.com/Sorcery/sorcery/pull/63)
 * Add new function: `build_from` (allows building a user instance from OAuth without saving) [#54](https://github.com/Sorcery/sorcery/pull/54)
-* Update yard minimum version to 0.9.12
 
 ## 0.11.0
 

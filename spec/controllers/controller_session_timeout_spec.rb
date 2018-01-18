@@ -75,5 +75,11 @@ describe SorceryController, type: :controller do
         expect(response).to be_a_redirect
       end
     end
+
+    it "registers login time on remember_me callback" do
+      expect(subject).to receive(:register_login_time).with(user)
+
+      subject.send(:after_remember_me!, user)
+    end
   end
 end

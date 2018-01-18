@@ -80,6 +80,8 @@ describe SorceryController, type: :controller do
 
       expect(User.sorcery_adapter).to receive(:find_by_remember_me_token).with('token').and_return(user)
 
+      expect(subject).to receive(:after_remember_me!).with(user)
+
       get :test_login_from_cookie
 
       expect(assigns[:current_user]).to eq user

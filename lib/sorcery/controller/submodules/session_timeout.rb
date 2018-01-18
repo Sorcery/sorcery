@@ -21,6 +21,7 @@ module Sorcery
             merge_session_timeout_defaults!
           end
           Config.after_login << :register_login_time
+          Config.after_remember_me << :register_login_time
           base.prepend_before_action :validate_session
         end
 
@@ -29,7 +30,7 @@ module Sorcery
 
           # Registers last login to be used as the timeout starting point.
           # Runs as a hook after a successful login.
-          def register_login_time(_user, _credentials)
+          def register_login_time(_user, _credentials = nil)
             session[:login_time] = session[:last_action_time] = Time.now.in_time_zone
           end
 

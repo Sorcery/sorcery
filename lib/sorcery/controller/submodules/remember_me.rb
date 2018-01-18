@@ -65,6 +65,7 @@ module Sorcery
             if user && user.has_remember_me_token?
               set_remember_me_cookie!(user)
               session[:user_id] = user.id.to_s
+              after_remember_me!(user)
               @current_user = user
             else
               @current_user = false

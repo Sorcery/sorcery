@@ -28,7 +28,8 @@ module Sorcery
           access_token: access_token.token,
           uids:         access_token.params['user_id'],
           fields:       user_info_mapping.values.join(','),
-          scope:        scope
+          scope:        scope,
+          v:            '5.71'
         }
 
         response = access_token.get(user_info_url, params: params)

@@ -23,9 +23,9 @@ describe Sorcery::Providers::Vk do
            status: 200,
            body: '{"access_token":"TOKEN","expires_in":86329,"user_id":1}',
            headers: {'content-type' => 'application/json'})
-       get_user = stub_request(:get, "https://api.vk.com/method/getProfiles?access_token=TOKEN&fields=&scope=email&uids=1&v=5.71")
-         .to_return(body: '{"response":[{"id":1}]}')
 
+      get_user = stub_request(:get, "https://api.vk.com/method/getProfiles?access_token=TOKEN&fields=&scope=email&uids=1&v=5.71")
+        .to_return(body: '{"response":[{"id":1}]}')
 
       token = provider.process_callback({ code: 'CODE' }, nil)
       provider.get_user_hash(token)

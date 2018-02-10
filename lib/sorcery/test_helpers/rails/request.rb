@@ -12,7 +12,7 @@ module Sorcery
           username = user.send(username_attr)
           password_attr = user.sorcery_config.password_attribute_name
 
-          self.send(http_method, route, params: { "#{username_attr}": username, "#{password_attr}": password })
+          send(http_method, route, params: { "#{username_attr}": username, "#{password_attr}": password })
         end
       end
     end

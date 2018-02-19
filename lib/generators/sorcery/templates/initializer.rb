@@ -46,6 +46,11 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.session_timeout_from_last_action =
 
+  # Invalidate active sessions Requires an `invalidate_sessions_before` timestamp column
+  # Default: `false`
+  #
+  # config.session_timeout_invalidate_active_sessions_enabled =
+
   # -- http_basic_auth --
   # What realm to display for which controller name. For example {"My App" => "Application"}
   # Default: `{"application" => "Application"}`

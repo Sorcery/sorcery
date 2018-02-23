@@ -154,6 +154,7 @@ Rails.application.config.sorcery.configure do |config|
   # config.vk.secret = ""
   # config.vk.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=vk"
   # config.vk.user_info_mapping = {:login => "domain", :name => "full_name"}
+  # config.vk.api_version = "5.71"
   #
   # config.slack.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=slack"
   # config.slack.key = ''

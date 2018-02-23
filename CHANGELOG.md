@@ -12,6 +12,7 @@
 * Add configuration for token randomness [#67](https://github.com/Sorcery/sorcery/pull/67)
 * Add facebook user_info_path option to initializer.rb [#63](https://github.com/Sorcery/sorcery/pull/63)
 * Add new function: `build_from` (allows building a user instance from OAuth without saving) [#54](https://github.com/Sorcery/sorcery/pull/54)
+* Add support for VK OAuth (thanks to @Hirurg103) [#109](https://github.com/Sorcery/sorcery/pull/109)
 
 ## 0.11.0
 

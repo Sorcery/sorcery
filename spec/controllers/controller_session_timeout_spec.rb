@@ -85,6 +85,36 @@ describe SorceryController, type: :controller do
         expect(session[:user_id]).to be_nil
         expect(response).to be_a_redirect
       end
+
+      it 'allows login after invalidate_active_sessions! is called' do
+        sorcery_controller_property_set(:session_timeout_invalidate_active_sessions_enabled, true)
+        # precondition that the user is logged in
+        login_user user
+        get :test_should_be_logged_in
+        expect(response).to be_a_success
+
+        allow(user).to receive(:send) { |_method, value| allow(user).to receive(:invalidate_sessions_before) { value } }
+        allow(user).to receive(:save)
+        # Call to invalidate
+        get :test_invalidate_active_session
+        expect(response).to be_a_success
+
+        # Check that existing sessions were logged out
+        get :test_should_be_logged_in
+        expect(session[:user_id]).to be_nil
+        expect(response).to be_a_redirect
+
+        # Check that new session is allowed to login
+        login_user user
+        get :test_should_be_logged_in
+        expect(response).to be_a_success
+        expect(session[:user_id]).not_to be_nil
+
+        # Check an additional request to make sure not logged out on next request
+        get :test_should_be_logged_in
+        expect(response).to be_a_success
+        expect(session[:user_id]).not_to be_nil
+      end
     end
 
     it 'works if the session is stored as a string or a Time' do

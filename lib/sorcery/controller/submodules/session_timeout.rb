@@ -63,7 +63,7 @@ module Sorcery
           def sorcery_session_invalidated?
             return false unless Config.session_timeout_invalidate_active_sessions_enabled
             return false unless current_user.present? && current_user.try(:invalidate_sessions_before).present?
-            time = session[:login_time] || session[:last_action_time]
+            time = session[:login_time] || session[:last_action_time] || Time.now.in_time_zone
             time < current_user.invalidate_sessions_before
           end
         end

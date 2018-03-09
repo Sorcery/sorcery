@@ -28,6 +28,13 @@ module Sorcery
         end
 
         module InstanceMethods
+          def invalidate_active_sessions!
+            return unless Config.session_timeout_invalidate_active_sessions_enabled
+            return unless current_user.present?
+            current_user.send(:invalidate_sessions_before=, Time.now.in_time_zone)
+            current_user.save
+          end
+
           protected
 
           # Registers last login to be used as the timeout starting point.
@@ -58,13 +65,6 @@ module Sorcery
             return false unless current_user.present? && current_user.try(:invalidate_sessions_before).present?
             time = session[:login_time] || session[:last_action_time]
             time < current_user.invalidate_sessions_before
-          end
-
-          def invalidate_active_sessions!
-            return unless Config.session_timeout_invalidate_active_sessions_enabled
-            return unless current_user.present?
-            current_user.send(:invalidate_sessions_before=, Time.now.in_time_zone)
-            current_user.save
           end
         end
       end

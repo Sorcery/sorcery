@@ -26,6 +26,7 @@ module Sorcery
         # If false will use data from jwt_user_params without executing db requests.
         attr_accessor :jwt_set_user
         attr_accessor :jwt_secret_key
+        attr_accessor :jwt_payload
 
         def init!
           @defaults = {
@@ -42,6 +43,7 @@ module Sorcery
             :@jwt_user_params                      => [:id],
             :@jwt_headers_key                      => 'Authorization',
             :@jwt_user_data_key                    => :user_data,
+            :@jwt_payload                          => {},
             :@jwt_auth_token_key                   => :auth_token,
             :@jwt_set_user                         => true,
             :@jwt_secret_key                       => ''

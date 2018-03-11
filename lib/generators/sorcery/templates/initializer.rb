@@ -450,6 +450,11 @@ Rails.application.config.sorcery.configure do |config|
     #
     # config.jwt_user_params =
 
+    # Payload to set like expiration time
+    # See https://github.com/jwt/ruby-jwt what claims can be used
+    # Default: `{}`
+    # config.jwt_payload = 
+
     # Header name which will parsed
     # Default: `Authorization`
     #

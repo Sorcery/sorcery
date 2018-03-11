@@ -14,8 +14,11 @@ module Sorcery
               user_params = Config.jwt_user_params.each_with_object({}) do |val, acc|
                 acc[val] = user.public_send(val)
               end
+
+              payload = user_params.merge Config.jwt_payload
+              
               { Config.jwt_user_data_key => user_params,
-                Config.jwt_auth_token_key => jwt_encode(user_params) }
+                Config.jwt_auth_token_key => jwt_encode(payload) }
             end
           end
 

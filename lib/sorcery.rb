@@ -57,6 +57,7 @@ module Sorcery
     module Rails
       require 'sorcery/test_helpers/rails/controller'
       require 'sorcery/test_helpers/rails/integration'
+      require 'sorcery/test_helpers/rails/request'
     end
 
     module Internal

@@ -214,6 +214,22 @@ shared_examples_for 'rails_3_reset_password_model' do
       expect(user.reset_password_token).not_to eq old_password_code
     end
 
+    describe '#increment_password_reset_page_access_counter' do
+      it 'increments reset_password_page_access_count_attribute_name' do
+        expected_count = user.access_count_to_reset_password_page + 1
+        user.increment_password_reset_page_access_counter
+        expect(user.access_count_to_reset_password_page).to eq expected_count
+      end
+    end
+
+    describe '#reset_password_reset_page_access_counter' do
+      it 'reset reset_password_page_access_count_attribute_name into 0' do
+        user.update(access_count_to_reset_password_page: 10)
+        user.reset_password_reset_page_access_counter
+        expect(user.access_count_to_reset_password_page).to eq 0
+      end
+    end
+
     context 'mailer is enabled' do
       it 'sends an email on reset' do
         old_size = ActionMailer::Base.deliveries.size

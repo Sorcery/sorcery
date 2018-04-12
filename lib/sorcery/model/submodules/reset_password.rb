@@ -16,6 +16,8 @@ module Sorcery
             attr_accessor :reset_password_token_attribute_name
             # Expires at attribute name.
             attr_accessor :reset_password_token_expires_at_attribute_name
+            # Counter access to reset password page
+            attr_accessor :reset_password_page_access_count_attribute_name
             # When was email sent, used for hammering protection.
             attr_accessor :reset_password_email_sent_at_attribute_name
             # Mailer class (needed)
@@ -34,6 +36,8 @@ module Sorcery
           base.sorcery_config.instance_eval do
             @defaults.merge!(:@reset_password_token_attribute_name            => :reset_password_token,
                              :@reset_password_token_expires_at_attribute_name => :reset_password_token_expires_at,
+                             :@reset_password_page_access_count_attribute_name =>
+                                 :access_count_to_reset_password_page,
                              :@reset_password_email_sent_at_attribute_name    => :reset_password_email_sent_at,
                              :@reset_password_mailer                          => nil,
                              :@reset_password_mailer_disabled                 => false,
@@ -102,6 +106,20 @@ module Sorcery
               mail = send_reset_password_email! unless config.reset_password_mailer_disabled
             end
             mail
+          end
+          
+          # Increment access_count_to_reset_password_page attribute.
+          # For example, access_count_to_reset_password_page attribute is over 1, which
+          # means the user doesn't have a right to access.
+          def increment_password_reset_page_access_counter
+            sorcery_adapter.increment(self.sorcery_config.reset_password_page_access_count_attribute_name)
+          end
+          
+          # Reset access_count_to_reset_password_page attribute into 0.
+          # This is expected to be used after sending an instruction email.
+          def reset_password_reset_page_access_counter
+            send(:"#{sorcery_config.reset_password_page_access_count_attribute_name}=", 0)
+            sorcery_adapter.save
           end
 
           # Clears token and tries to update the new password for the user.

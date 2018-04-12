@@ -27,8 +27,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard', '~> 0.9.0', '>= 0.9.12'
   s.add_development_dependency 'timecop'
   s.add_development_dependency 'simplecov', '>= 0.3.8'
-  s.add_development_dependency 'rspec-rails', '~> 3.5.0'
-  s.add_development_dependency 'test-unit', '~> 3.1.0'
-  s.add_development_dependency 'byebug', '~> 9.0.0'
+  s.add_development_dependency 'rspec-rails', '~> 3.7.0'
+  s.add_development_dependency 'test-unit', '~> 3.2.0'
+  s.add_development_dependency 'byebug', '~> 10.0.0'
   s.add_development_dependency 'webmock', '~> 3.3.0'
 end

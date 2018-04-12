@@ -14,6 +14,8 @@
 * Add new function: `build_from` (allows building a user instance from OAuth without saving) [#54](https://github.com/Sorcery/sorcery/pull/54)
 * Add rubocop configuration and TODO list [#107](https://github.com/Sorcery/sorcery/pull/107)
 * Add support for VK OAuth (thanks to @Hirurg103) [#109](https://github.com/Sorcery/sorcery/pull/109)
+* Fix token leak via referrer header [#56](https://github.com/Sorcery/sorcery/pull/56)
+* Add `login_user` helper for request specs [#57](https://github.com/Sorcery/sorcery/pull/57)
 
 ## 0.11.0
 

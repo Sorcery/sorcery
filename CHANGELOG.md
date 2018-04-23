@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+## 0.12.0
+
 * Fix magic_login not inheriting from migration_class_name [#99](https://github.com/Sorcery/sorcery/pull/99)
 * Update YARD dependency [#100](https://github.com/Sorcery/sorcery/pull/100)
 * Make `#update_attributes` behave like `#update` [#98](https://github.com/Sorcery/sorcery/pull/98)

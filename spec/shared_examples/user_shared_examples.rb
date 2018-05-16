@@ -550,14 +550,27 @@ shared_examples_for 'external_user' do
       end
     end
 
-    it 'supports nested attributes' do
-      sorcery_model_property_set(:authentications_class, Authentication)
+    context 'nested attributes' do
+      before(:each) do
+        sorcery_model_property_set(:authentications_class, Authentication)
+      end
 
-      expect do
-        User.create_from_provider('facebook', '123', username: 'Noam Ben Ari')
-      end.to change { User.count }.by(1)
+      it 'supports for facebook' do
+        expect do
+          User.create_from_provider('facebook', '123', username: 'Noam Ben Ari')
+        end.to change { User.count }.by(1)
 
-      expect(User.first.username).to eq 'Noam Ben Ari'
+        expect(User.first.username).to eq 'Noam Ben Ari'
+      end
+
+      it 'supports for twitter' do
+        expect do
+          User.create_from_provider('twitter', '456', username: 'Evan B', email: 'hello@gmail.com')
+        end.to change { User.count }.by(1)
+
+        expect(User.first.username).to eq 'Evan B'
+        expect(User.first.email).to eq 'hello@gmail.com'
+      end
     end
 
     context 'with block' do

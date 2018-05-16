@@ -15,7 +15,7 @@ module Sorcery
         super
 
         @site           = 'https://api.twitter.com'
-        @user_info_path = '/1.1/account/verify_credentials.json'
+        @user_info_path = '/1.1/account/verify_credentials.json?include_email=true'
       end
 
       # Override included get_consumer method to provide authorize_path

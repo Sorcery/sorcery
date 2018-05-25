@@ -180,5 +180,42 @@ describe SorceryController, type: :controller do
 
       expect(assigns[:result]).to eq user
     end
+
+    describe '#reset_session' do
+      let(:session_key) { SorceryController.sorcery_session_keys.reject { |key| key == :user_id }.sample }
+
+      context 'when works login' do
+        before do
+          session[:store_session_key] = :store
+          session[session_key.to_sym] = session_key.to_s
+          session[:return_to_url]     = 'http://reset_session.spec'
+
+          expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
+          get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
+        end
+
+        it 'reset session user_id' do
+          expect(session[:user_id]).to eq user.id.to_s
+        end
+
+        it 'store session store_session_key' do
+          expect(session[:store_session_key]).to eq :store
+        end
+
+        it 'reset sorcery_sessions' do
+          expect(session[session_key.to_sym]).to be_nil
+        end
+      end
+    end
+
+    it 'sorcery_session_keys return session keys used in sorcery' do
+      sorcery_session_keys = [
+        :user_id, :http_authentication_used, :login_time,
+        :request_token, :request_token_secret, :last_action_time,
+        :return_to_url, :incomplete_user
+      ]
+
+      expect(SorceryController.sorcery_session_keys).to match_array(sorcery_session_keys)
+    end
   end
 end

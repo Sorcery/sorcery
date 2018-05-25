@@ -182,7 +182,7 @@ describe SorceryController, type: :controller do
     end
 
     describe '#reset_session' do
-      let(:session_key) { SorceryController.sorcery_session_keys.sample }
+      let(:session_key) { SorceryController.sorcery_session_keys.reject {|key| key == :user_id}.sample }
 
       context 'when works login' do
         before do

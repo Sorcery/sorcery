@@ -24,7 +24,7 @@ describe SorceryController, type: :controller do
       get :test_should_be_logged_in
 
       expect(session[:user_id]).not_to be_nil
-      expect(response).to be_a_success
+      expect(response).to be_successful
     end
 
     it 'resets session after session timeout' do
@@ -44,7 +44,7 @@ describe SorceryController, type: :controller do
       get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
 
       expect(session[:user_id]).not_to be_nil
-      expect(response).to be_a_success
+      expect(response).to be_successful
     end
 
     context "with 'session_timeout_from_last_action'" do
@@ -62,7 +62,7 @@ describe SorceryController, type: :controller do
         get :test_should_be_logged_in
 
         expect(session[:user_id]).not_to be_nil
-        expect(response).to be_a_success
+        expect(response).to be_successful
       end
 
       it "with 'session_timeout_from_last_action' logs out if there was no activity" do

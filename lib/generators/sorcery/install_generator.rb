@@ -61,7 +61,7 @@ module Sorcery
       # Copy the migrations files to db/migrate folder
       def copy_migration_files
         # Copy core migration file in all cases except when you pass --only-submodules.
-        return unless defined?(Sorcery::Generators::InstallGenerator::ActiveRecord)
+        return unless defined?(ActiveRecord)
         migration_template 'migration/core.rb', 'db/migrate/sorcery_core.rb', migration_class_name: migration_class_name unless only_submodules?
 
         if submodules

@@ -45,7 +45,7 @@ module Sorcery
             # don't setup activation if no password supplied - this user is created automatically
             sorcery_adapter.define_callback :before, :create, :setup_activation, if: proc { |user| user.send(sorcery_config.password_attribute_name).present? }
             # don't send activation needed email if no crypted password created - this user is external (OAuth etc.)
-            sorcery_adapter.define_callback :after, :create, :send_activation_needed_email!, if: :send_activation_needed_email?
+            sorcery_adapter.define_callback :after, :commit, :send_activation_needed_email!, on: :create, if: :send_activation_needed_email?
           end
 
           base.sorcery_config.after_config << :validate_mailer_defined

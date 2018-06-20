@@ -308,12 +308,12 @@ shared_examples_for 'rails_3_core_model' do
 
   describe 'generic send email' do
     before(:all) do
-      ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
       User.reset_column_information
     end
 
     after(:all) do
-      ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
     end
 
     before do
@@ -518,6 +518,21 @@ shared_examples_for 'external_user' do
   let(:user) { create_new_user }
   let(:external_user) { create_new_external_user :twitter }
 
+  before(:all) do
+    if SORCERY_ORM == :active_record
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
+    end
+    sorcery_reload!
+  end
+
+  after(:all) do
+    if SORCERY_ORM == :active_record
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
+    end
+  end
+
   before(:each) do
     User.sorcery_adapter.delete_all
   end
@@ -535,24 +550,12 @@ shared_examples_for 'external_user' do
   end
 
   describe '.create_from_provider' do
-    before(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
-        User.reset_column_information
-      end
-
+    before(:each) do
       sorcery_reload!([:external])
-    end
-
-    after(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
-      end
+      sorcery_model_property_set(:authentications_class, Authentication)
     end
 
     it 'supports nested attributes' do
-      sorcery_model_property_set(:authentications_class, Authentication)
-
       expect do
         User.create_from_provider('facebook', '123', username: 'Noam Ben Ari')
       end.to change { User.count }.by(1)
@@ -576,20 +579,8 @@ shared_examples_for 'external_user' do
   end
 
   describe 'activation' do
-    before(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
-      end
-
+    before(:each) do
       sorcery_reload!([:user_activation, :external], user_activation_mailer: ::SorceryMailer)
-    end
-
-    after(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
-      end
     end
 
     after(:each) do

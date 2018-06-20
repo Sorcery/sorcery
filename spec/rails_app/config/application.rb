@@ -50,7 +50,9 @@ module AppRoot
     config.filter_parameters += [:password]
 
     config.action_mailer.delivery_method = :test
-
     config.active_support.deprecation = :stderr
+    if Rails.version >= '5.1.0' && config.active_record.sqlite3.present?
+      config.active_record.sqlite3.represent_boolean_as_integer = true
+    end
   end
 end

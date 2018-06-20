@@ -28,7 +28,7 @@ describe SorceryController, type: :controller do
       expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
       get :test_http_basic_auth, params: {}, session: { http_authentication_used: true }
 
-      expect(response).to be_a_success
+      expect(response).to be_successful
     end
 
     it 'fails authentication if credentials are wrong' do

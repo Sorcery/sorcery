@@ -33,10 +33,10 @@ module Sorcery
         end
 
         def define_callback(time, event, method_name, options={})
-          @klass.send callback_name(type, event, options), method_name, options.slice(:if)
+          @klass.send callback_name(time, event, options), method_name, options.slice(:if)
         end
 
-        def callback_name(type, event, options)
+        def callback_name(time, event, options)
           if event == :commit
             options[:on] == :create ? "#{time}_create" : "#{time}_save"
           else

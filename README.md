@@ -103,6 +103,12 @@ User.load_from_reset_password_token(token)
 @user.change_password!(new_password)
 ```
 
+### Session Timeout
+
+```ruby
+invalidate_active_sessions! #Invalidate all sessions with a login_time or last_action_time before the current time. Must Opt-in
+```
+
 ### User Activation
 
 ```ruby
@@ -184,6 +190,7 @@ Inside the initializer, the comments will tell you what each setting does.
 
 - Configurable session timeout
 - Optionally session timeout will be calculated from last user action
+- Optionally enable a method to clear all active sessions, expects an `invalidate_sessions_before` datetime attribute.
 
 **Brute Force Protection** (see [lib/sorcery/model/submodules/brute_force_protection.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/model/submodules/brute_force_protection.rb)):
 

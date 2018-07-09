@@ -173,7 +173,7 @@ shared_examples_for 'rails_3_core_model' do
       end
     end
 
-    specify { expect(User).to respond_to(:sorcery_encrypt) }
+    specify { expect(User).to respond_to(:encrypt) }
 
     it 'subclass inherits config if defined so' do
       sorcery_reload!([], subclasses_inherit_config: true)
@@ -412,11 +412,11 @@ shared_examples_for 'rails_3_core_model' do
       sorcery_model_property_set(:encryption_algorithm, :aes256)
       sorcery_model_property_set(:encryption_key, nil)
 
-      expect { User.sorcery_encrypt @text }.to raise_error(ArgumentError)
+      expect { User.encrypt @text }.to raise_error(ArgumentError)
 
       sorcery_model_property_set(:encryption_key, 'asd234dfs423fddsmndsflktsdf32343')
 
-      expect { User.sorcery_encrypt @text }.not_to raise_error
+      expect { User.encrypt @text }.not_to raise_error
     end
 
     it 'if encryption algo is aes256, it sets key to crypto provider, even if attributes are set in reverse' do
@@ -425,31 +425,31 @@ shared_examples_for 'rails_3_core_model' do
       sorcery_model_property_set(:encryption_key, 'asd234dfs423fddsmndsflktsdf32343')
       sorcery_model_property_set(:encryption_algorithm, :aes256)
 
-      expect { User.sorcery_encrypt @text }.not_to raise_error
+      expect { User.encrypt @text }.not_to raise_error
     end
 
     it 'if encryption algo is md5 it works' do
       sorcery_model_property_set(:encryption_algorithm, :md5)
 
-      expect(User.sorcery_encrypt(@text)).to eq Sorcery::CryptoProviders::MD5.encrypt(@text)
+      expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::MD5.encrypt(@text)
     end
 
     it 'if encryption algo is sha1 it works' do
       sorcery_model_property_set(:encryption_algorithm, :sha1)
 
-      expect(User.sorcery_encrypt(@text)).to eq Sorcery::CryptoProviders::SHA1.encrypt(@text)
+      expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA1.encrypt(@text)
     end
 
     it 'if encryption algo is sha256 it works' do
       sorcery_model_property_set(:encryption_algorithm, :sha256)
 
-      expect(User.sorcery_encrypt(@text)).to eq Sorcery::CryptoProviders::SHA256.encrypt(@text)
+      expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA256.encrypt(@text)
     end
 
     it 'if encryption algo is sha512 it works' do
       sorcery_model_property_set(:encryption_algorithm, :sha512)
 
-      expect(User.sorcery_encrypt(@text)).to eq Sorcery::CryptoProviders::SHA512.encrypt(@text)
+      expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA512.encrypt(@text)
     end
 
     it 'salt is random for each user and saved in db' do

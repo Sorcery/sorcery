@@ -107,14 +107,14 @@ module Sorcery
             end
             mail
           end
-          
+
           # Increment access_count_to_reset_password_page attribute.
           # For example, access_count_to_reset_password_page attribute is over 1, which
           # means the user doesn't have a right to access.
           def increment_password_reset_page_access_counter
             sorcery_adapter.increment(self.sorcery_config.reset_password_page_access_count_attribute_name)
           end
-          
+
           # Reset access_count_to_reset_password_page attribute into 0.
           # This is expected to be used after sending an instruction email.
           def reset_password_reset_page_access_counter
@@ -126,7 +126,7 @@ module Sorcery
           def change_password!(new_password)
             clear_reset_password_token
             send(:"#{sorcery_config.password_attribute_name}=", new_password)
-            sorcery_adapter.save
+            sorcery_adapter.save raise_on_failure: true
           end
 
           protected

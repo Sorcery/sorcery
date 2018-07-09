@@ -33,7 +33,15 @@ module Sorcery
         end
 
         def define_callback(time, event, method_name, options={})
-          @klass.send "#{time}_#{event}", method_name, options.slice(:if)
+          @klass.send callback_name(time, event, options), method_name, options.slice(:if)
+        end
+
+        def callback_name(time, event, options)
+          if event == :commit
+            options[:on] == :create ? "#{time}_create" : "#{time}_save"
+          else
+            "#{time}_#{event}"
+          end
         end
 
         def credential_regex(credential)

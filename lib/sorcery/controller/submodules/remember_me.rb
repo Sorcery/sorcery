@@ -18,7 +18,6 @@ module Sorcery
             merge_remember_me_defaults!
           end
           Config.login_sources << :login_from_cookie
-          Config.after_login << :remember_me_if_asked_to
           Config.before_logout << :forget_me!
         end
 
@@ -50,12 +49,6 @@ module Sorcery
           end
 
           protected
-
-          # calls remember_me! if a third credential was passed to the login method.
-          # Runs as a hook after login.
-          def remember_me_if_asked_to(_user, credentials)
-            remember_me! if credentials.size == 3 && credentials[2] && credentials[2] != '0'
-          end
 
           # Checks the cookie for a remember me token, tried to find a user with that token
           # and logs the user in if found.

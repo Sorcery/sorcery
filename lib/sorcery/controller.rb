@@ -47,7 +47,7 @@ module Sorcery
           end
           form_authenticity_token
 
-          auto_login(user)
+          auto_login(user, credentials[2])
           after_login!(user, credentials)
 
           block_given? ? yield(current_user, nil) : current_user

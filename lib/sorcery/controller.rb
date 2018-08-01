@@ -153,6 +153,10 @@ module Sorcery
         Config.after_logout.each { |c| send(c, user) }
       end
 
+      def after_remember_me!(user)
+        Config.after_remember_me.each { |c| send(c, user) }
+      end
+
       def user_class
         @user_class ||= Config.user_class.to_s.constantize
       rescue NameError

@@ -1,6 +1,13 @@
 # Changelog
 ## HEAD
 
+* Add support for Rails 5.2 / Ruby 2.5 [#129](https://github.com/Sorcery/sorcery/pull/129)
+* Fix migration files not being generated [#128](https://github.com/Sorcery/sorcery/pull/128)
+* Add support for ActionController::API [#133](https://github.com/Sorcery/sorcery/pull/133)
+* Update activation email to use after_commit callback [#130](https://github.com/Sorcery/sorcery/pull/130)
+* Add opt-in `invalidate_active_sessions!` method [#110](https://github.com/Sorcery/sorcery/pull/110)
+* Pass along `remember_me` to `#auto_login` [#136](https://github.com/Sorcery/sorcery/pull/136)
+* Respect SessionTimeout on login via RememberMe [#102](https://github.com/Sorcery/sorcery/pull/102)
 * Added `demodulize` on authentication class name association name fetch [#147](https://github.com/Sorcery/sorcery/pull/147)
 * Remove Gemnasium badge [#140](https://github.com/Sorcery/sorcery/pull/140)
 

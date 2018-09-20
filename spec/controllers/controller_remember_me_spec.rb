@@ -22,7 +22,7 @@ describe SorceryController, type: :controller do
     end
 
     it 'sets cookie on remember_me!' do
-      expect(User).to receive(:authenticate).with('bla@bla.com', 'secret').and_return(user)
+      expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
       expect(user).to receive(:remember_me!)
 
       post :test_login_with_remember, params: { email: 'bla@bla.com', password: 'secret' }
@@ -45,7 +45,7 @@ describe SorceryController, type: :controller do
     end
 
     it 'login(email,password,remember_me) logs user in and remembers' do
-      expect(User).to receive(:authenticate).with('bla@bla.com', 'secret', '1').and_return(user)
+      expect(User).to receive(:authenticate).with('bla@bla.com', 'secret', '1') { |&block| block.call(user, nil) }
       expect(user).to receive(:remember_me!)
       expect(user).to receive(:remember_me_token).and_return('abracadabra').twice
 
@@ -79,6 +79,8 @@ describe SorceryController, type: :controller do
       session[:user_id] = nil
 
       expect(User.sorcery_adapter).to receive(:find_by_remember_me_token).with('token').and_return(user)
+
+      expect(subject).to receive(:after_remember_me!).with(user)
 
       get :test_login_from_cookie
 

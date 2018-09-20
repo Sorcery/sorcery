@@ -29,7 +29,7 @@ RSpec.configure do |config|
   config.include RSpec::Rails::ControllerExampleGroup, file_path: /controller(.)*_spec.rb$/
   config.mock_with :rspec
 
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   config.before(:suite) { setup_orm }
   config.after(:suite) { teardown_orm }

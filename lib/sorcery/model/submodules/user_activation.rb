@@ -45,7 +45,7 @@ module Sorcery
             # don't setup activation if no password supplied - this user is created automatically
             sorcery_adapter.define_callback :before, :create, :setup_activation, if: proc { |user| user.send(sorcery_config.password_attribute_name).present? }
             # don't send activation needed email if no crypted password created - this user is external (OAuth etc.)
-            sorcery_adapter.define_callback :after, :create, :send_activation_needed_email!, if: :send_activation_needed_email?
+            sorcery_adapter.define_callback :after, :commit, :send_activation_needed_email!, on: :create, if: :send_activation_needed_email?
           end
 
           base.sorcery_config.after_config << :validate_mailer_defined
@@ -59,10 +59,13 @@ module Sorcery
         module ClassMethods
           # Find user by token, also checks for expiration.
           # Returns the user if token found and is valid.
-          def load_from_activation_token(token)
-            token_attr_name = @sorcery_config.activation_token_attribute_name
-            token_expiration_date_attr = @sorcery_config.activation_token_expires_at_attribute_name
-            load_from_token(token, token_attr_name, token_expiration_date_attr)
+          def load_from_activation_token(token, &block)
+            load_from_token(
+              token,
+              @sorcery_config.activation_token_attribute_name,
+              @sorcery_config.activation_token_expires_at_attribute_name,
+              &block
+            )
           end
 
           protected
@@ -128,7 +131,14 @@ module Sorcery
 
           def prevent_non_active_login
             config = sorcery_config
-            config.prevent_non_active_users_to_login ? send(config.activation_state_attribute_name) == 'active' : true
+
+            if config.prevent_non_active_users_to_login
+              unless send(config.activation_state_attribute_name) == 'active'
+                return false, :inactive
+              end
+            end
+
+            true
           end
         end
       end

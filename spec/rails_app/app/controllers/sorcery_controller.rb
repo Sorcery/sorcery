@@ -52,6 +52,11 @@ class SorceryController < ActionController::Base
     head :ok
   end
 
+  def test_invalidate_active_session
+    invalidate_active_sessions!
+    head :ok
+  end
+
   def test_login_with_remember
     @user = login(params[:email], params[:password])
     remember_me!

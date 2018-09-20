@@ -215,7 +215,7 @@ describe SorceryController, type: :controller do
   describe SorceryController, 'OAuth with session timeout features' do
     before(:all) do
       if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
+        MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
         User.reset_column_information
       end
 
@@ -224,7 +224,7 @@ describe SorceryController, type: :controller do
 
     after(:all) do
       if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
+        MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
       end
     end
 

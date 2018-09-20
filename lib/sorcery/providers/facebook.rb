@@ -24,7 +24,7 @@ module Sorcery
         @token_url      = 'oauth/access_token'
         @auth_path      = 'dialog/oauth'
         @mode           = :query
-        @parse          = :query
+        @parse          = :json
         @param_name     = 'access_token'
       end
 

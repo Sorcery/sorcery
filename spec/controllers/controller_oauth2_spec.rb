@@ -5,7 +5,9 @@ require 'spec_helper'
 describe SorceryController, active_record: true, type: :controller do
   before(:all) do
     if SORCERY_ORM == :active_record
-      ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/activity_logging")
       User.reset_column_information
     end
 
@@ -15,7 +17,9 @@ describe SorceryController, active_record: true, type: :controller do
 
   after(:all) do
     if SORCERY_ORM == :active_record
-      ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/activity_logging")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
     end
   end
 
@@ -196,10 +200,6 @@ describe SorceryController, active_record: true, type: :controller do
 
   describe 'OAuth with User Activation features' do
     before(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
-      end
-
       sorcery_reload!([:user_activation,:external], :user_activation_mailer => ::SorceryMailer)
       sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :instagram])
 
@@ -237,13 +237,6 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:instagram, :key, "eYVNBjBDi33aa9GkA3w")
       sorcery_controller_external_property_set(:instagram, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
       sorcery_controller_external_property_set(:instagram, :callback_url, "http://blabla.com")
-    end
-
-    after(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
-      end
     end
 
     after(:each) do
@@ -287,13 +280,6 @@ describe SorceryController, active_record: true, type: :controller do
 
     before(:all) do
       sorcery_reload!([:activity_logging, :external])
-    end
-
-    after(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activity_logging")
-      end
     end
 
     %w(facebook github google liveid vk salesforce slack).each do |provider|

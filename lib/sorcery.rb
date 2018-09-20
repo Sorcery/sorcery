@@ -18,6 +18,7 @@ module Sorcery
       require 'sorcery/model/submodules/activity_logging'
       require 'sorcery/model/submodules/brute_force_protection'
       require 'sorcery/model/submodules/external'
+      require 'sorcery/model/submodules/magic_login'
     end
   end
 
@@ -56,6 +57,7 @@ module Sorcery
     module Rails
       require 'sorcery/test_helpers/rails/controller'
       require 'sorcery/test_helpers/rails/integration'
+      require 'sorcery/test_helpers/rails/request'
     end
 
     module Internal
@@ -65,7 +67,7 @@ module Sorcery
 
   require 'sorcery/adapters/base_adapter'
 
-  if defined?(ActiveRecord)
+  if defined?(ActiveRecord::Base)
     require 'sorcery/adapters/active_record_adapter'
     ActiveRecord::Base.extend Sorcery::Model
 
@@ -75,6 +77,19 @@ module Sorcery
 
     ActiveRecord::Base.send :define_singleton_method, :sorcery_adapter do
       Sorcery::Adapters::ActiveRecordAdapter.from(self)
+    end
+  end
+
+  if defined?(Mongoid::Document)
+    require 'sorcery/adapters/mongoid_adapter'
+    Mongoid::Document::ClassMethods.send :include, Sorcery::Model
+
+    Mongoid::Document.send :define_method, :sorcery_adapter do
+      @sorcery_adapter ||= Sorcery::Adapters::MongoidAdapter.new(self)
+    end
+
+    Mongoid::Document::ClassMethods.send :define_method, :sorcery_adapter do
+      Sorcery::Adapters::MongoidAdapter.from(self)
     end
   end
 

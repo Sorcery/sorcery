@@ -1,6 +1,9 @@
 # Changelog
 ## HEAD
 
+* Added `demodulize` on authentication class name association name fetch [#147](https://github.com/Sorcery/sorcery/pull/147)
+* Remove Gemnasium badge [#140](https://github.com/Sorcery/sorcery/pull/140)
+
 ## 0.12.0
 
 * Fix magic_login not inheriting from migration_class_name [#99](https://github.com/Sorcery/sorcery/pull/99)
@@ -18,8 +21,6 @@
 * Add support for VK OAuth (thanks to @Hirurg103) [#109](https://github.com/Sorcery/sorcery/pull/109)
 * Fix token leak via referrer header [#56](https://github.com/Sorcery/sorcery/pull/56)
 * Add `login_user` helper for request specs [#57](https://github.com/Sorcery/sorcery/pull/57)
-* Added `demodulize` on authentication class name association name fetch [#147](https://github.com/Sorcery/sorcery/pull/147)
-* Remove Gemnasium badge [#140](https://github.com/Sorcery/sorcery/pull/140)
 
 ## 0.11.0
 

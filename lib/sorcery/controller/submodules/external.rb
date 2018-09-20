@@ -22,6 +22,7 @@ module Sorcery
           require 'sorcery/providers/paypal'
           require 'sorcery/providers/slack'
           require 'sorcery/providers/wechat'
+          require 'sorcery/providers/qq'
           require 'sorcery/providers/microsoft'
 
           Config.module_eval do

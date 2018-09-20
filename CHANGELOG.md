@@ -19,6 +19,7 @@
 * Fix token leak via referrer header [#56](https://github.com/Sorcery/sorcery/pull/56)
 * Add `login_user` helper for request specs [#57](https://github.com/Sorcery/sorcery/pull/57)
 * Added `demodulize` on authentication class name association name fetch [#147](https://github.com/Sorcery/sorcery/pull/147)
+* Remove Gemnasium badge [#140](https://github.com/Sorcery/sorcery/pull/140)
 
 ## 0.11.0
 

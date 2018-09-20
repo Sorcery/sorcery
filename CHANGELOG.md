@@ -10,6 +10,7 @@
 * Respect SessionTimeout on login via RememberMe [#102](https://github.com/Sorcery/sorcery/pull/102)
 * Added `demodulize` on authentication class name association name fetch [#147](https://github.com/Sorcery/sorcery/pull/147)
 * Remove Gemnasium badge [#140](https://github.com/Sorcery/sorcery/pull/140)
+* Add Instragram provider [#51](https://github.com/Sorcery/sorcery/pull/51)
 
 ## 0.12.0
 

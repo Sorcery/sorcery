@@ -32,9 +32,9 @@ matrix:
       gemfile: gemfiles/active_record-rails40.gemfile
     - rvm: 2.4.4
       gemfile: gemfiles/active_record-rails40.gemfile
-    - rvm: 2.4.3
+    - rvm: 2.4.4
       gemfile: gemfiles/active_record-rails41.gemfile
-    - rvm: 2.4.3
+    - rvm: 2.4.4
       gemfile: gemfiles/active_record-rails42.gemfile
     - rvm: 2.5.1
       gemfile: gemfiles/active_record-rails40.gemfile

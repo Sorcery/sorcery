@@ -1,10 +1,11 @@
 language: ruby
 rvm:
-  - jruby
-  - 2.2.9
-  - 2.3.6
-  - 2.4.3
-  - 2.5.0
+  - jruby-9.1.17.0
+  - jruby-9.2.0.0
+  - 2.2.10
+  - 2.3.7
+  - 2.4.4
+  - 2.5.1
 
 env:
   global:
@@ -28,21 +29,23 @@ matrix:
     - rvm: jruby
 
   exclude:
-    - rvm: 2.2.9
+    - rvm: 2.2.10
       gemfile: gemfiles/active_record-rails40.gemfile
-    - rvm: 2.3.6
+    - rvm: 2.3.7
       gemfile: gemfiles/active_record-rails40.gemfile
-    - rvm: 2.4.3
+    - rvm: 2.4.4
       gemfile: gemfiles/active_record-rails40.gemfile
     - rvm: 2.4.3
       gemfile: gemfiles/active_record-rails41.gemfile
     - rvm: 2.4.3
       gemfile: gemfiles/active_record-rails42.gemfile
-    - rvm: 2.5.0
+    - rvm: 2.5.1
       gemfile: gemfiles/active_record-rails40.gemfile
-    - rvm: 2.5.0
+    - rvm: 2.5.1
       gemfile: gemfiles/active_record-rails41.gemfile
-    - rvm: 2.5.0
+    - rvm: 2.5.1
       gemfile: gemfiles/active_record-rails42.gemfile
-    - rvm: jruby
+    - rvm: jruby-9.1.17.0
+      gemfile: Gemfile
+    - rvm: jruby-9.2.0.0
       gemfile: Gemfile

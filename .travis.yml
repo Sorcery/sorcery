@@ -42,7 +42,3 @@ matrix:
       gemfile: gemfiles/active_record-rails41.gemfile
     - rvm: 2.5.1
       gemfile: gemfiles/active_record-rails42.gemfile
-    - rvm: jruby-9.1.17.0
-      gemfile: Gemfile
-    - rvm: jruby-9.2.0.0
-      gemfile: Gemfile

@@ -25,9 +25,6 @@ before_install:
   - gem update bundler
 
 matrix:
-  allow_failures:
-    - rvm: jruby
-
   exclude:
     - rvm: 2.2.10
       gemfile: gemfiles/active_record-rails40.gemfile

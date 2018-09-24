@@ -11,7 +11,6 @@ SORCERY_ORM = :active_record
 require 'rails/all'
 require 'rspec/rails'
 require 'timecop'
-require 'byebug'
 
 def setup_orm; end
 

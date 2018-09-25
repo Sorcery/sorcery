@@ -8,7 +8,7 @@ module Sorcery
     config.sorcery = ::Sorcery::Controller::Config
 
     initializer 'extend Controller with sorcery' do
-      ActiveSupport.on_load('action_controller') do
+      ActiveSupport.on_load(:action_controller) do
         send(:include, Sorcery::Controller)
         helper_method :current_user
         helper_method :logged_in?

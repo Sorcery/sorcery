@@ -27,11 +27,11 @@ module Sorcery
       end
 
       class << self
-        def define_field(name, type, options={})
+        def define_field(name, type, options = {})
           @klass.field name, options.slice(:default).merge(type: type)
         end
 
-        def define_callback(time, event, method_name, options={})
+        def define_callback(time, event, method_name, options = {})
           @klass.send callback_name(time, event, options), method_name, options.slice(:if)
         end
 

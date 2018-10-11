@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.licenses = ['MIT']
 
-  s.required_ruby_version = '>= 2.2.2'
+  s.required_ruby_version = '>= 2.2.9'
 
   s.add_dependency 'oauth', '~> 0.4', '>= 0.4.4'
   s.add_dependency 'oauth2', '~> 1.0', '>= 0.8.0'

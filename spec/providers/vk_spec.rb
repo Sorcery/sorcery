@@ -37,5 +37,4 @@ describe Sorcery::Providers::Vk do
       expect(get_user).to have_been_requested
     end
   end
-
 end

@@ -1,16 +1,12 @@
 module Sorcery
   module Providers
     # This class adds support for OAuth with Instagram.com.
-
     class Instagram < Base
-
       include Protocols::Oauth2
-
 
       attr_accessor :access_permissions, :token_url,
                     :authorization_path, :user_info_path,
                     :scope, :user_info_fields
-
 
       def initialize
         super
@@ -31,7 +27,6 @@ module Sorcery
         authorize_url(token_url: @token_url)
       end
 
-
       # overrides oauth2#authorize_url to allow customized scope.
       def authorize_url(opts = {})
         @scope = access_permissions.present? ? access_permissions.join(' ') : scope
@@ -50,7 +45,6 @@ module Sorcery
           client_secret: @secret
         )
       end
-
 
       # see `user_info_mapping` in config/initializer,
       # given `user_info_mapping` to specify
@@ -74,9 +68,6 @@ module Sorcery
         _user_attrs[:uid] = _user_attrs[:user_info]['id']
         _user_attrs
       end
-
     end
-
   end
-
 end

@@ -8,14 +8,6 @@
 
 # Offense count: 2
 # Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, IndentationWidth.
-# SupportedStyles: aligned, indented
-Layout/MultilineOperationIndentation:
-  Exclude:
-    - 'lib/sorcery/model/submodules/magic_login.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
 Layout/SpaceAfterComma:
   Exclude:
     - 'lib/sorcery/adapters/mongoid_adapter.rb'

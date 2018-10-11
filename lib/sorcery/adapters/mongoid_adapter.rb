@@ -44,7 +44,7 @@ module Sorcery
         end
 
         def credential_regex(credential)
-          return { :$regex =>  /^#{Regexp.escape(credential)}$/i  } if (@klass.sorcery_config.downcase_username_before_authenticating)
+          return { :$regex => /^#{Regexp.escape(credential)}$/i } if (@klass.sorcery_config.downcase_username_before_authenticating)
 
           credential
         end

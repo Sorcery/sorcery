@@ -11,7 +11,7 @@ module Sorcery
       def initialize
         super
 
-        @site           = 'https://api.instagram.com'
+        @site = 'https://api.instagram.com'
         @token_url = '/oauth/access_token'
         @authorization_path = '/oauth/authorize/'
         @user_info_path = '/v1/users/self'

@@ -20,15 +20,15 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.2.9'
 
+  s.add_dependency 'bcrypt', '~> 3.1'
   s.add_dependency 'oauth', '~> 0.4', '>= 0.4.4'
   s.add_dependency 'oauth2', '~> 1.0', '>= 0.8.0'
-  s.add_dependency 'bcrypt', '~> 3.1'
 
-  s.add_development_dependency 'yard', '~> 0.9.0', '>= 0.9.12'
-  s.add_development_dependency 'timecop'
-  s.add_development_dependency 'simplecov', '>= 0.3.8'
-  s.add_development_dependency 'rspec-rails', '~> 3.7.0'
-  s.add_development_dependency 'test-unit', '~> 3.2.0'
   s.add_development_dependency 'byebug', '~> 10.0.0'
+  s.add_development_dependency 'rspec-rails', '~> 3.7.0'
+  s.add_development_dependency 'simplecov', '>= 0.3.8'
+  s.add_development_dependency 'test-unit', '~> 3.2.0'
+  s.add_development_dependency 'timecop'
   s.add_development_dependency 'webmock', '~> 3.3.0'
+  s.add_development_dependency 'yard', '~> 0.9.0', '>= 0.9.12'
 end

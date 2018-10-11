@@ -425,7 +425,7 @@ describe SorceryController, active_record: true, type: :controller do
             'followed_by' => 100,
             'follows' => 71
           },
-          'id'=>'123'
+          'id' => '123'
         }
       }.to_json
     }

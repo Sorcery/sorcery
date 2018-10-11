@@ -14,7 +14,6 @@ module Sorcery
                           :consecutive_login_retries_amount_limit,    # how many failed logins allowed.
                           :login_lock_time_period,                    # how long the user should be banned.
                           # in seconds. 0 for permanent.
-
                           :unlock_token_attribute_name,               # Unlock token attribute name
                           :unlock_token_email_method_name,            # Mailer method name
                           :unlock_token_mailer_disabled,              # When true, dont send unlock token via email

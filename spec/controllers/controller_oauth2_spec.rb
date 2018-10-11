@@ -359,7 +359,7 @@ describe SorceryController, active_record: true, type: :controller do
     access_token = double(OAuth2::AccessToken)
     allow(access_token).to receive(:token_param=)
     # Needed for Instagram
-    allow(access_token).to receive(:[]).with(:client_id){"eYVNBjBDi33aa9GkA3w"}
+    allow(access_token).to receive(:[]).with(:client_id) {"eYVNBjBDi33aa9GkA3w"}
     response = double(OAuth2::Response)
     allow(response).to receive(:body) {
       {

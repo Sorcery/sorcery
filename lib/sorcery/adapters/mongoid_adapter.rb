@@ -27,7 +27,6 @@ module Sorcery
       end
 
       class << self
-
         def define_field(name, type, options={})
           @klass.field name, options.slice(:default).merge(type: type)
         end

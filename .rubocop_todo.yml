@@ -6,17 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 52
-# Cop supports --auto-correct.
-# Configuration parameters: AllowInHeredoc.
-Layout/TrailingWhitespace:
-  Exclude:
-    - 'lib/sorcery/model/submodules/magic_login.rb'
-    - 'spec/active_record/user_magic_login_spec.rb'
-    - 'spec/rails_app/app/mailers/sorcery_mailer.rb'
-    - 'spec/rails_app/db/migrate/magic_login/20170924151831_add_magic_login_to_users.rb'
-    - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-
 # Offense count: 1
 Lint/AmbiguousBlockAssociation:
   Exclude:

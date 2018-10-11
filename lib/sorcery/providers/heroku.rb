@@ -45,6 +45,7 @@ module Sorcery
       # tries to login the user from access token
       def process_callback(params, _session)
         raise 'Invalid state. Potential Cross Site Forgery' if params[:state] != state
+
         args = {}.tap do |a|
           a[:code] = params[:code] if params[:code]
         end

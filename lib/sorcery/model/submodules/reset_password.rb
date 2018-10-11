@@ -101,6 +101,7 @@ module Sorcery
             config = sorcery_config
             # hammering protection
             return false if config.reset_password_time_between_emails.present? && send(config.reset_password_email_sent_at_attribute_name) && send(config.reset_password_email_sent_at_attribute_name) > config.reset_password_time_between_emails.seconds.ago.utc
+
             self.class.sorcery_adapter.transaction do
               generate_reset_password_token!
               mail = send_reset_password_email! unless config.reset_password_mailer_disabled

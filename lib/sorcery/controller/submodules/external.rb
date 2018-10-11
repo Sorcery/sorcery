@@ -57,6 +57,7 @@ module Sorcery
           # save the singleton ProviderClient instance into @provider
           def sorcery_get_provider(provider_name)
             return unless Config.external_providers.include?(provider_name.to_sym)
+
             Config.send(provider_name.to_sym)
           end
 

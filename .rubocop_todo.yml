@@ -6,22 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 15
-# Cop supports --auto-correct.
-Layout/EmptyLineAfterGuardClause:
-  Exclude:
-    - 'lib/generators/sorcery/install_generator.rb'
-    - 'lib/sorcery/adapters/mongoid_adapter.rb'
-    - 'lib/sorcery/controller/submodules/activity_logging.rb'
-    - 'lib/sorcery/controller/submodules/external.rb'
-    - 'lib/sorcery/controller/submodules/http_basic_auth.rb'
-    - 'lib/sorcery/controller/submodules/session_timeout.rb'
-    - 'lib/sorcery/crypto_providers/aes256.rb'
-    - 'lib/sorcery/crypto_providers/bcrypt.rb'
-    - 'lib/sorcery/model/submodules/reset_password.rb'
-    - 'lib/sorcery/protocols/oauth.rb'
-    - 'lib/sorcery/providers/heroku.rb'
-
 # Offense count: 2
 # Cop supports --auto-correct.
 # Configuration parameters: AllowAdjacentOneLineDefs, NumberOfEmptyLines.

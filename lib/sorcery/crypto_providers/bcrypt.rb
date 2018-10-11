@@ -60,6 +60,7 @@ module Sorcery
         def matches?(hash, *tokens)
           hash = new_from_hash(hash)
           return false if hash.nil? || hash == {}
+
           hash == join_tokens(tokens)
         end
 

@@ -96,7 +96,7 @@ module Sorcery
                                when :bcrypt then CryptoProviders::BCrypt
                                when :custom then @custom_encryption_provider
                                else raise ArgumentError, "Encryption algorithm supplied, #{algo}, is invalid"
-        end
+                               end
       end
 
       private

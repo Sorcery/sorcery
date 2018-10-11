@@ -43,8 +43,12 @@ module Sorcery
         args = {}.tap do |a|
           a[:code] = params[:code] if params[:code]
         end
-        get_access_token(args, token_url: @token_url,
-                         client_id: @key, client_secret: @secret)
+        get_access_token(
+          args,
+          token_url: @token_url,
+          client_id: @key,
+          client_secret: @secret
+        )
       end
 
 

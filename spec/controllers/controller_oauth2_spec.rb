@@ -362,49 +362,73 @@ describe SorceryController, active_record: true, type: :controller do
     allow(access_token).to receive(:[]).with(:client_id){"eYVNBjBDi33aa9GkA3w"}
     response = double(OAuth2::Response)
     allow(response).to receive(:body) {
-                         {
-                           'id' => '123',
-                           'user_id' => '123', # Needed for Salesforce
-                           'name' => 'Noam Ben Ari',
-                           'first_name' => 'Noam',
-                           'last_name' => 'Ben Ari',
-                           'link' => 'http://www.facebook.com/nbenari1',
-                           'hometown' => { 'id' => '110619208966868', 'name' => 'Haifa, Israel' },
-                           'location' => { 'id' => '106906559341067', 'name' => 'Pardes Hanah, Hefa, Israel' },
-                           'bio' => "I'm a new daddy, and enjoying it!",
-                           'gender' => 'male',
-                           'email' => 'nbenari@gmail.com',
-                           'timezone' => 2,
-                           'locale' => 'en_US',
-                           'languages' => [{ 'id' => '108405449189952', 'name' => 'Hebrew' }, { 'id' => '106059522759137', 'name' => 'English' }, { 'id' => '112624162082677', 'name' => 'Russian' }],
-                           'verified' => true,
-                           'updated_time' => '2011-02-16T20:59:38+0000',
-                           # response for VK auth
-                           'response' => [
-                             {
-                               'uid' => '123',
-                               'first_name' => 'Noam',
-                               'last_name' => 'Ben Ari'
-                             }
-                           ],
-                           'user' => {
-                             'name' => 'Sonny Whether',
-                             'id' => '123',
-                             'email' => 'bobby@example.com'
-                           },
-                           # response for wechat auth
-                           'unionid' => '123',
-                           # response for instagram
-                           'data' => {
-                            'username' => 'pnmahoney',
-                            'bio' => 'turn WHAT down?',
-                            'website' => '',
-                            'profile_picture' => 'http://photos-d.ak.instagram.com/hphotos-ak-xpa1/10454121_417985815007395_867850883_a.jpg',
-                            'full_name' => 'Patrick Mahoney',
-                            'counts' => {'media' => 2, 'followed_by' => 100, 'follows' => 71},
-                            'id'=>'123'
-                          }
-                         }.to_json }
+      {
+        'id' => '123',
+        'user_id' => '123', # Needed for Salesforce
+        'name' => 'Noam Ben Ari',
+        'first_name' => 'Noam',
+        'last_name' => 'Ben Ari',
+        'link' => 'http://www.facebook.com/nbenari1',
+        'hometown' => {
+          'id' => '110619208966868',
+          'name' => 'Haifa, Israel'
+        },
+        'location' => {
+          'id' => '106906559341067',
+          'name' => 'Pardes Hanah, Hefa, Israel'
+        },
+        'bio' => "I'm a new daddy, and enjoying it!",
+        'gender' => 'male',
+        'email' => 'nbenari@gmail.com',
+        'timezone' => 2,
+        'locale' => 'en_US',
+        'languages' => [
+          {
+            'id' => '108405449189952',
+            'name' => 'Hebrew'
+          },
+          {
+            'id' => '106059522759137',
+            'name' => 'English'
+          },
+          {
+            'id' => '112624162082677',
+            'name' => 'Russian'
+          }
+        ],
+        'verified' => true,
+        'updated_time' => '2011-02-16T20:59:38+0000',
+        # response for VK auth
+        'response' => [
+          {
+            'uid' => '123',
+            'first_name' => 'Noam',
+            'last_name' => 'Ben Ari'
+          }
+        ],
+        'user' => {
+          'name' => 'Sonny Whether',
+          'id' => '123',
+          'email' => 'bobby@example.com'
+        },
+        # response for wechat auth
+        'unionid' => '123',
+        # response for instagram
+        'data' => {
+          'username' => 'pnmahoney',
+          'bio' => 'turn WHAT down?',
+          'website' => '',
+          'profile_picture' => 'http://photos-d.ak.instagram.com/hphotos-ak-xpa1/10454121_417985815007395_867850883_a.jpg',
+          'full_name' => 'Patrick Mahoney',
+          'counts' => {
+            'media' => 2,
+            'followed_by' => 100,
+            'follows' => 71
+          },
+          'id'=>'123'
+        }
+      }.to_json
+    }
     allow(access_token).to receive(:get) { response }
     allow(access_token).to receive(:token) { '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3' }
     # access_token params for VK auth

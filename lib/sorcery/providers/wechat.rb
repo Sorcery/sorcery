@@ -37,10 +37,13 @@ module Sorcery
       end
 
       def get_user_hash(access_token)
-        response = access_token.get(user_info_path, params: {
-          access_token: access_token.token,
-          openid: access_token.params['openid'],
-        })
+        response = access_token.get(
+          user_info_path,
+          params: {
+            access_token: access_token.token,
+            openid: access_token.params['openid'],
+          }
+        )
 
         {}.tap do |h|
           h[:user_info] = JSON.parse(response.body)

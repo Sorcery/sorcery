@@ -56,8 +56,8 @@ module Sorcery
       # testing strategy relies on querying user_info_path
       def get_user_hash(access_token)
         call_api_params = {
-            :access_token => access_token.token,
-            :client_id => access_token[:client_id]
+          :access_token => access_token.token,
+          :client_id => access_token[:client_id]
         }
         response = access_token.get(
           "#{user_info_path}?#{call_api_params.to_param}"

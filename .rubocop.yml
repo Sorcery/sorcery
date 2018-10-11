@@ -2,4 +2,6 @@
 inherit_from: '.rubocop_todo.yml'
 
 AllCops:
+  Exclude:
+    - 'lib/generators/sorcery/templates/**/*'
   TargetRubyVersion: 2.5

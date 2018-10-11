@@ -28,8 +28,10 @@ describe Sorcery::Providers::Vk do
       stub_vk_authorize
       sorcery_controller_external_property_set(:vk, :api_version, '5.71')
 
-      get_user = stub_request(:get, "https://api.vk.com/method/getProfiles?access_token=TOKEN&fields=&scope=email&uids=1&v=5.71")
-        .to_return(body: '{"response":[{"id":1}]}')
+      get_user = stub_request(
+        :get,
+        "https://api.vk.com/method/getProfiles?access_token=TOKEN&fields=&scope=email&uids=1&v=5.71"
+      ).to_return(body: '{"response":[{"id":1}]}')
 
       token = provider.process_callback({ code: 'CODE' }, nil)
       provider.get_user_hash(token)

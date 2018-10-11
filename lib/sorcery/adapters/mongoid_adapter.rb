@@ -95,9 +95,13 @@ module Sorcery
 
         def get_current_users
           config = @klass.sorcery_config
-          @klass.where(config.last_activity_at_attribute_name.ne => nil) \
-          .where("this.#{config.last_logout_at_attribute_name} == null || this.#{config.last_activity_at_attribute_name} > this.#{config.last_logout_at_attribute_name}") \
-          .where(config.last_activity_at_attribute_name.gt => config.activity_timeout.seconds.ago.utc).order_by([:_id,:asc])
+          @klass.where(
+            config.last_activity_at_attribute_name.ne => nil
+          ).where(
+            "this.#{config.last_logout_at_attribute_name} == null || this.#{config.last_activity_at_attribute_name} > this.#{config.last_logout_at_attribute_name}"
+          ).where(
+            config.last_activity_at_attribute_name.gt => config.activity_timeout.seconds.ago.utc
+          ).order_by([:_id, :asc])
         end
       end
     end

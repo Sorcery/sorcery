@@ -81,7 +81,7 @@ module Sorcery
         end
 
         def find_by_username(username)
-          query = @klass.sorcery_config.username_attribute_names.map {|name| {name => username}}
+          query = @klass.sorcery_config.username_attribute_names.map { |name| {name => username} }
           @klass.any_of(*query).first
         end
 

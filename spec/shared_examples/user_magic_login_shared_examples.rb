@@ -1,11 +1,11 @@
 shared_examples_for "magic_login_model" do
-  let(:user) {create_new_user}
+  let(:user) { create_new_user }
   before(:each) do
     User.sorcery_adapter.delete_all
   end
 
   context 'loaded plugin configuration' do
-    let(:config) {User.sorcery_config}
+    let(:config) { User.sorcery_config }
 
     before(:all) do
       sorcery_reload!([:magic_login])

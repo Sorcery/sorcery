@@ -573,7 +573,7 @@ shared_examples_for 'external_user' do
       it 'does not create user when block return false' do
         expect do
           User.create_from_provider('facebook', '123', username: 'Noam Ben Ari') { false }
-        end.not_to change { User.count }
+        end.not_to(change { User.count })
       end
     end
   end

@@ -120,7 +120,7 @@ module Sorcery
           def login_from(provider_name, should_remember = false)
             sorcery_fetch_user_hash provider_name
 
-            if user = user_class.load_from_provider(provider_name, @user_hash[:uid].to_s)
+            if (user = user_class.load_from_provider(provider_name, @user_hash[:uid].to_s))
               # we found the user.
               # clear the session
               return_to_url = session[:return_to_url]

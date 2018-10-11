@@ -6,14 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 30
-# Configuration parameters: AllowSafeAssignment.
-Lint/AssignmentInCondition:
-  Exclude:
-    - 'lib/sorcery/controller/submodules/external.rb'
-    - 'lib/sorcery/providers/vk.rb'
-    - 'spec/rails_app/app/controllers/sorcery_controller.rb'
-
 # Offense count: 1
 Lint/DuplicateMethods:
   Exclude:

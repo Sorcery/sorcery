@@ -66,7 +66,7 @@ module Sorcery
             :client_id => access_token[:client_id]
         }
         response = access_token.get(
-            "#{user_info_path}?#{call_api_params.to_param}"
+          "#{user_info_path}?#{call_api_params.to_param}"
         )
 
         _user_attrs = Hash.new

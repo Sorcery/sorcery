@@ -8,13 +8,6 @@
 
 # Offense count: 2
 # Cop supports --auto-correct.
-Layout/SpaceAfterComma:
-  Exclude:
-    - 'lib/sorcery/adapters/mongoid_adapter.rb'
-    - 'spec/controllers/controller_oauth2_spec.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: space, no_space
 Layout/SpaceAroundEqualsInParameterDefault:

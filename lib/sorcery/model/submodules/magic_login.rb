@@ -78,8 +78,10 @@ module Sorcery
           # generates a reset code with expiration
           def generate_magic_login_token!
             config = sorcery_config
-            attributes = {config.magic_login_token_attribute_name => TemporaryToken.generate_random_token,
-                          config.magic_login_email_sent_at_attribute_name => Time.now.in_time_zone}
+            attributes = {
+              config.magic_login_token_attribute_name => TemporaryToken.generate_random_token,
+              config.magic_login_email_sent_at_attribute_name => Time.now.in_time_zone
+            }
             attributes[config.magic_login_token_expires_at_attribute_name] = Time.now.in_time_zone + config.magic_login_expiration_period if config.magic_login_expiration_period
 
             self.sorcery_adapter.update_attributes(attributes)

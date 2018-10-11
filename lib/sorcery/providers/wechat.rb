@@ -79,4 +79,3 @@ module Sorcery
     end
   end
 end
-

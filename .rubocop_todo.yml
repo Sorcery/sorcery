@@ -7,11 +7,6 @@
 # versions of RuboCop, may require this file to be generated again.
 
 # Offense count: 1
-Lint/ParenthesesAsGroupedExpression:
-  Exclude:
-    - 'spec/shared_examples/user_remember_me_shared_examples.rb'
-
-# Offense count: 1
 Lint/UnderscorePrefixedVariableName:
   Exclude:
     - 'lib/sorcery/providers/instagram.rb'

@@ -46,15 +46,6 @@ Naming/AccessorMethodName:
     - 'lib/sorcery/providers/twitter.rb'
     - 'lib/sorcery/providers/xing.rb'
 
-# Offense count: 3
-# Configuration parameters: ExpectMatchingDefinition, Regex, IgnoreExecutableScripts, AllowedAcronyms.
-# AllowedAcronyms: CLI, DSL, ACL, API, ASCII, CPU, CSS, DNS, EOF, GUID, HTML, HTTP, HTTPS, ID, IP, JSON, LHS, QPS, RAM, RHS, RPC, SLA, SMTP, SQL, SSH, TCP, TLS, TTL, UDP, UI, UID, UUID, URI, URL, UTF8, VM, XML, XMPP, XSRF, XSS
-Naming/FileName:
-  Exclude:
-    - 'gemfiles/active_record-rails40.gemfile'
-    - 'gemfiles/active_record-rails41.gemfile'
-    - 'gemfiles/active_record-rails42.gemfile'
-
 # Offense count: 1
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
 # SupportedStylesForLeadingUnderscores: disallowed, required, optional

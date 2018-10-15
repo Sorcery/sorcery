@@ -64,7 +64,7 @@ module Sorcery
           # when magic_login_mailer_disabled is false
           def validate_mailer_defined
             msg = "To use magic_login submodule, you must define a mailer (config.magic_login_mailer_class = YourMailerClass)."
-            raise ArgumentError, msg if @sorcery_config.magic_login_mailer_class.nil? and @sorcery_config.magic_login_mailer_disabled == false
+            raise ArgumentError, msg if @sorcery_config.magic_login_mailer_class.nil? && @sorcery_config.magic_login_mailer_disabled == false
           end
 
           def define_magic_login_fields

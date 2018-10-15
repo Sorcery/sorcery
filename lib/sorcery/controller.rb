@@ -40,7 +40,10 @@ module Sorcery
 
             yield(user, failure_reason) if block_given?
 
+            # FIXME: Does using `break` or `return nil` change functionality?
+            # rubocop:disable Lint/NonLocalExitFromIterator
             return
+            # rubocop:enable Lint/NonLocalExitFromIterator
           end
 
           old_session = session.dup.to_hash

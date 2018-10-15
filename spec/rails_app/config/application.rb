@@ -6,10 +6,13 @@ require 'rails/test_unit/railtie'
 
 Bundler.require :default, SORCERY_ORM
 
+# rubocop:disable Lint/HandleExceptions
 begin
   require "#{SORCERY_ORM}/railtie"
 rescue LoadError
+  # TODO: Log this issue or change require scheme.
 end
+# rubocop:enable Lint/HandleExceptions
 
 require 'sorcery'
 

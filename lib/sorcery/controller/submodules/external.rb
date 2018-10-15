@@ -139,7 +139,7 @@ module Sorcery
           # If user is logged, he can add all available providers into his account
           def add_provider_to_user(provider_name)
             sorcery_fetch_user_hash provider_name
-            config = user_class.sorcery_config
+            # config = user_class.sorcery_config # TODO: Unused, remove?
 
             current_user.add_provider_to_user(provider_name.to_s, @user_hash[:uid].to_s)
           end
@@ -183,7 +183,7 @@ module Sorcery
           #
           def create_from(provider_name, &block)
             sorcery_fetch_user_hash provider_name
-            config = user_class.sorcery_config
+            # config = user_class.sorcery_config # TODO: Unused, remove?
 
             attrs = user_attrs(@provider.user_info_mapping, @user_hash)
             @user = user_class.create_from_provider(provider_name, @user_hash[:uid], attrs, &block)
@@ -192,7 +192,7 @@ module Sorcery
           # follows the same patterns as create_from, but builds the user instead of creating
           def build_from(provider_name, &block)
             sorcery_fetch_user_hash provider_name
-            config = user_class.sorcery_config
+            # config = user_class.sorcery_config # TODO: Unused, remove?
 
             attrs = user_attrs(@provider.user_info_mapping, @user_hash)
             @user = user_class.build_from_provider(attrs, &block)

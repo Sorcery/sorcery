@@ -9,10 +9,11 @@ describe SorceryController, type: :controller do
       sorcery_reload!([:remember_me])
     end
 
-    after(:each) do
-      session = nil
-      cookies = nil
-    end
+    # TODO: Unused, remove?
+    # after(:each) do
+    #   session = nil
+    #   cookies = nil
+    # end
 
     before(:each) do
       allow(user).to receive(:remember_me_token)

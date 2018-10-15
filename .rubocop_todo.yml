@@ -6,14 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 7
-Lint/UselessAssignment:
-  Exclude:
-    - 'lib/sorcery/controller/submodules/external.rb'
-    - 'lib/sorcery/model/submodules/external.rb'
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/controllers/controller_remember_me_spec.rb'
-
 # Offense count: 2
 # Configuration parameters: CheckForMethodsWithNoSideEffects.
 Lint/Void:
@@ -28,7 +20,7 @@ Metrics/AbcSize:
 # Configuration parameters: CountComments, ExcludedMethods.
 # ExcludedMethods: refine
 Metrics/BlockLength:
-  Max: 407
+  Max: 408
 
 # Offense count: 1
 # Configuration parameters: CountComments.

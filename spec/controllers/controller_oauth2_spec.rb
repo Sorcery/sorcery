@@ -271,6 +271,7 @@ describe SorceryController, active_record: true, type: :controller do
         create_new_external_user provider
         old_size = ActionMailer::Base.deliveries.size
         @user.activate!
+        expect(ActionMailer::Base.deliveries.size).to eq old_size
       end
     end
   end

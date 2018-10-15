@@ -63,10 +63,10 @@ module Sorcery
           "#{user_info_path}?#{call_api_params.to_param}"
         )
 
-        _user_attrs = Hash.new
-        _user_attrs[:user_info] = JSON.parse(response.body)['data']
-        _user_attrs[:uid] = _user_attrs[:user_info]['id']
-        _user_attrs
+        user_attrs = Hash.new
+        user_attrs[:user_info] = JSON.parse(response.body)['data']
+        user_attrs[:uid] = user_attrs[:user_info]['id']
+        user_attrs
       end
     end
   end

@@ -6,12 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 2
-# Configuration parameters: CheckForMethodsWithNoSideEffects.
-Lint/Void:
-  Exclude:
-    - 'spec/controllers/controller_remember_me_spec.rb'
-
 # Offense count: 31
 Metrics/AbcSize:
   Max: 36

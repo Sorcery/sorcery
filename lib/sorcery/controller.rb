@@ -54,12 +54,8 @@ module Sorcery
         end
       end
 
-      # put this into the catch block to rescue undefined method `destroy_session'
-      # hotfix for https://github.com/NoamB/sorcery/issues/464
-      # can be removed when Rails 4.1 is out
       def reset_sorcery_session
         reset_session # protect from session fixation attacks
-      rescue NoMethodError
       end
 
       # Resets the session and runs hooks before and after.

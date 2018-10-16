@@ -110,10 +110,8 @@ module Sorcery
           def clear_magic_login_token!
             config = sorcery_config
             self.sorcery_adapter.update_attributes(
-              {
-                config.magic_login_token_attribute_name => nil,
-                config.magic_login_token_expires_at_attribute_name => nil
-              }
+              config.magic_login_token_attribute_name => nil,
+              config.magic_login_token_expires_at_attribute_name => nil
             )
           end
 

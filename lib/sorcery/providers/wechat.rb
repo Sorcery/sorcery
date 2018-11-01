@@ -41,7 +41,7 @@ module Sorcery
           user_info_path,
           params: {
             access_token: access_token.token,
-            openid: access_token.params['openid'],
+            openid: access_token.params['openid']
           }
         )
 

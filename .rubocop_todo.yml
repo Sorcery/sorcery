@@ -125,10 +125,3 @@ Style/MutableConstant:
 # Configuration parameters: Strict.
 Style/NumericLiterals:
   MinDigits: 18
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowSafeAssignment, AllowInMultilineConditions.
-Style/ParenthesesAroundCondition:
-  Exclude:
-    - 'lib/sorcery/adapters/mongoid_adapter.rb'

@@ -84,7 +84,7 @@ module Sorcery
             }
             attributes[config.magic_login_token_expires_at_attribute_name] = Time.now.in_time_zone + config.magic_login_expiration_period if config.magic_login_expiration_period
 
-            self.sorcery_adapter.update_attributes(attributes)
+            sorcery_adapter.update_attributes(attributes)
           end
 
           # generates a magic login code with expiration and sends an email to the user.
@@ -93,8 +93,8 @@ module Sorcery
             config = sorcery_config
             # hammering protection
             return false if !config.magic_login_time_between_emails.nil? &&
-                            self.send(config.magic_login_email_sent_at_attribute_name) &&
-                            self.send(config.magic_login_email_sent_at_attribute_name) > config.magic_login_time_between_emails.seconds.ago
+                            send(config.magic_login_email_sent_at_attribute_name) &&
+                            send(config.magic_login_email_sent_at_attribute_name) > config.magic_login_time_between_emails.seconds.ago
 
             self.class.sorcery_adapter.transaction do
               generate_magic_login_token!
@@ -109,7 +109,7 @@ module Sorcery
           # Clears the token.
           def clear_magic_login_token!
             config = sorcery_config
-            self.sorcery_adapter.update_attributes(
+            sorcery_adapter.update_attributes(
               config.magic_login_token_attribute_name => nil,
               config.magic_login_token_expires_at_attribute_name => nil
             )

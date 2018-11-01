@@ -215,13 +215,6 @@ Style/RedundantReturn:
   Exclude:
     - 'lib/sorcery/crypto_providers/bcrypt.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-Style/RedundantSelf:
-  Exclude:
-    - 'lib/sorcery/model/submodules/magic_login.rb'
-    - 'lib/sorcery/model/submodules/reset_password.rb'
-
 # Offense count: 827
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

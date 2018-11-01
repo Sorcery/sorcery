@@ -155,7 +155,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(flash[:notice]).to eq 'Success!'
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :instagram].each do |provider|
+    %i[github google liveid vk salesforce paypal slack wechat microsoft instagram].each do |provider|
       describe "with #{provider}" do
         it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
@@ -200,8 +200,23 @@ describe SorceryController, active_record: true, type: :controller do
 
   describe 'OAuth with User Activation features' do
     before(:all) do
-      sorcery_reload!([:user_activation, :external], :user_activation_mailer => ::SorceryMailer)
-      sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :instagram])
+      sorcery_reload!(%i[user_activation external], :user_activation_mailer => ::SorceryMailer)
+      sorcery_controller_property_set(
+        :external_providers,
+        %i[
+          facebook
+          github
+          google
+          liveid
+          vk
+          salesforce
+          paypal
+          slack
+          wechat
+          microsoft
+          instagram
+        ]
+      )
 
       # TODO: refactor
       sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
@@ -259,7 +274,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(ActionMailer::Base.deliveries.size).to eq old_size
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :wechat, :microsoft, :instagram].each do |provider|
+    %i[github google liveid vk salesforce paypal wechat microsoft instagram].each do |provider|
       it "does not send activation email to external users (#{provider})" do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user provider
@@ -280,7 +295,7 @@ describe SorceryController, active_record: true, type: :controller do
     let(:user) { double('user', id: 42) }
 
     before(:all) do
-      sorcery_reload!([:activity_logging, :external])
+      sorcery_reload!(%i[activity_logging external])
     end
 
     %w(facebook github google liveid vk salesforce slack).each do |provider|
@@ -317,7 +332,7 @@ describe SorceryController, active_record: true, type: :controller do
 
   describe 'OAuth with session timeout features' do
     before(:all) do
-      sorcery_reload!([:session_timeout, :external])
+      sorcery_reload!(%i[session_timeout external])
     end
 
     let(:user) { double('user', id: 42) }
@@ -438,7 +453,22 @@ describe SorceryController, active_record: true, type: :controller do
   end
 
   def set_external_property
-    sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :instagram])
+    sorcery_controller_property_set(
+      :external_providers,
+      %i[
+        facebook
+        github
+        google
+        liveid
+        vk
+        salesforce
+        paypal
+        slack
+        wechat
+        microsoft
+        instagram
+      ]
+    )
     sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
     sorcery_controller_external_property_set(:facebook, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
     sorcery_controller_external_property_set(:facebook, :callback_url, "http://blabla.com")

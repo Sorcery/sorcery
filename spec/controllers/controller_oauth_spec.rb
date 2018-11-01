@@ -50,7 +50,7 @@ describe SorceryController, type: :controller do
 
   before(:all) do
     sorcery_reload!([:external])
-    sorcery_controller_property_set(:external_providers, [:twitter, :jira])
+    sorcery_controller_property_set(:external_providers, %i[twitter jira])
     sorcery_controller_external_property_set(:twitter, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:twitter, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
     sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com')
@@ -179,7 +179,7 @@ describe SorceryController, type: :controller do
 
   describe SorceryController, 'OAuth with user activation features' do
     before(:all) do
-      sorcery_reload!([:activity_logging, :external])
+      sorcery_reload!(%i[activity_logging external])
     end
 
     context 'when twitter' do
@@ -219,7 +219,7 @@ describe SorceryController, type: :controller do
         User.reset_column_information
       end
 
-      sorcery_reload!([:session_timeout, :external])
+      sorcery_reload!(%i[session_timeout external])
     end
 
     after(:all) do

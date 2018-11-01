@@ -4,10 +4,10 @@ module Sorcery
       module Rails
         include ::Sorcery::TestHelpers::Rails::Controller
 
-        SUBMODULES_AUTO_ADDED_CONTROLLER_FILTERS = [
-          :register_last_activity_time_to_db,
-          :deny_banned_user,
-          :validate_session
+        SUBMODULES_AUTO_ADDED_CONTROLLER_FILTERS = %i[
+          register_last_activity_time_to_db
+          deny_banned_user
+          validate_session
         ]
 
         def sorcery_reload!(submodules = [], options = {})

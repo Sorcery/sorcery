@@ -101,7 +101,7 @@ module Sorcery
             "this.#{config.last_logout_at_attribute_name} == null || this.#{config.last_activity_at_attribute_name} > this.#{config.last_logout_at_attribute_name}"
           ).where(
             config.last_activity_at_attribute_name.gt => config.activity_timeout.seconds.ago.utc
-          ).order_by([:_id, :asc])
+          ).order_by(%i[_id asc])
         end
       end
     end

@@ -14,12 +14,12 @@ Metrics/AbcSize:
 # Configuration parameters: CountComments, ExcludedMethods.
 # ExcludedMethods: refine
 Metrics/BlockLength:
-  Max: 408
+  Max: 438
 
 # Offense count: 1
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 324
+  Max: 329
 
 # Offense count: 3
 Metrics/CyclomaticComplexity:
@@ -254,13 +254,6 @@ Style/StringLiterals:
     - 'spec/providers/vk_spec.rb'
     - 'spec/rails_app/db/schema.rb'
     - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-
-# Offense count: 22
-# Cop supports --auto-correct.
-# Configuration parameters: MinSize.
-# SupportedStyles: percent, brackets
-Style/SymbolArray:
-  EnforcedStyle: brackets
 
 # Offense count: 827
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.

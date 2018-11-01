@@ -326,9 +326,11 @@ shared_examples_for 'rails_3_core_model' do
 
     it 'use deliver_later' do
       sorcery_reload!(
-        [
-          :user_activation, :user_activation_mailer,
-          :activation_needed_email_method_name, :email_delivery_method
+        %i[
+          user_activation
+          user_activation_mailer
+          activation_needed_email_method_name
+          email_delivery_method
         ],
         user_activation_mailer: SorceryMailer,
         activation_needed_email_method_name: nil,
@@ -343,9 +345,10 @@ shared_examples_for 'rails_3_core_model' do
       it 'use deliver_now if rails version 4.2+' do
         allow(Rails).to receive(:version).and_return('4.2.0')
         sorcery_reload!(
-          [
-            :user_activation, :user_activation_mailer,
-            :activation_needed_email_method_name
+          %i[
+            user_activation
+            user_activation_mailer
+            activation_needed_email_method_name
           ],
           user_activation_mailer: SorceryMailer,
           activation_needed_email_method_name: nil
@@ -358,9 +361,10 @@ shared_examples_for 'rails_3_core_model' do
       it 'use deliver if rails version < 4.2' do
         allow(Rails).to receive(:version).and_return('4.1.0')
         sorcery_reload!(
-          [
-            :user_activation, :user_activation_mailer,
-            :activation_needed_email_method_name
+          %i[
+            user_activation
+            user_activation_mailer
+            activation_needed_email_method_name
           ],
           user_activation_mailer: SorceryMailer,
           activation_needed_email_method_name: nil
@@ -506,7 +510,7 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     it 'find_by_username works as expected with multiple username attributes' do
-      sorcery_model_property_set(:username_attribute_names, [:username, :email])
+      sorcery_model_property_set(:username_attribute_names, %i[username email])
 
       expect(User.sorcery_adapter.find_by_username('gizmo')).to eq user
     end
@@ -583,14 +587,14 @@ shared_examples_for 'external_user' do
 
   describe 'activation' do
     before(:each) do
-      sorcery_reload!([:user_activation, :external], user_activation_mailer: ::SorceryMailer)
+      sorcery_reload!(%i[user_activation external], user_activation_mailer: ::SorceryMailer)
     end
 
     after(:each) do
       User.sorcery_adapter.delete_all
     end
 
-    [:facebook, :github, :google, :liveid, :slack].each do |provider|
+    %i[facebook github google liveid slack].each do |provider|
       it 'does not send activation email to external users' do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user(provider)

@@ -107,8 +107,3 @@ Style/IfUnlessModifier:
     - 'spec/controllers/controller_oauth_spec.rb'
     - 'spec/rails_app/config/application.rb'
     - 'spec/rails_app/config/initializers/session_store.rb'
-
-# Offense count: 1
-Style/MultipleComparison:
-  Exclude:
-    - 'lib/generators/sorcery/install_generator.rb'

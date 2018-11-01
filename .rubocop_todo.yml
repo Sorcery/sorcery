@@ -202,12 +202,6 @@ Style/PercentLiteralDelimiters:
     - 'spec/rails_app/config/application.rb'
     - 'spec/sorcery_crypto_providers_spec.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantParentheses:
-  Exclude:
-    - 'lib/sorcery/adapters/mongoid_adapter.rb'
-
 # Offense count: 827
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

@@ -18,7 +18,7 @@ require 'sorcery'
 
 module AppRoot
   class Application < Rails::Application
-    config.autoload_paths.reject! { |p| p =~ %r/\/app\/(\w+)$/ && !%w(controllers helpers mailers views).include?(Regexp.last_match(1)) }
+    config.autoload_paths.reject! { |p| p =~ %r{/\/app\/(\w+)$/} && !%w[controllers helpers mailers views].include?(Regexp.last_match(1)) }
     config.autoload_paths += ["#{config.root}/app/#{SORCERY_ORM}"]
 
     # Settings in config/environments/* take precedence over those specified here.

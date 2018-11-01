@@ -298,7 +298,7 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_reload!(%i[activity_logging external])
     end
 
-    %w(facebook github google liveid vk salesforce slack).each do |provider|
+    %w[facebook github google liveid vk salesforce slack].each do |provider|
       context "when #{provider}" do
         before(:each) do
           sorcery_controller_property_set(:register_login_time, true)
@@ -337,7 +337,7 @@ describe SorceryController, active_record: true, type: :controller do
 
     let(:user) { double('user', id: 42) }
 
-    %w(facebook github google liveid vk salesforce slack).each do |provider|
+    %w[facebook github google liveid vk salesforce slack].each do |provider|
       context "when #{provider}" do
         before(:each) do
           sorcery_model_property_set(:authentications_class, Authentication)

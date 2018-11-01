@@ -64,7 +64,7 @@ module Sorcery
         end
 
         if ::Rails.version < '5.0.0'
-          %w(get post put).each do |method|
+          %w[get post put].each do |method|
             define_method(method) do |action, options = {}|
               super action, options[:params] || {}, options[:session]
             end

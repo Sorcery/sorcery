@@ -204,7 +204,7 @@ module Sorcery
               if (varr = v.split('/')).size > 1
                 attribute_value = begin
                                     varr.inject(user_hash[:user_info]) { |hash, value| hash[value] }
-                                  rescue
+                                  rescue StandardError
                                     nil
                                   end
                 attribute_value.nil? ? attrs : attrs.merge!(k => attribute_value)

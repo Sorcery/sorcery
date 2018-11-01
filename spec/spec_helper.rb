@@ -40,7 +40,7 @@ RSpec.configure do |config|
 
   if begin
        Module.const_defined?('::Rails::Controller::Testing')
-     rescue
+     rescue StandardError
        false
      end
     config.include ::Rails::Controller::Testing::TestProcess, type: :controller

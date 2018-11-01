@@ -208,13 +208,6 @@ Style/RedundantParentheses:
   Exclude:
     - 'lib/sorcery/adapters/mongoid_adapter.rb'
 
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Exclude:
-    - 'lib/sorcery/crypto_providers/bcrypt.rb'
-
 # Offense count: 827
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

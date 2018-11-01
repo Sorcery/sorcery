@@ -88,7 +88,7 @@ module Sorcery
         def new_from_hash(hash)
           ::BCrypt::Password.new(hash)
         rescue ::BCrypt::Errors::InvalidHash
-          return nil
+          nil
         end
       end
     end

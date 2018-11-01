@@ -73,7 +73,7 @@ module Sorcery
           args,
           token_url: token_url,
           mode: mode,
-          param_name: param_name,
+          param_name: param_name
         )
       end
     end

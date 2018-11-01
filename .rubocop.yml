@@ -42,3 +42,7 @@ Naming/AccessorMethodName:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'
+Naming/PredicateName:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'

@@ -16,7 +16,7 @@ describe Sorcery::Providers::Vk do
   end
 
   def stub_vk_authorize
-    stub_request(:post, /https\:\/\/oauth\.vk\.com\/access_token/).to_return(
+    stub_request(:post, %r{https\:\/\/oauth\.vk\.com\/access_token}).to_return(
       status: 200,
       body: '{"access_token":"TOKEN","expires_in":86329,"user_id":1}',
       headers: { 'content-type' => 'application/json' }

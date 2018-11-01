@@ -222,15 +222,6 @@ Style/RedundantSelf:
     - 'lib/sorcery/model/submodules/magic_login.rb'
     - 'lib/sorcery/model/submodules/reset_password.rb'
 
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, AllowInnerSlashes.
-# SupportedStyles: slashes, percent_r, mixed
-Style/RegexpLiteral:
-  Exclude:
-    - 'spec/providers/vk_spec.rb'
-    - 'spec/rails_app/config/application.rb'
-
 # Offense count: 827
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

@@ -90,6 +90,7 @@ module Sorcery
             # cache them in instance variables.
             @access_token ||= @provider.process_callback(params, session) # sends request to oauth agent to get the token
             @user_hash ||= @provider.get_user_hash(@access_token) # uses the token to send another request to the oauth agent requesting user info
+            nil
           end
 
           # for backwards compatibility

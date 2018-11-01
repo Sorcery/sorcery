@@ -23,7 +23,7 @@ module Sorcery
       end
 
       def mongoid_4?
-        Gem::Version.new(::Mongoid::VERSION) >= Gem::Version.new("4.0.0.alpha")
+        Gem::Version.new(::Mongoid::VERSION) >= Gem::Version.new('4.0.0.alpha')
       end
 
       class << self

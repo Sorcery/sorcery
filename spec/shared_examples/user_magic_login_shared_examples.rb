@@ -1,4 +1,4 @@
-shared_examples_for "magic_login_model" do
+shared_examples_for 'magic_login_model' do
   let(:user) { create_new_user }
   before(:each) do
     User.sorcery_adapter.delete_all
@@ -15,7 +15,7 @@ shared_examples_for "magic_login_model" do
       User.sorcery_config.reset!
     end
 
-    describe "enables configuration options" do
+    describe 'enables configuration options' do
       it do
         sorcery_model_property_set(:magic_login_token_attribute_name, :test_magic_login_token)
         expect(config.magic_login_token_attribute_name).to eq :test_magic_login_token
@@ -58,23 +58,23 @@ shared_examples_for "magic_login_model" do
       end
     end
 
-    describe "#generate_magic_login_token!" do
-      context "magic_login_token is nil" do
+    describe '#generate_magic_login_token!' do
+      context 'magic_login_token is nil' do
         it "magic_login_token_expires_at and magic_login_email_sent_at aren't nil " do
           user.generate_magic_login_token!
           expect(user.magic_login_token_expires_at).not_to be_nil
           expect(user.magic_login_email_sent_at).not_to be_nil
         end
 
-        it "magic_login_token is different from the one before" do
+        it 'magic_login_token is different from the one before' do
           token_before = user.magic_login_token
           user.generate_magic_login_token!
           expect(user.magic_login_token).not_to eq token_before
         end
       end
 
-      context "magic_login_token is not nil" do
-        it "changes `user.magic_login_token`" do
+      context 'magic_login_token is not nil' do
+        it 'changes `user.magic_login_token`' do
           token_before = user.magic_login_token
           user.generate_magic_login_token!
           expect(user.magic_login_token).not_to eq token_before
@@ -82,8 +82,8 @@ shared_examples_for "magic_login_model" do
       end
     end
 
-    describe "#deliver_magic_login_instructions!" do
-      context "success" do
+    describe '#deliver_magic_login_instructions!' do
+      context 'success' do
         before do
           sorcery_model_property_set(:magic_login_time_between_emails, 30 * 60)
           sorcery_model_property_set(:magic_login_mailer_disabled, false)
@@ -103,31 +103,31 @@ shared_examples_for "magic_login_model" do
         end
       end
 
-      context "failure" do
-        context "magic_login_time_between_emails is nil" do
-          it "returns false" do
+      context 'failure' do
+        context 'magic_login_time_between_emails is nil' do
+          it 'returns false' do
             sorcery_model_property_set(:magic_login_time_between_emails, nil)
             expect(user.deliver_magic_login_instructions!).to eq false
           end
         end
 
-        context "magic_login_email_sent_at is nil" do
-          it "returns false" do
+        context 'magic_login_email_sent_at is nil' do
+          it 'returns false' do
             user.send(:"#{config.magic_login_email_sent_at_attribute_name}=", nil)
             expect(user.deliver_magic_login_instructions!).to eq false
           end
         end
 
-        context "now is before magic_login_email_sent_at plus the interval" do
-          it "returns false" do
+        context 'now is before magic_login_email_sent_at plus the interval' do
+          it 'returns false' do
             user.send(:"#{config.magic_login_email_sent_at_attribute_name}=", DateTime.now)
             sorcery_model_property_set(:magic_login_time_between_emails, 30 * 60)
             expect(user.deliver_magic_login_instructions!).to eq false
           end
         end
 
-        context "magic_login_mailer_disabled is true" do
-          it "returns false" do
+        context 'magic_login_mailer_disabled is true' do
+          it 'returns false' do
             sorcery_model_property_set(:magic_login_mailer_disabled, true)
             expect(user.deliver_magic_login_instructions!).to eq false
           end
@@ -135,9 +135,9 @@ shared_examples_for "magic_login_model" do
       end
     end
 
-    describe "#clear_magic_login_token!" do
-      it "makes magic_login_token_attribute_name and magic_login_token_expires_at_attribute_name nil" do
-        user.magic_login_token = "test_token"
+    describe '#clear_magic_login_token!' do
+      it 'makes magic_login_token_attribute_name and magic_login_token_expires_at_attribute_name nil' do
+        user.magic_login_token = 'test_token'
         user.magic_login_token_expires_at = Time.now
 
         user.clear_magic_login_token!

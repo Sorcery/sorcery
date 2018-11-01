@@ -241,20 +241,6 @@ Style/RescueStandardError:
     - 'spec/shared_examples/user_shared_examples.rb'
     - 'spec/spec_helper.rb'
 
-# Offense count: 102
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'lib/sorcery/adapters/mongoid_adapter.rb'
-    - 'lib/sorcery/model/submodules/magic_login.rb'
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/controllers/controller_session_timeout_spec.rb'
-    - 'spec/providers/vk_spec.rb'
-    - 'spec/rails_app/db/schema.rb'
-    - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-
 # Offense count: 827
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

@@ -245,7 +245,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
 
       it 'does not send an email if time between emails has not passed since last email' do
-        sorcery_model_property_set(:reset_password_time_between_emails, 10000)
+        sorcery_model_property_set(:reset_password_time_between_emails, 10_000)
         old_size = ActionMailer::Base.deliveries.size
         user.deliver_reset_password_instructions!
 
@@ -289,7 +289,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
 
       it 'does not send an email if time between emails has not passed since last email' do
-        sorcery_model_property_set(:reset_password_time_between_emails, 10000)
+        sorcery_model_property_set(:reset_password_time_between_emails, 10_000)
         old_size = ActionMailer::Base.deliveries.size
         user.deliver_reset_password_instructions!
 
@@ -326,7 +326,7 @@ shared_examples_for 'rails_3_reset_password_model' do
     end
 
     it 'returns false if time between emails has not passed since last email' do
-      sorcery_model_property_set(:reset_password_time_between_emails, 10000)
+      sorcery_model_property_set(:reset_password_time_between_emails, 10_000)
       user.deliver_reset_password_instructions!
 
       expect(user.deliver_reset_password_instructions!).to be false

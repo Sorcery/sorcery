@@ -119,9 +119,3 @@ Style/MutableConstant:
   Exclude:
     - 'lib/sorcery/test_helpers/internal/rails.rb'
     - 'lib/sorcery/version.rb'
-
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: Strict.
-Style/NumericLiterals:
-  MinDigits: 18

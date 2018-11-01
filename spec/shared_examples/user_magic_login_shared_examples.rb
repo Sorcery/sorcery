@@ -48,13 +48,13 @@ shared_examples_for 'magic_login_model' do
       end
 
       it do
-        sorcery_model_property_set(:magic_login_expiration_period, 100000000)
-        expect(config.magic_login_expiration_period).to eq 100000000
+        sorcery_model_property_set(:magic_login_expiration_period, 100_000_000)
+        expect(config.magic_login_expiration_period).to eq 100_000_000
       end
 
       it do
-        sorcery_model_property_set(:magic_login_time_between_emails, 100000000)
-        expect(config.magic_login_time_between_emails).to eq 100000000
+        sorcery_model_property_set(:magic_login_time_between_emails, 100_000_000)
+        expect(config.magic_login_time_between_emails).to eq 100_000_000
       end
     end
 

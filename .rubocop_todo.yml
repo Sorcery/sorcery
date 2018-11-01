@@ -6,18 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 11
-Naming/AccessorMethodName:
-  Exclude:
-    - 'lib/sorcery/adapters/mongoid_adapter.rb'
-    - 'lib/sorcery/controller/submodules/remember_me.rb'
-    - 'lib/sorcery/model/submodules/activity_logging.rb'
-    - 'lib/sorcery/protocols/oauth.rb'
-    - 'lib/sorcery/providers/jira.rb'
-    - 'lib/sorcery/providers/linkedin.rb'
-    - 'lib/sorcery/providers/twitter.rb'
-    - 'lib/sorcery/providers/xing.rb'
-
 # Offense count: 1
 # Configuration parameters: EnforcedStyleForLeadingUnderscores.
 # SupportedStylesForLeadingUnderscores: disallowed, required, optional

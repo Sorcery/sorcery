@@ -38,3 +38,7 @@ Metrics/PerceivedComplexity:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'
+Naming/AccessorMethodName:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'

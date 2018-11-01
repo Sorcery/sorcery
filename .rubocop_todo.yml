@@ -112,10 +112,3 @@ Style/IfUnlessModifier:
 Style/MultipleComparison:
   Exclude:
     - 'lib/generators/sorcery/install_generator.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/MutableConstant:
-  Exclude:
-    - 'lib/sorcery/test_helpers/internal/rails.rb'
-    - 'lib/sorcery/version.rb'

@@ -14,7 +14,8 @@ Gem::Specification.new do |s|
     'Josh Buker'
   ]
   s.email = [
-    'chase.gilliam@gmail.com'
+    'chase.gilliam@gmail.com',
+    'contact@joshbuker.com'
   ]
 
   # TODO: Cleanup formatting.

@@ -66,16 +66,3 @@ Style/ExpandPathArguments:
 Style/FormatString:
   Exclude:
     - 'lib/generators/sorcery/install_generator.rb'
-
-# Offense count: 16
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'lib/generators/sorcery/install_generator.rb'
-    - 'lib/sorcery/controller.rb'
-    - 'lib/sorcery/controller/submodules/external.rb'
-    - 'lib/sorcery/model.rb'
-    - 'lib/sorcery/model/submodules/brute_force_protection.rb'
-    - 'lib/sorcery/test_helpers/internal.rb'
-    - 'lib/sorcery/test_helpers/internal/rails.rb'
-    - 'spec/rails_app/app/controllers/sorcery_controller.rb'

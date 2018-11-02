@@ -195,9 +195,9 @@ module Sorcery
         config = sorcery_config
         send(:"#{config.password_attribute_name}=", nil)
 
-        if respond_to?(:"#{config.password_attribute_name}_confirmation=")
-          send(:"#{config.password_attribute_name}_confirmation=", nil)
-        end
+        return unless respond_to?(:"#{config.password_attribute_name}_confirmation=")
+
+        send(:"#{config.password_attribute_name}_confirmation=", nil)
       end
 
       # calls the requested email method on the configured mailer
@@ -205,9 +205,9 @@ module Sorcery
       def generic_send_email(method, mailer)
         config = sorcery_config
         mail = config.send(mailer).send(config.send(method), self)
-        if defined?(ActionMailer) && config.send(mailer).is_a?(Class) && config.send(mailer) < ActionMailer::Base
-          mail.send(config.email_delivery_method)
-        end
+        return unless defined?(ActionMailer) && config.send(mailer).is_a?(Class) && config.send(mailer) < ActionMailer::Base
+
+        mail.send(config.email_delivery_method)
       end
     end
   end

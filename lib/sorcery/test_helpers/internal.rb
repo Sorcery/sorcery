@@ -69,9 +69,10 @@ module Sorcery
       def reload_user_class
         User && Object.send(:remove_const, 'User')
         load 'user.rb'
-        if User.respond_to?(:reset_column_information)
-          User.reset_column_information
-        end
+
+        return unless User.respond_to?(:reset_column_information)
+
+        User.reset_column_information
       end
     end
   end

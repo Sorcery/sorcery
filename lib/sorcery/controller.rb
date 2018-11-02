@@ -23,10 +23,10 @@ module Sorcery
       # Will trigger auto-login attempts via the call to logged_in?
       # If all attempts to auto-login fail, the failure callback will be called.
       def require_login
-        unless logged_in?
-          session[:return_to_url] = request.url if Config.save_return_to_url && request.get? && !request.xhr?
-          send(Config.not_authenticated_action)
-        end
+        return if logged_in?
+
+        session[:return_to_url] = request.url if Config.save_return_to_url && request.get? && !request.xhr?
+        send(Config.not_authenticated_action)
       end
 
       # Takes credentials and returns a user on successful authentication.
@@ -66,13 +66,13 @@ module Sorcery
 
       # Resets the session and runs hooks before and after.
       def logout
-        if logged_in?
-          user = current_user
-          before_logout!
-          @current_user = nil
-          reset_sorcery_session
-          after_logout!(user)
-        end
+        return unless logged_in?
+
+        user = current_user
+        before_logout!
+        @current_user = nil
+        reset_sorcery_session
+        after_logout!(user)
       end
 
       def logged_in?

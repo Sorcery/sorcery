@@ -69,9 +69,9 @@ module Sorcery
 
             sorcery_adapter.increment(config.failed_logins_count_attribute_name)
 
-            if send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
-              login_lock!
-            end
+            return unless send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
+
+            login_lock!
           end
 
           # /!\
@@ -97,9 +97,9 @@ module Sorcery
                            config.unlock_token_attribute_name => TemporaryToken.generate_random_token }
             sorcery_adapter.update_attributes(attributes)
 
-            unless config.unlock_token_mailer_disabled || config.unlock_token_mailer.nil?
-              send_unlock_token_email!
-            end
+            return if config.unlock_token_mailer_disabled || config.unlock_token_mailer.nil?
+
+            send_unlock_token_email!
           end
 
           def login_unlocked?

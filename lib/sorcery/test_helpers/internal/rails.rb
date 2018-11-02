@@ -40,11 +40,11 @@ module Sorcery
             end
           end
           User.authenticates_with_sorcery!
-          if defined?(DataMapper) && User.ancestors.include?(DataMapper::Resource)
-            DataMapper.auto_migrate!
-            User.finalize
-            Authentication.finalize
-          end
+          return unless defined?(DataMapper) && User.ancestors.include?(DataMapper::Resource)
+
+          DataMapper.auto_migrate!
+          User.finalize
+          Authentication.finalize
         end
 
         def sorcery_controller_property_set(property, value)

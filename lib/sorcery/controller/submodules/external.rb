@@ -66,12 +66,11 @@ module Sorcery
           def sorcery_login_url(provider_name, args = {})
             @provider = sorcery_get_provider provider_name
             sorcery_fixup_callback_url @provider
-            if @provider.respond_to?(:login_url) && @provider.has_callback?
-              @provider.state = args[:state]
-              return @provider.login_url(params, session)
-            else
-              return nil
-            end
+
+            return nil unless @provider.respond_to?(:login_url) && @provider.has_callback?
+
+            @provider.state = args[:state]
+            @provider.login_url(params, session)
           end
 
           # get the user hash from a provider using information from the params and session.
@@ -101,14 +100,15 @@ module Sorcery
           # this method should be somewhere else.  It only does something once per application per provider.
           def sorcery_fixup_callback_url(provider)
             provider.original_callback_url ||= provider.callback_url
-            if provider.original_callback_url.present? && provider.original_callback_url[0] == '/'
-              uri = URI.parse(request.url.gsub(/\?.*$/, ''))
-              uri.path = ''
-              uri.query = nil
-              uri.scheme = 'https' if request.env['HTTP_X_FORWARDED_PROTO'] == 'https'
-              host = uri.to_s
-              provider.callback_url = "#{host}#{@provider.original_callback_url}"
-            end
+
+            return unless provider.original_callback_url.present? && provider.original_callback_url[0] == '/'
+
+            uri = URI.parse(request.url.gsub(/\?.*$/, ''))
+            uri.path = ''
+            uri.query = nil
+            uri.scheme = 'https' if request.env['HTTP_X_FORWARDED_PROTO'] == 'https'
+            host = uri.to_s
+            provider.callback_url = "#{host}#{@provider.original_callback_url}"
           end
 
           # sends user to authenticate at the provider's website.
@@ -121,20 +121,20 @@ module Sorcery
           def login_from(provider_name, should_remember = false)
             sorcery_fetch_user_hash provider_name
 
-            if (user = user_class.load_from_provider(provider_name, @user_hash[:uid].to_s))
-              # we found the user.
-              # clear the session
-              return_to_url = session[:return_to_url]
-              reset_sorcery_session
-              session[:return_to_url] = return_to_url
+            return unless (user = user_class.load_from_provider(provider_name, @user_hash[:uid].to_s))
 
-              # sign in the user
-              auto_login(user, should_remember)
-              after_login!(user)
+            # we found the user.
+            # clear the session
+            return_to_url = session[:return_to_url]
+            reset_sorcery_session
+            session[:return_to_url] = return_to_url
 
-              # return the user
-              user
-            end
+            # sign in the user
+            auto_login(user, should_remember)
+            after_login!(user)
+
+            # return the user
+            user
           end
 
           # If user is logged, he can add all available providers into his account

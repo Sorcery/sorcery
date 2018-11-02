@@ -1,5 +1,4 @@
-# Use auto generated file to ignore existing warnings.
-inherit_from: '.rubocop_todo.yml'
+inherit_from: .rubocop_todo.yml
 
 AllCops:
   Exclude:

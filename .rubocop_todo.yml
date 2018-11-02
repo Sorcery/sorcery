@@ -21,9 +21,3 @@ Style/ClassAndModuleChildren:
 Style/ConditionalAssignment:
   Exclude:
     - 'lib/sorcery/adapters/active_record_adapter.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/Dir:
-  Exclude:
-    - 'lib/sorcery/controller/submodules/external.rb'

@@ -31,9 +31,3 @@ Style/Dir:
 # Offense count: 54
 Style/Documentation:
   Enabled: false
-
-# Offense count: 2
-Style/DoubleNegation:
-  Exclude:
-    - 'lib/generators/sorcery/helpers.rb'
-    - 'lib/sorcery/controller.rb'

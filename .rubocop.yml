@@ -6,6 +6,10 @@ AllCops:
     - 'lib/generators/sorcery/templates/**/*'
   TargetRubyVersion: 2.2
 
+# See: https://github.com/rubocop-hq/rubocop/issues/3344
+Style/DoubleNegation:
+  Enabled: false
+
 ####################
 ## Pre-1.0.0 Code ##
 ####################

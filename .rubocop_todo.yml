@@ -37,9 +37,3 @@ Style/DoubleNegation:
   Exclude:
     - 'lib/generators/sorcery/helpers.rb'
     - 'lib/sorcery/controller.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/EmptyLiteral:
-  Exclude:
-    - 'lib/sorcery/providers/instagram.rb'

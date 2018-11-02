@@ -10,8 +10,8 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20_101_224_223_620) do
-  create_table 'users', :force => true do |t|
+ActiveRecord::Schema.define(version: 20_101_224_223_620) do
+  create_table 'users', force: true do |t|
     t.string   'username'
     t.string   'email'
     t.string   'crypted_password'

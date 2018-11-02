@@ -200,7 +200,7 @@ describe SorceryController, active_record: true, type: :controller do
 
   describe 'OAuth with User Activation features' do
     before(:all) do
-      sorcery_reload!(%i[user_activation external], :user_activation_mailer => ::SorceryMailer)
+      sorcery_reload!(%i[user_activation external], user_activation_mailer: ::SorceryMailer)
       sorcery_controller_property_set(
         :external_providers,
         %i[

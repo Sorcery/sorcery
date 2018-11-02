@@ -10,7 +10,7 @@ module Sorcery
           attrs[name] = value.utc if value.is_a?(ActiveSupport::TimeWithZone)
           @model.send(:"#{name}=", value)
         end
-        @model.class.where(:_id => @model.id).update_all(attrs)
+        @model.class.where(_id: @model.id).update_all(attrs)
       end
 
       def update_attribute(name, value)

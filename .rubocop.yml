@@ -50,3 +50,7 @@ Naming/PredicateName:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'
+Style/Documentation:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'

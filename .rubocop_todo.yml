@@ -27,7 +27,3 @@ Style/ConditionalAssignment:
 Style/Dir:
   Exclude:
     - 'lib/sorcery/controller/submodules/external.rb'
-
-# Offense count: 54
-Style/Documentation:
-  Enabled: false

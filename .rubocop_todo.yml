@@ -43,8 +43,3 @@ Style/DoubleNegation:
 Style/EmptyLiteral:
   Exclude:
     - 'lib/sorcery/providers/instagram.rb'
-
-# Offense count: 1
-Style/EvalWithLocation:
-  Exclude:
-    - 'lib/sorcery/controller/submodules/external.rb'

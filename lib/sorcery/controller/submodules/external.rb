@@ -34,11 +34,11 @@ module Sorcery
                 @external_providers = providers
 
                 providers.each do |name|
-                  class_eval <<-E
+                  class_eval <<-RUBY, __FILE__, __LINE__ + 1
                     def self.#{name}
                       @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.capitalize).new
                     end
-                  E
+                  RUBY
                 end
               end
 

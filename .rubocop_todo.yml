@@ -48,13 +48,3 @@ Style/EmptyLiteral:
 Style/EvalWithLocation:
   Exclude:
     - 'lib/sorcery/controller/submodules/external.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-Style/ExpandPathArguments:
-  Exclude:
-    - 'lib/generators/sorcery/install_generator.rb'
-    - 'sorcery.gemspec'
-    - 'spec/rails_app/config/application.rb'
-    - 'spec/rails_app/config/boot.rb'
-    - 'spec/rails_app/config/environment.rb'

@@ -7,7 +7,7 @@ module Sorcery
       include Rails::Generators::Migration
       include Sorcery::Generators::Helpers
 
-      source_root File.expand_path('../templates', __FILE__)
+      source_root File.expand_path('templates', __dir__)
 
       argument :submodules, optional: true, type: :array, banner: 'submodules'
 

@@ -20,7 +20,7 @@ def stub_all_oauth_requests!
       'in_reply_to_status_id_str' => nil, 'created_at' => 'Sun Mar 06 23:01:12 +0000 2011',
       'contributors' => nil, 'place' => nil, 'retweeted' => false, 'in_reply_to_status_id' => nil,
       'in_reply_to_user_id_str' => nil, 'coordinates' => nil, 'retweet_count' => 0,
-      'id' => 44533012284706816, 'id_str' => '44533012284706816'
+      'id' => 44_533_012_284_706_816, 'id_str' => '44533012284706816'
     },
     'show_all_inline_media' => false, 'geo_enabled' => true,
     'profile_sidebar_border_color' => 'a8c7f7', 'url' => nil, 'followers_count' => 10,
@@ -32,7 +32,7 @@ def stub_all_oauth_requests!
     'is_translator' => false, 'contributors_enabled' => false, 'protected' => false,
     'follow_request_sent' => false, 'time_zone' => 'Greenland', 'profile_text_color' => '333333',
     'name' => 'Noam Ben Ari', 'friends_count' => 10, 'profile_sidebar_fill_color' => 'C0DFEC',
-    'id' => 123, 'id_str' => '91434812', 'profile_background_tile' => false, 'utc_offset' => -10800
+    'id' => 123, 'id_str' => '91434812', 'profile_background_tile' => false, 'utc_offset' => -10_800
   }.to_json
 
   session[:request_token] = req_token.token
@@ -50,7 +50,7 @@ describe SorceryController, type: :controller do
 
   before(:all) do
     sorcery_reload!([:external])
-    sorcery_controller_property_set(:external_providers, [:twitter, :jira])
+    sorcery_controller_property_set(:external_providers, %i[twitter jira])
     sorcery_controller_external_property_set(:twitter, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:twitter, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
     sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com')
@@ -179,7 +179,7 @@ describe SorceryController, type: :controller do
 
   describe SorceryController, 'OAuth with user activation features' do
     before(:all) do
-      sorcery_reload!([:activity_logging, :external])
+      sorcery_reload!(%i[activity_logging external])
     end
 
     context 'when twitter' do
@@ -219,7 +219,7 @@ describe SorceryController, type: :controller do
         User.reset_column_information
       end
 
-      sorcery_reload!([:session_timeout, :external])
+      sorcery_reload!(%i[session_timeout external])
     end
 
     after(:all) do

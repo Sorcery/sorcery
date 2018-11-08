@@ -47,12 +47,15 @@ module Sorcery
       class_eval do
         @sorcery_config.submodules = ::Sorcery::Controller::Config.submodules
         @sorcery_config.submodules.each do |mod|
+          # TODO: Is there a cleaner way to handle missing submodules?
+          # rubocop:disable Lint/HandleExceptions
           begin
             include Submodules.const_get(mod.to_s.split('_').map(&:capitalize).join)
           rescue NameError
             # don't stop on a missing submodule. Needed because some submodules are only defined
             # in the controller side.
           end
+          # rubocop:enable Lint/HandleExceptions
         end
       end
     end
@@ -192,9 +195,9 @@ module Sorcery
         config = sorcery_config
         send(:"#{config.password_attribute_name}=", nil)
 
-        if respond_to?(:"#{config.password_attribute_name}_confirmation=")
-          send(:"#{config.password_attribute_name}_confirmation=", nil)
-        end
+        return unless respond_to?(:"#{config.password_attribute_name}_confirmation=")
+
+        send(:"#{config.password_attribute_name}_confirmation=", nil)
       end
 
       # calls the requested email method on the configured mailer
@@ -202,9 +205,9 @@ module Sorcery
       def generic_send_email(method, mailer)
         config = sorcery_config
         mail = config.send(mailer).send(config.send(method), self)
-        if defined?(ActionMailer) && config.send(mailer).is_a?(Class) && config.send(mailer) < ActionMailer::Base
-          mail.send(config.email_delivery_method)
-        end
+        return unless defined?(ActionMailer) && config.send(mailer).is_a?(Class) && config.send(mailer) < ActionMailer::Base
+
+        mail.send(config.email_delivery_method)
       end
     end
   end

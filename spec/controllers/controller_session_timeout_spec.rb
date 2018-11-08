@@ -45,7 +45,7 @@ describe SorceryController, type: :controller do
         get :test_should_be_logged_in
 
         expect(session[:user_id]).not_to be_nil
-        expect(response).to be_a_success
+        expect(response).to be_successful
       end
 
       it 'does not reset the session if it was not created before invalidate_sessions_before' do
@@ -56,7 +56,7 @@ describe SorceryController, type: :controller do
         get :test_should_be_logged_in
 
         expect(session[:user_id]).not_to be_nil
-        expect(response).to be_a_success
+        expect(response).to be_successful
       end
 
       it 'resets the session if the session was created before invalidate_sessions_before' do
@@ -74,12 +74,12 @@ describe SorceryController, type: :controller do
         # precondition that the user is logged in
         login_user user
         get :test_should_be_logged_in
-        expect(response).to be_a_success
+        expect(response).to be_successful
 
         allow(user).to receive(:send) { |_method, value| allow(user).to receive(:invalidate_sessions_before) { value } }
         allow(user).to receive(:save)
         get :test_invalidate_active_session
-        expect(response).to be_a_success
+        expect(response).to be_successful
 
         get :test_should_be_logged_in
         expect(session[:user_id]).to be_nil
@@ -91,13 +91,13 @@ describe SorceryController, type: :controller do
         # precondition that the user is logged in
         login_user user
         get :test_should_be_logged_in
-        expect(response).to be_a_success
+        expect(response).to be_successful
 
         allow(user).to receive(:send) { |_method, value| allow(user).to receive(:invalidate_sessions_before) { value } }
         allow(user).to receive(:save)
         # Call to invalidate
         get :test_invalidate_active_session
-        expect(response).to be_a_success
+        expect(response).to be_successful
 
         # Check that existing sessions were logged out
         get :test_should_be_logged_in
@@ -107,12 +107,12 @@ describe SorceryController, type: :controller do
         # Check that new session is allowed to login
         login_user user
         get :test_should_be_logged_in
-        expect(response).to be_a_success
+        expect(response).to be_successful
         expect(session[:user_id]).not_to be_nil
 
         # Check an additional request to make sure not logged out on next request
         get :test_should_be_logged_in
-        expect(response).to be_a_success
+        expect(response).to be_successful
         expect(session[:user_id]).not_to be_nil
       end
     end
@@ -157,7 +157,7 @@ describe SorceryController, type: :controller do
       end
     end
 
-    it "registers login time on remember_me callback" do
+    it 'registers login time on remember_me callback' do
       expect(subject).to receive(:register_login_time).with(user)
 
       subject.send(:after_remember_me!, user)

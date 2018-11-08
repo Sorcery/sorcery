@@ -1,6 +1,6 @@
 Description:
   Generates the necessary files to get you up and running with Sorcery gem
-  
+
 Examples:
   rails generate sorcery:install
 

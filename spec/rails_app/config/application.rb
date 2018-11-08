@@ -1,4 +1,4 @@
-require File.expand_path('../boot', __FILE__)
+require File.expand_path('boot', __dir__)
 
 require 'action_controller/railtie'
 require 'action_mailer/railtie'
@@ -6,16 +6,19 @@ require 'rails/test_unit/railtie'
 
 Bundler.require :default, SORCERY_ORM
 
+# rubocop:disable Lint/HandleExceptions
 begin
   require "#{SORCERY_ORM}/railtie"
 rescue LoadError
+  # TODO: Log this issue or change require scheme.
 end
+# rubocop:enable Lint/HandleExceptions
 
 require 'sorcery'
 
 module AppRoot
   class Application < Rails::Application
-    config.autoload_paths.reject! { |p| p =~ /\/app\/(\w+)$/ && !%w(controllers helpers mailers views).include?(Regexp.last_match(1)) }
+    config.autoload_paths.reject! { |p| p =~ %r{/\/app\/(\w+)$/} && !%w[controllers helpers mailers views].include?(Regexp.last_match(1)) }
     config.autoload_paths += ["#{config.root}/app/#{SORCERY_ORM}"]
 
     # Settings in config/environments/* take precedence over those specified here.

@@ -7,7 +7,7 @@ module Sorcery
       include Rails::Generators::Migration
       include Sorcery::Generators::Helpers
 
-      source_root File.expand_path('../templates', __FILE__)
+      source_root File.expand_path('templates', __dir__)
 
       argument :submodules, optional: true, type: :array, banner: 'submodules'
 
@@ -21,9 +21,9 @@ module Sorcery
                                      desc: "Specify if you want to add submodules to an existing model\n\t\t\t     # (will generate migrations files, and add submodules to config file)"
 
       def check_deprecated_options
-        if options[:migrations]
-          warn('[DEPRECATED] `--migrations` option is deprecated, please use `--only-submodules` instead')
-        end
+        return unless options[:migrations]
+
+        warn('[DEPRECATED] `--migrations` option is deprecated, please use `--only-submodules` instead')
       end
 
       # Copy the initializer file to config/initializers folder.
@@ -33,23 +33,22 @@ module Sorcery
 
       def configure_initializer_file
         # Add submodules to the initializer file.
-        if submodules
-          submodule_names = submodules.collect { |submodule| ':' + submodule }
+        return unless submodules
 
-          gsub_file sorcery_config_path, /submodules = \[.*\]/ do |str|
-            current_submodule_names = (str =~ /\[(.*)\]/ ? Regexp.last_match(1) : '').delete(' ').split(',')
-            "submodules = [#{(current_submodule_names | submodule_names).join(', ')}]"
-          end
+        submodule_names = submodules.collect { |submodule| ':' + submodule }
+
+        gsub_file sorcery_config_path, /submodules = \[.*\]/ do |str|
+          current_submodule_names = (str =~ /\[(.*)\]/ ? Regexp.last_match(1) : '').delete(' ').split(',')
+          "submodules = [#{(current_submodule_names | submodule_names).join(', ')}]"
         end
       end
 
       def configure_model
         # Generate the model and add 'authenticates_with_sorcery!' unless you passed --only-submodules
-        unless only_submodules?
-          generate "model #{model_class_name} --skip-migration"
+        return if only_submodules?
 
-          inject_sorcery_to_model
-        end
+        generate "model #{model_class_name} --skip-migration"
+        inject_sorcery_to_model
       end
 
       def inject_sorcery_to_model
@@ -62,13 +61,14 @@ module Sorcery
       def copy_migration_files
         # Copy core migration file in all cases except when you pass --only-submodules.
         return unless defined?(ActiveRecord)
+
         migration_template 'migration/core.rb', 'db/migrate/sorcery_core.rb', migration_class_name: migration_class_name unless only_submodules?
 
-        if submodules
-          submodules.each do |submodule|
-            unless submodule == 'http_basic_auth' || submodule == 'session_timeout' || submodule == 'core'
-              migration_template "migration/#{submodule}.rb", "db/migrate/sorcery_#{submodule}.rb", migration_class_name: migration_class_name
-            end
+        return unless submodules
+
+        submodules.each do |submodule|
+          unless %w[http_basic_auth session_timeout core].include?(submodule)
+            migration_template "migration/#{submodule}.rb", "db/migrate/sorcery_#{submodule}.rb", migration_class_name: migration_class_name
           end
         end
       end
@@ -79,7 +79,7 @@ module Sorcery
           sleep 1 # make sure each time we get a different timestamp
           Time.new.utc.strftime('%Y%m%d%H%M%S')
         else
-          '%.3d' % (current_migration_number(dirname) + 1)
+          format('%.3d', (current_migration_number(dirname) + 1))
         end
       end
 

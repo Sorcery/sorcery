@@ -4,8 +4,6 @@
 module Sorcery
   module Model
     class Config
-      # change default username attribute, for example, to use :email as the login.
-      attr_accessor :username_attribute_names
       # change *virtual* password attribute, the one which is used until an encrypted one is generated.
       attr_accessor :password_attribute_name
       # change default email attribute.
@@ -38,6 +36,8 @@ module Sorcery
       # Set token randomness
       attr_accessor :token_randomness
 
+      # change default username attribute, for example, to use :email as the login. See 'username_attribute_names=' below.
+      attr_reader :username_attribute_names
       # change default encryption_provider.
       attr_reader :encryption_provider
       # use an external encryption class.
@@ -96,7 +96,7 @@ module Sorcery
                                when :bcrypt then CryptoProviders::BCrypt
                                when :custom then @custom_encryption_provider
                                else raise ArgumentError, "Encryption algorithm supplied, #{algo}, is invalid"
-        end
+                               end
       end
 
       private

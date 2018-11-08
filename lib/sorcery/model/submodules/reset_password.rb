@@ -101,6 +101,7 @@ module Sorcery
             config = sorcery_config
             # hammering protection
             return false if config.reset_password_time_between_emails.present? && send(config.reset_password_email_sent_at_attribute_name) && send(config.reset_password_email_sent_at_attribute_name) > config.reset_password_time_between_emails.seconds.ago.utc
+
             self.class.sorcery_adapter.transaction do
               generate_reset_password_token!
               mail = send_reset_password_email! unless config.reset_password_mailer_disabled
@@ -112,7 +113,7 @@ module Sorcery
           # For example, access_count_to_reset_password_page attribute is over 1, which
           # means the user doesn't have a right to access.
           def increment_password_reset_page_access_counter
-            sorcery_adapter.increment(self.sorcery_config.reset_password_page_access_count_attribute_name)
+            sorcery_adapter.increment(sorcery_config.reset_password_page_access_count_attribute_name)
           end
 
           # Reset access_count_to_reset_password_page attribute into 0.

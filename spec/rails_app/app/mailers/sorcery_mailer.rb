@@ -28,7 +28,7 @@ class SorceryMailer < ActionMailer::Base
     mail(to: user.email,
          subject: 'Your account has been locked due to many wrong logins')
   end
-  
+
   def magic_login_email(user)
     @user = user
     @url  = 'http://example.com/login'

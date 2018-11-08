@@ -53,7 +53,7 @@ describe 'Crypto Providers wrappers' do
 
     it 'matches password encrypted using salt and join token from upstream' do
       Sorcery::CryptoProviders::SHA1.join_token = 'test'
-      expect(Sorcery::CryptoProviders::SHA1.encrypt(%w(password gq18WBnJYNh2arkC1kgH))).to eq '894b5bf1643b8d0e1b2eaddb22426be7036dab70'
+      expect(Sorcery::CryptoProviders::SHA1.encrypt(%w[password gq18WBnJYNh2arkC1kgH])).to eq '894b5bf1643b8d0e1b2eaddb22426be7036dab70'
     end
   end
 

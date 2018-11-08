@@ -14,7 +14,6 @@ module Sorcery
                           :consecutive_login_retries_amount_limit,    # how many failed logins allowed.
                           :login_lock_time_period,                    # how long the user should be banned.
                           # in seconds. 0 for permanent.
-
                           :unlock_token_attribute_name,               # Unlock token attribute name
                           :unlock_token_email_method_name,            # Mailer method name
                           :unlock_token_mailer_disabled,              # When true, dont send unlock token via email
@@ -70,9 +69,9 @@ module Sorcery
 
             sorcery_adapter.increment(config.failed_logins_count_attribute_name)
 
-            if send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
-              login_lock!
-            end
+            return unless send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
+
+            login_lock!
           end
 
           # /!\
@@ -98,9 +97,9 @@ module Sorcery
                            config.unlock_token_attribute_name => TemporaryToken.generate_random_token }
             sorcery_adapter.update_attributes(attributes)
 
-            unless config.unlock_token_mailer_disabled || config.unlock_token_mailer.nil?
-              send_unlock_token_email!
-            end
+            return if config.unlock_token_mailer_disabled || config.unlock_token_mailer.nil?
+
+            send_unlock_token_email!
           end
 
           def login_unlocked?

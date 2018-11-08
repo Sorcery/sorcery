@@ -60,6 +60,7 @@ module Sorcery
         def matches?(hash, *tokens)
           hash = new_from_hash(hash)
           return false if hash.nil? || hash == {}
+
           hash == join_tokens(tokens)
         end
 
@@ -87,7 +88,7 @@ module Sorcery
         def new_from_hash(hash)
           ::BCrypt::Password.new(hash)
         rescue ::BCrypt::Errors::InvalidHash
-          return nil
+          nil
         end
       end
     end

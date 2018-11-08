@@ -6,10 +6,10 @@ describe User, 'with magic_login submodule', active_record: true do
     MigrationHelper.migrate("#{Rails.root}/db/migrate/magic_login")
     User.reset_column_information
   end
-  
+
   after(:all) do
     MigrationHelper.rollback("#{Rails.root}/db/migrate/magic_login")
   end
-  
+
   it_behaves_like 'magic_login_model'
 end

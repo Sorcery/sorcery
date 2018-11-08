@@ -8,13 +8,16 @@ module Sorcery
       end
 
       def authorize_url(options = {})
-        client = build_client(options)
-        client.auth_code.authorize_url(
+        query_params = {
           redirect_uri: @callback_url,
           scope: @scope,
           display: @display,
           state: @state
-        )
+        }
+        params = options.extract! :params
+        query_params.merge!(params[:params]) unless params.empty?
+        client = build_client(options)
+        client.auth_code.authorize_url(query_params)
       end
 
       def get_access_token(args, options = {})

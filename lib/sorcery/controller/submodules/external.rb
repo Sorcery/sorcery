@@ -8,6 +8,7 @@ module Sorcery
           base.send(:include, InstanceMethods)
 
           require 'sorcery/providers/base'
+          require 'sorcery/providers/openid'
           require 'sorcery/providers/facebook'
           require 'sorcery/providers/twitter'
           require 'sorcery/providers/vk'
@@ -66,7 +67,7 @@ module Sorcery
             sorcery_fixup_callback_url @provider
             if @provider.respond_to?(:login_url) && @provider.has_callback?
               @provider.state = args[:state]
-              return @provider.login_url(params, session)
+              return @provider.login_url(params, session, args)
             else
               return nil
             end

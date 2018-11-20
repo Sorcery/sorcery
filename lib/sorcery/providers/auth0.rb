@@ -10,24 +10,15 @@ module Sorcery
     class Auth0 < Base
       include Protocols::Oauth2
 
-      attr_accessor :auth_path, :token_path, :user_info_path, :domain
+      attr_accessor :auth_path, :token_path, :user_info_path, :scope
 
       def initialize
         super
 
-        @auth_path = '/authorize'
-        @token_path = '/oauth/token'
+        @auth_path      = '/authorize'
+        @token_path     = '/oauth/token'
         @user_info_path = '/userinfo'
-      end
-
-      def site
-        site = URI(@domain)
-        site = URI("https://#{site}") if site.scheme.nil?
-        site.to_s
-      end
-
-      def site=(domain)
-        @domain = domain
+        @scope          = 'openid profile email'
       end
 
       def get_user_hash(access_token)

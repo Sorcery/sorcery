@@ -8,12 +8,15 @@ module Sorcery
     config.sorcery = ::Sorcery::Controller::Config
 
     initializer 'extend Controller with sorcery' do
-      ActiveSupport.on_load(:action_controller) do
-        send(:include, Sorcery::Controller)
+      # TODO: Should this include a modified version of the helper methods?
+      if defined?(ActionController::API)
+        ActionController::API.send(:include, Sorcery::Controller)
       end
-      ActiveSupport.on_load(:action_controller_base) do
-        helper_method :current_user
-        helper_method :logged_in?
+
+      if defined?(ActionController::Base)
+        ActionController::Base.send(:include, Sorcery::Controller)
+        ActionController::Base.helper_method :current_user
+        ActionController::Base.helper_method :logged_in?
       end
     end
   end

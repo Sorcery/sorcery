@@ -145,6 +145,11 @@ Rails.application.config.sorcery.configure do |config|
   # config.wechat.secret = ""
   # config.wechat.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=wechat"
   #
+  # config.auth0.key = ""
+  # config.auth0.secret = ""
+  # config.auth0.callback_url = "https://0.0.0.0:3000/oauth/callback?provider=auth0"
+  # config.auth0.domain = "example.auth0.com"
+  #
   # config.google.key = ""
   # config.google.secret = ""
   # config.google.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=google"

@@ -12,6 +12,7 @@
 * Remove Gemnasium badge [#140](https://github.com/Sorcery/sorcery/pull/140)
 * Add Instragram provider [#51](https://github.com/Sorcery/sorcery/pull/51)
 * Remove `publish_actions` permission for facebook [#139](https://github.com/Sorcery/sorcery/pull/139)
+* Add Auth0 provider [#160](https://github.com/Sorcery/sorcery/pull/160)
 
 ## 0.12.0
 

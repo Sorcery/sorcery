@@ -24,6 +24,7 @@ module Sorcery
           require 'sorcery/providers/wechat'
           require 'sorcery/providers/microsoft'
           require 'sorcery/providers/instagram'
+          require 'sorcery/providers/auth0'
 
           Config.module_eval do
             class << self

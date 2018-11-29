@@ -386,6 +386,7 @@ describe SorceryController, active_record: true, type: :controller do
       {
         'id' => '123',
         'user_id' => '123', # Needed for Salesforce
+        'sub' => '123', # Needed for Auth0
         'name' => 'Noam Ben Ari',
         'first_name' => 'Noam',
         'last_name' => 'Ben Ari',

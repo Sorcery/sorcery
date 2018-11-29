@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+## 0.13.0
+
 * Add support for Rails 5.2 / Ruby 2.5 [#129](https://github.com/Sorcery/sorcery/pull/129)
 * Fix migration files not being generated [#128](https://github.com/Sorcery/sorcery/pull/128)
 * Add support for ActionController::API [#133](https://github.com/Sorcery/sorcery/pull/133), [#150](https://github.com/Sorcery/sorcery/pull/150), [#159](https://github.com/Sorcery/sorcery/pull/159)

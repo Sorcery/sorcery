@@ -3,7 +3,7 @@
 
 * Add support for Rails 5.2 / Ruby 2.5 [#129](https://github.com/Sorcery/sorcery/pull/129)
 * Fix migration files not being generated [#128](https://github.com/Sorcery/sorcery/pull/128)
-* Add support for ActionController::API [#133](https://github.com/Sorcery/sorcery/pull/133)
+* Add support for ActionController::API [#133](https://github.com/Sorcery/sorcery/pull/133), [#150](https://github.com/Sorcery/sorcery/pull/150), [#159](https://github.com/Sorcery/sorcery/pull/159)
 * Update activation email to use after_commit callback [#130](https://github.com/Sorcery/sorcery/pull/130)
 * Add opt-in `invalidate_active_sessions!` method [#110](https://github.com/Sorcery/sorcery/pull/110)
 * Pass along `remember_me` to `#auto_login` [#136](https://github.com/Sorcery/sorcery/pull/136)
@@ -12,6 +12,7 @@
 * Remove Gemnasium badge [#140](https://github.com/Sorcery/sorcery/pull/140)
 * Add Instragram provider [#51](https://github.com/Sorcery/sorcery/pull/51)
 * Remove `publish_actions` permission for facebook [#139](https://github.com/Sorcery/sorcery/pull/139)
+* Prepare for 1.0.0 [#157](https://github.com/Sorcery/sorcery/pull/157)
 * Add Auth0 provider [#160](https://github.com/Sorcery/sorcery/pull/160)
 
 ## 0.12.0

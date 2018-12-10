@@ -9,11 +9,9 @@ module Sorcery
 
     initializer 'extend Controller with sorcery' do
       # TODO: Should this include a modified version of the helper methods?
-      if defined?(ActionController::API)
+      if defined?(ActionController::API) && Rails.application.config.api_only
         ActionController::API.send(:include, Sorcery::Controller)
-      end
-
-      if defined?(ActionController::Base)
+      else
         ActionController::Base.send(:include, Sorcery::Controller)
         ActionController::Base.helper_method :current_user
         ActionController::Base.helper_method :logged_in?

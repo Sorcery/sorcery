@@ -99,7 +99,8 @@ force_forget_me! # Forgets all sessions by clearing the token, even if remember_
 User.load_from_reset_password_token(token)
 @user.generate_reset_password_token! # Use if you want to send the email by yourself
 @user.deliver_reset_password_instructions! # Generates the token and sends the email
-@user.change_password!(new_password)
+@user.change_password(new_password)
+@user.change_password!(new_password) # Same as change_password but raises exception on save
 ```
 
 ### Session Timeout

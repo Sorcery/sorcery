@@ -9,7 +9,7 @@ describe SorceryController, type: :controller do
   describe 'with jwt auth features' do
     let(:user_email) { 'test@test.test' }
     let(:user_password) { 'testpass' }
-    let(:auth_token) { 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDJ9.rrjj-sXvbIjT8y4MLGb88Cv7XvfpJXj-HEgaBimT_-0' }
+    let(:auth_token) { 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDJ9.TIAi77DJvww5hA1DHOWfoMmWWsjEmDWMa3pJbZreTJc' }
     let(:response_data) do
       {
         user_data: { id: user.id },

@@ -27,6 +27,7 @@ module Sorcery
         attr_accessor :jwt_set_user
         attr_accessor :jwt_secret_key
         attr_accessor :jwt_payload
+        attr_accessor :jwt_algorithm
 
         def init!
           @defaults = {
@@ -44,9 +45,10 @@ module Sorcery
             :@jwt_headers_key                      => 'Authorization',
             :@jwt_user_data_key                    => :user_data,
             :@jwt_payload                          => {},
+            :@jwt_algorithm                        => 'HS256',
             :@jwt_auth_token_key                   => :auth_token,
             :@jwt_set_user                         => true,
-            :@jwt_secret_key                       => ''
+            :@jwt_secret_key                       => 'default_secret_key'
           }
         end
 

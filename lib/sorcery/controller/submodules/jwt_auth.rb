@@ -33,7 +33,7 @@ module Sorcery
 
           # This method creating JWT token by payload
           def jwt_encode(payload)
-            JWT.encode(payload, Config.jwt_secret_key)
+            JWT.encode(payload, Config.jwt_secret_key, Config.jwt_algorithm)
           end
 
           # This method decoding JWT token

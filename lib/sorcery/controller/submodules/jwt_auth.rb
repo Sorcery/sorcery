@@ -24,11 +24,9 @@ module Sorcery
 
           # To be used as a before_action.
           def jwt_require_auth
-            jwt_not_authenticated && return unless jwt_user_id
-
             @current_user = Config.jwt_set_user ? User.find(jwt_user_id) : jwt_user_data
-          rescue JWT::VerificationError, JWT::DecodeError
-            jwt_not_authenticated && return
+          rescue JWT::DecodeError => e
+            jwt_not_authenticated(message: e.message) && return
           end
 
           # This method creating JWT token by payload
@@ -42,8 +40,6 @@ module Sorcery
             HashWithIndifferentAccess.new(
               JWT.decode(token, Config.jwt_secret_key)[0]
             )
-          rescue JWT::DecodeError
-            nil
           end
 
           # Take token from header, by key defined in config
@@ -65,10 +61,17 @@ module Sorcery
           end
 
           # This method called if user not authenticated
-          def jwt_not_authenticated
+          def jwt_not_authenticated(message:)
             respond_to do |format|
               format.html { not_authenticated }
-              format.json { render json: { status: 401 }, status: 401 }
+              format.json {
+                render json: {
+                    "error": {
+                        "message": message,
+                    }
+                },
+                status: :unauthorized
+              }
             end
           end
         end

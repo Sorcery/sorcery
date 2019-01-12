@@ -72,6 +72,7 @@ describe SorceryController, type: :controller do
             get :some_action_jwt, format: :json
 
             expect(response.status).to eq(401)
+            expect(JSON.parse(response.body)["error"]["message"]).not_to be nil
           end
         end
 
@@ -84,6 +85,7 @@ describe SorceryController, type: :controller do
             get :some_action_jwt, format: :json
 
             expect(response.status).to eq(401)
+            expect(JSON.parse(response.body)["error"]["message"]).not_to be nil
           end
         end
       end

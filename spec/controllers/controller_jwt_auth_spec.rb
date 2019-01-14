@@ -4,15 +4,20 @@ describe SorceryController, type: :controller do
   let!(:user) { double('user', id: 42) }
   before(:each) do
     request.env['HTTP_ACCEPT'] = "application/json" if ::Rails.version < '5.0.0'
+    Timecop.freeze(Time.new(2019, 01, 14, 19, 00, 00))
   end
 
   describe 'with jwt auth features' do
     let(:user_email) { 'test@test.test' }
     let(:user_password) { 'testpass' }
-    let(:auth_token) { 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NDJ9.TIAi77DJvww5hA1DHOWfoMmWWsjEmDWMa3pJbZreTJc' }
+    let(:auth_token) { 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQyLCJleHAiOjE1NDc3MTkyMDAsImlhdCI6MTU0NzQ2MDAwMH0.QM5mTkYiDwI-10cEOq4b_bfrwe99BRuef6pnIB-jqIk' }
     let(:response_data) do
       {
-        user_data: { id: user.id },
+        user_data: {
+            sub: user.id,
+            exp: 1547719200,
+            iat: 1547460000
+        },
         auth_token: auth_token
       }
     end
@@ -88,7 +93,29 @@ describe SorceryController, type: :controller do
             expect(JSON.parse(response.body)["error"]["message"]).not_to be nil
           end
         end
+        
+        context "token is expired" do
+          before do
+            Timecop.freeze(Time.new(2099, 01, 14, 19, 00, 00))
+            request.headers.merge! Authorization: auth_token
+          end
+
+          it "does return 401" do
+            get :some_action_jwt, format: :json
+  
+            expect(response.status).to eq(401)
+            expect(JSON.parse(response.body)["error"]["message"]).not_to be nil
+          end
+
+          after do
+            Timecop.return
+          end
+        end
       end
     end
+  end
+
+  after do
+    Timecop.return
   end
 end

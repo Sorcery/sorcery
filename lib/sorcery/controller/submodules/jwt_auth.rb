@@ -11,19 +11,23 @@ module Sorcery
           def jwt_auth(*credentials)
             user = user_class.authenticate(*credentials)
             if user
-              user_params = Config.jwt_user_params.each_with_object({}) do |val, acc|
-                acc[val] = user.public_send(val)
-              end
+              now = Time.current
+              default_payload = {
+                  sub: user.id,
+                  exp: (now + 3.days).to_i,
+                  iat: now.to_i
+              }
 
-              payload = user_params.merge Config.jwt_payload
+              payload = default_payload.merge Config.jwt_payload
               
-              { Config.jwt_user_data_key => user_params,
+              { Config.jwt_user_data_key => default_payload,
                 Config.jwt_auth_token_key => jwt_encode(payload) }
             end
           end
 
           # To be used as a before_action.
           def jwt_require_auth
+            binding.pry
             @current_user = Config.jwt_set_user ? User.find(jwt_user_id) : jwt_user_data
           rescue JWT::DecodeError => e
             jwt_not_authenticated(message: e.message) && return
@@ -57,7 +61,7 @@ module Sorcery
           # Return user id from user data if id present.
           # Else return nil
           def jwt_user_id
-            jwt_user_data.try(:[], :id)
+            jwt_user_data[:sub]
           end
 
           # This method called if user not authenticated

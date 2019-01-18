@@ -4,11 +4,11 @@ module Sorcery
       module Rails
         include ::Sorcery::TestHelpers::Rails::Controller
 
-        SUBMODULES_AUTO_ADDED_CONTROLLER_FILTERS = [
-          :register_last_activity_time_to_db,
-          :deny_banned_user,
-          :validate_session
-        ]
+        SUBMODULES_AUTO_ADDED_CONTROLLER_FILTERS = %i[
+          register_last_activity_time_to_db
+          deny_banned_user
+          validate_session
+        ].freeze
 
         def sorcery_reload!(submodules = [], options = {})
           reload_user_class
@@ -40,11 +40,11 @@ module Sorcery
             end
           end
           User.authenticates_with_sorcery!
-          if defined?(DataMapper) && User.ancestors.include?(DataMapper::Resource)
-            DataMapper.auto_migrate!
-            User.finalize
-            Authentication.finalize
-          end
+          return unless defined?(DataMapper) && User.ancestors.include?(DataMapper::Resource)
+
+          DataMapper.auto_migrate!
+          User.finalize
+          Authentication.finalize
         end
 
         def sorcery_controller_property_set(property, value)
@@ -64,7 +64,7 @@ module Sorcery
         end
 
         if ::Rails.version < '5.0.0'
-          %w(get post put).each do |method|
+          %w[get post put].each do |method|
             define_method(method) do |action, options = {}|
               super action, options[:params] || {}, options[:session]
             end

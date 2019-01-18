@@ -27,7 +27,7 @@ shared_examples_for 'rails_3_oauth_model' do
 
     it "'load_from_provider' returns nil if user doesn't exist" do
       external_user
-      expect(User.load_from_provider(:twitter, 980342)).to be_nil
+      expect(User.load_from_provider(:twitter, 980_342)).to be_nil
     end
   end
 end

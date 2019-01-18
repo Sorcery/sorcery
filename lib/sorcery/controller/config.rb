@@ -28,6 +28,7 @@ module Sorcery
         attr_accessor :jwt_secret_key
         attr_accessor :jwt_payload
         attr_accessor :jwt_algorithm
+        attr_accessor :after_remember_me
 
         def init!
           @defaults = {
@@ -39,6 +40,7 @@ module Sorcery
             :@after_failed_login                   => [],
             :@before_logout                        => [],
             :@after_logout                         => [],
+            :@after_remember_me                    => [],
             :@save_return_to_url                   => true,
             :@cookie_domain                        => nil,
             :@jwt_user_params                      => [:id],

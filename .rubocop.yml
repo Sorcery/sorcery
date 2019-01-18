@@ -1,0 +1,55 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - 'lib/generators/sorcery/templates/**/*'
+  TargetRubyVersion: 2.2
+
+# See: https://github.com/rubocop-hq/rubocop/issues/3344
+Style/DoubleNegation:
+  Enabled: false
+
+####################
+## Pre-1.0.0 Code ##
+####################
+
+Metrics/AbcSize:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
+Metrics/BlockLength:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
+Metrics/LineLength:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
+Metrics/MethodLength:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
+Naming/AccessorMethodName:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
+Naming/PredicateName:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
+Style/Documentation:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'

@@ -18,6 +18,7 @@ module Sorcery
       require 'sorcery/model/submodules/activity_logging'
       require 'sorcery/model/submodules/brute_force_protection'
       require 'sorcery/model/submodules/external'
+      require 'sorcery/model/submodules/magic_login'
     end
   end
 
@@ -57,6 +58,7 @@ module Sorcery
     module Rails
       require 'sorcery/test_helpers/rails/controller'
       require 'sorcery/test_helpers/rails/integration'
+      require 'sorcery/test_helpers/rails/request'
     end
 
     module Internal

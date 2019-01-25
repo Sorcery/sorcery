@@ -7,32 +7,6 @@ rvm:
 
 gemfile:
   - Gemfile
-  - gemfiles/active_record_rails_40.gemfile
-  - gemfiles/active_record_rails_41.gemfile
-  - gemfiles/active_record_rails_42.gemfile
 
 before_script:
   - mysql -e 'create database sorcery_test;'
-
-before_install:
-  - rvm get stable --auto-dotfiles
-  - gem update bundler
-
-matrix:
-  exclude:
-    - rvm: 2.2.9
-      gemfile: gemfiles/active_record_rails_40.gemfile
-    - rvm: 2.3.6
-      gemfile: gemfiles/active_record_rails_40.gemfile
-    - rvm: 2.4.3
-      gemfile: gemfiles/active_record_rails_40.gemfile
-    - rvm: 2.4.3
-      gemfile: gemfiles/active_record_rails_41.gemfile
-    - rvm: 2.4.3
-      gemfile: gemfiles/active_record_rails_42.gemfile
-    - rvm: 2.5.0
-      gemfile: gemfiles/active_record_rails_40.gemfile
-    - rvm: 2.5.0
-      gemfile: gemfiles/active_record_rails_41.gemfile
-    - rvm: 2.5.0
-      gemfile: gemfiles/active_record_rails_42.gemfile

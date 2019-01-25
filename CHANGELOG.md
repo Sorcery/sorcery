@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Support for Rails 4.2 and lower soft-dropped [#171](https://github.com/Sorcery/sorcery/pull/171)
+
 ## 0.13.0
 
 * Add support for Rails 5.2 / Ruby 2.5 [#129](https://github.com/Sorcery/sorcery/pull/129)

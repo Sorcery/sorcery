@@ -142,6 +142,7 @@ module Sorcery
       def set_encryption_attributes
         @sorcery_config.encryption_provider.stretches = @sorcery_config.stretches if @sorcery_config.encryption_provider.respond_to?(:stretches) && @sorcery_config.stretches
         @sorcery_config.encryption_provider.join_token = @sorcery_config.salt_join_token if @sorcery_config.encryption_provider.respond_to?(:join_token) && @sorcery_config.salt_join_token
+        @sorcery_config.encryption_provider.pepper = @sorcery_config.pepper if @sorcery_config.encryption_provider.respond_to?(:pepper) && @sorcery_config.pepper
       end
 
       def add_config_inheritance

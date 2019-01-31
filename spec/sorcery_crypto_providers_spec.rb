@@ -148,6 +148,7 @@ describe 'Crypto Providers wrappers' do
     before(:all) do
       Sorcery::CryptoProviders::BCrypt.cost = 1
       @digest = BCrypt::Password.create('Noam Ben-Ari', cost: Sorcery::CryptoProviders::BCrypt.cost)
+      @tokens = %w[password gq18WBnJYNh2arkC1kgH]
     end
 
     after(:each) do
@@ -180,6 +181,35 @@ describe 'Crypto Providers wrappers' do
 
       # stubbed in Sorcery::TestHelpers::Internal
       expect(Sorcery::CryptoProviders::BCrypt.cost).to eq 1
+    end
+
+    it 'matches token encrypted with salt from upstream' do
+      # note: actual comparison is done by BCrypt::Password#==(raw_token)
+      expect(Sorcery::CryptoProviders::BCrypt.encrypt(@tokens)).to eq @tokens.flatten.join
+    end
+
+    it 'respond_to?(:pepper) returns true' do
+      expect(Sorcery::CryptoProviders::BCrypt.respond_to?(:pepper)).to be true
+    end
+
+    context 'when pepper is provided' do
+      before(:each) do
+        Sorcery::CryptoProviders::BCrypt.pepper = 'pepper'
+        @digest = Sorcery::CryptoProviders::BCrypt.encrypt(@tokens) # a BCrypt::Password object
+      end
+
+      it 'matches token encrypted with salt and pepper from upstream' do
+        # note: actual comparison is done by BCrypt::Password#==(raw_token)
+        expect(@digest).to eq @tokens.flatten.join.concat('pepper')
+      end
+
+      it 'matches? returns true when matches' do
+        expect(Sorcery::CryptoProviders::BCrypt.matches?(@digest, *@tokens)).to be true
+      end
+
+      it 'matches? returns false when no match' do
+        expect(Sorcery::CryptoProviders::BCrypt.matches?(@digest, 'a_random_incorrect_password')).to be false
+      end
     end
   end
 end

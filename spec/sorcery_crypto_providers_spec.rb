@@ -207,6 +207,36 @@ describe 'Crypto Providers wrappers' do
         expect(Sorcery::CryptoProviders::BCrypt.matches?(@digest, *@tokens)).to be true
       end
 
+      it 'matches? returns false when pepper is replaced with empty string' do
+        Sorcery::CryptoProviders::BCrypt.pepper = ''
+        expect(Sorcery::CryptoProviders::BCrypt.matches?(@digest, *@tokens)).to be false
+      end
+
+      it 'matches? returns false when no match' do
+        expect(Sorcery::CryptoProviders::BCrypt.matches?(@digest, 'a_random_incorrect_password')).to be false
+      end
+    end
+
+    context "when pepper is an empty string (default)" do
+      before(:each) do
+        Sorcery::CryptoProviders::BCrypt.pepper = ''
+        @digest = Sorcery::CryptoProviders::BCrypt.encrypt(@tokens) # a BCrypt::Password object
+      end
+
+      # make sure the default pepper '' does nothing
+      it 'matches token encrypted with salt only (without pepper)' do
+        expect(@digest).to eq @tokens.flatten.join # keep consistency with the older versions of #join_token
+      end
+
+      it 'matches? returns true when matches' do
+        expect(Sorcery::CryptoProviders::BCrypt.matches?(@digest, *@tokens)).to be true
+      end
+
+      it 'matches? returns false when pepper has changed' do
+        Sorcery::CryptoProviders::BCrypt.pepper = 'a new pepper'
+        expect(Sorcery::CryptoProviders::BCrypt.matches?(@digest, *@tokens)).to be false
+      end
+
       it 'matches? returns false when no match' do
         expect(Sorcery::CryptoProviders::BCrypt.matches?(@digest, 'a_random_incorrect_password')).to be false
       end

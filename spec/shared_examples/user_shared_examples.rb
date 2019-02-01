@@ -527,6 +527,30 @@ shared_examples_for 'rails_3_core_model' do
 
       expect(user.crypted_password).to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
     end
+
+    it 'if pepper is empty string (default) does not use pepper to encrypt' do
+      sorcery_model_property_set(:salt_attribute_name, :salt)
+      sorcery_model_property_set(:pepper, '')
+      sorcery_model_property_set(:encryption_algorithm, :bcrypt)
+
+      # password comparison is done using BCrypt::Password#==(raw_token), not String#==
+      bcrypt_password = BCrypt::Password.new(user.crypted_password)
+      allow(::BCrypt::Password).to receive(:create) do |token, cost:|
+        # need to use common BCrypt's salt when genarating BCrypt::Password objects
+        # so that any generated password hashes can be compared each other
+        ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
+      end
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret')
+
+      Sorcery::CryptoProviders::BCrypt.pepper = 'some_pepper'
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
+
+      Sorcery::CryptoProviders::BCrypt.pepper = User.sorcery_config.pepper
+
+      expect(user.crypted_password).to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
+    end
   end
 
   describe 'ORM adapter' do

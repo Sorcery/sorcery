@@ -316,25 +316,27 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
     end
 
-    it 'when change_password is called, deletes reset_password_token' do
+    it 'when change_password! is called, deletes reset_password_token and saves record' do
       user.deliver_reset_password_instructions!
 
       expect(user.reset_password_token).not_to be_nil
+      expect(user).to receive(:save!)
 
-      user.change_password('blabulsdf')
+      user.change_password!('blabulsdf')
 
       expect(user.reset_password_token).to be_nil
     end
 
-    it 'when change_password! is called, calls change_password' do
+    it 'when change_password! is called, deletes reset_password_token but does not save record' do
       new_password = 'blabulsdf'
 
       user.deliver_reset_password_instructions!
       expect(user.reset_password_token).not_to be_nil
+      expect(user).to_not receive(:save!)
 
-      expect(user).to receive(:change_password).with(new_password, raise_on_failure: true)
+      user.change_password(new_password)
 
-      user.change_password!(new_password)
+      expect(user.reset_password_token).to be_nil
     end
 
     it 'returns false if time between emails has not passed since last email' do

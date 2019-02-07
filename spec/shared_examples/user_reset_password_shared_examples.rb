@@ -316,10 +316,11 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
     end
 
-    it 'when change_password! is called, deletes reset_password_token and saves record' do
+    it 'when change_password! is called, deletes reset_password_token and calls #save!' do
       user.deliver_reset_password_instructions!
 
       expect(user.reset_password_token).not_to be_nil
+      expect(user).to_not receive(:save)
       expect(user).to receive(:save!)
 
       user.change_password!('blabulsdf')
@@ -327,12 +328,13 @@ shared_examples_for 'rails_3_reset_password_model' do
       expect(user.reset_password_token).to be_nil
     end
 
-    it 'when change_password! is called, deletes reset_password_token but does not save record' do
+    it 'when change_password is called, deletes reset_password_token and calls #save' do
       new_password = 'blabulsdf'
 
       user.deliver_reset_password_instructions!
       expect(user.reset_password_token).not_to be_nil
       expect(user).to_not receive(:save!)
+      expect(user).to receive(:save)
 
       user.change_password(new_password)
 

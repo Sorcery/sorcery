@@ -36,7 +36,7 @@ module Sorcery
 
         user_class.authenticate(*credentials) do |user, failure_reason|
           if failure_reason
-            after_failed_login!(credentials)
+            after_failed_login!(credentials, failure_reason)
 
             yield(user, failure_reason) if block_given?
 
@@ -143,8 +143,8 @@ module Sorcery
         Config.after_login.each { |c| send(c, user, credentials) }
       end
 
-      def after_failed_login!(credentials)
-        Config.after_failed_login.each { |c| send(c, credentials) }
+      def after_failed_login!(credentials, failure_reason)
+        Config.after_failed_login.each { |c| send(c, credentials, failure_reason) }
       end
 
       def before_logout!

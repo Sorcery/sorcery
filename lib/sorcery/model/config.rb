@@ -12,7 +12,11 @@ module Sorcery
       attr_accessor :downcase_username_before_authenticating
       # change default crypted_password attribute.
       attr_accessor :crypted_password_attribute_name
+      # application-specific secret token that is joined with the password and its salt.
+      # Currently available with BCrypt (default crypt provider) only.
+      attr_accessor :pepper
       # what pattern to use to join the password with the salt
+      # APPLICABLE TO MD5, SHA1, SHA256, SHA512. Other crypt providers (incl. BCrypt) ignore this parameter.
       attr_accessor :salt_join_token
       # change default salt attribute.
       attr_accessor :salt_attribute_name
@@ -57,6 +61,7 @@ module Sorcery
           :@encryption_provider                  => CryptoProviders::BCrypt,
           :@custom_encryption_provider           => nil,
           :@encryption_key                       => nil,
+          :@pepper                               => '',
           :@salt_join_token                      => '',
           :@salt_attribute_name                  => :salt,
           :@stretches                            => nil,

@@ -40,6 +40,10 @@ module Sorcery
     # You are good to go!
     class BCrypt
       class << self
+        # Setting the option :pepper allows users to append an app-specific secret token.
+        # Basically it's equivalent to :salt_join_token option, but have a different name to ensure
+        # backward compatibility in generating/matching passwords.
+        attr_accessor :pepper
         # This is the :cost option for the BCrpyt library.
         # The higher the cost the more secure it is and the longer is take the generate a hash. By default this is 10.
         # Set this to whatever you want, play around with it to get that perfect balance between
@@ -77,12 +81,13 @@ module Sorcery
 
         def reset!
           @cost = 10
+          @pepper = ''
         end
 
         private
 
         def join_tokens(tokens)
-          tokens.flatten.join
+          tokens.flatten.join.concat(pepper.to_s) # make sure to add pepper in case tokens have only one element
         end
 
         def new_from_hash(hash)

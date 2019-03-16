@@ -54,6 +54,13 @@ shared_examples_for 'rails_3_core_model' do
       expect(User.sorcery_config.custom_encryption_provider).to eq Array
     end
 
+    it "enables configuration option 'pepper'" do
+      pepper = '*$%&%*++'
+      sorcery_model_property_set(:pepper, pepper)
+
+      expect(User.sorcery_config.pepper).to eq pepper
+    end
+
     it "enables configuration option 'salt_join_token'" do
       salt_join_token = '--%%*&-'
       sorcery_model_property_set(:salt_join_token, salt_join_token)
@@ -459,6 +466,14 @@ shared_examples_for 'rails_3_core_model' do
       expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA512.encrypt(@text)
     end
 
+    it 'if encryption algo is bcrypt it works' do
+      sorcery_model_property_set(:encryption_algorithm, :bcrypt)
+
+      # comparison is done using BCrypt::Password#==(raw_token), not by String#==
+      expect(User.encrypt(@text)).to be_an_instance_of BCrypt::Password
+      expect(User.encrypt(@text)).to eq @text
+    end
+
     it 'salt is random for each user and saved in db' do
       sorcery_model_property_set(:salt_attribute_name, :salt)
 
@@ -487,6 +502,54 @@ shared_examples_for 'rails_3_core_model' do
       Sorcery::CryptoProviders::SHA512.join_token = User.sorcery_config.salt_join_token
 
       expect(user.crypted_password).to eq Sorcery::CryptoProviders::SHA512.encrypt('secret', user.salt)
+    end
+
+    it 'if pepper is set uses it to encrypt' do
+      sorcery_model_property_set(:salt_attribute_name, :salt)
+      sorcery_model_property_set(:pepper, '++@^$')
+      sorcery_model_property_set(:encryption_algorithm, :bcrypt)
+
+      # password comparison is done using BCrypt::Password#==(raw_token), not String#==
+      bcrypt_password = BCrypt::Password.new(user.crypted_password)
+      allow(::BCrypt::Password).to receive(:create) do |token, cost:|
+        # need to use common BCrypt's salt when genarating BCrypt::Password objects
+        # so that any generated password hashes can be compared each other
+        ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
+      end
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret')
+
+      Sorcery::CryptoProviders::BCrypt.pepper = ''
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
+
+      Sorcery::CryptoProviders::BCrypt.pepper = User.sorcery_config.pepper
+
+      expect(user.crypted_password).to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
+    end
+
+    it 'if pepper is empty string (default) does not use pepper to encrypt' do
+      sorcery_model_property_set(:salt_attribute_name, :salt)
+      sorcery_model_property_set(:pepper, '')
+      sorcery_model_property_set(:encryption_algorithm, :bcrypt)
+
+      # password comparison is done using BCrypt::Password#==(raw_token), not String#==
+      bcrypt_password = BCrypt::Password.new(user.crypted_password)
+      allow(::BCrypt::Password).to receive(:create) do |token, cost:|
+        # need to use common BCrypt's salt when genarating BCrypt::Password objects
+        # so that any generated password hashes can be compared each other
+        ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
+      end
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret')
+
+      Sorcery::CryptoProviders::BCrypt.pepper = 'some_pepper'
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
+
+      Sorcery::CryptoProviders::BCrypt.pepper = User.sorcery_config.pepper
+
+      expect(user.crypted_password).to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
     end
   end
 

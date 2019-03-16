@@ -17,8 +17,13 @@ module Sorcery
             end
             merge_remember_me_defaults!
           end
-          Config.login_sources << :login_from_cookie
-          Config.before_logout << :forget_me!
+          # FIXME: There is likely a more elegant way to safeguard these callbacks.
+          unless Config.login_sources.include?(:login_from_cookie)
+            Config.login_sources << :login_from_cookie
+          end
+          unless Config.before_logout.include?(:forget_me!)
+            Config.before_logout << :forget_me!
+          end
         end
 
         module InstanceMethods

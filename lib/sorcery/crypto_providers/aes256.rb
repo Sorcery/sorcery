@@ -29,7 +29,7 @@ module Sorcery
 
         def matches?(crypted, *tokens)
           decrypt(crypted) == tokens.join
-        rescue OpenSSL::CipherError
+        rescue OpenSSL::Cipher::CipherError
           false
         end
 

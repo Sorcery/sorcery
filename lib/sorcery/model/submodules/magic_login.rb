@@ -52,10 +52,13 @@ module Sorcery
         module ClassMethods
           # Find user by token, also checks for expiration.
           # Returns the user if token found and is valid.
-          def load_from_magic_login_token(token)
-            token_attr_name = @sorcery_config.magic_login_token_attribute_name
-            token_expiration_date_attr = @sorcery_config.magic_login_token_expires_at_attribute_name
-            load_from_token(token, token_attr_name, token_expiration_date_attr)
+          def load_from_magic_login_token(token, &block)
+            load_from_token(
+              token,
+              @sorcery_config.magic_login_token_attribute_name,
+              @sorcery_config.magic_login_token_expires_at_attribute_name,
+              &block
+            )
           end
 
           protected

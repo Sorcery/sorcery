@@ -14,6 +14,8 @@ shared_examples_for 'rails_3_reset_password_model' do
     context 'API' do
       specify { expect(user).to respond_to :deliver_reset_password_instructions! }
 
+      specify { expect(user).to respond_to :change_password }
+
       specify { expect(user).to respond_to :change_password! }
 
       it 'responds to .load_from_reset_password_token' do
@@ -314,13 +316,27 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
     end
 
-    it 'when change_password! is called, deletes reset_password_token' do
+    it 'when change_password! is called, deletes reset_password_token and calls #save!' do
       user.deliver_reset_password_instructions!
 
       expect(user.reset_password_token).not_to be_nil
+      expect(user).to_not receive(:save)
+      expect(user).to receive(:save!)
 
       user.change_password!('blabulsdf')
-      user.save!
+
+      expect(user.reset_password_token).to be_nil
+    end
+
+    it 'when change_password is called, deletes reset_password_token and calls #save' do
+      new_password = 'blabulsdf'
+
+      user.deliver_reset_password_instructions!
+      expect(user.reset_password_token).not_to be_nil
+      expect(user).to_not receive(:save!)
+      expect(user).to receive(:save)
+
+      user.change_password(new_password)
 
       expect(user.reset_password_token).to be_nil
     end

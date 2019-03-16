@@ -30,9 +30,16 @@ module Sorcery
             end
             merge_activity_logging_defaults!
           end
-          Config.after_login    << :register_login_time_to_db
-          Config.after_login    << :register_last_ip_address
-          Config.before_logout  << :register_logout_time_to_db
+          # FIXME: There is likely a more elegant way to safeguard these callbacks.
+          unless Config.after_login.include?(:register_login_time_to_db)
+            Config.after_login << :register_login_time_to_db
+          end
+          unless Config.after_login.include?(:register_last_ip_address)
+            Config.after_login << :register_last_ip_address
+          end
+          unless Config.before_logout.include?(:register_logout_time_to_db)
+            Config.before_logout << :register_logout_time_to_db
+          end
           base.after_action :register_last_activity_time_to_db
         end
 

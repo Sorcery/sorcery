@@ -31,6 +31,20 @@ describe SorceryController, type: :controller do
       expect(cookies.signed['remember_me_token']).to eq assigns[:current_user].remember_me_token
     end
 
+    it 'sets cookie on remember_me! with custom cookie name' do
+      sorcery_controller_property_set(:remember_me_cookie_name, :custom)
+
+      expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
+      expect(user).to receive(:remember_me!)
+
+      post :test_login_with_remember, params: { email: 'bla@bla.com', password: 'secret' }
+
+      expect(cookies.signed['custom']).to eq assigns[:current_user].remember_me_token
+
+      # Reset property back to default so it won't interfere with other tests.
+      sorcery_controller_property_set(:remember_me_cookie_name, :remember_me_token)
+    end
+
     it 'clears cookie on forget_me!' do
       cookies['remember_me_token'] = { value: 'asd54234dsfsd43534', expires: 3600 }
       get :test_logout
@@ -58,6 +72,22 @@ describe SorceryController, type: :controller do
       expect(cookies.signed['remember_me_token']).to eq assigns[:user].remember_me_token
     end
 
+    it 'login(email,password,remember_me) logs user in and remembers with custom cookie name' do
+      sorcery_controller_property_set(:remember_me_cookie_name, :custom)
+
+      expect(User).to receive(:authenticate).with('bla@bla.com', 'secret', '1') { |&block| block.call(user, nil) }
+      expect(user).to receive(:remember_me!)
+      expect(user).to receive(:remember_me_token).and_return('abracadabra').twice
+
+      post :test_login_with_remember_in_login, params: { email: 'bla@bla.com', password: 'secret', remember: '1' }
+
+      expect(cookies.signed['custom']).not_to be_nil
+      expect(cookies.signed['custom']).to eq assigns[:user].remember_me_token
+
+      # Reset property back to default so it won't interfere with other tests.
+      sorcery_controller_property_set(:remember_me_cookie_name, :remember_me_token)
+    end
+
     it 'logout also calls forget_me!' do
       session[:user_id] = user.id.to_s
       expect(User.sorcery_adapter).to receive(:find_by_id).with(user.id.to_s).and_return(user)
@@ -66,6 +96,21 @@ describe SorceryController, type: :controller do
       get :test_logout_with_remember
 
       expect(cookies['remember_me_token']).to be_nil
+    end
+
+    it 'logout also calls forget_me! with custom cookie name' do
+      sorcery_controller_property_set(:remember_me_cookie_name, 'custom')
+
+      session[:user_id] = user.id.to_s
+      expect(User.sorcery_adapter).to receive(:find_by_id).with(user.id.to_s).and_return(user)
+      expect(user).to receive(:remember_me!)
+      expect(user).to receive(:forget_me!)
+      get :test_logout_with_remember
+
+      expect(cookies['custom']).to be_nil
+
+      # Reset property back to default so it won't interfere with other tests.
+      sorcery_controller_property_set(:remember_me_cookie_name, :remember_me_token)
     end
 
     it 'logs user in from cookie' do
@@ -88,6 +133,33 @@ describe SorceryController, type: :controller do
       get :test_login_from_cookie
 
       expect(assigns[:current_user]).to eq user
+    end
+
+    it 'logs user in from cookie with custom cookie name' do
+      sorcery_controller_property_set(:remember_me_cookie_name, :custom)
+
+      session[:user_id] = user.id.to_s
+      expect(User.sorcery_adapter).to receive(:find_by_id).with(user.id.to_s).and_return(user)
+      expect(user).to receive(:remember_me!)
+      expect(user).to receive(:remember_me_token).and_return('token')
+      expect(user).to receive(:has_remember_me_token?) { true }
+
+      subject.remember_me!
+      subject.instance_eval do
+        remove_instance_variable :@current_user
+      end
+      session[:user_id] = nil
+
+      expect(User.sorcery_adapter).to receive(:find_by_remember_me_token).with('token').and_return(user)
+
+      expect(subject).to receive(:after_remember_me!).with(user)
+
+      get :test_login_from_cookie
+
+      expect(assigns[:current_user]).to eq user
+
+      # Reset property back to default so it won't interfere with other tests.
+      sorcery_controller_property_set(:remember_me_cookie_name, :remember_me_token)
     end
 
     it 'doest not remember_me! when not asked to, even if third parameter is used' do

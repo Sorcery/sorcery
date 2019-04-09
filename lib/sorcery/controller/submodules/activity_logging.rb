@@ -30,9 +30,16 @@ module Sorcery
             end
             merge_activity_logging_defaults!
           end
-          Config.after_login    << :register_login_time_to_db
-          Config.after_login    << :register_last_ip_address
-          Config.before_logout  << :register_logout_time_to_db
+          # FIXME: There is likely a more elegant way to safeguard these callbacks.
+          unless Config.after_login.include?(:register_login_time_to_db)
+            Config.after_login << :register_login_time_to_db
+          end
+          unless Config.after_login.include?(:register_last_ip_address)
+            Config.after_login << :register_last_ip_address
+          end
+          unless Config.before_logout.include?(:register_logout_time_to_db)
+            Config.before_logout << :register_logout_time_to_db
+          end
           base.after_action :register_last_activity_time_to_db
         end
 
@@ -43,6 +50,7 @@ module Sorcery
           # This runs as a hook just after a successful login.
           def register_login_time_to_db(user, _credentials)
             return unless Config.register_login_time
+
             user.set_last_login_at(Time.now.in_time_zone)
           end
 
@@ -50,6 +58,7 @@ module Sorcery
           # This runs as a hook just before a logout.
           def register_logout_time_to_db
             return unless Config.register_logout_time
+
             current_user.set_last_logout_at(Time.now.in_time_zone)
           end
 
@@ -58,6 +67,7 @@ module Sorcery
           def register_last_activity_time_to_db
             return unless Config.register_last_activity_time
             return unless logged_in?
+
             current_user.set_last_activity_at(Time.now.in_time_zone)
           end
 
@@ -65,6 +75,7 @@ module Sorcery
           # This runs as a hook just after a successful login.
           def register_last_ip_address(_user, _credentials)
             return unless Config.register_last_ip_address
+
             current_user.set_last_ip_address(request.remote_ip)
           end
         end

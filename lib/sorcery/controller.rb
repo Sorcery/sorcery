@@ -4,11 +4,14 @@ module Sorcery
       klass.class_eval do
         include InstanceMethods
         Config.submodules.each do |mod|
+          # FIXME: Is there a cleaner way to handle missing submodules?
+          # rubocop:disable Lint/HandleExceptions
           begin
             include Submodules.const_get(mod.to_s.split('_').map(&:capitalize).join)
           rescue NameError
             # don't stop on a missing submodule.
           end
+          # rubocop:enable Lint/HandleExceptions
         end
       end
       Config.update!
@@ -20,10 +23,10 @@ module Sorcery
       # Will trigger auto-login attempts via the call to logged_in?
       # If all attempts to auto-login fail, the failure callback will be called.
       def require_login
-        unless logged_in?
-          session[:return_to_url] = request.url if Config.save_return_to_url && request.get? && !request.xhr?
-          send(Config.not_authenticated_action)
-        end
+        return if logged_in?
+
+        session[:return_to_url] = request.url if Config.save_return_to_url && request.get? && !request.xhr?
+        send(Config.not_authenticated_action)
       end
 
       # Takes credentials and returns a user on successful authentication.
@@ -37,7 +40,10 @@ module Sorcery
 
             yield(user, failure_reason) if block_given?
 
+            # FIXME: Does using `break` or `return nil` change functionality?
+            # rubocop:disable Lint/NonLocalExitFromIterator
             return
+            # rubocop:enable Lint/NonLocalExitFromIterator
           end
 
           old_session = session.dup.to_hash
@@ -47,30 +53,26 @@ module Sorcery
           end
           form_authenticity_token
 
-          auto_login(user)
+          auto_login(user, credentials[2])
           after_login!(user, credentials)
 
           block_given? ? yield(current_user, nil) : current_user
         end
       end
 
-      # put this into the catch block to rescue undefined method `destroy_session'
-      # hotfix for https://github.com/NoamB/sorcery/issues/464
-      # can be removed when Rails 4.1 is out
       def reset_sorcery_session
         reset_session # protect from session fixation attacks
-      rescue NoMethodError
       end
 
       # Resets the session and runs hooks before and after.
       def logout
-        if logged_in?
-          user = current_user
-          before_logout!
-          @current_user = nil
-          reset_sorcery_session
-          after_logout!(user)
-        end
+        return unless logged_in?
+
+        user = current_user
+        before_logout!
+        @current_user = nil
+        reset_sorcery_session
+        after_logout!(user)
       end
 
       def logged_in?
@@ -153,8 +155,14 @@ module Sorcery
         Config.after_logout.each { |c| send(c, user) }
       end
 
+      def after_remember_me!(user)
+        Config.after_remember_me.each { |c| send(c, user) }
+      end
+
       def user_class
         @user_class ||= Config.user_class.to_s.constantize
+      rescue NameError
+        raise ArgumentError, 'You have incorrectly defined user_class or have forgotten to define it in intitializer file (config.user_class = \'User\').'
       end
     end
   end

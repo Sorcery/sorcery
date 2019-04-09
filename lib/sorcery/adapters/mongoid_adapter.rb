@@ -10,7 +10,7 @@ module Sorcery
           attrs[name] = value.utc if value.is_a?(ActiveSupport::TimeWithZone)
           @model.send(:"#{name}=", value)
         end
-        @model.class.where(:_id => @model.id).update_all(attrs)
+        @model.class.where(_id: @model.id).update_all(attrs)
       end
 
       def update_attribute(name, value)
@@ -23,21 +23,29 @@ module Sorcery
       end
 
       def mongoid_4?
-        Gem::Version.new(::Mongoid::VERSION) >= Gem::Version.new("4.0.0.alpha")
+        Gem::Version.new(::Mongoid::VERSION) >= Gem::Version.new('4.0.0.alpha')
       end
 
       class << self
-
-        def define_field(name, type, options={})
+        def define_field(name, type, options = {})
           @klass.field name, options.slice(:default).merge(type: type)
         end
 
-        def define_callback(time, event, method_name, options={})
-          @klass.send "#{time}_#{event}", method_name, options.slice(:if)
+        def define_callback(time, event, method_name, options = {})
+          @klass.send callback_name(time, event, options), method_name, options.slice(:if)
+        end
+
+        def callback_name(time, event, options)
+          if event == :commit
+            options[:on] == :create ? "#{time}_create" : "#{time}_save"
+          else
+            "#{time}_#{event}"
+          end
         end
 
         def credential_regex(credential)
-          return { :$regex =>  /^#{Regexp.escape(credential)}$/i  } if (@klass.sorcery_config.downcase_username_before_authenticating)
+          return { :$regex => /^#{Regexp.escape(credential)}$/i } if @klass.sorcery_config.downcase_username_before_authenticating
+
           credential
         end
 
@@ -73,7 +81,7 @@ module Sorcery
         end
 
         def find_by_username(username)
-          query = @klass.sorcery_config.username_attribute_names.map {|name| {name => username}}
+          query = @klass.sorcery_config.username_attribute_names.map { |name| { name => username } }
           @klass.any_of(*query).first
         end
 
@@ -87,9 +95,13 @@ module Sorcery
 
         def get_current_users
           config = @klass.sorcery_config
-          @klass.where(config.last_activity_at_attribute_name.ne => nil) \
-          .where("this.#{config.last_logout_at_attribute_name} == null || this.#{config.last_activity_at_attribute_name} > this.#{config.last_logout_at_attribute_name}") \
-          .where(config.last_activity_at_attribute_name.gt => config.activity_timeout.seconds.ago.utc).order_by([:_id,:asc])
+          @klass.where(
+            config.last_activity_at_attribute_name.ne => nil
+          ).where(
+            "this.#{config.last_logout_at_attribute_name} == null || this.#{config.last_activity_at_attribute_name} > this.#{config.last_logout_at_attribute_name}"
+          ).where(
+            config.last_activity_at_attribute_name.gt => config.activity_timeout.seconds.ago.utc
+          ).order_by(%i[_id asc])
         end
       end
     end

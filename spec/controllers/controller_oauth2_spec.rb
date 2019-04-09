@@ -5,7 +5,9 @@ require 'spec_helper'
 describe SorceryController, active_record: true, type: :controller do
   before(:all) do
     if SORCERY_ORM == :active_record
-      ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/activity_logging")
       User.reset_column_information
     end
 
@@ -15,7 +17,9 @@ describe SorceryController, active_record: true, type: :controller do
 
   after(:all) do
     if SORCERY_ORM == :active_record
-      ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/activity_logging")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
     end
   end
 
@@ -151,7 +155,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(flash[:notice]).to eq 'Success!'
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft].each do |provider|
+    %i[github google liveid vk salesforce paypal slack wechat microsoft instagram auth0].each do |provider|
       describe "with #{provider}" do
         it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
@@ -196,54 +200,67 @@ describe SorceryController, active_record: true, type: :controller do
 
   describe 'OAuth with User Activation features' do
     before(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
-      end
-
-      sorcery_reload!([:user_activation,:external], :user_activation_mailer => ::SorceryMailer)
-      sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :line])
+      sorcery_reload!(%i[user_activation external], user_activation_mailer: ::SorceryMailer)
+      sorcery_controller_property_set(
+        :external_providers,
+        %i[
+          facebook
+          github
+          google
+          liveid
+          vk
+          salesforce
+          paypal
+          slack
+          wechat
+          microsoft
+          instagram
+          auth0
+          line
+        ]
+      )
 
       # TODO: refactor
-      sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:facebook, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:facebook, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:github, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:github, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:github, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:google, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:google, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:google, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:liveid, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:liveid, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:liveid, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:vk, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:vk, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:vk, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:salesforce, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:salesforce, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:salesforce, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:paypal, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:paypal, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:paypal, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:slack, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:slack, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:slack, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:wechat, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:wechat, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:wechat, :callback_url, "http://blabla.com")
-      sorcery_controller_external_property_set(:microsoft, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:microsoft, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:microsoft, :callback_url, "http://blabla.com")
+      sorcery_controller_external_property_set(:facebook, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:facebook, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:facebook, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:github, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:github, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:github, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:google, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:google, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:google, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:liveid, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:liveid, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:liveid, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:vk, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:vk, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:vk, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:salesforce, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:salesforce, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:salesforce, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:paypal, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:paypal, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:paypal, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:slack, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:slack, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:slack, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:wechat, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:wechat, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:wechat, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:microsoft, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:microsoft, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:microsoft, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:instagram, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:instagram, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:instagram, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:auth0, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:auth0, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:auth0, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:auth0, :site, 'https://sorcery-test.auth0.com')
       sorcery_controller_external_property_set(:line, :key, "eYVNBjBDi33aa9GkA3w")
       sorcery_controller_external_property_set(:line, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
       sorcery_controller_external_property_set(:line, :callback_url, "http://blabla.com")
-    end
-
-    after(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
-      end
     end
 
     after(:each) do
@@ -266,7 +283,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(ActionMailer::Base.deliveries.size).to eq old_size
     end
 
-    [:github, :google, :liveid, :vk, :salesforce, :paypal, :wechat, :microsoft].each do |provider|
+    %i[github google liveid vk salesforce paypal wechat microsoft instagram auth0].each do |provider|
       it "does not send activation email to external users (#{provider})" do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user provider
@@ -278,6 +295,7 @@ describe SorceryController, active_record: true, type: :controller do
         create_new_external_user provider
         old_size = ActionMailer::Base.deliveries.size
         @user.activate!
+        expect(ActionMailer::Base.deliveries.size).to eq old_size
       end
     end
   end
@@ -286,17 +304,10 @@ describe SorceryController, active_record: true, type: :controller do
     let(:user) { double('user', id: 42) }
 
     before(:all) do
-      sorcery_reload!([:activity_logging, :external])
+      sorcery_reload!(%i[activity_logging external])
     end
 
-    after(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activity_logging")
-      end
-    end
-
-    %w(facebook github google liveid vk salesforce slack).each do |provider|
+    %w[facebook github google liveid vk salesforce slack].each do |provider|
       context "when #{provider}" do
         before(:each) do
           sorcery_controller_property_set(:register_login_time, true)
@@ -330,12 +341,12 @@ describe SorceryController, active_record: true, type: :controller do
 
   describe 'OAuth with session timeout features' do
     before(:all) do
-      sorcery_reload!([:session_timeout, :external])
+      sorcery_reload!(%i[session_timeout external])
     end
 
     let(:user) { double('user', id: 42) }
 
-    %w(facebook github google liveid vk salesforce slack).each do |provider|
+    %w[facebook github google liveid vk salesforce slack].each do |provider|
       context "when #{provider}" do
         before(:each) do
           sorcery_model_property_set(:authentications_class, Authentication)
@@ -372,42 +383,78 @@ describe SorceryController, active_record: true, type: :controller do
   def stub_all_oauth2_requests!
     access_token = double(OAuth2::AccessToken)
     allow(access_token).to receive(:token_param=)
+    # Needed for Instagram
+    allow(access_token).to receive(:[]).with(:client_id) { 'eYVNBjBDi33aa9GkA3w' }
     response = double(OAuth2::Response)
     allow(response).to receive(:body) {
-                         {
-                           'id' => '123',
-                           'user_id' => '123', # Needed for Salesforce
-                           'name' => 'Noam Ben Ari',
-                           'first_name' => 'Noam',
-                           'last_name' => 'Ben Ari',
-                           'link' => 'http://www.facebook.com/nbenari1',
-                           'hometown' => { 'id' => '110619208966868', 'name' => 'Haifa, Israel' },
-                           'location' => { 'id' => '106906559341067', 'name' => 'Pardes Hanah, Hefa, Israel' },
-                           'bio' => "I'm a new daddy, and enjoying it!",
-                           'gender' => 'male',
-                           'email' => 'nbenari@gmail.com',
-                           'timezone' => 2,
-                           'locale' => 'en_US',
-                           'languages' => [{ 'id' => '108405449189952', 'name' => 'Hebrew' }, { 'id' => '106059522759137', 'name' => 'English' }, { 'id' => '112624162082677', 'name' => 'Russian' }],
-                           'verified' => true,
-                           'updated_time' => '2011-02-16T20:59:38+0000',
-                           # response for VK auth
-                           'response' => [
-                             {
-                               'uid' => '123',
-                               'first_name' => 'Noam',
-                               'last_name' => 'Ben Ari'
-                             }
-                           ],
-                           'user' => {
-                             'name' => 'Sonny Whether',
-                             'id' => '123',
-                             'email' => 'bobby@example.com'
-                           },
-                           # response for wechat auth
-                           'unionid' => '123',
-                           'userId' => '123'
-                         }.to_json }
+      {
+        'id' => '123',
+        'user_id' => '123', # Needed for Salesforce
+        'sub' => '123', # Needed for Auth0
+        'name' => 'Noam Ben Ari',
+        'first_name' => 'Noam',
+        'last_name' => 'Ben Ari',
+        'link' => 'http://www.facebook.com/nbenari1',
+        'hometown' => {
+          'id' => '110619208966868',
+          'name' => 'Haifa, Israel'
+        },
+        'location' => {
+          'id' => '106906559341067',
+          'name' => 'Pardes Hanah, Hefa, Israel'
+        },
+        'bio' => "I'm a new daddy, and enjoying it!",
+        'gender' => 'male',
+        'email' => 'nbenari@gmail.com',
+        'timezone' => 2,
+        'locale' => 'en_US',
+        'languages' => [
+          {
+            'id' => '108405449189952',
+            'name' => 'Hebrew'
+          },
+          {
+            'id' => '106059522759137',
+            'name' => 'English'
+          },
+          {
+            'id' => '112624162082677',
+            'name' => 'Russian'
+          }
+        ],
+        'verified' => true,
+        'updated_time' => '2011-02-16T20:59:38+0000',
+        # response for VK auth
+        'response' => [
+          {
+            'uid' => '123',
+            'first_name' => 'Noam',
+            'last_name' => 'Ben Ari'
+          }
+        ],
+        'user' => {
+          'name' => 'Sonny Whether',
+          'id' => '123',
+          'email' => 'bobby@example.com'
+        },
+        # response for wechat auth
+        'unionid' => '123',
+        # response for instagram
+        'data' => {
+          'username' => 'pnmahoney',
+          'bio' => 'turn WHAT down?',
+          'website' => '',
+          'profile_picture' => 'http://photos-d.ak.instagram.com/hphotos-ak-xpa1/10454121_417985815007395_867850883_a.jpg',
+          'full_name' => 'Patrick Mahoney',
+          'counts' => {
+            'media' => 2,
+            'followed_by' => 100,
+            'follows' => 71
+          },
+          'id' => '123'
+        }
+      }.to_json
+    }
     allow(access_token).to receive(:get) { response }
     allow(access_token).to receive(:token) { '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3' }
     # access_token params for VK auth
@@ -416,37 +463,61 @@ describe SorceryController, active_record: true, type: :controller do
   end
 
   def set_external_property
-    sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :line])
-    sorcery_controller_external_property_set(:facebook, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:facebook, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:facebook, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:github, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:github, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:github, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:google, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:google, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:google, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:liveid, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:liveid, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:liveid, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:vk, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:vk, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:vk, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:salesforce, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:salesforce, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:salesforce, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:paypal, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:paypal, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:paypal, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:slack, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:slack, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:slack, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:wechat, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:wechat, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:wechat, :callback_url, "http://blabla.com")
-    sorcery_controller_external_property_set(:microsoft, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:microsoft, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:microsoft, :callback_url, "http://blabla.com")
+    sorcery_controller_property_set(
+      :external_providers,
+      %i[
+        facebook
+        github
+        google
+        liveid
+        vk
+        salesforce
+        paypal
+        slack
+        wechat
+        microsoft
+        instagram
+        auth0
+        line
+      ]
+    )
+    sorcery_controller_external_property_set(:facebook, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:facebook, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:facebook, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:github, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:github, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:github, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:google, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:google, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:google, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:liveid, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:liveid, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:liveid, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:vk, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:vk, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:vk, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:salesforce, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:salesforce, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:salesforce, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:paypal, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:paypal, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:paypal, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:slack, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:slack, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:slack, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:wechat, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:wechat, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:wechat, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:microsoft, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:microsoft, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:microsoft, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:instagram, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:instagram, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:instagram, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:auth0, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:auth0, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:auth0, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:auth0, :site, 'https://sorcery-test.auth0.com')
     sorcery_controller_external_property_set(:line, :key, "eYVNBjBDi33aa9GkA3w")
     sorcery_controller_external_property_set(:line, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
     sorcery_controller_external_property_set(:line, :callback_url, "http://blabla.com")
@@ -462,7 +533,9 @@ describe SorceryController, active_record: true, type: :controller do
       salesforce: "https://login.salesforce.com/services/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.salesforce.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope#{'=' + ::Sorcery::Controller::Config.salesforce.scope unless ::Sorcery::Controller::Config.salesforce.scope.nil?}&state",
       slack: "https://slack.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.slack.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=identity.basic%2C+identity.email&state",
       wechat: "https://open.weixin.qq.com/connect/qrconnect?appid=#{::Sorcery::Controller::Config.wechat.key}&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=snsapi_login&state=#wechat_redirect",
-      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email+https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state"
+      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email+https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state",
+      instagram: "https://api.instagram.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.instagram.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=#{::Sorcery::Controller::Config.instagram.scope}&state",
+      auth0: "https://sorcery-test.auth0.com/authorize?client_id=#{::Sorcery::Controller::Config.auth0.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+profile+email&state"
     }[provider]
   end
 end

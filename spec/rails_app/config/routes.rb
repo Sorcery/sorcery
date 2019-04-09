@@ -12,6 +12,7 @@ AppRoot::Application.routes.draw do
     get :test_login_from
     get :test_logout_with_remember
     get :test_logout_with_force_forget_me
+    get :test_invalidate_active_session
     get :test_should_be_logged_in
     get :test_create_from_provider
     get :test_add_second_provider
@@ -29,6 +30,8 @@ AppRoot::Application.routes.draw do
     get :test_login_from_jira
     get :test_login_from_salesforce
     get :test_login_from_slack
+    get :test_login_from_instagram
+    get :test_login_from_auth0
     get :test_login_from_line
     get :login_at_test
     get :login_at_test_twitter
@@ -43,6 +46,8 @@ AppRoot::Application.routes.draw do
     get :login_at_test_jira
     get :login_at_test_salesforce
     get :login_at_test_slack
+    get :login_at_test_instagram
+    get :login_at_test_auth0
     get :login_at_test_line
     get :test_return_to_with_external
     get :test_return_to_with_external_twitter
@@ -57,6 +62,8 @@ AppRoot::Application.routes.draw do
     get :test_return_to_with_external_jira
     get :test_return_to_with_external_salesforce
     get :test_return_to_with_external_slack
+    get :test_return_to_with_external_instagram
+    get :test_return_to_with_external_auth0
     get :test_return_to_with_external_line
     get :test_http_basic_auth
     get :some_action_making_a_non_persisted_change_to_the_user

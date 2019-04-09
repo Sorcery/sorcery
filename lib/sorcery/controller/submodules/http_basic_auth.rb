@@ -19,7 +19,10 @@ module Sorcery
             end
             merge_http_basic_auth_defaults!
           end
-          Config.login_sources << :login_from_basic_auth
+          # FIXME: There is likely a more elegant way to safeguard these callbacks.
+          unless Config.login_sources.include?(:login_from_basic_auth)
+            Config.login_sources << :login_from_basic_auth
+          end
         end
 
         module InstanceMethods
@@ -57,6 +60,7 @@ module Sorcery
               while current_controller != ActionController::Base
                 result = Config.controller_to_realm_map[current_controller.controller_name]
                 return result if result
+
                 current_controller = current_controller.superclass
               end
               nil

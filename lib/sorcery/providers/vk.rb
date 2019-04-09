@@ -9,7 +9,7 @@ module Sorcery
     class Vk < Base
       include Protocols::Oauth2
 
-      attr_accessor :auth_path, :token_path, :user_info_url, :scope
+      attr_accessor :auth_path, :token_path, :user_info_url, :scope, :api_version
 
       def initialize
         super
@@ -28,11 +28,12 @@ module Sorcery
           access_token: access_token.token,
           uids:         access_token.params['user_id'],
           fields:       user_info_mapping.values.join(','),
-          scope:        scope
+          scope:        scope,
+          v:            api_version.to_s
         }
 
         response = access_token.get(user_info_url, params: params)
-        if user_hash[:user_info] = JSON.parse(response.body)
+        if (user_hash[:user_info] = JSON.parse(response.body))
           user_hash[:user_info] = user_hash[:user_info]['response'][0]
           user_hash[:user_info]['full_name'] = [user_hash[:user_info]['first_name'], user_hash[:user_info]['last_name']].join(' ')
 

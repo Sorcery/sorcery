@@ -54,6 +54,13 @@ shared_examples_for 'rails_3_core_model' do
       expect(User.sorcery_config.custom_encryption_provider).to eq Array
     end
 
+    it "enables configuration option 'pepper'" do
+      pepper = '*$%&%*++'
+      sorcery_model_property_set(:pepper, pepper)
+
+      expect(User.sorcery_config.pepper).to eq pepper
+    end
+
     it "enables configuration option 'salt_join_token'" do
       salt_join_token = '--%%*&-'
       sorcery_model_property_set(:salt_join_token, salt_join_token)
@@ -228,10 +235,13 @@ shared_examples_for 'rails_3_core_model' do
 
       expect(user).to receive(:save) { raise RuntimeError }
 
+      # rubocop:disable Lint/HandleExceptions
       begin
         user.save
-      rescue
+      rescue RuntimeError
+        # Intentionally force exception during save
       end
+      # rubocop:enable Lint/HandleExceptions
 
       expect(user.password).not_to be_nil
     end
@@ -308,12 +318,12 @@ shared_examples_for 'rails_3_core_model' do
 
   describe 'generic send email' do
     before(:all) do
-      ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
       User.reset_column_information
     end
 
     after(:all) do
-      ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
     end
 
     before do
@@ -323,9 +333,11 @@ shared_examples_for 'rails_3_core_model' do
 
     it 'use deliver_later' do
       sorcery_reload!(
-        [
-          :user_activation, :user_activation_mailer,
-          :activation_needed_email_method_name, :email_delivery_method
+        %i[
+          user_activation
+          user_activation_mailer
+          activation_needed_email_method_name
+          email_delivery_method
         ],
         user_activation_mailer: SorceryMailer,
         activation_needed_email_method_name: nil,
@@ -340,9 +352,10 @@ shared_examples_for 'rails_3_core_model' do
       it 'use deliver_now if rails version 4.2+' do
         allow(Rails).to receive(:version).and_return('4.2.0')
         sorcery_reload!(
-          [
-            :user_activation, :user_activation_mailer,
-            :activation_needed_email_method_name
+          %i[
+            user_activation
+            user_activation_mailer
+            activation_needed_email_method_name
           ],
           user_activation_mailer: SorceryMailer,
           activation_needed_email_method_name: nil
@@ -355,9 +368,10 @@ shared_examples_for 'rails_3_core_model' do
       it 'use deliver if rails version < 4.2' do
         allow(Rails).to receive(:version).and_return('4.1.0')
         sorcery_reload!(
-          [
-            :user_activation, :user_activation_mailer,
-            :activation_needed_email_method_name
+          %i[
+            user_activation
+            user_activation_mailer
+            activation_needed_email_method_name
           ],
           user_activation_mailer: SorceryMailer,
           activation_needed_email_method_name: nil
@@ -452,6 +466,14 @@ shared_examples_for 'rails_3_core_model' do
       expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA512.encrypt(@text)
     end
 
+    it 'if encryption algo is bcrypt it works' do
+      sorcery_model_property_set(:encryption_algorithm, :bcrypt)
+
+      # comparison is done using BCrypt::Password#==(raw_token), not by String#==
+      expect(User.encrypt(@text)).to be_an_instance_of BCrypt::Password
+      expect(User.encrypt(@text)).to eq @text
+    end
+
     it 'salt is random for each user and saved in db' do
       sorcery_model_property_set(:salt_attribute_name, :salt)
 
@@ -481,6 +503,54 @@ shared_examples_for 'rails_3_core_model' do
 
       expect(user.crypted_password).to eq Sorcery::CryptoProviders::SHA512.encrypt('secret', user.salt)
     end
+
+    it 'if pepper is set uses it to encrypt' do
+      sorcery_model_property_set(:salt_attribute_name, :salt)
+      sorcery_model_property_set(:pepper, '++@^$')
+      sorcery_model_property_set(:encryption_algorithm, :bcrypt)
+
+      # password comparison is done using BCrypt::Password#==(raw_token), not String#==
+      bcrypt_password = BCrypt::Password.new(user.crypted_password)
+      allow(::BCrypt::Password).to receive(:create) do |token, cost:|
+        # need to use common BCrypt's salt when genarating BCrypt::Password objects
+        # so that any generated password hashes can be compared each other
+        ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
+      end
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret')
+
+      Sorcery::CryptoProviders::BCrypt.pepper = ''
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
+
+      Sorcery::CryptoProviders::BCrypt.pepper = User.sorcery_config.pepper
+
+      expect(user.crypted_password).to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
+    end
+
+    it 'if pepper is empty string (default) does not use pepper to encrypt' do
+      sorcery_model_property_set(:salt_attribute_name, :salt)
+      sorcery_model_property_set(:pepper, '')
+      sorcery_model_property_set(:encryption_algorithm, :bcrypt)
+
+      # password comparison is done using BCrypt::Password#==(raw_token), not String#==
+      bcrypt_password = BCrypt::Password.new(user.crypted_password)
+      allow(::BCrypt::Password).to receive(:create) do |token, cost:|
+        # need to use common BCrypt's salt when genarating BCrypt::Password objects
+        # so that any generated password hashes can be compared each other
+        ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
+      end
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret')
+
+      Sorcery::CryptoProviders::BCrypt.pepper = 'some_pepper'
+
+      expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
+
+      Sorcery::CryptoProviders::BCrypt.pepper = User.sorcery_config.pepper
+
+      expect(user.crypted_password).to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
+    end
   end
 
   describe 'ORM adapter' do
@@ -503,7 +573,7 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     it 'find_by_username works as expected with multiple username attributes' do
-      sorcery_model_property_set(:username_attribute_names, [:username, :email])
+      sorcery_model_property_set(:username_attribute_names, %i[username email])
 
       expect(User.sorcery_adapter.find_by_username('gizmo')).to eq user
     end
@@ -517,6 +587,21 @@ end
 shared_examples_for 'external_user' do
   let(:user) { create_new_user }
   let(:external_user) { create_new_external_user :twitter }
+
+  before(:all) do
+    if SORCERY_ORM == :active_record
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
+    end
+    sorcery_reload!
+  end
+
+  after(:all) do
+    if SORCERY_ORM == :active_record
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
+    end
+  end
 
   before(:each) do
     User.sorcery_adapter.delete_all
@@ -535,24 +620,12 @@ shared_examples_for 'external_user' do
   end
 
   describe '.create_from_provider' do
-    before(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
-        User.reset_column_information
-      end
-
+    before(:each) do
       sorcery_reload!([:external])
-    end
-
-    after(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
-      end
+      sorcery_model_property_set(:authentications_class, Authentication)
     end
 
     it 'supports nested attributes' do
-      sorcery_model_property_set(:authentications_class, Authentication)
-
       expect do
         User.create_from_provider('facebook', '123', username: 'Noam Ben Ari')
       end.to change { User.count }.by(1)
@@ -570,33 +643,21 @@ shared_examples_for 'external_user' do
       it 'does not create user when block return false' do
         expect do
           User.create_from_provider('facebook', '123', username: 'Noam Ben Ari') { false }
-        end.not_to change { User.count }
+        end.not_to(change { User.count })
       end
     end
   end
 
   describe 'activation' do
-    before(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/external")
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
-      end
-
-      sorcery_reload!([:user_activation, :external], user_activation_mailer: ::SorceryMailer)
-    end
-
-    after(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
-      end
+    before(:each) do
+      sorcery_reload!(%i[user_activation external], user_activation_mailer: ::SorceryMailer)
     end
 
     after(:each) do
       User.sorcery_adapter.delete_all
     end
 
-    [:facebook, :github, :google, :liveid, :slack].each do |provider|
+    %i[facebook github google liveid slack].each do |provider|
       it 'does not send activation email to external users' do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user(provider)

@@ -6,7 +6,8 @@ module Sorcery
           @model.send(:"#{name}=", value)
         end
         primary_key = @model.class.primary_key
-        @model.class.where(:"#{primary_key}" => @model.send(:"#{primary_key}")).update_all(attrs)
+        updated_count = @model.class.where(:"#{primary_key}" => @model.send(:"#{primary_key}")).update_all(attrs)
+        updated_count == 1
       end
 
       def save(options = {})
@@ -34,7 +35,7 @@ module Sorcery
         end
 
         def define_callback(time, event, method_name, options = {})
-          @klass.send "#{time}_#{event}", method_name, options.slice(:if)
+          @klass.send "#{time}_#{event}", method_name, options.slice(:if, :on)
         end
 
         def find_by_oauth_credentials(provider, uid)

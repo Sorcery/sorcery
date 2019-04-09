@@ -29,7 +29,7 @@ module Sorcery
 
         def matches?(crypted, *tokens)
           decrypt(crypted) == tokens.join
-        rescue OpenSSL::CipherError
+        rescue OpenSSL::Cipher::CipherError
           false
         end
 
@@ -43,6 +43,7 @@ module Sorcery
 
         def aes
           raise ArgumentError, "#{name} expects a 32 bytes long key. Please use Sorcery::Model::Config.encryption_key to set it." if @key.nil? || @key == ''
+
           @aes ||= OpenSSL::Cipher.new('AES-256-ECB')
         end
       end

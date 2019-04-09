@@ -216,6 +216,7 @@ describe SorceryController, active_record: true, type: :controller do
           microsoft
           instagram
           auth0
+          line
         ]
       )
 
@@ -257,6 +258,9 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:auth0, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
       sorcery_controller_external_property_set(:auth0, :callback_url, 'http://blabla.com')
       sorcery_controller_external_property_set(:auth0, :site, 'https://sorcery-test.auth0.com')
+      sorcery_controller_external_property_set(:line, :key, "eYVNBjBDi33aa9GkA3w")
+      sorcery_controller_external_property_set(:line, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
+      sorcery_controller_external_property_set(:line, :callback_url, "http://blabla.com")
     end
 
     after(:each) do
@@ -474,6 +478,7 @@ describe SorceryController, active_record: true, type: :controller do
         microsoft
         instagram
         auth0
+        line
       ]
     )
     sorcery_controller_external_property_set(:facebook, :key, 'eYVNBjBDi33aa9GkA3w')
@@ -513,6 +518,9 @@ describe SorceryController, active_record: true, type: :controller do
     sorcery_controller_external_property_set(:auth0, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
     sorcery_controller_external_property_set(:auth0, :callback_url, 'http://blabla.com')
     sorcery_controller_external_property_set(:auth0, :site, 'https://sorcery-test.auth0.com')
+    sorcery_controller_external_property_set(:line, :key, "eYVNBjBDi33aa9GkA3w")
+    sorcery_controller_external_property_set(:line, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
+    sorcery_controller_external_property_set(:line, :callback_url, "http://blabla.com")
   end
 
   def provider_url(provider)

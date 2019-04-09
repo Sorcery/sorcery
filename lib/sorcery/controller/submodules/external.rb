@@ -25,6 +25,7 @@ module Sorcery
           require 'sorcery/providers/microsoft'
           require 'sorcery/providers/instagram'
           require 'sorcery/providers/auth0'
+          require 'sorcery/providers/line'
 
           Config.module_eval do
             class << self

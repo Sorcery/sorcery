@@ -158,6 +158,10 @@ class SorceryController < ActionController::Base
     login_at(:auth0)
   end
 
+  def login_at_test_discord
+    login_at(:discord)
+  end
+
   def test_login_from_twitter
     if (@user = login_from(:twitter))
       redirect_to 'bla', notice: 'Success!'
@@ -280,6 +284,14 @@ class SorceryController < ActionController::Base
     end
   end
 
+  def test_login_from_discord
+    if (@user = login_from(:discord))
+      redirect_to 'bla', notice: 'Success!'
+    else
+      redirect_to 'blu', alert: 'Failed!'
+    end
+  end
+
   def test_return_to_with_external_twitter
     if (@user = login_from(:twitter))
       redirect_back_or_to 'bla', notice: 'Success!'
@@ -396,6 +408,14 @@ class SorceryController < ActionController::Base
 
   def test_return_to_with_external_line
     if @user = login_from(:line)
+      redirect_back_or_to 'bla', notice: 'Success!'
+    else
+      redirect_to 'blu', alert: 'Failed!'
+    end
+  end
+
+  def test_return_to_with_external_discord
+    if (@user = login_from(:discord))
       redirect_back_or_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'

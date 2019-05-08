@@ -35,7 +35,7 @@ module Sorcery
                              :@magic_login_mailer_class => nil,
                              :@magic_login_mailer_disabled => true,
                              :@magic_login_email_method_name => :magic_login_email,
-                             :@magic_login_expiration_period => 15 * 60,
+                             :@magic_login_expiration_period => nil,
                              :@magic_login_time_between_emails => 5 * 60)
 
             reset!

@@ -60,9 +60,26 @@ shared_examples_for 'magic_login_model' do
 
     describe '#generate_magic_login_token!' do
       context 'magic_login_token is nil' do
-        it "magic_login_token_expires_at and magic_login_email_sent_at aren't nil " do
+        context 'magic_login_expiration_period is nil' do
+          it "magic_login_token_expires_at is nil" do
+            user.generate_magic_login_token!
+            expect(user.magic_login_token_expires_at).to be_nil
+          end
+        end
+
+        context "magic_login_expiration_period isn't nil" do
+          before do
+            sorcery_model_property_set(:magic_login_expiration_period, 15 * 60)
+          end
+
+          it "magic_login_token_expires_at isn't nil" do
+            user.generate_magic_login_token!
+            expect(user.magic_login_token_expires_at).not_to be_nil
+          end
+        end
+
+        it "magic_login_email_sent_at isn't nil" do
           user.generate_magic_login_token!
-          expect(user.magic_login_token_expires_at).not_to be_nil
           expect(user.magic_login_email_sent_at).not_to be_nil
         end
 

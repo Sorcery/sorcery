@@ -1,6 +1,14 @@
 # Changelog
 ## HEAD
 
+* Support the LINE login auth [#80](https://github.com/Sorcery/sorcery/pull/80)
+* Allow BCrypt to have app-specific secret token [#173](https://github.com/Sorcery/sorcery/pull/173)
+* Add #change_password method to reset_password module. [#165](https://github.com/Sorcery/sorcery/pull/165)
+* Clean up initializer comments [#153](https://github.com/Sorcery/sorcery/pull/153)
+* Allow load_from_magic_login_token to accept a block [#152](https://github.com/Sorcery/sorcery/pull/152)
+* Fix CipherError class name [#142](https://github.com/Sorcery/sorcery/pull/142)
+* Fix `update_failed_logins_count` being called twice when login failed [#163](https://github.com/Sorcery/sorcery/pull/163)
+* Update migration templates to use new hash syntax [#170](https://github.com/Sorcery/sorcery/pull/170)
 * Support for Rails 4.2 and lower soft-dropped [#171](https://github.com/Sorcery/sorcery/pull/171)
 
 ## 0.13.0

@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+## 0.14.0
+
 * Update LinkedIn to use OAuth 2 [#189](https://github.com/Sorcery/sorcery/pull/189)
 * Support the LINE login auth [#80](https://github.com/Sorcery/sorcery/pull/80)
 * Allow BCrypt to have app-specific secret token [#173](https://github.com/Sorcery/sorcery/pull/173)

@@ -91,8 +91,12 @@ Rails.application.config.sorcery.configure do |config|
   # config.linkedin.key = ""
   # config.linkedin.secret = ""
   # config.linkedin.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=linkedin"
-  # config.linkedin.user_info_mapping = {first_name: "firstName", last_name: "lastName"}
-  # config.linkedin.scope = "r_basicprofile"
+  # config.linkedin.user_info_mapping = {
+  #   first_name: 'localizedFirstName',
+  #   last_name:  'localizedLastName',
+  #   email:      'emailAddress'
+  # }
+  # config.linkedin.scope = "r_liteprofile r_emailaddress"
   #
   #
   # For information about XING API:

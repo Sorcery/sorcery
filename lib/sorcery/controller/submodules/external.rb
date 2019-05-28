@@ -38,7 +38,7 @@ module Sorcery
                 providers.each do |name|
                   class_eval <<-RUBY, __FILE__, __LINE__ + 1
                     def self.#{name}
-                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.capitalize).new
+                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.classify).new
                     end
                   RUBY
                 end

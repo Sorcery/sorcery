@@ -35,6 +35,7 @@ module Sorcery
       # calculates and returns the url to which the user should be redirected,
       # to get authenticated at the external provider's site.
       def login_url(_params, _session)
+        force_email_scope
         authorize_url(authorize_url: auth_url)
       end
 
@@ -54,6 +55,12 @@ module Sorcery
         email_info     = JSON.parse(email_response.body)['elements'].first
 
         user_info.merge(email_info['handle~'])
+      end
+
+      def force_email_scope
+        scope = @scope.split(' ')
+        scope.push('r_emailaddress') unless scope.include?('r_emailaddress')
+        @scope = scope.join(' ')
       end
     end
   end

@@ -88,6 +88,9 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.ca_file =
 
+  # Linkedin requires r_emailaddress scope to fetch user's email address.
+  # You can skip it if email field is not mandatory in your database (by default it is).
+  #
   # config.linkedin.key = ""
   # config.linkedin.secret = ""
   # config.linkedin.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=linkedin"

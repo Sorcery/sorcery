@@ -89,7 +89,8 @@ Rails.application.config.sorcery.configure do |config|
   # config.ca_file =
 
   # Linkedin requires r_emailaddress scope to fetch user's email address.
-  # You can skip it if email field is not mandatory in your database (by default it is).
+  # You can skip including the email field if you use an intermediary signup form. (using build_from method).
+  # The r_emailaddress scope is only necessary if you are using the create_from method directly.
   #
   # config.linkedin.key = ""
   # config.linkedin.secret = ""

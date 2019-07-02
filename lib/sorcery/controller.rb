@@ -25,7 +25,10 @@ module Sorcery
       def require_login
         return if logged_in?
 
-        session[:return_to_url] = request.url if Config.save_return_to_url && request.get? && !request.xhr?
+        if Config.save_return_to_url && request.get? && !request.xhr? && !request.format.json?
+          session[:return_to_url] = request.url
+        end
+
         send(Config.not_authenticated_action)
       end
 

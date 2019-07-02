@@ -150,6 +150,16 @@ describe SorceryController, type: :controller do
       end
     end
 
+    it 'require_login before_action does not save the url for JSON requests' do
+      get :some_action, format: :json
+      expect(session[:return_to_url]).to be_nil
+    end
+
+    it 'require_login before_action does not save the url for XHR requests' do
+      get :some_action, xhr: true
+      expect(session[:return_to_url]).to be_nil
+    end
+
     it 'on successful login the user is redirected to the url he originally wanted' do
       session[:return_to_url] = 'http://test.host/some_action'
       post :test_return_to, params: { email: 'bla@bla.com', password: 'secret' }

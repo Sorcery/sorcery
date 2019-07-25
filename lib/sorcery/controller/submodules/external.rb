@@ -46,7 +46,7 @@ module Sorcery
 
               def merge_external_defaults!
                 @defaults.merge!(:@external_providers => [],
-                                 :@ca_file => File.join(__dir__, '../../protocols/certs/ca-bundle.crt'))
+                                 :@ca_file => File.join(__dir__, '../../protocols/certs/ca-bundle.pem'))
               end
             end
             merge_external_defaults!

@@ -114,7 +114,7 @@ module Sorcery
       # @param [<User-Model>] user the user instance.
       # @return - do not depend on the return value.
       def auto_login(user, _should_remember = false)
-        session[:user_id] = user.id.to_s
+        session[login_session_key] = user.id.to_s
         @current_user = user
       end
 
@@ -137,8 +137,8 @@ module Sorcery
       end
 
       def login_from_session
-        @current_user = if session[:user_id]
-                          user_class.sorcery_adapter.find_by_id(session[:user_id])
+        @current_user = if session[login_session_key]
+                          user_class.sorcery_adapter.find_by_id(session[login_session_key])
                         end
       end
 
@@ -166,6 +166,10 @@ module Sorcery
         @user_class ||= Config.user_class.to_s.constantize
       rescue NameError
         raise ArgumentError, 'You have incorrectly defined user_class or have forgotten to define it in intitializer file (config.user_class = \'User\').'
+      end
+
+      def login_session_key
+        :user_id
       end
     end
   end

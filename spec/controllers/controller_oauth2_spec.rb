@@ -427,7 +427,7 @@ describe SorceryController, active_record: true, type: :controller do
         # response for VK auth
         'response' => [
           {
-            'uid' => '123',
+            'id' => '123',
             'first_name' => 'Noam',
             'last_name' => 'Ben Ari'
           }

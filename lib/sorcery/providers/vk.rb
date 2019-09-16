@@ -37,7 +37,7 @@ module Sorcery
           user_hash[:user_info] = user_hash[:user_info]['response'][0]
           user_hash[:user_info]['full_name'] = [user_hash[:user_info]['first_name'], user_hash[:user_info]['last_name']].join(' ')
 
-          user_hash[:uid] = user_hash[:user_info]['uid']
+          user_hash[:uid] = user_hash[:user_info]['id']
           user_hash[:user_info]['email'] = access_token.params['email']
         end
         user_hash

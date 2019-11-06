@@ -158,6 +158,10 @@ Rails.application.config.sorcery.configure do |config|
   # config.auth0.callback_url = "https://0.0.0.0:3000/oauth/callback?provider=auth0"
   # config.auth0.site = "https://example.auth0.com"
   #
+  # For Google, if you need a refresh token issued from Google (offline access), it's necessary to override the auth_url as below.
+  # Otherwise, there is no need to override the default auth_url.
+  # config.google.auth_url = "/o/oauth2/auth?access_type=offline"
+  #
   # config.google.key = ""
   # config.google.secret = ""
   # config.google.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=google"

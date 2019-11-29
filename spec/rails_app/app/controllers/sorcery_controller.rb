@@ -6,6 +6,7 @@ class SorceryController < ActionController::Base
   before_action :require_login_from_http_basic, only: [:test_http_basic_auth]
   before_action :require_login, only: %i[
     test_logout
+    test_logout_with_forget_me
     test_logout_with_force_forget_me
     test_should_be_logged_in
     some_action
@@ -46,6 +47,13 @@ class SorceryController < ActionController::Base
 
   def test_logout_with_remember
     remember_me!
+    logout
+    head :ok
+  end
+
+  def test_logout_with_forget_me
+    remember_me!
+    forget_me!
     logout
     head :ok
   end

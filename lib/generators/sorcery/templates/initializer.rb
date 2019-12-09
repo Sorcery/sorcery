@@ -223,6 +223,12 @@ Rails.application.config.sorcery.configure do |config|
   # config.line.secret = ""
   # config.line.callback_url = "http://mydomain.com:3000/oauth/callback?provider=line"
 
+  # For infromation about Discord API
+  # https://discordapp.com/developers/docs/topics/oauth2
+  # config.discord.key = "xxxxxx"
+  # config.discord.secret = "xxxxxx"
+  # config.discord.callback_url = "http://localhost:3000/oauth/callback?provider=discord"
+  # config.discord.scope = "email guilds"
   # --- user config ---
   config.user_config do |user|
     # -- core --

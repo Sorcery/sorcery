@@ -19,20 +19,20 @@ Gem::Specification.new do |s|
   ]
 
   # TODO: Cleanup formatting.
-  # rubocop:disable Metrics/LineLength
+  # rubocop:disable Layout/LineLength
   s.description = 'Provides common authentication needs such as signing in/out, activating by email and resetting password.'
   s.summary = 'Magical authentication for Rails applications'
   s.homepage = 'https://github.com/Sorcery/sorcery'
   s.post_install_message = "As of version 1.0 oauth/oauth2 won't be automatically bundled so you may need to add those dependencies to your Gemfile.\n"
   s.post_install_message += 'You may need oauth2 if you use external providers such as any of these: https://github.com/Sorcery/sorcery/tree/master/lib/sorcery/providers'
-  # rubocop:enable Metrics/LineLength
+  # rubocop:enable Layout/LineLength
 
   s.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
   s.require_paths = ['lib']
 
   s.licenses = ['MIT']
 
-  s.required_ruby_version = '>= 2.2.9'
+  s.required_ruby_version = '>= 2.4.9'
 
   s.add_dependency 'bcrypt', '~> 3.1'
   s.add_dependency 'oauth', '~> 0.4', '>= 0.4.4'

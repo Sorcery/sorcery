@@ -3,7 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - 'lib/generators/sorcery/templates/**/*'
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.6
 
 # See: https://github.com/rubocop-hq/rubocop/issues/3344
 Style/DoubleNegation:
@@ -21,7 +21,7 @@ Metrics/BlockLength:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'
-Metrics/LineLength:
+Layout/LineLength:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'

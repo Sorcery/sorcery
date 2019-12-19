@@ -88,11 +88,19 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.ca_file =
 
+  # Linkedin requires r_emailaddress scope to fetch user's email address.
+  # You can skip including the email field if you use an intermediary signup form. (using build_from method).
+  # The r_emailaddress scope is only necessary if you are using the create_from method directly.
+  #
   # config.linkedin.key = ""
   # config.linkedin.secret = ""
   # config.linkedin.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=linkedin"
-  # config.linkedin.user_info_mapping = {first_name: "firstName", last_name: "lastName"}
-  # config.linkedin.scope = "r_basicprofile"
+  # config.linkedin.user_info_mapping = {
+  #   first_name: 'localizedFirstName',
+  #   last_name:  'localizedLastName',
+  #   email:      'emailAddress'
+  # }
+  # config.linkedin.scope = "r_liteprofile r_emailaddress"
   #
   #
   # For information about XING API:
@@ -215,6 +223,12 @@ Rails.application.config.sorcery.configure do |config|
   # config.line.secret = ""
   # config.line.callback_url = "http://mydomain.com:3000/oauth/callback?provider=line"
 
+  # For infromation about Discord API
+  # https://discordapp.com/developers/docs/topics/oauth2
+  # config.discord.key = "xxxxxx"
+  # config.discord.secret = "xxxxxx"
+  # config.discord.callback_url = "http://localhost:3000/oauth/callback?provider=discord"
+  # config.discord.scope = "email guilds"
   # --- user config ---
   config.user_config do |user|
     # -- core --

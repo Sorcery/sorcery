@@ -26,6 +26,7 @@ module Sorcery
           require 'sorcery/providers/instagram'
           require 'sorcery/providers/auth0'
           require 'sorcery/providers/line'
+          require 'sorcery/providers/discord'
 
           Config.module_eval do
             class << self
@@ -38,7 +39,7 @@ module Sorcery
                 providers.each do |name|
                   class_eval <<-RUBY, __FILE__, __LINE__ + 1
                     def self.#{name}
-                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.capitalize).new
+                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.classify).new
                     end
                   RUBY
                 end

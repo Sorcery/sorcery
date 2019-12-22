@@ -19,7 +19,7 @@ module Sorcery
             Config.after_login << :set_session_token
           end
 
-          base.after_action :verify_session_token, if: :logged_in?
+          base.prepend_before_action :verify_session_token, if: :logged_in?
         end
 
         module InstanceMethods

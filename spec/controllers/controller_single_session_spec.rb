@@ -37,7 +37,7 @@ describe SorceryController, type: :controller do
       get :test_should_be_logged_in
 
       expect(session[:user_id]).to be_nil
-      expect(response).to be_successful
+      expect(response).not_to be_successful
     end
 
     it 'regenerates token on login' do

@@ -171,7 +171,7 @@ describe SorceryController, type: :controller do
     # --- auto_login(user) ---
     specify { should respond_to(:auto_login) }
 
-    it 'auto_login(user) los in a user instance' do
+    it 'auto_login(user) logs in an user instance' do
       session[:user_id] = nil
       subject.auto_login(user)
 

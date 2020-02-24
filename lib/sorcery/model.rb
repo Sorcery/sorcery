@@ -206,7 +206,7 @@ module Sorcery
       def generic_send_email(method, mailer)
         config = sorcery_config
         mail = config.send(mailer).send(config.send(method), self)
-        return unless defined?(ActionMailer) && config.send(mailer).is_a?(Class) && config.send(mailer) < ActionMailer::Base
+        return unless mail.respond_to?(config.email_delivery_method)
 
         mail.send(config.email_delivery_method)
       end

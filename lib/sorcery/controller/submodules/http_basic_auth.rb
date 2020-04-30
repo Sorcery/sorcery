@@ -19,10 +19,8 @@ module Sorcery
             end
             merge_http_basic_auth_defaults!
           end
-          # FIXME: There is likely a more elegant way to safeguard these callbacks.
-          unless Config.login_sources.include?(:login_from_basic_auth)
-            Config.login_sources << :login_from_basic_auth
-          end
+
+          Config.login_sources << :login_from_basic_auth
         end
 
         module InstanceMethods

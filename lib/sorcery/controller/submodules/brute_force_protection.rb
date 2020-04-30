@@ -10,13 +10,9 @@ module Sorcery
       module BruteForceProtection
         def self.included(base)
           base.send(:include, InstanceMethods)
-          # FIXME: There is likely a more elegant way to safeguard these callbacks.
-          unless Config.after_login.include?(:reset_failed_logins_count!)
-            Config.after_login << :reset_failed_logins_count!
-          end
-          unless Config.after_failed_login.include?(:update_failed_logins_count!)
-            Config.after_failed_login << :update_failed_logins_count!
-          end
+
+          Config.after_login << :reset_failed_logins_count!
+          Config.after_failed_login << :update_failed_logins_count!
         end
 
         module InstanceMethods

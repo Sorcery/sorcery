@@ -26,7 +26,10 @@ module Sorcery
           # Runs as a hook after a failed login.
           def update_failed_logins_count!(credentials)
             user = user_class.sorcery_adapter.find_by_credentials(credentials)
-            user.register_failed_login! if user
+
+            # if the password is valid, don't extend the lock expiry. The
+            # authentication has already failed due to the lock.
+            user.register_failed_login! if user && !user.valid_password?(credentials[1])
           end
 
           # Resets the failed logins counter.

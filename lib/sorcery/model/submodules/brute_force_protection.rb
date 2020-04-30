@@ -65,7 +65,6 @@ module Sorcery
           # Calls 'login_lock!' if login retries limit was reached.
           def register_failed_login!
             config = sorcery_config
-            return unless login_unlocked?
 
             sorcery_adapter.increment(config.failed_logins_count_attribute_name)
 
@@ -92,6 +91,7 @@ module Sorcery
           protected
 
           def login_lock!
+            was_already_locked = !login_unlocked?
             config = sorcery_config
             attributes = { config.lock_expires_at_attribute_name => Time.now.in_time_zone + config.login_lock_time_period,
                            config.unlock_token_attribute_name => TemporaryToken.generate_random_token }
@@ -99,7 +99,7 @@ module Sorcery
 
             return if config.unlock_token_mailer_disabled || config.unlock_token_mailer.nil?
 
-            send_unlock_token_email!
+            send_unlock_token_email! unless was_already_locked
           end
 
           def login_unlocked?

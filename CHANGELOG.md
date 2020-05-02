@@ -1,6 +1,21 @@
 # Changelog
 ## HEAD
 
+* Fix brute force vuln due to callbacks no being ran [#235](https://github.com/Sorcery/sorcery/pull/235)
+* Revert on_load change due to breaking existing applications [#234](https://github.com/Sorcery/sorcery/pull/234)
+* Add forget_me! and force_forget_me! test cases [#216](https://github.com/Sorcery/sorcery/pull/216)
+* In `generic_send_email`, check responds_to [#211](https://github.com/Sorcery/sorcery/pull/211)
+* Fix typo [#219](https://github.com/Sorcery/sorcery/pull/219)
+* Fix deprecation warnings in Rails 6 [#209](https://github.com/Sorcery/sorcery/pull/209)
+* Add ruby 2.6.5 to the travis build [#215](https://github.com/Sorcery/sorcery/pull/215)
+* Add discord provider [#185](https://github.com/Sorcery/sorcery/pull/185)
+* Remove MySQL database creation call [#214](https://github.com/Sorcery/sorcery/pull/214)
+* Use id instead of uid for VK provider [#199](https://github.com/Sorcery/sorcery/pull/199)
+* Don't :return_t JSON requests after login [#197](https://github.com/Sorcery/sorcery/pull/197)
+* Fix email scope for LinkedIn Provider [#191](https://github.com/Sorcery/sorcery/pull/191)
+* Ignore cookies when undefined cookies [#187](https://github.com/Sorcery/sorcery/pull/187)
+* Allow for custom providers with multi-word class names. [#190](https://github.com/Sorcery/sorcery/pull/190)
+
 ## 0.14.0
 
 * Update LinkedIn to use OAuth 2 [#189](https://github.com/Sorcery/sorcery/pull/189)

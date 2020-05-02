@@ -102,10 +102,6 @@ module Sorcery
 
         set_encryption_attributes
 
-        unless user.valid_password?(credentials[1])
-          return authentication_response(user: user, failure: :invalid_password, &block)
-        end
-
         if user.respond_to?(:active_for_authentication?) && !user.active_for_authentication?
           return authentication_response(user: user, failure: :inactive, &block)
         end
@@ -116,6 +112,10 @@ module Sorcery
           unless success
             return authentication_response(user: user, failure: reason, &block)
           end
+        end
+
+        unless user.valid_password?(credentials[1])
+          return authentication_response(user: user, failure: :invalid_password, &block)
         end
 
         authentication_response(user: user, return_value: user, &block)

@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+## 0.15.0
+
 * Fix brute force vuln due to callbacks no being ran [#235](https://github.com/Sorcery/sorcery/pull/235)
 * Revert on_load change due to breaking existing applications [#234](https://github.com/Sorcery/sorcery/pull/234)
 * Add forget_me! and force_forget_me! test cases [#216](https://github.com/Sorcery/sorcery/pull/216)

@@ -25,12 +25,12 @@ module Sorcery
             :@user_class                           => nil,
             :@submodules                           => [],
             :@not_authenticated_action             => :not_authenticated,
-            :@login_sources                        => [],
-            :@after_login                          => [],
-            :@after_failed_login                   => [],
-            :@before_logout                        => [],
-            :@after_logout                         => [],
-            :@after_remember_me                    => [],
+            :@login_sources                        => Set.new,
+            :@after_login                          => Set.new,
+            :@after_failed_login                   => Set.new,
+            :@before_logout                        => Set.new,
+            :@after_logout                         => Set.new,
+            :@after_remember_me                    => Set.new,
             :@save_return_to_url                   => true,
             :@cookie_domain                        => nil
           }

@@ -23,13 +23,10 @@ module Sorcery
             end
             merge_session_timeout_defaults!
           end
-          # FIXME: There is likely a more elegant way to safeguard these callbacks.
-          unless Config.after_login.include?(:register_login_time)
-            Config.after_login << :register_login_time
-          end
-          unless Config.after_remember_me.include?(:register_login_time)
-            Config.after_remember_me << :register_login_time
-          end
+
+          Config.after_login << :register_login_time
+          Config.after_remember_me << :register_login_time
+
           base.prepend_before_action :validate_session
         end
 

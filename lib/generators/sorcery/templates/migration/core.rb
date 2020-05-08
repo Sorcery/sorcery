@@ -1,6 +1,6 @@
 class SorceryCore < <%= migration_class_name %>
   def change
-    create_table :<%= model_class_name.tableize %> do |t|
+    create_table :<%= tableized_model_class %> do |t|
       t.string :email,            null: false
       t.string :crypted_password
       t.string :salt
@@ -8,6 +8,6 @@ class SorceryCore < <%= migration_class_name %>
       t.timestamps                null: false
     end
 
-    add_index :<%= model_class_name.tableize %>, :email, unique: true
+    add_index :<%= tableized_model_class %>, :email, unique: true
   end
 end

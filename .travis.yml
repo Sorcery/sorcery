@@ -7,4 +7,5 @@ rvm:
   - 2.6.5
 
 gemfile:
-  - Gemfile
+  - gemfiles/rails_52.gemfile
+  - gemfiles/rails_60.gemfile

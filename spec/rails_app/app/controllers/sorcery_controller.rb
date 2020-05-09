@@ -1,6 +1,6 @@
 require 'oauth'
 
-class SorceryController < ActionController::Base
+class SorceryController < ApplicationController
   protect_from_forgery
 
   before_action :require_login_from_http_basic, only: [:test_http_basic_auth]

@@ -12,7 +12,7 @@ module Sorcery
 
       def save(options = {})
         mthd = options.delete(:raise_on_failure) ? :save! : :save
-        @model.send(mthd, options)
+        @model.send(mthd, **options)
       end
 
       def increment(field)
@@ -35,7 +35,7 @@ module Sorcery
         end
 
         def define_callback(time, event, method_name, options = {})
-          @klass.send "#{time}_#{event}", method_name, options.slice(:if, :on)
+          @klass.send "#{time}_#{event}", method_name, **options.slice(:if, :on)
         end
 
         def find_by_oauth_credentials(provider, uid)

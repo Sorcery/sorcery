@@ -9,3 +9,8 @@ rvm:
 gemfile:
   - gemfiles/rails_52.gemfile
   - gemfiles/rails_60.gemfile
+
+jobs:
+  exclude:
+  - rvm: 2.4.9
+    gemfile: gemfiles/rails_60.gemfile

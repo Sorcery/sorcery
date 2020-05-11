@@ -146,12 +146,12 @@ describe SorceryController, type: :controller do
     end
 
     describe '#generate_jwt' do
-      # Number of seconds - 1_589_100_200
-      let(:current_time) { Time.new(2020, 5, 10, 11, 43, 20) }
+      # Number of seconds - 1_589_111_000
+      let(:current_time) { Time.utc(2020, 5, 10, 11, 43, 20) }
       let(:expected_payload) do
         { sub: 42,
-          iat: 1_589_100_200,
-          exp: 1_589_100_800,
+          iat: 1_589_111_000,
+          exp: 1_589_111_600,
           email: 'bla@bla.com' }
       end
 
@@ -307,13 +307,13 @@ describe SorceryController, type: :controller do
     end
 
     describe 'jwt encoding and decoding' do
-      # Number of seconds - 1_589_100_200
-      let(:current_time) { Time.new(2020, 5, 10, 11, 43, 20) }
+      # Number of seconds - 1_589_111_000
+      let(:current_time) { Time.utc(2020, 5, 10, 11, 43, 20) }
       # token valid for 10 minutes
       let(:payload) do
         { 'sub' => 42,
-          'iat' => 1_589_100_200,
-          'exp' => 1_589_100_800 }
+          'iat' => 1_589_111_000,
+          'exp' => 1_589_111_600 }
       end
       let(:plain_text_key) { 'secret_key' }
       # generated using OpenSSL::PKey::RSA.generate(2048)
@@ -370,7 +370,7 @@ describe SorceryController, type: :controller do
           end
 
           it 'returns token' do
-            expect(subject.jwt_encode(payload)).to eq('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQyLCJpYXQiOjE1ODkxMDAyMDAsImV4cCI6MTU4OTEwMDgwMH0.nPWyXQzqJqkMTMGuEzWtkeXN2BpVYecr3Lmpd99MJhY')
+            expect(subject.jwt_encode(payload)).to eq('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQyLCJpYXQiOjE1ODkxMTEwMDAsImV4cCI6MTU4OTExMTYwMH0.QYLB-Dd4iGQmSF-uyWXM93ER0fbSWJddjYFzdwFBEJA')
           end
         end
 
@@ -381,14 +381,14 @@ describe SorceryController, type: :controller do
           end
 
           it 'returns token' do
-            expect(subject.jwt_encode(payload)).to eq('eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOjQyLCJpYXQiOjE1ODkxMDAyMDAsImV4cCI6MTU4OTEwMDgwMH0.E69mTt7gKJHN_QXD5YfFYA4CdQKMYVDotNkzekN62WYurpNynEQGz1W6PABTSLCPQPTFXmUDgzvc1JedQ3MQtpcKSbaowxiQBh0_wHwPca9hzQDZH8tBiujcYemY5URJRZUOO9d3izHpAg35GcODQays0cnK1ianshp9nLzExogKv0e5WMXHlCaH7Hxw2gNaTKO5S_qKeE0J-6WMk1FbSYCgBfSmVnf1lx9LNKkF0l_dejZEBVczzVAK5agbbTiG6yunzewKpBwGcVR4CGG2Xbsh6Ey3SwoOqygrrosxMP3d_DlfUntKKLwn6O2p7jGqnYGGZj8MMe7UKQN8X65dxQ')
+            expect(subject.jwt_encode(payload)).to eq('eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOjQyLCJpYXQiOjE1ODkxMTEwMDAsImV4cCI6MTU4OTExMTYwMH0.KHLryqKjLD6ESNzpb4hbYyIjxTz8-FcMTYhJZn81XBr4b7oZioNbeYKhzR3BVyGFfFFMjWNsLa_P30xiEXL4BRha8eUMhBeM_1ilWZM2lKEK2Sk3Iuf__lp-ZnQYALT9Oe1n3fv7yJCLvqTUHOXQuzftxeQ7CgAEVDsefT-7npW1ym-ompFiYl4M9GzC8VX0HCeN_T3i02fEc9fAQlIhMRhhe38OCv3lnxcOeLPcd7eOLwCNSWBVnupZiNsIjIyhhh9ApJqVUI5j2n1azyDueajvvr2c0L444Yf5Q44KMZgJ4S7RkhKuS6tzfH6Qyjn3HtPTL8R8xP9MGnTk8p4f_Q')
           end
         end
       end
 
       describe '#jwt_decode' do
         context 'password-based algorithm' do
-          let(:token) { 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQyLCJpYXQiOjE1ODkxMDAyMDAsImV4cCI6MTU4OTEwMDgwMH0.nPWyXQzqJqkMTMGuEzWtkeXN2BpVYecr3Lmpd99MJhY' }
+          let(:token) { 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQyLCJpYXQiOjE1ODkxMTEwMDAsImV4cCI6MTU4OTExMTYwMH0.QYLB-Dd4iGQmSF-uyWXM93ER0fbSWJddjYFzdwFBEJA' }
 
           before do
             sorcery_controller_property_set(:jwt_decode_key, plain_text_key)
@@ -428,7 +428,7 @@ describe SorceryController, type: :controller do
         end
 
         context 'key-based algorithm' do
-          let(:token) { 'eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOjQyLCJpYXQiOjE1ODkxMDAyMDAsImV4cCI6MTU4OTEwMDgwMH0.E69mTt7gKJHN_QXD5YfFYA4CdQKMYVDotNkzekN62WYurpNynEQGz1W6PABTSLCPQPTFXmUDgzvc1JedQ3MQtpcKSbaowxiQBh0_wHwPca9hzQDZH8tBiujcYemY5URJRZUOO9d3izHpAg35GcODQays0cnK1ianshp9nLzExogKv0e5WMXHlCaH7Hxw2gNaTKO5S_qKeE0J-6WMk1FbSYCgBfSmVnf1lx9LNKkF0l_dejZEBVczzVAK5agbbTiG6yunzewKpBwGcVR4CGG2Xbsh6Ey3SwoOqygrrosxMP3d_DlfUntKKLwn6O2p7jGqnYGGZj8MMe7UKQN8X65dxQ' }
+          let(:token) { 'eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOjQyLCJpYXQiOjE1ODkxMTEwMDAsImV4cCI6MTU4OTExMTYwMH0.KHLryqKjLD6ESNzpb4hbYyIjxTz8-FcMTYhJZn81XBr4b7oZioNbeYKhzR3BVyGFfFFMjWNsLa_P30xiEXL4BRha8eUMhBeM_1ilWZM2lKEK2Sk3Iuf__lp-ZnQYALT9Oe1n3fv7yJCLvqTUHOXQuzftxeQ7CgAEVDsefT-7npW1ym-ompFiYl4M9GzC8VX0HCeN_T3i02fEc9fAQlIhMRhhe38OCv3lnxcOeLPcd7eOLwCNSWBVnupZiNsIjIyhhh9ApJqVUI5j2n1azyDueajvvr2c0L444Yf5Q44KMZgJ4S7RkhKuS6tzfH6Qyjn3HtPTL8R8xP9MGnTk8p4f_Q' }
 
           before do
             sorcery_controller_property_set(:jwt_decode_key, OpenSSL::PKey.read(rsa_public_key))

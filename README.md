@@ -117,6 +117,15 @@ User.load_from_activation_token(token)
 @user.activate!
 ```
 
+### JWT Authentication
+
+```ruby
+require_jwt_authentication # This is a before action
+jwt_authenticate(email, password) # => {token: 'token', payload: {..}}
+jwt_from_header # Token extracted from header
+jwt_decoded_payload # Payload extracted from token
+```
+
 Please see the tutorials in the github wiki for detailed usage information.
 
 ## Installation
@@ -213,6 +222,12 @@ Inside the initializer, the comments will tell you what each setting does.
 - OAuth1 and OAuth2 support (currently: Twitter, Facebook, Github, Google, Heroku, LinkedIn, VK, LiveID, Xing, Salesforce)
 - Configurable database column names
 - Authentications table
+
+**JWT** (see [lib/sorcery/controller/submodules/jwt.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/controller/submodules/jwt.rb)):
+
+- Token generation (various algorithms are supported)
+- Before action for authenticating via header
+- Configurable payload
 
 ## Planned Features
 

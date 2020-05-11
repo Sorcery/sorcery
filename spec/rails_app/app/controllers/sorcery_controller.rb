@@ -4,6 +4,7 @@ class SorceryController < ActionController::Base
   protect_from_forgery
 
   before_action :require_login_from_http_basic, only: [:test_http_basic_auth]
+  before_action :require_jwt_authentication, only: [:test_jwt_auth]
   before_action :require_login, only: %i[
     test_logout
     test_logout_with_forget_me
@@ -83,6 +84,18 @@ class SorceryController < ActionController::Base
     head :ok
   end
 
+  def test_jwt_login
+    @result = jwt_authenticate(params[:email], params[:password]) do |user, failure_reason|
+      if failure_reason
+        @error = failure_reason
+      else
+        user.email = 'some@email.com'
+      end
+    end
+
+    head :ok
+  end
+
   def test_login_from_cookie
     @user = current_user
     head :ok
@@ -97,6 +110,10 @@ class SorceryController < ActionController::Base
   end
 
   def test_http_basic_auth
+    head :ok
+  end
+
+  def test_jwt_auth
     head :ok
   end
 

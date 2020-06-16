@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Fix ruby 2.7 deprecation warnings [#241](https://github.com/Sorcery/sorcery/pull/241)
+
 ## 0.15.0
 
 * Fix brute force vuln due to callbacks no being ran [#235](https://github.com/Sorcery/sorcery/pull/235)

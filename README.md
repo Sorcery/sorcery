@@ -244,7 +244,7 @@ Feel free to ask questions using these contact details:
 
 **Current Maintainers:**
 
-- Josh Buker ([@athix](https://github.com/athix)) | [Email](mailto:jbuker@aeonsplice.com)
+- Josh Buker ([@athix](https://github.com/athix)) | [Email](mailto:crypto+sorcery@joshbuker.com?subject=Sorcery)
 
 **Past Maintainers:**
 

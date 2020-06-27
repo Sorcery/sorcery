@@ -8,15 +8,9 @@ module Sorcery
       module RememberMe
         def self.included(base)
           base.send(:include, InstanceMethods)
-          Config.module_eval do
-            class << self
-              attr_accessor :remember_me_httponly
-              def merge_remember_me_defaults!
-                @defaults.merge!(:@remember_me_httponly => true)
-              end
-            end
-            merge_remember_me_defaults!
-          end
+          Config.add_defaults(
+            :remember_me_httponly => true
+          )
 
           Config.login_sources << :login_from_cookie
           Config.before_logout << :forget_me!

@@ -6,23 +6,14 @@ module Sorcery
       module SessionTimeout
         def self.included(base)
           base.send(:include, InstanceMethods)
-          Config.module_eval do
-            class << self
-              # how long in seconds to keep the session alive.
-              attr_accessor :session_timeout
-              # use the last action as the beginning of session timeout.
-              attr_accessor :session_timeout_from_last_action
-              # allow users to invalidate active sessions
-              attr_accessor :session_timeout_invalidate_active_sessions_enabled
-
-              def merge_session_timeout_defaults!
-                @defaults.merge!(:@session_timeout                                    => 3600, # 1.hour
-                                 :@session_timeout_from_last_action                   => false,
-                                 :@session_timeout_invalidate_active_sessions_enabled => false)
-              end
-            end
-            merge_session_timeout_defaults!
-          end
+          Config.add_defaults(
+            # how long in seconds to keep the session alive.
+            :session_timeout                                    => 3600, # 1.hour
+            # use the last action as the beginning of session timeout.
+            :session_timeout_from_last_action                   => false,
+            # allow users to invalidate active sessions
+            :session_timeout_invalidate_active_sessions_enabled => false
+          )
 
           Config.after_login << :register_login_time
           Config.after_remember_me << :register_login_time

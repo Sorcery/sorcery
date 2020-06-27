@@ -28,29 +28,24 @@ module Sorcery
           require 'sorcery/providers/line'
           require 'sorcery/providers/discord'
 
-          Config.module_eval do
-            class << self
-              attr_reader :external_providers
-              attr_accessor :ca_file
+          Config.add_defaults(
+            :external_providers => [],
+            :ca_file => File.join(__dir__, '../../protocols/certs/ca-bundle.crt')
+          )
+          Config.singleton_class.prepend(ProvidersSetter)
+        end
 
-              def external_providers=(providers)
-                @external_providers = providers
+        module ProvidersSetter
+          def external_providers=(providers)
+            @external_providers = providers
 
-                providers.each do |name|
-                  class_eval <<-RUBY, __FILE__, __LINE__ + 1
-                    def self.#{name}
-                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.classify).new
-                    end
-                  RUBY
+            providers.each do |name|
+              class_eval <<-RUBY, __FILE__, __LINE__ + 1
+                def self.#{name}
+                  @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.classify).new
                 end
-              end
-
-              def merge_external_defaults!
-                @defaults.merge!(:@external_providers => [],
-                                 :@ca_file => File.join(__dir__, '../../protocols/certs/ca-bundle.crt'))
-              end
+              RUBY
             end
-            merge_external_defaults!
           end
         end
 

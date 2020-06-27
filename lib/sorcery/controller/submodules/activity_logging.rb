@@ -14,22 +14,12 @@ module Sorcery
       module ActivityLogging
         def self.included(base)
           base.send(:include, InstanceMethods)
-          Config.module_eval do
-            class << self
-              attr_accessor :register_login_time
-              attr_accessor :register_logout_time
-              attr_accessor :register_last_activity_time
-              attr_accessor :register_last_ip_address
-
-              def merge_activity_logging_defaults!
-                @defaults.merge!(:@register_login_time         => true,
-                                 :@register_logout_time        => true,
-                                 :@register_last_activity_time => true,
-                                 :@register_last_ip_address    => true)
-              end
-            end
-            merge_activity_logging_defaults!
-          end
+          Config.add_defaults(
+            :register_login_time         => true,
+            :register_logout_time        => true,
+            :register_last_activity_time => true,
+            :register_last_ip_address    => true
+          )
 
           Config.after_login << :register_login_time_to_db
           Config.after_login << :register_last_ip_address

@@ -1,39 +1,36 @@
 module Sorcery
   module Controller
     module Config
-      class << self
-        attr_accessor :submodules
+      DEFAULTS = {
         # what class to use as the user class.
-        attr_accessor :user_class
+        :user_class                           => nil,
+        :submodules                           => [],
         # what controller action to call for non-authenticated users.
-        attr_accessor :not_authenticated_action
+        :not_authenticated_action             => :not_authenticated,
+        :login_sources                        => Set.new,
+        :after_login                          => Set.new,
+        :after_failed_login                   => Set.new,
+        :before_logout                        => Set.new,
+        :after_logout                         => Set.new,
+        :after_remember_me                    => Set.new,
         # when a non logged in user tries to enter a page that requires login,
         # save the URL he wanted to reach, and send him there after login.
-        attr_accessor :save_return_to_url
+        :save_return_to_url                   => true,
         # set domain option for cookies
-        attr_accessor :cookie_domain
+        :cookie_domain                        => nil
+      }.freeze
+      private_constant :DEFAULTS
 
-        attr_accessor :login_sources
-        attr_accessor :after_login
-        attr_accessor :after_failed_login
-        attr_accessor :before_logout
-        attr_accessor :after_logout
-        attr_accessor :after_remember_me
+      class << self
+        def add_defaults(defaults)
+          singleton_class.attr_accessor(*defaults.keys)
+          @defaults.merge!(
+            defaults.transform_keys { |key| "@#{key}".to_sym }
+          )
+        end
 
         def init!
-          @defaults = {
-            :@user_class                           => nil,
-            :@submodules                           => [],
-            :@not_authenticated_action             => :not_authenticated,
-            :@login_sources                        => Set.new,
-            :@after_login                          => Set.new,
-            :@after_failed_login                   => Set.new,
-            :@before_logout                        => Set.new,
-            :@after_logout                         => Set.new,
-            :@after_remember_me                    => Set.new,
-            :@save_return_to_url                   => true,
-            :@cookie_domain                        => nil
-          }
+          @defaults = DEFAULTS.map { |k, v| ["@#{k}".to_sym, v.dup] }.to_h
         end
 
         # Resets all configuration options to their default values.
@@ -63,6 +60,7 @@ module Sorcery
       end
 
       init!
+      add_defaults(DEFAULTS)
       reset!
     end
   end

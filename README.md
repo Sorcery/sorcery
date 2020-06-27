@@ -244,7 +244,6 @@ Feel free to ask questions using these contact details:
 
 **Current Maintainers:**
 
-- Chase Gilliam ([@Ch4s3](https://github.com/Ch4s3)) | [Email](mailto:chase.gilliam@gmail.com)
 - Josh Buker ([@athix](https://github.com/athix)) | [Email](mailto:jbuker@aeonsplice.com)
 
 **Past Maintainers:**
@@ -252,6 +251,7 @@ Feel free to ask questions using these contact details:
 - Noam Ben-Ari ([@NoamB](https://github.com/NoamB)) | [Email](mailto:nbenari@gmail.com) | [Twitter](https://twitter.com/nbenari)
 - Kir Shatrov ([@kirs](https://github.com/kirs)) | [Email](mailto:shatrov@me.com) | [Twitter](https://twitter.com/Kiiiir)
 - Grzegorz Witek ([@arnvald](https://github.com/arnvald)) | [Email](mailto:arnvald.to@gmail.com) | [Twitter](https://twitter.com/arnvald)
+- Chase Gilliam ([@Ch4s3](https://github.com/Ch4s3)) | [Email](mailto:chase.gilliam@gmail.com)
 
 ## License
 

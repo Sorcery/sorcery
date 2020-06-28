@@ -1,6 +1,6 @@
 module Sorcery
   module Controller
-    module Config
+    class Config
       DEFAULTS = {
         # what class to use as the user class.
         :user_class                           => nil,
@@ -22,46 +22,82 @@ module Sorcery
       private_constant :DEFAULTS
 
       class << self
-        def add_defaults(defaults)
-          singleton_class.attr_accessor(*defaults.keys)
-          @defaults.merge!(
-            defaults.transform_keys { |key| "@#{key}".to_sym }
-          )
+        def instance
+          @instance ||= new(DEFAULTS)
         end
 
         def init!
-          @defaults = DEFAULTS.map { |k, v| ["@#{k}".to_sym, v.dup] }.to_h
+          @instance = new(DEFAULTS)
         end
 
-        # Resets all configuration options to their default values.
-        def reset!
-          @defaults.each do |k, v|
-            instance_variable_set(k, v)
+        def add_defaults(defaults)
+          attr_accessor(*defaults.keys)
+
+          # Delegate accessor methods to instance
+          defaults.each_key do |name|
+            class_eval <<-RUBY, __FILE__, __LINE__ + 1
+              def self.#{name}
+                instance.#{name}
+              end
+
+              def self.#{name}=(value)
+                instance.#{name} = value
+              end
+            RUBY
           end
+
+          @instance = instance.merge(defaults)
         end
 
-        def update!
-          @defaults.each do |k, v|
-            instance_variable_set(k, v) unless instance_variable_defined?(k)
-          end
-        end
-
-        def user_config(&blk)
-          block_given? ? @user_config = blk : @user_config
-        end
-
-        def configure(&blk)
-          @configure_blk = blk
-        end
-
-        def configure!
-          @configure_blk.call(self) if @configure_blk
+        # Delegate methods to instance
+        %i[reset! user_config configure configure!].each do |name|
+          class_eval <<-RUBY, __FILE__, __LINE__ + 1
+            def #{name}(&blk)
+              block_given? ? instance.#{name}(&blk) : instance.#{name}
+            end
+          RUBY
         end
       end
 
-      init!
+      def initialize(defaults)
+        @defaults = defaults.dup.transform_values { |v| v.is_a?(Class) ? v : v.dup }
+        reset!
+      end
+
+      # Resets all configuration options to their default values.
+      def reset!
+        @defaults.each do |k, v|
+          instance_variable_set("@#{k}", v)
+        end
+      end
+
+      def user_config(&blk)
+        block_given? ? @user_config = blk : @user_config
+      end
+
+      def configure(&blk)
+        @configure_blk = blk
+      end
+
+      def configure!
+        @configure_blk.call(self) if @configure_blk
+      end
+
+      def merge(other)
+        new_defaults = attributes.merge(other)
+        self.class.new(new_defaults)
+      end
+
+      def dup
+        self.class.new(attributes)
+      end
+
+      private def attributes
+        keys = @defaults.keys + [:user_config, :configure_blk]
+        keys.map { |k| [k, instance_variable_get("@#{k}")] }.to_h
+      end
+
       add_defaults(DEFAULTS)
-      reset!
     end
   end
 end

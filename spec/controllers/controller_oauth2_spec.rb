@@ -318,6 +318,7 @@ describe SorceryController, active_record: true, type: :controller do
 
     before(:all) do
       sorcery_reload!(%i[activity_logging external])
+      set_external_property
     end
 
     %w[facebook github google liveid vk salesforce slack discord].each do |provider|
@@ -355,6 +356,7 @@ describe SorceryController, active_record: true, type: :controller do
   describe 'OAuth with session timeout features' do
     before(:all) do
       sorcery_reload!(%i[session_timeout external])
+      set_external_property
     end
 
     let(:user) { double('user', id: 42) }

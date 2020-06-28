@@ -14,7 +14,6 @@ module Sorcery
           # rubocop:enable Lint/HandleExceptions
         end
       end
-      Config.update!
       Config.configure!
     end
 
@@ -128,7 +127,7 @@ module Sorcery
       protected
 
       def sorcery_config
-        @sorcery_config ||= Config
+        @sorcery_config ||= Config.instance.dup
       end
 
       # Tries all available sources (methods) until one doesn't return false.

@@ -190,6 +190,11 @@ describe SorceryController, type: :controller do
 
     context 'when twitter' do
       before(:each) do
+        sorcery_controller_property_set(:external_providers, %i[twitter])
+        sorcery_controller_external_property_set(:twitter, :key, 'eYVNBjBDi33aa9GkA3w')
+        sorcery_controller_external_property_set(:twitter, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+        sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com')
+
         sorcery_controller_property_set(:register_login_time, true)
         sorcery_controller_property_set(:register_logout_time, false)
         sorcery_controller_property_set(:register_last_activity_time, false)
@@ -236,6 +241,11 @@ describe SorceryController, type: :controller do
 
     context 'when twitter' do
       before(:each) do
+        sorcery_controller_property_set(:external_providers, %i[twitter])
+        sorcery_controller_external_property_set(:twitter, :key, 'eYVNBjBDi33aa9GkA3w')
+        sorcery_controller_external_property_set(:twitter, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+        sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com')
+
         sorcery_model_property_set(:authentications_class, Authentication)
         sorcery_controller_property_set(:session_timeout, 0.5)
         stub_all_oauth_requests!

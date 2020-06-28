@@ -32,7 +32,7 @@ module Sorcery
             :external_providers => [],
             :ca_file => File.join(__dir__, '../../protocols/certs/ca-bundle.crt')
           )
-          Config.singleton_class.prepend(ProvidersSetter)
+          Config.prepend(ProvidersSetter)
         end
 
         module ProvidersSetter
@@ -40,11 +40,20 @@ module Sorcery
             @external_providers = providers
 
             providers.each do |name|
-              class_eval <<-RUBY, __FILE__, __LINE__ + 1
-                def self.#{name}
-                  @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.classify).new
-                end
-              RUBY
+              unless self.class.method_defined?(name)
+                self.class.attr_reader(name)
+
+                # Delegate the provider method to instance
+                self.class.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+                  def self.#{name}
+                    instance.#{name}
+                  end
+                RUBY
+              end
+
+              klass = Sorcery::Providers.const_get(name.to_s.classify).new
+              @defaults[name.to_sym] = klass
+              instance_variable_set("@#{name}", klass)
             end
           end
         end

@@ -50,14 +50,14 @@ module Sorcery
             if defined?(ActionController::Base)
               current_controller = self.class
               while current_controller != ActionController::Base
-                result = Config.controller_to_realm_map[current_controller.controller_name]
+                result = sorcery_config.controller_to_realm_map[current_controller.controller_name]
                 return result if result
 
                 current_controller = current_controller.superclass
               end
               nil
             else
-              Config.controller_to_realm_map['application']
+              sorcery_config.controller_to_realm_map['application']
             end
           end
         end

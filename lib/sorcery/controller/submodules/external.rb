@@ -54,9 +54,9 @@ module Sorcery
 
           # save the singleton ProviderClient instance into @provider
           def sorcery_get_provider(provider_name)
-            return unless Config.external_providers.include?(provider_name.to_sym)
+            return unless sorcery_config.external_providers.include?(provider_name.to_sym)
 
-            Config.send(provider_name.to_sym)
+            sorcery_config.send(provider_name.to_sym)
           end
 
           # get the login URL from the provider, if applicable.  Returns nil if the provider

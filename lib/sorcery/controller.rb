@@ -25,11 +25,11 @@ module Sorcery
       def require_login
         return if logged_in?
 
-        if Config.save_return_to_url && request.get? && !request.xhr? && !request.format.json?
+        if sorcery_config.save_return_to_url && request.get? && !request.xhr? && !request.format.json?
           session[:return_to_url] = request.url
         end
 
-        send(Config.not_authenticated_action)
+        send(sorcery_config.not_authenticated_action)
       end
 
       # Takes credentials and returns a user on successful authentication.
@@ -127,10 +127,14 @@ module Sorcery
 
       protected
 
+      def sorcery_config
+        @sorcery_config ||= Config
+      end
+
       # Tries all available sources (methods) until one doesn't return false.
       def login_from_other_sources
         result = nil
-        Config.login_sources.find do |source|
+        sorcery_config.login_sources.find do |source|
           result = send(source)
         end
         result || false
@@ -143,27 +147,27 @@ module Sorcery
       end
 
       def after_login!(user, credentials = [])
-        Config.after_login.each { |c| send(c, user, credentials) }
+        sorcery_config.after_login.each { |c| send(c, user, credentials) }
       end
 
       def after_failed_login!(credentials)
-        Config.after_failed_login.each { |c| send(c, credentials) }
+        sorcery_config.after_failed_login.each { |c| send(c, credentials) }
       end
 
       def before_logout!
-        Config.before_logout.each { |c| send(c) }
+        sorcery_config.before_logout.each { |c| send(c) }
       end
 
       def after_logout!(user)
-        Config.after_logout.each { |c| send(c, user) }
+        sorcery_config.after_logout.each { |c| send(c, user) }
       end
 
       def after_remember_me!(user)
-        Config.after_remember_me.each { |c| send(c, user) }
+        sorcery_config.after_remember_me.each { |c| send(c, user) }
       end
 
       def user_class
-        @user_class ||= Config.user_class.to_s.constantize
+        @user_class ||= sorcery_config.user_class.to_s.constantize
       rescue NameError
         raise ArgumentError, 'You have incorrectly defined user_class or have forgotten to define it in intitializer file (config.user_class = \'User\').'
       end

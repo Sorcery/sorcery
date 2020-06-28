@@ -28,6 +28,15 @@ class SorceryController < ApplicationController
     head :ok
   end
 
+  def test_login_for_operator
+    sorcery_config.user_class = Operator
+    sorcery_config.login_session_key = ->(c) { "sorcery_#{c.user_class.name.downcase}_id".to_sym }
+
+    @user = login(params[:email], params[:password])
+    head :ok
+  end
+
+
   def test_auto_login
     @user = User.first
     auto_login(@user)

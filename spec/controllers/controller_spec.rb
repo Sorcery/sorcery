@@ -83,6 +83,24 @@ describe SorceryController, type: :controller do
           expect(session[:user_id]).to be_nil
         end
       end
+
+      context "when using Operator as user_class" do
+        let(:operator) { double('operator', id: 42) }
+
+        before do
+          Operator.authenticates_with_sorcery!
+          expect(Operator).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(operator, nil) }
+          get :test_login_for_operator, params: { email: 'bla@bla.com', password: 'secret' }
+        end
+
+        it 'assigns operator to @user variable' do
+          expect(assigns[:user]).to eq operator
+        end
+
+        it 'writes operator id in session' do
+          expect(session[:sorcery_operator_id]).to eq operator.id.to_s
+        end
+      end
     end
 
     describe '#logout' do

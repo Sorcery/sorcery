@@ -17,7 +17,8 @@ module Sorcery
         # save the URL he wanted to reach, and send him there after login.
         :save_return_to_url                   => true,
         # set domain option for cookies
-        :cookie_domain                        => nil
+        :cookie_domain                        => nil,
+        :login_session_key                    => :user_id
       }.freeze
       private_constant :DEFAULTS
 
@@ -90,6 +91,14 @@ module Sorcery
 
       def dup
         self.class.new(attributes)
+      end
+
+      def session_key
+        if login_session_key.is_a?(Proc)
+          login_session_key.call(self)
+        else
+          login_session_key
+        end
       end
 
       private def attributes

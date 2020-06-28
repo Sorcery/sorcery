@@ -3,6 +3,7 @@ AppRoot::Application.routes.draw do
 
   controller :sorcery do
     get :test_login
+    get :test_login_for_operator
     get :test_logout
     get :some_action
     post :test_return_to

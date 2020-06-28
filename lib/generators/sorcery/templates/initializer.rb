@@ -26,6 +26,13 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.cookie_domain =
 
+  # Set the session key to login.
+  # If you want to use a dynamic session key, specify a Proc.
+  # (e.g. `->(c) { "sorcery_#{c.user_class.name.underscore}_id".to_sym }`)
+  # Default: `:user_id`
+  #
+  # config.login_session_key =
+
   # Allow the remember_me cookie to be set through AJAX
   # Default: `true`
   #

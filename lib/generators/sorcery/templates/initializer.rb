@@ -222,6 +222,9 @@ Rails.application.config.sorcery.configure do |config|
   # config.line.key = ""
   # config.line.secret = ""
   # config.line.callback_url = "http://mydomain.com:3000/oauth/callback?provider=line"
+  # config.line.scope = "profile"
+  # config.line.bot_prompt = "normal"
+  # config.line.user_info_mapping = {name: 'displayName'}
 
   # For infromation about Discord API
   # https://discordapp.com/developers/docs/topics/oauth2

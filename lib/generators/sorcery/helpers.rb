@@ -12,6 +12,10 @@ module Sorcery
         options[:model] ? options[:model].classify : 'User'
       end
 
+      def tableized_model_class
+        options[:model] ? options[:model].gsub(/::/, '').tableize : 'User'
+      end
+
       def model_path
         @model_path ||= File.join('app', 'models', "#{file_path}.rb")
       end

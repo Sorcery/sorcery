@@ -7,12 +7,6 @@
 [![Inline docs](http://inch-ci.org/github/Sorcery/sorcery.svg?branch=master)](http://inch-ci.org/github/Sorcery/sorcery)
 [![Join the chat at https://gitter.im/Sorcery/sorcery](https://badges.gitter.im/join_chat.svg)](https://gitter.im/Sorcery/sorcery?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
----
-
-**IMPORTANT:** Sorcery needs your help and feedback! Please look at issues [#204](https://github.com/Sorcery/sorcery/issues/204) and [#248](https://github.com/Sorcery/sorcery/issues/248).
-
----
-
 Magical Authentication for Rails. Supports ActiveRecord, DataMapper, Mongoid and MongoMapper.
 
 Inspired by Restful Authentication, Authlogic and Devise. Crypto code taken almost unchanged from Authlogic. OAuth code inspired by OmniAuth and Ryan Bates's Railscast about it.

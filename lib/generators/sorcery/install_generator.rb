@@ -7,6 +7,16 @@ module Sorcery
       include Rails::Generators::Migration
       include Sorcery::Generators::Helpers
 
+      AVAILABLE_SUBMODULES = %w[
+        activity_logging
+        brute_force_protection
+        external
+        magic_login
+        remember_me
+        reset_password
+        user_activation
+      ].freeze
+
       source_root File.expand_path('templates', __dir__)
 
       argument :submodules, optional: true, type: :array, banner: 'submodules'
@@ -24,6 +34,17 @@ module Sorcery
         return unless options[:migrations]
 
         warn('[DEPRECATED] `--migrations` option is deprecated, please use `--only-submodules` instead')
+      end
+
+      def check_available_submodules
+        return unless submodules
+
+        guidance = "Try some of these: #{AVAILABLE_SUBMODULES.join(', ')}"
+
+        submodules.each do |submodule|
+          raise ArgumentError, "#{submodule} is not a Sorcery submodule. #{guidance}" unless
+            AVAILABLE_SUBMODULES.include?(submodule)
+        end
       end
 
       # Copy the initializer file to config/initializers folder.
@@ -76,7 +97,7 @@ module Sorcery
         else
           format('%.3d', (current_migration_number(dirname) + 1))
         end
-      end      
+      end
     end
   end
 end

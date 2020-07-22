@@ -2,6 +2,8 @@
 ## HEAD
 
 * Fix ruby 2.7 deprecation warnings [#241](https://github.com/Sorcery/sorcery/pull/241)
+* Fix Thor-related warning in generator [#252](https://github.com/Sorcery/sorcery/pull/252)
+* Check submodule availability in generator [#252](https://github.com/Sorcery/sorcery/pull/252)
 
 ## 0.15.0
 

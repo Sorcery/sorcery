@@ -48,13 +48,8 @@ module Sorcery
         return if only_submodules?
 
         generate "model #{model_class_name} --skip-migration"
-        inject_sorcery_to_model
-      end
-
-      def inject_sorcery_to_model
-        indents = '  ' * (namespaced? ? 2 : 1)
-
-        inject_into_class(model_path, model_class_name, "#{indents}authenticates_with_sorcery!\n")
+        
+        inject_into_class(model_path, model_class_name, model_injection, after: model_injection_point)
       end
 
       # Copy the migrations files to db/migrate folder
@@ -81,21 +76,7 @@ module Sorcery
         else
           format('%.3d', (current_migration_number(dirname) + 1))
         end
-      end
-
-      private
-
-      def only_submodules?
-        options[:migrations] || options[:only_submodules]
-      end
-
-      def migration_class_name
-        if Rails::VERSION::MAJOR >= 5
-          "ActiveRecord::Migration[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
-        else
-          'ActiveRecord::Migration'
-        end
-      end
+      end      
     end
   end
 end

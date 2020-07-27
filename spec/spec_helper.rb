@@ -9,6 +9,7 @@ SORCERY_ORM = :active_record
 # SimpleCov.root File.join(File.dirname(__FILE__), '..', 'lib')
 # SimpleCov.start
 require 'rails/all'
+require 'rails-controller-testing'
 require 'rspec/rails'
 require 'timecop'
 require 'byebug'

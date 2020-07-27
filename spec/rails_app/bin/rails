@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+# Really, this should come from spec_helper.rb somehow -- but for some reason, doesn't work
+# when running generators... this is why it's added here. Hopefully someone a little wiser
+# than I can fix this.
+#
+SORCERY_ORM = :active_record
+
+APP_PATH = File.expand_path('../config/application', __dir__)
+require_relative '../config/boot'
+require 'rails/commands'

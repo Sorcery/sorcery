@@ -47,24 +47,21 @@ module Sorcery
         end
       end
 
-      # Copy the initializer file to config/initializers folder.
-      def copy_initializer_file
-        template 'initializer.rb', sorcery_config_path unless only_submodules?
-      end
+      # Copy the initializer file to config/initializers folder, and add the submodules if necessary.
+      def install_initializer
+        template 'initializer.rb', initializer_path unless only_submodules?
 
-      def configure_initializer_file
-        # Add submodules to the initializer file.
         return unless submodules
 
         submodule_names = submodules.collect { |submodule| ':' + submodule }
 
-        gsub_file sorcery_config_path, /submodules = \[.*\]/ do |str|
+        gsub_file initializer_path, /submodules = \[.*\]/ do |str|
           current_submodule_names = (str =~ /\[(.*)\]/ ? Regexp.last_match(1) : '').delete(' ').split(',')
           "submodules = [#{(current_submodule_names | submodule_names).join(', ')}]"
         end
       end
 
-      def configure_model
+      def install_model
         # Generate the model and add 'authenticates_with_sorcery!' unless you passed --only-submodules
         return if only_submodules?
 
@@ -74,17 +71,17 @@ module Sorcery
       end
 
       # Copy the migrations files to db/migrate folder
-      def copy_migration_files
+      def install_migrations
         # Copy core migration file in all cases except when you pass --only-submodules.
         return unless defined?(ActiveRecord)
 
-        migration_template 'migration/core.rb', 'db/migrate/sorcery_core.rb', migration_class_name: migration_class_name unless only_submodules?
+        migration_template 'migration/core.rb', migration_path(:core), migration_class_name: migration_class_name unless only_submodules?
 
         return unless submodules
 
         submodules.each do |submodule|
           unless %w[http_basic_auth session_timeout core].include?(submodule)
-            migration_template "migration/#{submodule}.rb", "db/migrate/sorcery_#{submodule}.rb", migration_class_name: migration_class_name
+            migration_template "migration/#{submodule}.rb", migration_path(submodule), migration_class_name: migration_class_name
           end
         end
       end

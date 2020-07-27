@@ -38,9 +38,13 @@ Gem::Specification.new do |s|
   s.add_dependency 'oauth2', '~> 1.0', '>= 0.8.0'
 
   s.add_development_dependency 'byebug', '~> 10.0.0'
+  s.add_development_dependency 'pry'
+  s.add_development_dependency 'rails'
+  s.add_development_dependency 'rails-controller-testing'
   s.add_development_dependency 'rspec-rails', '~> 3.7.0'
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'simplecov', '>= 0.3.8'
+  s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'test-unit', '~> 3.2.0'
   s.add_development_dependency 'timecop'
   s.add_development_dependency 'webmock', '~> 3.3.0'

@@ -3,7 +3,7 @@
 #
 # Available submodules are: :user_activation, :http_basic_auth, :remember_me,
 # :reset_password, :session_timeout, :brute_force_protection, :activity_logging,
-# :magic_login, :external
+# :magic_login, :external, :jwt
 Rails.application.config.sorcery.submodules = []
 
 # Here you can configure each submodule's features.
@@ -232,6 +232,45 @@ Rails.application.config.sorcery.configure do |config|
   # config.discord.secret = "xxxxxx"
   # config.discord.callback_url = "http://localhost:3000/oauth/callback?provider=discord"
   # config.discord.scope = "email guilds"
+
+  # -- jwt --
+  # REQUIRED:
+  # Algorithm and keys for token management.
+  # Default: `nil`
+  # Depending on algorithm keys can be equal strings - 'secret_key', 'secret_key'.
+  # Or a key objects - OpenSSL::PKey.read(File.read('private.key')), OpenSSL::PKey.read(File.read('public.key')).
+  # Check out https://github.com/jwt/ruby-jwt for more details.
+  #
+  # config.jwt_algorithm =
+  # config.jwt_encode_key =
+  # config.jwt_decode_key =
+
+  # How long generated token is valid (in seconds).
+  # Default: `3600`
+  #
+  # config.jwt_lifetime =
+
+  # Additional time (in seconds) to account for clock skew.
+  # Default: `30`
+  #
+  # config.jwt_lifetime_leeway =
+
+  # Header which will be used as token source.
+  # Default: `'Authorization'`
+  #
+  # config.jwt_header =
+
+  # User action to be called and merged with default payload.
+  # Default: `nil`
+  #
+  # config.jwt_additional_user_payload_action =
+
+  # What controller action to call when token is invalid.
+  # You can also override the 'jwt_not_authenticated' method of course.
+  # Default: `:jwt_not_authenticated`
+  #
+  # config.jwt_not_authenticated_action =
+
   # --- user config ---
   config.user_config do |user|
     # -- core --

@@ -74,5 +74,7 @@ AppRoot::Application.routes.draw do
     post :test_login_with_remember
     get :test_create_from_provider_with_block
     get :login_at_test_with_state
+    post :test_jwt_login
+    get :test_jwt_auth
   end
 end

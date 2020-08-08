@@ -54,11 +54,8 @@ module Sorcery
         end
 
         def configure(&blk)
-          @configure_blk = blk
-        end
-
-        def configure!
-          @configure_blk.call(self) if @configure_blk
+          update!
+          blk.call(self) if blk
         end
       end
 

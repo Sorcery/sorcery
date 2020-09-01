@@ -63,7 +63,7 @@ module Sorcery
           subject.instance_variable_set(:@current_user, nil)
         end
 
-        if ::Rails.version < '5.0.0'
+        if defined?(::Rails) && ::Rails.version < '5.0.0'
           %w[get post put].each do |method|
             define_method(method) do |action, options = {}|
               super action, options[:params] || {}, options[:session]

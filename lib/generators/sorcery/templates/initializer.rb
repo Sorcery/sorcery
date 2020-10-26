@@ -226,12 +226,20 @@ Rails.application.config.sorcery.configure do |config|
   # config.line.bot_prompt = "normal"
   # config.line.user_info_mapping = {name: 'displayName'}
 
+  
   # For infromation about Discord API
   # https://discordapp.com/developers/docs/topics/oauth2
   # config.discord.key = "xxxxxx"
   # config.discord.secret = "xxxxxx"
   # config.discord.callback_url = "http://localhost:3000/oauth/callback?provider=discord"
   # config.discord.scope = "email guilds"
+
+  # For infromation about BattleNet API
+  # https://develop.battle.net/documentation/guides/using-oauth
+  # config.battlenet.key = "xxxxxx"
+  # config.battlenet.secret = "xxxxxx"
+  # config.battlenet.callback_url = "http://localhost:3000/oauth/callback?provider=battlenet"
+  # config.battlenet.scope = "openid"
   # --- user config ---
   config.user_config do |user|
     # -- core --

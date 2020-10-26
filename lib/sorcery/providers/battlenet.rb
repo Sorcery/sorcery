@@ -1,8 +1,8 @@
 module Sorcery
   module Providers
-    # This class adds support for OAuth with discordapp.com
+    # This class adds support for OAuth with BattleNet
 
-    class Discord < Base
+    class BattleNet < Base
       include Protocols::Oauth2
 
       attr_accessor :auth_path, :scope, :token_url, :user_info_path

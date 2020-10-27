@@ -171,7 +171,7 @@ class SorceryController < ApplicationController
   end
 
   def login_at_test_battlenet
-    login_at(:battle_net)
+    login_at(:battlenet)
   end
 
   def test_login_from_twitter

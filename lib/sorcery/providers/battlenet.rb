@@ -2,7 +2,7 @@ module Sorcery
   module Providers
     # This class adds support for OAuth with BattleNet
 
-    class BattleNet < Base
+    class Battlenet < Base
       include Protocols::Oauth2
 
       attr_accessor :auth_path, :scope, :token_url, :user_info_path

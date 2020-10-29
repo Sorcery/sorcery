@@ -1,7 +1,7 @@
 # Changelog
 ## HEAD
 
-* Add BattleNet Provider [#258](https://github.com/Sorcery/sorcery/pull/258)
+* Add BattleNet Provider [#260](https://github.com/Sorcery/sorcery/pull/260)
 * Fix ruby 2.7 deprecation warnings [#241](https://github.com/Sorcery/sorcery/pull/241)
 
 ## 0.15.0

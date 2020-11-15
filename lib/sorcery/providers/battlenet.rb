@@ -36,9 +36,7 @@ module Sorcery
 
       # tries to login the user from access token
       def process_callback(params, _session)
-        args = {}.tap do |a|
-          a[:code] = params[:code] if params[:code]
-        end
+        args = { code: params[:code] }
         get_access_token(
           args,
           token_url: token_url,

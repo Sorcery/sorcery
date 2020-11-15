@@ -234,7 +234,7 @@ Rails.application.config.sorcery.configure do |config|
   # config.discord.callback_url = "http://localhost:3000/oauth/callback?provider=discord"
   # config.discord.scope = "email guilds"
 
-  # For inforation about Battlenet API
+  # For information about Battlenet API
   # https://develop.battle.net/documentation/guides/using-oauth
   # config.battlenet.site = "https://eu.battle.net/" #See Website for other Regional Domains
   # config.battlenet.key = "xxxxxx"

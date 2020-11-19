@@ -100,10 +100,8 @@ module Sorcery
                                                  sorcery_config.provider_attribute_name => provider)
               authentication.sorcery_adapter.save(validate: false)
             else
-              authentication = false
+              false
             end
-
-            authentication
           end
         end
       end

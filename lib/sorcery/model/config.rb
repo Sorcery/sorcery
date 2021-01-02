@@ -14,6 +14,7 @@ module Sorcery
       attr_accessor :crypted_password_attribute_name
       # application-specific secret token that is joined with the password and its salt.
       # Currently available with BCrypt (default crypt provider) only.
+      # Argon2 calls this a "key" but to avoid duplicate parameters this can be used here.
       attr_accessor :pepper
       # what pattern to use to join the password with the salt
       # APPLICABLE TO MD5, SHA1, SHA256, SHA512. Other crypt providers (incl. BCrypt) ignore this parameter.
@@ -99,6 +100,7 @@ module Sorcery
                                when :sha512 then CryptoProviders::SHA512
                                when :aes256 then CryptoProviders::AES256
                                when :bcrypt then CryptoProviders::BCrypt
+                               when :argon2 then CryptoProviders::Argon2
                                when :custom then @custom_encryption_provider
                                else raise ArgumentError, "Encryption algorithm supplied, #{algo}, is invalid"
                                end

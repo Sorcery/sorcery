@@ -161,7 +161,7 @@ Inside the initializer, the comments will tell you what each setting does.
 **Core** (see [lib/sorcery/model.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/model.rb) and [lib/sorcery/controller.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/controller.rb)):
 
 - Login / logout, optional return user to requested url on login, configurable redirect for non-logged-in users.
-- Password encryption, algorithms: bcrypt (default), MD5, SHA-1, SHA-256, SHA-512, AES or custom. Configurable stretches and salt.
+- Password encryption, algorithms: bcrypt (default), Argon2, MD5, SHA-1, SHA-256, SHA-512, AES or custom. Configurable stretches and salt.
 - Configurable attribute names for username, password and email.
 - Allow multiple fields to serve as username.
 

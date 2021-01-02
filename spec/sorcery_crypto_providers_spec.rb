@@ -242,4 +242,92 @@ describe 'Crypto Providers wrappers' do
       end
     end
   end
+
+  describe Sorcery::CryptoProviders::Argon2 do
+    before(:all) do
+      Sorcery::CryptoProviders::Argon2.cost = 8
+      hasher = Argon2::Password.new(m_cost: Sorcery::CryptoProviders::Argon2.cost)
+      @digest = hasher.create('Noam Ben-Ari')
+      @tokens = %w[password gq18WBnJYNh2arkC1kgH]
+    end
+
+    after(:each) do
+      Sorcery::CryptoProviders::Argon2.reset!
+    end
+
+    it 'is comparable with original secret' do
+      hash = Sorcery::CryptoProviders::Argon2.encrypt('Noam Ben-Ari')
+      puts hash
+      expect(Argon2::Password.verify_password('Noam Ben-Ari', hash)).to eq true
+    end
+
+    it 'works with multiple costs' do
+      Sorcery::CryptoProviders::Argon2.cost = 12
+      hash = Sorcery::CryptoProviders::Argon2.encrypt('Noam Ben-Ari')
+      expect(Argon2::Password.verify_password('Noam Ben-Ari', hash)).to eq true
+    end
+
+    it 'matches? returns true when matches' do
+      expect(Sorcery::CryptoProviders::Argon2.matches?(@digest, 'Noam Ben-Ari')).to be true
+    end
+
+    it 'matches? returns false when no match' do
+      expect(Sorcery::CryptoProviders::Argon2.matches?(@digest, 'Some Dude')).to be false
+    end
+
+    it 'respond_to?(:stretches) returns true' do
+      expect(Sorcery::CryptoProviders::Argon2.respond_to?(:stretches)).to be true
+    end
+
+    it 'sets cost when stretches is set' do
+      Sorcery::CryptoProviders::Argon2.stretches = 10
+
+      # stubbed in Sorcery::TestHelpers::Internal
+      expect(Sorcery::CryptoProviders::Argon2.cost).to eq 10
+    end
+
+    it 'respond_to?(:pepper) returns true' do
+      expect(Sorcery::CryptoProviders::Argon2.respond_to?(:pepper)).to be true
+    end
+
+    context 'when pepper is provided' do
+      before(:each) do
+        Sorcery::CryptoProviders::Argon2.pepper = 'pepper'
+        @digest = Sorcery::CryptoProviders::Argon2.encrypt(@tokens) # a Argon2::Password object
+      end
+
+      it 'matches? returns true when matches' do
+        expect(Sorcery::CryptoProviders::Argon2.matches?(@digest, *@tokens)).to be true
+      end
+
+      it 'matches? returns false when pepper is replaced with empty string' do
+        Sorcery::CryptoProviders::Argon2.pepper = ''
+        expect(Sorcery::CryptoProviders::Argon2.matches?(@digest, *@tokens)).to be false
+      end
+
+      it 'matches? returns false when no match' do
+        expect(Sorcery::CryptoProviders::Argon2.matches?(@digest, 'a_random_incorrect_password')).to be false
+      end
+    end
+
+    context "when pepper is an empty string (default)" do
+      before(:each) do
+        Sorcery::CryptoProviders::Argon2.pepper = ''
+        @digest = Sorcery::CryptoProviders::Argon2.encrypt(@tokens) # a Argon2::Password object
+      end
+
+      it 'matches? returns true when matches' do
+        expect(Sorcery::CryptoProviders::Argon2.matches?(@digest, *@tokens)).to be true
+      end
+
+      it 'matches? returns false when pepper has changed' do
+        Sorcery::CryptoProviders::Argon2.pepper = 'a new pepper'
+        expect(Sorcery::CryptoProviders::Argon2.matches?(@digest, *@tokens)).to be false
+      end
+
+      it 'matches? returns false when no match' do
+        expect(Sorcery::CryptoProviders::Argon2.matches?(@digest, 'a_random_incorrect_password')).to be false
+      end
+    end
+  end
 end

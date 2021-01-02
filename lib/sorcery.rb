@@ -45,6 +45,7 @@ module Sorcery
     require 'sorcery/crypto_providers/common'
     require 'sorcery/crypto_providers/aes256'
     require 'sorcery/crypto_providers/bcrypt'
+    require 'sorcery/crypto_providers/argon2'
     require 'sorcery/crypto_providers/md5'
     require 'sorcery/crypto_providers/sha1'
     require 'sorcery/crypto_providers/sha256'

@@ -1,8 +1,15 @@
 # Changelog
 ## HEAD
 
+## 0.16.0
+
 * Add BattleNet Provider [#260](https://github.com/Sorcery/sorcery/pull/260)
+* Fix failing isolated tests [#249](https://github.com/Sorcery/sorcery/pull/249)
+* Support LINE login v2.1 [#251](https://github.com/Sorcery/sorcery/pull/251)
+* Update generators to better support namespaces [#237](https://github.com/Sorcery/sorcery/pull/237)
+* Add support for Rails 6 [#238](https://github.com/Sorcery/sorcery/pull/238)
 * Fix ruby 2.7 deprecation warnings [#241](https://github.com/Sorcery/sorcery/pull/241)
+* Use set to ensure unique arrays [#233](https://github.com/Sorcery/sorcery/pull/233)
 
 ## 0.15.0
 

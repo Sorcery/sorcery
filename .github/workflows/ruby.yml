@@ -7,17 +7,46 @@ on:
     branches: [ master ]
 
 jobs:
-  test:
+  test_matrix:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby:
+          - 2.4.10
+          - 2.5.8
+          - 2.6.6
+          - 2.7.2
+          - 3.0.0
+
+        rails:
+          - '52'
+          - '60'
+
+        exclude:
+          - ruby: 2.4.10
+            rails: '60'
+          - ruby: 3.0.0
+            rails: '52'
+
+    env:
+      BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}.gemfile
+
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.6
-    - name: Install dependencies
-      run: bundle install
-    - name: Run tests
-      run: bundle exec rake
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake
+
+  test:
+    runs-on: ubuntu-latest
+    needs: [test_matrix]
+    steps:
+      - name: Wait for status checks
+        run: echo "All Green!"

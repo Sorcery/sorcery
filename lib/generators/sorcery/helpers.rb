@@ -13,7 +13,7 @@ module Sorcery
       end
 
       def tableized_model_class
-        options[:model] ? options[:model].gsub(/::/, '').tableize : 'User'
+        options[:model] ? options[:model].gsub(/::/, '').tableize : 'users'
       end
 
       def model_path

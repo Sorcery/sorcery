@@ -17,26 +17,28 @@ module Sorcery
         alias stretches cost
         alias stretches= cost=
 
-        # Creates a hash for the password passed.rgon2
+        # Creates a hash for the password passed
         def encrypt(*tokens)
-  	  hasher = ::Argon2::Password.new(m_cost: cost, secret: pepper)
-	  hasher.create(join_tokens(tokens))
+          hasher = ::Argon2::Password.new(m_cost: cost, secret: pepper)
+          hasher.create(join_tokens(tokens))
         end
 
         # Does the hash match the tokens? Uses the same tokens that were used to encrypt.
         def matches?(hash, *tokens)
           return false if hash.nil? || hash == {}
-	  ::Argon2::Password.verify_password(join_tokens(tokens), hash, pepper)
+          ::Argon2::Password.verify_password(join_tokens(tokens), hash, pepper)
         end
 
         # This method is used as a flag to tell Sorcery to "resave" the password
         # upon a successful login, using the new cost
         def cost_matches?(hash)
-	  true # Not implemented
+          hashcost = /m=(\d+),/.match hash
+          raise "cost_matches? not called with a valid hash" unless hashcost
+          return (hashcost[1].to_i == 1 << cost)
         end
 
         def reset!
-          @cost = 10
+          @cost = 16
           @pepper = nil
         end
 

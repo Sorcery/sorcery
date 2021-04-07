@@ -41,27 +41,9 @@ jobs:
       - name: Run tests
         run: bundle exec rake spec
 
-  rubocop:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 3.0
-        bundler-cache: true
-    - name: Run rubocop
-      run: bundle exec rake rubocop
-
-# TODO: Add code coverage testing (coveralls)
-# TODO: Add documentation/maintainability testing?
-# TODO: Add dependency testing? (bundle audit)
-
   finish:
     runs-on: ubuntu-latest
-    needs: [ test_matrix, rubocop ]
+    needs: [ test_matrix ]
     steps:
       - name: Wait for status checks
         run: echo "All Green!"

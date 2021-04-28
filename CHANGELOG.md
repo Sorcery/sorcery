@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Add `after_login_lock` callback [#236](https://github.com/Sorcery/sorcery/pull/236)
+
 ## 0.16.0
 
 * Add BattleNet Provider [#260](https://github.com/Sorcery/sorcery/pull/260)

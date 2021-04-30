@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.4.9'
 
   s.add_dependency 'bcrypt', '~> 3.1'
-  s.add_dependency 'oauth', '~> 0.4', '>= 0.4.4'
+  s.add_dependency 'oauth', '~> 0.5', '>= 0.5.5'
   s.add_dependency 'oauth2', '~> 1.0', '>= 0.8.0'
 
   s.add_development_dependency 'byebug', '~> 10.0.0'

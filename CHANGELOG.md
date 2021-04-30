@@ -1,6 +1,10 @@
 # Changelog
 ## HEAD
 
+## 0.15.1
+
+* Update `oauth` dependency per CVE-2016-11086
+
 ## 0.15.0
 
 * Fix brute force vuln due to callbacks no being ran [#235](https://github.com/Sorcery/sorcery/pull/235)

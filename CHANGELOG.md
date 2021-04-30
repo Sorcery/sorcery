@@ -1,6 +1,11 @@
 # Changelog
 ## HEAD
 
+## 0.16.1
+
+* Fix default table name being incorrect in migration generator [#274](https://github.com/Sorcery/sorcery/pull/274)
+* Update `oauth` dependency per CVE-2016-11086
+
 ## 0.16.0
 
 * Add BattleNet Provider [#260](https://github.com/Sorcery/sorcery/pull/260)

@@ -306,6 +306,16 @@ Rails.application.config.sorcery.configure do |config|
     # user.subclasses_inherit_config =
 
     # -- remember_me --
+    # change default remember_me_token attribute.
+    # Default: `:remember_me_token`
+    #
+    # user.remember_me_token_attribute_name =
+
+    # change default remember_me_token_expires_at attribute.
+    # Default: `:remember_me_token_expires_at`
+    #
+    # user.remember_me_token_expires_at_attribute_name =
+
     # How long in seconds the session length will be
     # Default: `60 * 60 * 24 * 7`
     #

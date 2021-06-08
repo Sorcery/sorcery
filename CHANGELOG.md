@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Inline core migration index definition [#281](https://github.com/Sorcery/sorcery/pull/281)
+
 ## 0.16.1
 
 * Fix default table name being incorrect in migration generator [#274](https://github.com/Sorcery/sorcery/pull/274)

@@ -2,6 +2,7 @@
 ## HEAD
 
 * Inline core migration index definition [#281](https://github.com/Sorcery/sorcery/pull/281)
+* Fix MongoID adapter breaking on save [#284](https://github.com/Sorcery/sorcery/pull/284)
 
 ## 0.16.1
 

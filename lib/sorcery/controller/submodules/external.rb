@@ -29,29 +29,33 @@ module Sorcery
           require 'sorcery/providers/discord'
           require 'sorcery/providers/battlenet'
 
-          Config.module_eval do
-            class << self
-              attr_reader :external_providers
-              attr_accessor :ca_file
+          Config.add_defaults(
+            :external_providers => [],
+            :ca_file => File.join(__dir__, '../../protocols/certs/ca-bundle.crt')
+          )
+          Config.prepend(ProvidersSetter)
+        end
 
-              def external_providers=(providers)
-                @external_providers = providers
+        module ProvidersSetter
+          def external_providers=(providers)
+            @external_providers = providers
 
-                providers.each do |name|
-                  class_eval <<-RUBY, __FILE__, __LINE__ + 1
-                    def self.#{name}
-                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.classify).new
-                    end
-                  RUBY
-                end
+            providers.each do |name|
+              unless self.class.method_defined?(name)
+                self.class.attr_reader(name)
+
+                # Delegate the provider method to instance
+                self.class.class_eval <<-RUBY, __FILE__, __LINE__ + 1
+                  def self.#{name}
+                    instance.#{name}
+                  end
+                RUBY
               end
 
-              def merge_external_defaults!
-                @defaults.merge!(:@external_providers => [],
-                                 :@ca_file => File.join(__dir__, '../../protocols/certs/ca-bundle.crt'))
-              end
+              klass = Sorcery::Providers.const_get(name.to_s.classify).new
+              @defaults[name.to_sym] = klass
+              instance_variable_set("@#{name}", klass)
             end
-            merge_external_defaults!
           end
         end
 
@@ -60,9 +64,9 @@ module Sorcery
 
           # save the singleton ProviderClient instance into @provider
           def sorcery_get_provider(provider_name)
-            return unless Config.external_providers.include?(provider_name.to_sym)
+            return unless sorcery_config.external_providers.include?(provider_name.to_sym)
 
-            Config.send(provider_name.to_sym)
+            sorcery_config.send(provider_name.to_sym)
           end
 
           # get the login URL from the provider, if applicable.  Returns nil if the provider

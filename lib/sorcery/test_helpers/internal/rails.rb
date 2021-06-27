@@ -15,7 +15,6 @@ module Sorcery
 
           # return to no-module configuration
           ::Sorcery::Controller::Config.init!
-          ::Sorcery::Controller::Config.reset!
 
           # remove all plugin before_actions so they won't fail other tests.
           # I don't like this way, but I didn't find another.

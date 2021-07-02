@@ -3,6 +3,7 @@
 
 * Inline core migration index definition [#281](https://github.com/Sorcery/sorcery/pull/281)
 * Fix MongoID adapter breaking on save [#284](https://github.com/Sorcery/sorcery/pull/284)
+* Update philosophy statement in README.md [#285](https://github.com/Sorcery/sorcery/pull/285)
 
 ## 0.16.1
 

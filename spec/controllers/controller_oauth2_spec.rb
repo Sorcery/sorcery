@@ -282,19 +282,6 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:qq, :key, '4c43d4862c774ca5bbde89873bf0d338')
       sorcery_controller_external_property_set(:qq, :secret, 'TxY7IwKOykACd8kUxPyVGTqBs44UBDdX')
       sorcery_controller_external_property_set(:qq, :callback_url, 'http://blabla.com')
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate/activation")
-      end
-
-      sorcery_reload!([:user_activation,:external], :user_activation_mailer => ::SorceryMailer)
-      sorcery_controller_property_set(:external_providers, [:facebook, :github, :google, :liveid, :vk, :salesforce, :paypal, :slack, :wechat, :microsoft, :qq])
-    end
-
-    after(:all) do
-      if SORCERY_ORM == :active_record
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/external")
-        ActiveRecord::Migrator.rollback("#{Rails.root}/db/migrate/activation")
-      end
     end
 
     after(:each) do

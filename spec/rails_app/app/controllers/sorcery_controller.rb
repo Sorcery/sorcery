@@ -228,6 +228,14 @@ class SorceryController < ApplicationController
     end
   end
 
+  def test_login_from_qq
+    if @user = login_from(:qq)
+      redirect_to 'bla', notice: 'Success!'
+    else
+      redirect_to 'blu', alert: 'Failed!'
+    end
+  end
+
   def test_login_from_microsoft
     if (@user = login_from(:microsoft))
       redirect_to 'bla', notice: 'Success!'
@@ -376,6 +384,14 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_microsoft
     if (@user = login_from(:microsoft))
+      redirect_back_or_to 'bla', notice: 'Success!'
+    else
+      redirect_to 'blu', alert: 'Failed!'
+    end
+  end
+
+  def test_return_to_with_external_qq
+    if @user = login_from(:qq)
       redirect_back_or_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'

@@ -4,6 +4,7 @@
 * Inline core migration index definition [#281](https://github.com/Sorcery/sorcery/pull/281)
 * Fix MongoID adapter breaking on save [#284](https://github.com/Sorcery/sorcery/pull/284)
 * Don't pass token to Slack in query params. Prevents 'invalid_auth' error [#287](https://github.com/Sorcery/sorcery/pull/287)
+* Avoid Slack users.identity lookup if access_token contains user info [#288](https://github.com/Sorcery/sorcery/pull/288)
 
 ## 0.16.1
 

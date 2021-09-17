@@ -18,11 +18,9 @@ module Sorcery
       end
 
       def get_user_hash(access_token)
-        response = access_token.get(user_info_path)
         auth_hash(access_token).tap do |h|
-          h[:user_info] = JSON.parse(response.body)
-          h[:user_info]['email'] = h[:user_info]['user']['email']
-          h[:uid] = h[:user_info]['user']['id']
+          h[:user_info] = fetch_user_info(access_token)['user']
+          h[:uid] = h[:user_info]['id']
         end
       end
 
@@ -39,6 +37,20 @@ module Sorcery
         end
 
         get_access_token(args, token_url: token_url, token_method: :post)
+      end
+
+      private
+
+      def fetch_user_info(access_token)
+        return access_token if user_info_present?(access_token)
+
+        JSON.parse(access_token.get(user_info_path).body)
+      end
+
+      def user_info_present?(access_token)
+        access_token['user'].present? &&
+          access_token['user']['id'].present? &&
+          access_token['user']['email'].present?
       end
     end
   end

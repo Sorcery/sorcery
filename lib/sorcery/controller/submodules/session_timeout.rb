@@ -36,7 +36,7 @@ module Sorcery
             return unless current_user.present?
 
             current_user.send(:invalidate_sessions_before=, Time.now.in_time_zone)
-            current_user.save
+            current_user.save(validate: false)
           end
 
           protected

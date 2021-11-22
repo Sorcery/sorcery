@@ -131,18 +131,20 @@ module Sorcery
         @sorcery_config.encryption_provider.encrypt(*tokens)
       end
 
+      # FIXME: This method of passing config to the hashing provider is
+      #        questionable, and has been refactored in Sorcery v1.
+      def set_encryption_attributes
+        @sorcery_config.encryption_provider.stretches = @sorcery_config.stretches if @sorcery_config.encryption_provider.respond_to?(:stretches) && @sorcery_config.stretches
+        @sorcery_config.encryption_provider.join_token = @sorcery_config.salt_join_token if @sorcery_config.encryption_provider.respond_to?(:join_token) && @sorcery_config.salt_join_token
+        @sorcery_config.encryption_provider.pepper = @sorcery_config.pepper if @sorcery_config.encryption_provider.respond_to?(:pepper) && @sorcery_config.pepper
+      end
+
       protected
 
       def authentication_response(options = {})
         yield(options[:user], options[:failure]) if block_given?
 
         options[:return_value]
-      end
-
-      def set_encryption_attributes
-        @sorcery_config.encryption_provider.stretches = @sorcery_config.stretches if @sorcery_config.encryption_provider.respond_to?(:stretches) && @sorcery_config.stretches
-        @sorcery_config.encryption_provider.join_token = @sorcery_config.salt_join_token if @sorcery_config.encryption_provider.respond_to?(:join_token) && @sorcery_config.salt_join_token
-        @sorcery_config.encryption_provider.pepper = @sorcery_config.pepper if @sorcery_config.encryption_provider.respond_to?(:pepper) && @sorcery_config.pepper
       end
 
       def add_config_inheritance
@@ -178,18 +180,18 @@ module Sorcery
         return crypted == pass if sorcery_config.encryption_provider.nil?
 
         # Ensure encryption provider is using configured values
-        set_encryption_attributes
+        self.class.set_encryption_attributes
 
         salt = send(sorcery_config.salt_attribute_name) unless sorcery_config.salt_attribute_name.nil?
 
         sorcery_config.encryption_provider.matches?(crypted, pass, salt)
       end
 
-      protected
-
       def set_encryption_attributes
         self.class.set_encryption_attributes
       end
+
+      protected
 
       # creates new salt and saves it.
       # encrypts password with salt and saves it.

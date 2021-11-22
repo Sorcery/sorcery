@@ -2,9 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/sorcery.svg)](https://rubygems.org/gems/sorcery)
 [![Gem Downloads](https://img.shields.io/gem/dt/sorcery.svg)](https://rubygems.org/gems/sorcery)
-[![Build Status](https://travis-ci.org/Sorcery/sorcery.svg?branch=master)](https://travis-ci.org/Sorcery/sorcery)
-[![Code Climate](https://codeclimate.com/github/Sorcery/sorcery.svg)](https://codeclimate.com/github/Sorcery/sorcery)
-[![Join the chat at https://gitter.im/Sorcery/sorcery](https://badges.gitter.im/join_chat.svg)](https://gitter.im/Sorcery/sorcery?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://github.com/Sorcery/sorcery/actions/workflows/ruby.yml/badge.svg?branch=master)](https://github.com/Sorcery/sorcery/actions/workflows/ruby.yml)
 
 Magical Authentication for Rails. Supports ActiveRecord, DataMapper, Mongoid and MongoMapper.
 

@@ -187,10 +187,6 @@ module Sorcery
         sorcery_config.encryption_provider.matches?(crypted, pass, salt)
       end
 
-      def set_encryption_attributes
-        self.class.set_encryption_attributes
-      end
-
       protected
 
       # creates new salt and saves it.

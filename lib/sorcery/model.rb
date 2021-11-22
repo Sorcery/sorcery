@@ -177,12 +177,19 @@ module Sorcery
         crypted = send(sorcery_config.crypted_password_attribute_name)
         return crypted == pass if sorcery_config.encryption_provider.nil?
 
+        # Ensure encryption provider is using configured values
+        set_encryption_attributes
+
         salt = send(sorcery_config.salt_attribute_name) unless sorcery_config.salt_attribute_name.nil?
 
         sorcery_config.encryption_provider.matches?(crypted, pass, salt)
       end
 
       protected
+
+      def set_encryption_attributes
+        self.class.set_encryption_attributes
+      end
 
       # creates new salt and saves it.
       # encrypts password with salt and saves it.

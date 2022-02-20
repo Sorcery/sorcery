@@ -52,6 +52,7 @@ module Sorcery
           def validate_session
             session_to_use = Config.session_timeout_from_last_action ? session[:last_action_time] : session[:login_time]
             if (session_to_use && sorcery_session_expired?(session_to_use.to_time)) || sorcery_session_invalidated?
+              forget_me! if current_user.present? && Config.submodules.include?(:remember_me)
               reset_sorcery_session
               remove_instance_variable :@current_user if defined? @current_user
             else

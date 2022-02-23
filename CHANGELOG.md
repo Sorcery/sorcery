@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+## 0.16.3
+
 * Fix provider instantiation for plural provider names (eg. okta) [#305](https://github.com/Sorcery/sorcery/pull/305)
 
 ## 0.16.2

@@ -40,8 +40,8 @@ jobs:
           #   rails: '70'
           # - ruby: 2.6
           #   rails: '70'
-          # - ruby: 3.0.0
-          #   rails: '52'
+          - ruby: 3.0.0
+            rails: '52'
           # - ruby: 3.1
           #   rails: '52'
           # - ruby: 3.1

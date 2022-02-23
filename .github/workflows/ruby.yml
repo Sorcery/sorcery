@@ -1,7 +1,11 @@
 name: Test Suite
 
 # Run against all commits and pull requests.
-on: [ push, pull_request ]
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  push:
+  pull_request:
 
 jobs:
   test_matrix:

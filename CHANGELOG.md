@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Fix provider instantiation for plural provider names (eg. okta) [#305](https://github.com/Sorcery/sorcery/pull/305)
+
 ## 0.16.2
 
 * Inline core migration index definition [#281](https://github.com/Sorcery/sorcery/pull/281)

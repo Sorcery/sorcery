@@ -25,10 +25,16 @@ jobs:
         rails:
           - '52'
           - '60'
+          - '61'
+          - '70'
 
         exclude:
           - ruby: 2.4
             rails: '60'
+          - ruby: 2.4
+            rails: '61'
+          - ruby: 2.4
+            rails: '70'
           - ruby: 3.0
             rails: '52'
 

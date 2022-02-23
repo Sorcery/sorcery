@@ -7,7 +7,6 @@
 
 ## 0.16.2
 
-* Fix provider instantiation for plural provider names (eg. okta) [#281](https://github.com/Sorcery/sorcery/pull/281)
 * Inline core migration index definition [#281](https://github.com/Sorcery/sorcery/pull/281)
 * Add missing remember_me attributes to config [#180](https://github.com/Sorcery/sorcery/pull/180)
 * Fix MongoID adapter breaking on save [#284](https://github.com/Sorcery/sorcery/pull/284)

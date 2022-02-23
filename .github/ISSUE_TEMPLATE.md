@@ -1,4 +1,4 @@
-Please complete all sections.
+<!-- Please complete all sections. -->
 
 ### Configuration
 
@@ -9,12 +9,16 @@ Please complete all sections.
 
 ### Expected Behavior
 
-Tell us what should happen.
+<!-- Tell us what should happen. -->
 
 ### Actual Behavior
 
-Tell us what happens instead.
+<!-- Tell us what happens instead. -->
 
 ### Steps to Reproduce
 
-Please list all steps to reproduce the issue.
+<!-- Please list all steps to reproduce the issue. -->
+
+1.
+2.
+3.

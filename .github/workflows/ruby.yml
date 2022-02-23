@@ -21,33 +21,33 @@ jobs:
           - 2.6
           - 2.7
           - 3.0.0
-          - 3.1
+          # - 3.1
 
         rails:
           - '52'
           - '60'
           - '61'
-          - '70'
+          # - '70'
 
         exclude:
           - ruby: 2.4
             rails: '60'
           - ruby: 2.4
             rails: '61'
-          - ruby: 2.4
-            rails: '70'
-          - ruby: 2.5
-            rails: '70'
-          - ruby: 2.6
-            rails: '70'
-          - ruby: 3.0.0
-            rails: '52'
-          - ruby: 3.1
-            rails: '52'
-          - ruby: 3.1
-            rails: '60'
-          - ruby: 3.1
-            rails: '61'
+          # - ruby: 2.4
+          #   rails: '70'
+          # - ruby: 2.5
+          #   rails: '70'
+          # - ruby: 2.6
+          #   rails: '70'
+          # - ruby: 3.0.0
+          #   rails: '52'
+          # - ruby: 3.1
+          #   rails: '52'
+          # - ruby: 3.1
+          #   rails: '60'
+          # - ruby: 3.1
+          #   rails: '61'
 
     env:
       BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}.gemfile

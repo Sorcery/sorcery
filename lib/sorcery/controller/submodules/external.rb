@@ -78,7 +78,7 @@ module Sorcery
           end
 
           # get the user hash from a provider using information from the params and session.
-          def sorcery_fetch_user_hash(provider_name, access_token)
+          def sorcery_fetch_user_hash(provider_name)
             # the application should never ask for user hashes from two different providers
             # on the same request.  But if they do, we should be ready: on the second request,
             # clear out the instance variables if the provider is different
@@ -91,8 +91,8 @@ module Sorcery
 
             # delegate to the provider for the access token and the user hash.
             # cache them in instance variables.
-            if access_token && @provider.oauth_version.eql?('2.0')
-              @access_token ||= OAuth2::AccessToken.new(@provider.build_client, access_token)
+            if params[:access_token] && @provider.oauth_version.eql?('2.0')
+              @access_token ||= OAuth2::AccessToken.new(@provider.build_client, params[:access_token])
             else
               @access_token ||= @provider.process_callback(params, session) # sends request to oauth agent to get the token
             end
@@ -126,8 +126,8 @@ module Sorcery
           end
 
           # tries to login the user from provider's callback
-          def login_from(provider_name, access_token=nil, should_remember = false)
-            sorcery_fetch_user_hash provider_name, access_token
+          def login_from(provider_name, should_remember = false)
+            sorcery_fetch_user_hash provider_name
 
             return unless (user = user_class.load_from_provider(provider_name, @user_hash[:uid].to_s))
 
@@ -190,8 +190,8 @@ module Sorcery
           #
           #   create_from(provider) {|user| user.some_check }
           #
-          def create_from(provider_name, access_token, &block)
-            sorcery_fetch_user_hash provider_name, access_token
+          def create_from(provider_name, &block)
+            sorcery_fetch_user_hash provider_name
             # config = user_class.sorcery_config # TODO: Unused, remove?
 
             attrs = user_attrs(@provider.user_info_mapping, @user_hash)

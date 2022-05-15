@@ -91,7 +91,11 @@ module Sorcery
 
             # delegate to the provider for the access token and the user hash.
             # cache them in instance variables.
-            @access_token ||= @provider.process_callback(params, session) # sends request to oauth agent to get the token
+            if params[:access_token] && @provider.oauth_version.eql?('2.0')
+              @access_token ||= OAuth2::AccessToken.new(@provider.build_client, params[:access_token])
+            else
+              @access_token ||= @provider.process_callback(params, session) # sends request to oauth agent to get the token
+            end
             @user_hash ||= @provider.get_user_hash(@access_token) # uses the token to send another request to the oauth agent requesting user info
             nil
           end
@@ -118,7 +122,7 @@ module Sorcery
           # sends user to authenticate at the provider's website.
           # after authentication the user is redirected to the callback defined in the provider config
           def login_at(provider_name, args = {})
-            redirect_to sorcery_login_url(provider_name, args)
+            redirect_to sorcery_login_url(provider_name, args), allow_other_host: true
           end
 
           # tries to login the user from provider's callback

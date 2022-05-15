@@ -190,8 +190,8 @@ module Sorcery
           #
           #   create_from(provider) {|user| user.some_check }
           #
-          def create_from(provider_name, &block)
-            sorcery_fetch_user_hash provider_name
+          def create_from(provider_name, access_token, &block)
+            sorcery_fetch_user_hash provider_name, access_token
             # config = user_class.sorcery_config # TODO: Unused, remove?
 
             attrs = user_attrs(@provider.user_info_mapping, @user_hash)

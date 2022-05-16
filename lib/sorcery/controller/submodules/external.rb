@@ -91,7 +91,11 @@ module Sorcery
 
             # delegate to the provider for the access token and the user hash.
             # cache them in instance variables.
-            @access_token ||= @provider.process_callback(params, session) # sends request to oauth agent to get the token
+            @access_token ||= if params[:access_token] && @provider.oauth_version.eql?('2.0')
+              OAuth2::AccessToken.new(@provider.build_client, params[:access_token]) # build oauth2 access token if passed in params
+            else
+              @provider.process_callback(params, session) # sends request to oauth agent to get the token
+            end
             @user_hash ||= @provider.get_user_hash(@access_token) # uses the token to send another request to the oauth agent requesting user info
             nil
           end

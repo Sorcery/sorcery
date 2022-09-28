@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Adapt to open request protection strategy of rails 7.0 [#318](https://github.com/Sorcery/sorcery/pull/318)
+
 ## 0.16.3
 
 * Fix provider instantiation for plural provider names (eg. okta) [#305](https://github.com/Sorcery/sorcery/pull/305)

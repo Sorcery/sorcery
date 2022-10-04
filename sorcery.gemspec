@@ -35,7 +35,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'bcrypt', '~> 3.1'
   s.add_dependency 'oauth', '~> 0.5', '>= 0.5.5'
-  s.add_dependency 'oauth2', '~> 1.0', '>= 0.8.0'
+  s.add_dependency 'oauth2', '~> 2.0'
 
   s.add_development_dependency 'byebug', '~> 10.0.0'
   s.add_development_dependency 'rspec-rails', '~> 3.7.0'

@@ -2,6 +2,7 @@
 ## HEAD
 
 * Adapt to open request protection strategy of rails 7.0 [#318](https://github.com/Sorcery/sorcery/pull/318)
+* Update OAuth2 gem to v2 per v1 deprecation [#323](https://github.com/Sorcery/sorcery/pull/323)
 
 ## 0.16.3
 

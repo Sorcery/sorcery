@@ -1,8 +1,11 @@
 # Changelog
 ## HEAD
 
+## 0.16.4
+
 * Adapt to open request protection strategy of rails 7.0 [#318](https://github.com/Sorcery/sorcery/pull/318)
 * Update OAuth2 gem to v2 per v1 deprecation [#323](https://github.com/Sorcery/sorcery/pull/323)
+* Fixed typo in error message [#310](https://github.com/Sorcery/sorcery/pull/310)
 
 ## 0.16.3
 

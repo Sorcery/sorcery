@@ -87,6 +87,39 @@ describe SorceryController, type: :controller do
       end
     end
 
+    describe '#login!' do
+      context 'when succeeds' do
+        before do
+          expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
+          get :test_login_bang, params: { email: 'bla@bla.com', password: 'secret' }
+        end
+
+        it 'assigns user to @user variable' do
+          expect(assigns[:user]).to eq user
+        end
+
+        it 'writes user id in session' do
+          expect(session[:user_id]).to eq user.id.to_s
+        end
+
+        it 'sets csrf token in session' do
+          expect(session[:_csrf_token]).not_to be_nil
+        end
+      end
+
+      context 'when fails' do
+        before do
+          expect(User).to receive(:authenticate).with('bla@bla.com', 'opensesame!').and_return(nil)
+        end
+
+        it 'raises Sorcery::InvalidCredentials exception' do
+          expect do
+            get :test_login_bang, params: { email: 'bla@bla.com', password: 'opensesame!' }
+          end.to raise_error(Sorcery::InvalidCredentials)
+        end
+      end
+    end
+
     describe '#logout' do
       it 'clears the session' do
         cookies[:remember_me_token] = nil

@@ -28,6 +28,11 @@ class SorceryController < ApplicationController
     head :ok
   end
 
+  def test_login_bang
+    @user = login!(params[:email], params[:password])
+    head :ok
+  end
+
   def test_auto_login
     @user = User.first
     auto_login(@user)

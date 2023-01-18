@@ -67,6 +67,7 @@ explaining and the rest are commented:
 ```ruby
 require_login # This is a before action
 login(email, password, remember_me = false)
+login!(email, password, remember_me = false) # Raises an `Sorcery::InvalidCredentials` exception on failure
 auto_login(user) # Login without credentials
 logout
 logged_in? # Available in views

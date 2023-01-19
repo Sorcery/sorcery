@@ -112,10 +112,10 @@ describe SorceryController, type: :controller do
           expect(User).to receive(:authenticate).with('bla@bla.com', 'opensesame!').and_return(nil)
         end
 
-        it 'raises Sorcery::InvalidCredentials exception' do
+        it 'raises InvalidCredentials exception' do
           expect do
             get :test_login_bang, params: { email: 'bla@bla.com', password: 'opensesame!' }
-          end.to raise_error(Sorcery::InvalidCredentials)
+          end.to raise_error(Sorcery::Errors::InvalidCredentials)
         end
       end
     end

@@ -33,6 +33,24 @@ class SorceryController < ApplicationController
     head :ok
   end
 
+  def test_login_bang_with_block
+    @user = login!(params[:email], params[:password]) do |user, failure|
+      if user && !failure
+        redirect_to :root
+      else
+        case failure
+        when :invalid_login
+          flash.now[:alert] = 'Wrong login provided.'
+        when :invalid_password
+          flash.now[:alert] = 'Wrong password provided.'
+        when :inactive
+          flash.now[:alert] = 'Your have not yet activated your account.'
+        end
+        render action: 'new'
+      end
+    end
+  end
+
   def test_auto_login
     @user = User.first
     auto_login(@user)

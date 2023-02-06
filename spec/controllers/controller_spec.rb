@@ -120,6 +120,39 @@ describe SorceryController, type: :controller do
       end
     end
 
+    describe '#login! with block' do
+      context 'when succeeds' do
+        before do
+          expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
+          get :test_login_bang_with_block, params: { email: 'bla@bla.com', password: 'secret' }
+        end
+
+        it 'writes user id in session' do
+          expect(session[:user_id]).to eq user.id.to_s
+        end
+
+        it 'sets csrf token in session' do
+          expect(session[:_csrf_token]).not_to be_nil
+        end
+
+        it 'redirects to root' do
+          expect(response).to redirect_to(root_url)
+        end
+      end
+
+      context 'when fails' do
+        before do
+          expect(User).to receive(:authenticate).with('bla@bla.com', 'opensesame!').and_return(nil)
+        end
+
+        it 'raises InvalidCredentials exception' do
+          expect do
+            get :test_login_bang_with_block, params: { email: 'bla@bla.com', password: 'opensesame!' }
+          end.to raise_error(Sorcery::Errors::InvalidCredentials)
+        end
+      end
+    end
+
     describe '#logout' do
       it 'clears the session' do
         cookies[:remember_me_token] = nil

@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)
+
 ## 0.16.4
 
 * Adapt to open request protection strategy of rails 7.0 [#318](https://github.com/Sorcery/sorcery/pull/318)

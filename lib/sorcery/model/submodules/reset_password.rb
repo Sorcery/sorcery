@@ -131,6 +131,8 @@ module Sorcery
           end
 
           def change_password!(new_password)
+            raise ArgumentError, 'Blank password passed to change_password!' if new_password.blank?
+
             change_password(new_password, raise_on_failure: true)
           end
 

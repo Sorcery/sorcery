@@ -89,10 +89,10 @@ module Sorcery
             nil
           end
 
+          # the application should never ask for user hashes from two different providers
+          # on the same request.  But if they do, we should be ready: on the second request,
+          # clear out the instance variables if the provider is different
           def sorcery_init_user_hash(provider_name)
-            # the application should never ask for user hashes from two different providers
-            # on the same request.  But if they do, we should be ready: on the second request,
-            # clear out the instance variables if the provider is different
             provider = sorcery_get_provider provider_name
             return unless @provider.nil? || @provider != provider
 

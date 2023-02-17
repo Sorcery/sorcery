@@ -79,21 +79,43 @@ module Sorcery
 
           # get the user hash from a provider using information from the params and session.
           def sorcery_fetch_user_hash(provider_name)
+            sorcery_init_user_hash(provider_name)
+
+            if provider_name == 'google' && params[:credential].present?
+              sorcery_get_google_user_hash(params[:credential])
+            else
+              user_hash
+            end
+            nil
+          end
+
+          def sorcery_init_user_hash(provider_name)
             # the application should never ask for user hashes from two different providers
             # on the same request.  But if they do, we should be ready: on the second request,
             # clear out the instance variables if the provider is different
             provider = sorcery_get_provider provider_name
-            if @provider.nil? || @provider != provider
-              @provider = provider
-              @access_token = nil
-              @user_hash = nil
-            end
+            return unless @provider.nil? || @provider != provider
 
-            # delegate to the provider for the access token and the user hash.
-            # cache them in instance variables.
-            @access_token ||= @provider.process_callback(params, session) # sends request to oauth agent to get the token
-            @user_hash ||= @provider.get_user_hash(@access_token) # uses the token to send another request to the oauth agent requesting user info
-            nil
+            @provider = provider
+            @access_token = nil
+            @user_hash = nil
+          end
+
+          def sorcery_get_google_user_hash(credential)
+            @user_hash = {}
+            @user_hash[:user_info] =
+              Google::Auth::IDTokens.verify_oidc(credential,
+                                                 aud: Rails.application.config.sorcery.google.key)
+            @user_hash[:uid] = @user_hash[:user_info]['sub']
+          end
+
+          # delegate to the provider for the access token and the user hash.
+          # cache them in instance variables.
+          def user_hash
+            # sends request to oauth agent to get the token
+            @access_token ||= @provider.process_callback(params, session)
+            # uses the token to send another request to the oauth agent requesting user info
+            @user_hash ||= @provider.get_user_hash(@access_token)
           end
 
           # for backwards compatibility

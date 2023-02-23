@@ -1,4 +1,5 @@
 require 'sorcery/version'
+require 'errors'
 
 module Sorcery
   require 'sorcery/model'

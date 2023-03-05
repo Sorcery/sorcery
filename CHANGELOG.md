@@ -1,6 +1,6 @@
 # Changelog
 ## HEAD
-
+* Fix deprecated call to timestamped_migrations in the install generateor [#338](https://github.com/Sorcery/sorcery/pull/338)
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)
 
 ## 0.16.4

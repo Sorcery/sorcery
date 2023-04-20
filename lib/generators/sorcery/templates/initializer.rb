@@ -226,7 +226,6 @@ Rails.application.config.sorcery.configure do |config|
   # config.line.bot_prompt = "normal"
   # config.line.user_info_mapping = {name: 'displayName'}
 
-  
   # For information about Discord API
   # https://discordapp.com/developers/docs/topics/oauth2
   # config.discord.key = "xxxxxx"
@@ -241,6 +240,17 @@ Rails.application.config.sorcery.configure do |config|
   # config.battlenet.secret = "xxxxxx"
   # config.battlenet.callback_url = "http://localhost:3000/oauth/callback?provider=battlenet"
   # config.battlenet.scope = "openid"
+
+  # For information about Sign in with Apple visit:
+  # https://developer.apple.com/sign-in-with-apple/
+  # config.apple.key = "com.example.de" #Should be your apple service bundle id (https://developer.apple.com/account/resources/identifiers/add/bundleId -> AppID)
+  # config.apple.team_id = "xxxxxx" #App ID Prefix
+  # config.apple.key_id = <key_id> #Create a new auth key (https://developer.apple.com/account/resources/authkeys/add), and attach it to your primary AppID
+  # config.apple.pem = <pem> #Received when creating a new auth key
+  # config.apple.callback_url = "http://localhost:3000/oauth/callback?provider=apple" # allow list for domains should be entered when creating the service keys: (https://developer.apple.com/account/resources/identifiers/add/bundleId -> ServiceID)
+  # config.apple.verify_payload = true/false # Set to true, so the payload retrieved by apple is verified
+  # config.apple.user_info_mapping = {email: 'email'}
+
   # --- user config ---
   config.user_config do |user|
     # -- core --

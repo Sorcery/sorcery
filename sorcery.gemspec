@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 2.4.9'
 
   s.add_dependency 'bcrypt', '~> 3.1'
+  s.add_dependency 'jwt', '~> 2.7'
   s.add_dependency 'oauth', '>= 0.6'
   s.add_dependency 'oauth2', '~> 2.0'
 

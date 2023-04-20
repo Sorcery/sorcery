@@ -1,6 +1,7 @@
 # Changelog
 ## HEAD
 
+* Add Apple Provider [#344](https://github.com/Sorcery/sorcery/pull/344)
 ## 0.16.5
 
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)

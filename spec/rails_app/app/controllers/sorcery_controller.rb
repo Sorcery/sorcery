@@ -174,6 +174,10 @@ class SorceryController < ApplicationController
     login_at(:battlenet)
   end
 
+  def login_at_test_apple
+    login_at(:apple)
+  end
+
   def test_login_from_twitter
     if (@user = login_from(:twitter))
       redirect_to 'bla', notice: 'Success!'
@@ -312,6 +316,14 @@ class SorceryController < ApplicationController
     end
   end
 
+  def test_login_from_apple
+    if (@user = login_from(:apple))
+      redirect_to 'bla', notice: 'Success!'
+    else
+      redirect_to 'blu', alert: 'Failed!'
+    end
+  end
+
   def test_return_to_with_external_twitter
     if (@user = login_from(:twitter))
       redirect_back_or_to 'bla', notice: 'Success!'
@@ -444,6 +456,14 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_battlenet
     if (@user = login_from(:battlenet))
+      redirect_back_or_to 'bla', notice: 'Success!'
+    else
+      redirect_to 'blu', alert: 'Failed!'
+    end
+  end
+
+  def test_return_to_with_external_apple
+    if (@user = login_from(:apple))
       redirect_back_or_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'

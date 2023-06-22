@@ -6,15 +6,16 @@ module Sorcery
 
       attr_accessor :access_permissions, :token_url,
                     :authorization_path, :user_info_path,
-                    :scope, :user_info_fields
+                    :scope, :user_info_fields, :api_version
 
       def initialize
         super
 
         @site = 'https://api.instagram.com'
+        @graph = 'https://graph.instagram.com'
         @token_url = '/oauth/access_token'
         @authorization_path = '/oauth/authorize/'
-        @user_info_path = '/v1/users/self'
+        @user_info_path = '/me'
         @scope = 'basic'
       end
 
@@ -24,13 +25,13 @@ module Sorcery
 
       # provider implements method to build Oauth client
       def login_url(_params, _session)
-        authorize_url(token_url: @token_url)
+        authorize_url
       end
 
       # overrides oauth2#authorize_url to allow customized scope.
-      def authorize_url(opts = {})
+      def authorize_url
         @scope = access_permissions.present? ? access_permissions.join(' ') : scope
-        super(opts.merge(token_url: @token_url))
+        super(token_url: @token_url)
       end
 
       # pass oauth2 param `code` provided by instgrm server
@@ -55,16 +56,10 @@ module Sorcery
       # from the access_token (which already returns them),
       # testing strategy relies on querying user_info_path
       def get_user_hash(access_token)
-        call_api_params = {
-          access_token: access_token.token,
-          client_id: access_token[:client_id]
-        }
-        response = access_token.get(
-          "#{user_info_path}?#{call_api_params.to_param}"
-        )
+        response = Faraday.get("#{@graph}/#{@api_version}/#{@user_info_path}?access_token=#{access_token.token}")
 
         user_attrs = {}
-        user_attrs[:user_info] = JSON.parse(response.body)['data']
+        user_attrs[:user_info] = JSON.parse(response.body)
         user_attrs[:uid] = user_attrs[:user_info]['id']
         user_attrs
       end

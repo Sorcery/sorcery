@@ -129,12 +129,26 @@ Rails.application.config.sorcery.configure do |config|
   # config.facebook.display = "page"
   # config.facebook.api_version = "v2.3"
   # config.facebook.parse = :json
+
+  # Instagram will not return anything beside user id so user_info_mapping are useless here
+  # Also they did remove params from redirect_uri so you can make quick fix by simple add route
+
+  # resource :oauth do
+  #   get :callback
+  #   get :instagram
+  # end
   #
+  # then in OauthsController
+  #
+  # def instagram
+  #   redirect_to callback_oauth_path(**params.permit(:code), provider: :instagram), status: :see_other
+  # end
+
   # config.instagram.key = ""
   # config.instagram.secret = ""
   # config.instagram.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=instagram"
-  # config.instagram.user_info_mapping = {:email => "username"}
-  # config.instagram.access_permissions = ["basic", "public_content", "follower_list", "comments", "relationships", "likes"]
+  # config.instagram.access_permissions = ["user_profile"]
+  # config.instagram.api_version = "v11.0"
   #
   # config.github.key = ""
   # config.github.secret = ""

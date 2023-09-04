@@ -28,6 +28,7 @@ module Sorcery
           require 'sorcery/providers/line'
           require 'sorcery/providers/discord'
           require 'sorcery/providers/battlenet'
+          require 'sorcery/providers/apple'
 
           Config.module_eval do
             class << self

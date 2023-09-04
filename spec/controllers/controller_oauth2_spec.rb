@@ -164,13 +164,16 @@ describe SorceryController, active_record: true, type: :controller do
       expect(flash[:notice]).to eq 'Success!'
     end
 
-    %i[github google liveid vk salesforce paypal slack wechat microsoft instagram auth0 discord battlenet].each do |provider|
+    %i[github google liveid vk salesforce paypal slack wechat microsoft instagram auth0 discord battlenet apple].each do |provider|
       describe "with #{provider}" do
         it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
 
+          # get nonce from session if provider is apple for provider_url comparison
+          apple_nonce = provider == :apple ? session['sorcery.apple.nonce'] : nil
+
           expect(response).to be_a_redirect
-          expect(response).to redirect_to(provider_url(provider))
+          expect(response).to redirect_to(provider_url(provider, apple_nonce))
         end
 
         it "'login_from' logins if user exists" do
@@ -228,6 +231,7 @@ describe SorceryController, active_record: true, type: :controller do
           line
           discord
           battlenet
+          apple
         ]
       )
 
@@ -278,6 +282,12 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:battlenet, :key, '4c43d4862c774ca5bbde89873bf0d338')
       sorcery_controller_external_property_set(:battlenet, :secret, 'TxY7IwKOykACd8kUxPyVGTqBs44UBDdX')
       sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:apple, :key, 'de.foo.bar')
+      sorcery_controller_external_property_set(:apple, :team_id, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:apple, :key_id, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:apple, :pem, "-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIBpOIbsjNWeKNsFLGCWa4ee0IJXQHuV81dQnImiTSHAEoAoGCCqGSM49\nAwEHoUQDQgAEQXmlbSpK0mbeU6DgnkllnL3/3so10T9EW/luSO2k3IFGnbrcDu2X\nByrwFUt+DO9epIjS4Azb1T4rd7HxVBZ7Lg==\n-----END EC PRIVATE KEY-----\n")
+      sorcery_controller_external_property_set(:apple, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:apple, :verify_payload, true)
     end
 
     after(:each) do
@@ -300,7 +310,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(ActionMailer::Base.deliveries.size).to eq old_size
     end
 
-    %i[github google liveid vk salesforce paypal wechat microsoft instagram auth0 discord battlenet].each do |provider|
+    %i[github google liveid vk salesforce paypal wechat microsoft instagram auth0 discord battlenet apple].each do |provider|
       it "does not send activation email to external users (#{provider})" do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user provider
@@ -324,7 +334,7 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_reload!(%i[activity_logging external])
     end
 
-    %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
+    %w[facebook github google liveid vk salesforce slack discord battlenet apple].each do |provider|
       context "when #{provider}" do
         before(:each) do
           sorcery_controller_property_set(:register_login_time, true)
@@ -363,7 +373,7 @@ describe SorceryController, active_record: true, type: :controller do
 
     let(:user) { double('user', id: 42) }
 
-    %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
+    %w[facebook github google liveid vk salesforce slack discord battlenet apple].each do |provider|
       context "when #{provider}" do
         before(:each) do
           sorcery_model_property_set(:authentications_class, Authentication)
@@ -473,10 +483,50 @@ describe SorceryController, active_record: true, type: :controller do
       }.to_json
     }
     allow(access_token).to receive(:get) { response }
+    apple_response = double(OAuth2::Response)
+    allow(apple_response).to receive(:body) { apple_jwk_response.to_json }
+    allow(access_token).to receive(:get).with('/auth/keys') { apple_response }
     allow(access_token).to receive(:token) { '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3' }
-    # access_token params for VK auth
-    allow(access_token).to receive(:params) { { 'user_id' => '100500', 'email' => 'nbenari@gmail.com' } }
+    # access_token params for VK auth and additionally 'id_token' for apple
+    allow(access_token).to receive(:params) { { 'user_id' => '100500', 'email' => 'nbenari@gmail.com', 'id_token' => apple_id_token } }
     allow_any_instance_of(OAuth2::Strategy::AuthCode).to receive(:get_token) { access_token }
+  end
+
+  def apple_id_token
+    payload = {
+      "iss": "https://appleid.apple.com",
+      "aud": "de.foo.bar",
+      "exp": Time.now.to_i + 60,
+      "iat": Time.now.to_i,
+      "sub": "123",
+      "nonce": "foo",
+      "at_hash": "foo",
+      "email": "foo@example.com",
+      "email_verified": "true",
+      "auth_time": 1_681_987_625,
+      "nonce_supported": true
+    }
+
+    header = {
+      "kid": "foo",
+      "alg": "ES256"
+    }
+
+    JWT.encode(payload, apple_mock_private_key, 'ES256', header)
+  end
+
+  def apple_mock_private_key
+    key = "-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIBYG8ZQt41JtTYkvq5U7EzOWU9MM3hUBYBOzwQo/A9uGoAoGCCqGSM49\nAwEHoUQDQgAEt15yIMhHBH+PbvdGgVTxfMyoT5RntvUaIOlYtIg8SXHnG709us1y\n2bz9bVl4ZceRaINV4Vxbj236l1kvjYEtZw==\n-----END EC PRIVATE KEY-----\n"
+
+    ::OpenSSL::PKey::EC.new(key)
+  end
+
+  def apple_jwk_response
+    optional_parameters = { kid: 'foo', use: 'sig', alg: 'ES256' }
+
+    jwk = JWT::JWK.new(apple_mock_private_key, optional_parameters)
+
+    { 'keys' => [jwk.as_json['parameters']] }
   end
 
   def set_external_property
@@ -498,6 +548,7 @@ describe SorceryController, active_record: true, type: :controller do
         line
         discord
         battlenet
+        apple
       ]
     )
     sorcery_controller_external_property_set(:facebook, :key, 'eYVNBjBDi33aa9GkA3w')
@@ -546,9 +597,15 @@ describe SorceryController, active_record: true, type: :controller do
     sorcery_controller_external_property_set(:battlenet, :key, '4c43d4862c774ca5bbde89873bf0d338')
     sorcery_controller_external_property_set(:battlenet, :secret, 'TxY7IwKOykACd8kUxPyVGTqBs44UBDdX')
     sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:apple, :key, 'de.foo.bar')
+    sorcery_controller_external_property_set(:apple, :team_id, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:apple, :key_id, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:apple, :pem, "-----BEGIN EC PRIVATE KEY-----\nMHcCAQEEIBpOIbsjNWeKNsFLGCWa4ee0IJXQHuV81dQnImiTSHAEoAoGCCqGSM49\nAwEHoUQDQgAEQXmlbSpK0mbeU6DgnkllnL3/3so10T9EW/luSO2k3IFGnbrcDu2X\nByrwFUt+DO9epIjS4Azb1T4rd7HxVBZ7Lg==\n-----END EC PRIVATE KEY-----\n")
+    sorcery_controller_external_property_set(:apple, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:apple, :verify_payload, true)
   end
 
-  def provider_url(provider)
+  def provider_url(provider, nonce = nil)
     {
       github: "https://github.com/login/oauth/authorize?client_id=#{::Sorcery::Controller::Config.github.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope&state",
       paypal: "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize?client_id=#{::Sorcery::Controller::Config.paypal.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+email&state",
@@ -562,7 +619,8 @@ describe SorceryController, active_record: true, type: :controller do
       instagram: "https://api.instagram.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.instagram.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=#{::Sorcery::Controller::Config.instagram.scope}&state",
       auth0: "https://sorcery-test.auth0.com/authorize?client_id=#{::Sorcery::Controller::Config.auth0.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid+profile+email&state",
       discord: "https://discordapp.com/api/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.discord.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=identify&state",
-      battlenet: "https://eu.battle.net/oauth/authorize?client_id=#{::Sorcery::Controller::Config.battlenet.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid&state"
+      battlenet: "https://eu.battle.net/oauth/authorize?client_id=#{::Sorcery::Controller::Config.battlenet.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid&state",
+      apple: "https://appleid.apple.com/auth/authorize?action=login_at_test_apple&client_id=#{::Sorcery::Controller::Config.apple.key}&controller=sorcery&display&nonce=#{nonce}&redirect_uri=http%3A%2F%2Fblabla.com&response_mode=form_post&response_type=code&scope=name+email&state"
     }[provider]
   end
 end

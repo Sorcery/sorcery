@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Allow open redirect for Rails 7.0 in #redirect_back_or_to method [#351](https://github.com/Sorcery/sorcery/pull/351)
+
 ## 0.16.5
 
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)

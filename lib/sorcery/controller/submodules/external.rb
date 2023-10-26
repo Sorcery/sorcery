@@ -84,7 +84,7 @@ module Sorcery
             if provider_name == 'google' && params[:credential].present?
               sorcery_get_google_user_hash(params[:credential])
             else
-              user_hash
+              sorcery_fetch_provider_user_hash
             end
             nil
           end
@@ -111,12 +111,14 @@ module Sorcery
 
           # delegate to the provider for the access token and the user hash.
           # cache them in instance variables.
-          def user_hash
+          # rubocop: disable Naming/MemoizedInstanceVariableName
+          def sorcery_fetch_provider_user_hash
             # sends request to oauth agent to get the token
             @access_token ||= @provider.process_callback(params, session)
             # uses the token to send another request to the oauth agent requesting user info
             @user_hash ||= @provider.get_user_hash(@access_token)
           end
+          # rubocop: enable Naming/MemoizedInstanceVariableName
 
           # for backwards compatibility
           def access_token(*_args)

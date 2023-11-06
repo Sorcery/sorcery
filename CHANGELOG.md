@@ -2,7 +2,11 @@
 ## HEAD
 
 * Fix error when running the install generator [#339](https://github.com/Sorcery/sorcery/pull/339)
+
+## 0.16.5
+
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)
+* Update auth_scheme to oauth2 v1 defaults per v2 breaking changes [#341](https://github.com/Sorcery/sorcery/pull/341)
 
 ## 0.16.4
 

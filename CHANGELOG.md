@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Fix Rails 7.1 compatibility by using `ActiveRecord.timestamped_migrations` [#352](https://github.com/Sorcery/sorcery/pull/352)
+
 ## 0.16.5
 
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)

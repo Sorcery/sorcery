@@ -85,7 +85,7 @@ module Sorcery
 
       private
 
-      def timestamped_migrations?
+      def self.timestamped_migrations?
         if Rails::VERSION::MAJOR >= 7
           ActiveRecord.timestamped_migrations
         else

@@ -48,7 +48,6 @@ module Sorcery
         return if only_submodules?
 
         generate "model #{model_class_name} --skip-migration"
-        inject_sorcery_to_model
       end
 
       def inject_sorcery_to_model

@@ -2,6 +2,7 @@
 ## HEAD
 
 * Fix Rails 7.1 compatibility by using `ActiveRecord.timestamped_migrations` [#352](https://github.com/Sorcery/sorcery/pull/352)
+* Fix error when running the install generator [#339](https://github.com/Sorcery/sorcery/pull/339)
 
 ## 0.16.5
 

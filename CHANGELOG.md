@@ -1,6 +1,9 @@
 # Changelog
 ## HEAD
 
+* Add support for Google One Tap sign-in
+[#336](https://github.com/Sorcery/sorcery/pull/336)
+
 ## 0.16.5
 
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)

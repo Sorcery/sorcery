@@ -58,3 +58,5 @@ Gemfile*.lock
 gemfiles/*.lock
 .ruby-version
 tags
+
+vendor/bundle

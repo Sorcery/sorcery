@@ -82,7 +82,7 @@ module Sorcery
             sorcery_init_user_hash(provider_name)
 
             if provider_name == 'google' && params[:credential].present?
-              sorcery_get_google_user_hash(params[:credential])
+              sorcery_get_google_user_hash
             else
               sorcery_fetch_provider_user_hash
             end
@@ -101,10 +101,10 @@ module Sorcery
             @user_hash = nil
           end
 
-          def sorcery_get_google_user_hash(credential)
+          def sorcery_get_google_user_hash
             @user_hash = {}
             @user_hash[:user_info] =
-              Google::Auth::IDTokens.verify_oidc(credential,
+              Google::Auth::IDTokens.verify_oidc(params['credential'],
                                                  aud: Rails.application.config.sorcery.google.key)
             @user_hash[:uid] = @user_hash[:user_info]['sub']
           end

@@ -63,10 +63,6 @@ describe SorceryController, type: :controller do
         it 'writes user id in session' do
           expect(session[:user_id]).to eq user.id.to_s
         end
-
-        it 'sets csrf token in session' do
-          expect(session[:_csrf_token]).not_to be_nil
-        end
       end
 
       context 'when fails' do

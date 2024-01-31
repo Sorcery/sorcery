@@ -136,7 +136,7 @@ describe SorceryController, type: :controller do
       it 'creates a new user' do
         sorcery_controller_external_property_set(:twitter, :user_info_mapping, username: 'screen_name')
         expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
-        expect(User).to receive(:create_from_provider).with('twitter', '123', username: 'nbenari').and_return(user)
+        expect(User).to receive(:create_from_provider).with('twitter', '123', { username: 'nbenari' }).and_return(user)
 
         get :test_create_from_provider, params: { provider: 'twitter' }
       end
@@ -144,7 +144,7 @@ describe SorceryController, type: :controller do
       it 'supports nested attributes' do
         sorcery_controller_external_property_set(:twitter, :user_info_mapping, username: 'status/text')
         expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
-        expect(User).to receive(:create_from_provider).with('twitter', '123', username: 'coming soon to sorcery gem: twitter and facebook authentication support.').and_return(user)
+        expect(User).to receive(:create_from_provider).with('twitter', '123', { username: 'coming soon to sorcery gem: twitter and facebook authentication support.' }).and_return(user)
 
         get :test_create_from_provider, params: { provider: 'twitter' }
       end
@@ -152,7 +152,7 @@ describe SorceryController, type: :controller do
       it 'does not crash on missing nested attributes' do
         sorcery_controller_external_property_set(:twitter, :user_info_mapping, username: 'status/text', created_at: 'does/not/exist')
         expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
-        expect(User).to receive(:create_from_provider).with('twitter', '123', username: 'coming soon to sorcery gem: twitter and facebook authentication support.').and_return(user)
+        expect(User).to receive(:create_from_provider).with('twitter', '123', { username: 'coming soon to sorcery gem: twitter and facebook authentication support.' }).and_return(user)
 
         get :test_create_from_provider, params: { provider: 'twitter' }
       end
@@ -175,7 +175,7 @@ describe SorceryController, type: :controller do
 
           u = double('user')
           expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
-          expect(User).to receive(:create_from_provider).with('twitter', '123', username: 'nbenari').and_return(u).and_yield(u)
+          expect(User).to receive(:create_from_provider).with('twitter', '123', { username: 'nbenari' }).and_return(u).and_yield(u)
 
           get :test_create_from_provider_with_block, params: { provider: 'twitter' }
         end

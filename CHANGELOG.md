@@ -1,6 +1,21 @@
 # Changelog
 ## HEAD
 
+## 0.16.5
+
+* Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)
+* Update auth_scheme to oauth2 v1 defaults per v2 breaking changes [#341](https://github.com/Sorcery/sorcery/pull/341)
+
+## 0.16.4
+
+* Adapt to open request protection strategy of rails 7.0 [#318](https://github.com/Sorcery/sorcery/pull/318)
+* Update OAuth2 gem to v2 per v1 deprecation [#323](https://github.com/Sorcery/sorcery/pull/323)
+* Fixed typo in error message [#310](https://github.com/Sorcery/sorcery/pull/310)
+
+## 0.16.3
+
+* Fix provider instantiation for plural provider names (eg. okta) [#305](https://github.com/Sorcery/sorcery/pull/305)
+
 ## 0.16.2
 
 * Inline core migration index definition [#281](https://github.com/Sorcery/sorcery/pull/281)

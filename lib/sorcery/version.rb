@@ -1,3 +1,3 @@
 module Sorcery
-  VERSION = '0.16.2'.freeze
+  VERSION = '0.16.5'.freeze
 end

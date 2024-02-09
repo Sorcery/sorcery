@@ -40,7 +40,7 @@ module Sorcery
                 providers.each do |name|
                   class_eval <<-RUBY, __FILE__, __LINE__ + 1
                     def self.#{name}
-                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.classify).new
+                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.camelcase).new
                     end
                   RUBY
                 end
@@ -118,7 +118,7 @@ module Sorcery
           # sends user to authenticate at the provider's website.
           # after authentication the user is redirected to the callback defined in the provider config
           def login_at(provider_name, args = {})
-            redirect_to sorcery_login_url(provider_name, args)
+            redirect_to sorcery_login_url(provider_name, args), allow_other_host: true
           end
 
           # tries to login the user from provider's callback

@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Fix to invalidate sessions with remember_me cookie [#358](https://github.com/Sorcery/sorcery/pull/358)
+
 ## 0.16.5
 
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)

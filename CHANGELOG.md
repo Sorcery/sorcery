@@ -1,6 +1,7 @@
 # Changelog
 ## HEAD
 
+* Change CI settings for support Ruby3.0+ Rails6.1+ [#357](https://github.com/Sorcery/sorcery/pull/357)
 * Fix error when running the install generator [#339](https://github.com/Sorcery/sorcery/pull/339)
 
 ## 0.16.5

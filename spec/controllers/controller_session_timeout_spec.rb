@@ -129,9 +129,11 @@ describe SorceryController, type: :controller do
     end
 
     context "with 'session_timeout_from_last_action'" do
+      before { create_new_user }
+      after { User.delete_all }
+
       it 'does not logout if there was activity' do
         sorcery_controller_property_set(:session_timeout_from_last_action, true)
-        expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
 
         get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
         Timecop.travel(Time.now.in_time_zone + 0.3)

@@ -32,14 +32,14 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_model_property_set(:authentications_class, Authentication)
       sorcery_controller_external_property_set(:facebook, :user_info_mapping, username: 'name')
 
-      expect(User).to receive(:create_from_provider).with('facebook', '123', username: 'Noam Ben Ari')
+      expect(User).to receive(:create_from_provider).with('facebook', '123', { username: 'Noam Ben Ari' })
       get :test_create_from_provider, params: { provider: 'facebook' }
     end
 
     it 'supports nested attributes' do
       sorcery_model_property_set(:authentications_class, Authentication)
       sorcery_controller_external_property_set(:facebook, :user_info_mapping, username: 'hometown/name')
-      expect(User).to receive(:create_from_provider).with('facebook', '123', username: 'Haifa, Israel')
+      expect(User).to receive(:create_from_provider).with('facebook', '123', { username: 'Haifa, Israel' })
 
       get :test_create_from_provider, params: { provider: 'facebook' }
     end
@@ -48,7 +48,7 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_model_property_set(:authentications_class, Authentication)
       sorcery_controller_external_property_set(:facebook, :user_info_mapping, username: 'name', created_at: 'does/not/exist')
 
-      expect(User).to receive(:create_from_provider).with('facebook', '123', username: 'Noam Ben Ari')
+      expect(User).to receive(:create_from_provider).with('facebook', '123', { username: 'Noam Ben Ari' })
 
       get :test_create_from_provider, params: { provider: 'facebook' }
     end
@@ -59,7 +59,7 @@ describe SorceryController, active_record: true, type: :controller do
         sorcery_controller_external_property_set(:facebook, :user_info_mapping, username: 'name')
 
         u = double('user')
-        expect(User).to receive(:create_from_provider).with('facebook', '123', username: 'Noam Ben Ari').and_return(u).and_yield(u)
+        expect(User).to receive(:create_from_provider).with('facebook', '123', { username: 'Noam Ben Ari' }).and_return(u).and_yield(u)
         # test_create_from_provider_with_block in controller will check for uniqueness of username
         get :test_create_from_provider_with_block, params: { provider: 'facebook' }
       end

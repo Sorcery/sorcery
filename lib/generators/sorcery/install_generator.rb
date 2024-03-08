@@ -74,7 +74,7 @@ module Sorcery
 
       # Define the next_migration_number method (necessary for the migration_template method to work)
       def self.next_migration_number(dirname)
-        if ActiveRecord::Base.timestamped_migrations
+        if timestamped_migrations?
           sleep 1 # make sure each time we get a different timestamp
           Time.new.utc.strftime('%Y%m%d%H%M%S')
         else
@@ -83,6 +83,14 @@ module Sorcery
       end
 
       private
+
+      def self.timestamped_migrations?
+        if Rails::VERSION::MAJOR >= 7
+          ActiveRecord.timestamped_migrations
+        else
+          ActiveRecord::Base.timestamped_migrations
+        end
+      end
 
       def only_submodules?
         options[:migrations] || options[:only_submodules]

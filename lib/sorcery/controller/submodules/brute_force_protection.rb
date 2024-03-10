@@ -22,7 +22,7 @@ module Sorcery
           # Runs as a hook after a failed login.
           def update_failed_logins_count!(credentials)
             user = user_class.sorcery_adapter.find_by_credentials(credentials)
-            user.register_failed_login! if user
+            user.register_failed_login!(credentials[1]) if user
           end
 
           # Resets the failed logins counter.

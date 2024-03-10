@@ -14,6 +14,8 @@ module Sorcery
                           :consecutive_login_retries_amount_limit,    # how many failed logins allowed.
                           :login_lock_time_period,                    # how long the user should be banned.
                           # in seconds. 0 for permanent.
+                          :limitless_counting_failed_login,           # When true, continue to count failed login
+                          # after reached limit.
                           :unlock_token_attribute_name,               # Unlock token attribute name
                           :unlock_token_email_method_name,            # Mailer method name
                           :unlock_token_mailer_disabled,              # When true, dont send unlock token via email
@@ -25,6 +27,7 @@ module Sorcery
                              :@lock_expires_at_attribute_name                  => :lock_expires_at,
                              :@consecutive_login_retries_amount_limit          => 50,
                              :@login_lock_time_period                          => 60 * 60,
+                             :@limitless_counting_failed_login                 => false,
 
                              :@unlock_token_attribute_name                     => :unlock_token,
                              :@unlock_token_email_method_name                  => :send_unlock_token_email,
@@ -63,13 +66,14 @@ module Sorcery
         module InstanceMethods
           # Called by the controller to increment the failed logins counter.
           # Calls 'login_lock!' if login retries limit was reached.
-          def register_failed_login!
+          def register_failed_login!(password)
             config = sorcery_config
-            return unless login_unlocked?
 
-            sorcery_adapter.increment(config.failed_logins_count_attribute_name)
+            return if login_locked? && !config.limitless_counting_failed_login
 
-            return unless send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
+            sorcery_adapter.increment(config.failed_logins_count_attribute_name) unless valid_password?(password)
+
+            return if login_locked? || send(config.failed_logins_count_attribute_name) < config.consecutive_login_retries_amount_limit
 
             login_lock!
           end

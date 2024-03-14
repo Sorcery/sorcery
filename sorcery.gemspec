@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
 
   s.licenses = ['MIT']
 
-  s.required_ruby_version = '>= 2.4.9'
+  s.required_ruby_version = '>= 3.0.0'
 
   s.add_dependency 'bcrypt', '~> 3.1'
   s.add_dependency 'oauth', '>= 0.6'

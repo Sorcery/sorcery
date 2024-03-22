@@ -1,4 +1,4 @@
-class AddMagicLoginToUsers < ActiveRecord::CompatibleLegacyMigration.migration_class
+class AddMagicLoginToUsers < ActiveRecord::Migration::Current
   def self.up
     add_column :users, :magic_login_token, :string, default: nil
     add_column :users, :magic_login_token_expires_at, :datetime, default: nil

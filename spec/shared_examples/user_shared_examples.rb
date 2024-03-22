@@ -349,8 +349,7 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     describe 'email_delivery_method is default' do
-      it 'use deliver_now if rails version 4.2+' do
-        allow(Rails).to receive(:version).and_return('4.2.0')
+      it 'use deliver_now' do
         sorcery_reload!(
           %i[
             user_activation
@@ -362,22 +361,6 @@ shared_examples_for 'rails_3_core_model' do
         )
 
         expect(@mail).to receive(:deliver_now).once
-        user.activate!
-      end
-
-      it 'use deliver if rails version < 4.2' do
-        allow(Rails).to receive(:version).and_return('4.1.0')
-        sorcery_reload!(
-          %i[
-            user_activation
-            user_activation_mailer
-            activation_needed_email_method_name
-          ],
-          user_activation_mailer: SorceryMailer,
-          activation_needed_email_method_name: nil
-        )
-
-        expect(@mail).to receive(:deliver).once
         user.activate!
       end
     end

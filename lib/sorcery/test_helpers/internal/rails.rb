@@ -19,13 +19,7 @@ module Sorcery
 
           # remove all plugin before_actions so they won't fail other tests.
           # I don't like this way, but I didn't find another.
-          # hopefully it won't break until Rails 4.
-          chain = if Gem::Version.new(::Rails::VERSION::STRING) >= Gem::Version.new('4.1.0')
-                    SorceryController._process_action_callbacks.send :chain
-                  else
-                    SorceryController._process_action_callbacks
-                  end
-
+          chain = SorceryController._process_action_callbacks.send :chain
           chain.delete_if { |c| SUBMODULES_AUTO_ADDED_CONTROLLER_FILTERS.include?(c.filter) }
 
           # configure
@@ -61,14 +55,6 @@ module Sorcery
         # A dirty dirty hack.
         def clear_user_without_logout
           subject.instance_variable_set(:@current_user, nil)
-        end
-
-        if ::Rails.version < '5.0.0'
-          %w[get post put].each do |method|
-            define_method(method) do |action, options = {}|
-              super action, options[:params] || {}, options[:session]
-            end
-          end
         end
       end
     end

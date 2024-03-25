@@ -1,6 +1,8 @@
 # Changelog
 ## HEAD
 
+* Bump up required ruby version to 3.0.0 [#369](https://github.com/Sorcery/sorcery/pull/369)
+
 ## 0.17.0
 
 * Fix Rails 7.1 compatibility by using `ActiveRecord.timestamped_migrations` [#352](https://github.com/Sorcery/sorcery/pull/352)

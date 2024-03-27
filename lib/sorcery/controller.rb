@@ -14,8 +14,6 @@ module Sorcery
           # rubocop:enable Lint/HandleExceptions
         end
       end
-      Config.update!
-      Config.configure!
     end
 
     module InstanceMethods

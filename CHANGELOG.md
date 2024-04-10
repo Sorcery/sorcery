@@ -1,6 +1,7 @@
 # Changelog
 ## HEAD
 
+* Remove form_authenticity_token method [#371](https://github.com/Sorcery/sorcery/pull/371)
 * Bump up required ruby version to 3.0.0 [#369](https://github.com/Sorcery/sorcery/pull/369)
 
 ## 0.17.0

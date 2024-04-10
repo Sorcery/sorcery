@@ -1,6 +1,6 @@
 # Changelog
 ## HEAD
-
+* Remove legacy Rails version conditionals [#370](https://github.com/Sorcery/sorcery/pull/370)
 * Bump up required ruby version to 3.0.0 [#369](https://github.com/Sorcery/sorcery/pull/369)
 
 ## 0.17.0

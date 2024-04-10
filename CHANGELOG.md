@@ -3,6 +3,8 @@
 * Remove legacy Rails version conditionals [#370](https://github.com/Sorcery/sorcery/pull/370)
 * Bump up required ruby version to 3.0.0 [#369](https://github.com/Sorcery/sorcery/pull/369)
 
+* Allow open redirect for Rails 7.0 in #redirect_back_or_to method [#351](https://github.com/Sorcery/sorcery/pull/351)
+
 ## 0.17.0
 
 * Fix Rails 7.1 compatibility by using `ActiveRecord.timestamped_migrations` [#352](https://github.com/Sorcery/sorcery/pull/352)

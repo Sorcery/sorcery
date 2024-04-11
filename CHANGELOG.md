@@ -11,6 +11,7 @@
 
 ## 0.16.5
 
+* Add a `#login!` helper that raises an exception if the login fails [#332](https://github.com/Sorcery/sorcery/pull/322)
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)
 * Update auth_scheme to oauth2 v1 defaults per v2 breaking changes [#341](https://github.com/Sorcery/sorcery/pull/341)
 

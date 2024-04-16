@@ -24,6 +24,10 @@
 
 * Fix provider instantiation for plural provider names (eg. okta) [#305](https://github.com/Sorcery/sorcery/pull/305)
 
+## 0.16.3
+
+* Add secure flag for remember_me cookie [#295](https://github.com/Sorcery/sorcery/pull/295)
+
 ## 0.16.2
 
 * Inline core migration index definition [#281](https://github.com/Sorcery/sorcery/pull/281)

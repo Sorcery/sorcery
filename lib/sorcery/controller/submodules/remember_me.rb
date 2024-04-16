@@ -10,9 +10,9 @@ module Sorcery
           base.send(:include, InstanceMethods)
           Config.module_eval do
             class << self
-              attr_accessor :remember_me_httponly
+              attr_accessor :remember_me_httponly, :remember_me_secure
               def merge_remember_me_defaults!
-                @defaults.merge!(:@remember_me_httponly => true)
+                @defaults.merge!(:@remember_me_httponly => true, :@remember_me_secure => false)
               end
             end
             merge_remember_me_defaults!
@@ -71,7 +71,8 @@ module Sorcery
               value: user.send(user.sorcery_config.remember_me_token_attribute_name),
               expires: user.send(user.sorcery_config.remember_me_token_expires_at_attribute_name),
               httponly: Config.remember_me_httponly,
-              domain: Config.cookie_domain
+              domain: Config.cookie_domain,
+              secure: Config.remember_me_secure
             }
           end
         end

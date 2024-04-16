@@ -31,6 +31,11 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.remember_me_httponly =
 
+  # Set secure flag for remember_me cookie
+  # Default: `false`
+  #
+  # config.remember_me_secure =
+
   # Set token randomness. (e.g. user activation tokens)
   # The length of the result string is about 4/3 of `token_randomness`.
   # Default: `15`

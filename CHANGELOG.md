@@ -2,6 +2,7 @@
 ## HEAD
 
 * Remove form_authenticity_token method [#371](https://github.com/Sorcery/sorcery/pull/371)
+* Remove legacy Rails version conditionals [#370](https://github.com/Sorcery/sorcery/pull/370)
 * Bump up required ruby version to 3.0.0 [#369](https://github.com/Sorcery/sorcery/pull/369)
 
 ## 0.17.0

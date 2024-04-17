@@ -97,11 +97,7 @@ module Sorcery
       end
 
       def migration_class_name
-        if Rails::VERSION::MAJOR >= 5
-          "ActiveRecord::Migration[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
-        else
-          'ActiveRecord::Migration'
-        end
+        "ActiveRecord::Migration[#{Rails::VERSION::MAJOR}.#{Rails::VERSION::MINOR}]"
       end
     end
   end

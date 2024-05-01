@@ -1,6 +1,7 @@
 # Changelog
 ## HEAD
 
+* Add an option 'use_redirect_back_or_to_by_rails' to set whether to use 'redirect_back_or_to' defined in Rails 7 [#373](https://github.com/Sorcery/sorcery/pull/373)
 * Add bug tracker & changelog URLs to gemspec metadata [#372](https://github.com/Sorcery/sorcery/pull/372)
 * Remove form_authenticity_token method [#371](https://github.com/Sorcery/sorcery/pull/371)
 * Remove legacy Rails version conditionals [#370](https://github.com/Sorcery/sorcery/pull/370)

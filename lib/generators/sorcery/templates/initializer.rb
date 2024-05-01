@@ -21,6 +21,15 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.save_return_to_url =
 
+  # Set whether to use 'redirect_back_or_to' defined in Rails 7.
+  # Rails 7 released a new method called 'redirect_back_or_to' as a replacement for 'redirect_back'.
+  # That may conflict with the method by the same name defined by Sorcery.
+  # If you set this option to true, Sorcery's 'redirect_back_or_to' calls 'super' to use
+  # the method of the same name defined in Rails 7.
+  # Default: `false`
+  #
+  # config.use_redirect_back_or_to_by_rails =
+
   # Set domain option for cookies; Useful for remember_me submodule.
   # Default: `nil`
   #

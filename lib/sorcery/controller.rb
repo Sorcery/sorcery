@@ -96,7 +96,16 @@ module Sorcery
 
       # used when a user tries to access a page while logged out, is asked to login,
       # and we want to return him back to the page he originally wanted.
-      def redirect_back_or_to(url, flash_hash = {})
+      def redirect_back_or_to(...)
+        if Config.use_redirect_back_or_to_by_rails
+          super
+        else
+          warn('[WARNING] `redirect_back_or_to` overrides the method of the same name defined in Rails 7. If you want to avoid overriding, you can set `config.use_redirect_back_or_to_by_rails = true` and use `redirect_to_before_login_path`.')
+          redirect_to_before_login_path(...)
+        end
+      end
+
+      def redirect_to_before_login_path(url, flash_hash = {})
         redirect_to(session[:return_to_url] || url, flash: flash_hash)
         session[:return_to_url] = nil
       end

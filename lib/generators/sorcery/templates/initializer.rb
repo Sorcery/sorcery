@@ -75,6 +75,11 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.register_last_activity_time =
 
+  # Will register the source ip address of last user login, every login.
+  # Default: `true`
+  #
+  # config.register_last_ip_address =
+
   # -- external --
   # What providers are supported by this app
   # i.e. [:twitter, :facebook, :github, :linkedin, :xing, :google, :liveid, :salesforce, :slack, :line].

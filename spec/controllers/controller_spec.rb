@@ -197,10 +197,18 @@ describe SorceryController, type: :controller do
             allow_any_instance_of(ActionController::TestRequest).to receive(:referer).and_return('http://test.host/referer_action')
           end
 
-          it 'uses Rails 7 redirect_back_or_to method' do
-            get :test_return_to
+          context 'when Rails::VERSION::MAJOR >= 7', skip: Rails::VERSION::MAJOR < 7 do
+            it 'uses Rails 7 redirect_back_or_to method' do
+              get :test_return_to
 
-            expect(response).to redirect_to('http://test.host/referer_action')
+              expect(response).to redirect_to('http://test.host/referer_action')
+            end
+          end
+
+          context 'when Rails::VERSION::MAJOR < 7', skip: Rails::VERSION::MAJOR >= 7 do
+            it 'raise NoMethodError' do
+              expect { get :test_return_to }.to raise_error(NoMethodError)
+            end
           end
         end
 

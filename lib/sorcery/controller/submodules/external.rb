@@ -119,7 +119,7 @@ module Sorcery
           # sends user to authenticate at the provider's website.
           # after authentication the user is redirected to the callback defined in the provider config
           def login_at(provider_name, args = {})
-            redirect_to sorcery_login_url(provider_name, args)
+            redirect_to sorcery_login_url(provider_name, args), allow_other_host: true
           end
 
           # tries to login the user from provider's callback

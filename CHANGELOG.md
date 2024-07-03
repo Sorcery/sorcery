@@ -1,6 +1,7 @@
 # Changelog
 ## HEAD
 
+* Remove unused SimpleCov [#374](https://github.com/Sorcery/sorcery/pull/374) 
 * Add bug tracker & changelog URLs to gemspec metadata [#372](https://github.com/Sorcery/sorcery/pull/372)
 * Remove form_authenticity_token method [#371](https://github.com/Sorcery/sorcery/pull/371)
 * Remove legacy Rails version conditionals [#370](https://github.com/Sorcery/sorcery/pull/370)

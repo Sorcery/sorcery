@@ -62,6 +62,7 @@ current_user # Available in views
 redirect_back_or_to # Use when a user tries to access a page while logged out, is asked to login, and we want to return him back to the page he originally wanted
 @user.external? # Users who signed up using Facebook, Twitter, etc.
 @user.active_for_authentication? # Add this method to define behaviour that will prevent selected users from signing in
+User.scope_for_authentication # Define this class method to add additional conditions to search for a user. Helpful for Soft Delete.
 @user.valid_password?('secret') # Compares 'secret' with the actual user's password, returns true if they match
 User.authenticates_with_sorcery!
 ```

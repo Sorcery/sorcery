@@ -26,6 +26,11 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.cookie_domain =
 
+  # Set name of the remember_me cookie
+  # Default: `:remember_me_token`
+  #
+  # config.remember_me_cookie_name =
+
   # Allow the remember_me cookie to be set through AJAX
   # Default: `true`
   #

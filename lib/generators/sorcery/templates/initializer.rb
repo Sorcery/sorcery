@@ -31,12 +31,6 @@ Rails.application.config.sorcery.configure do |config|
   #
   # config.remember_me_httponly =
 
-  # Set token randomness. (e.g. user activation tokens)
-  # The length of the result string is about 4/3 of `token_randomness`.
-  # Default: `15`
-  #
-  # config.token_randomness =
-
   # -- session timeout --
   # How long in seconds to keep the session alive.
   # Default: `3600`
@@ -283,6 +277,12 @@ Rails.application.config.sorcery.configure do |config|
     # Default: 1 in test env, `nil` otherwise
     #
     user.stretches = 1 if Rails.env.test?
+
+    # Set token randomness. (e.g. user activation tokens)
+    # The length of the result string is about 4/3 of `token_randomness`.
+    # Default: `15`
+    #
+    # user.token_randomness =
 
     # Encryption key used to encrypt reversible encryptions such as AES256.
     # WARNING: If used for users' passwords, changing this key will leave passwords undecryptable!

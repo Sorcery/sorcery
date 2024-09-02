@@ -6,6 +6,7 @@
 * Remove form_authenticity_token method [#371](https://github.com/Sorcery/sorcery/pull/371)
 * Remove legacy Rails version conditionals [#370](https://github.com/Sorcery/sorcery/pull/370)
 * Bump up required ruby version to 3.0.0 [#369](https://github.com/Sorcery/sorcery/pull/369)
+* Move `token_randomness` config to Model::Config in initializer template [#375](https://github.com/Sorcery/sorcery/pull/375)
 
 ## 0.17.0
 

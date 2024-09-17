@@ -1,5 +1,17 @@
 # Sorcery: Magical Authentication
 
+> [!WARNING]
+> ## **Sorcery is currently unmaintained.**
+>
+> What should I do?
+> 1) Help maintain Sorcery (see: https://github.com/Sorcery/sorcery/issues/350)
+> 2) Keep using Sorcery, and accept the risk that it may break or have unpatched security vulnerabilities.
+> 3) Consider switching to alternative libraries that are actively maintained:
+>    - [Clearance](https://github.com/thoughtbot/clearance)
+>    - [Rodauth](https://github.com/jeremyevans/rodauth)
+>    - [Devise](https://github.com/heartcombo/devise)
+>    - [OmniAuth](https://github.com/omniauth/omniauth)
+
 [![Gem Version](https://badge.fury.io/rb/sorcery.svg)](https://rubygems.org/gems/sorcery)
 [![Gem Downloads](https://img.shields.io/gem/dt/sorcery.svg)](https://rubygems.org/gems/sorcery)
 [![Build Status](https://github.com/Sorcery/sorcery/actions/workflows/ruby.yml/badge.svg?branch=master)](https://github.com/Sorcery/sorcery/actions/workflows/ruby.yml)
@@ -235,10 +247,11 @@ Feel free to ask questions using these contact details:
 
 **Current Maintainers:**
 
-- Josh Buker ([@joshbuker](https://github.com/joshbuker)) | [Email](mailto:crypto+sorcery@joshbuker.com?subject=Sorcery)
+- ***Sorcery has no active maintainers***: https://github.com/Sorcery/sorcery/issues/350
 
 **Past Maintainers:**
 
+- Josh Buker ([@joshbuker](https://github.com/joshbuker)) | [Email](mailto:crypto+sorcery@joshbuker.com?subject=Sorcery)
 - Noam Ben-Ari ([@NoamB](https://github.com/NoamB)) | [Email](mailto:nbenari@gmail.com) | [Twitter](https://twitter.com/nbenari)
 - Kir Shatrov ([@kirs](https://github.com/kirs)) | [Email](mailto:shatrov@me.com) | [Twitter](https://twitter.com/Kiiiir)
 - Grzegorz Witek ([@arnvald](https://github.com/arnvald)) | [Email](mailto:arnvald.to@gmail.com) | [Twitter](https://twitter.com/arnvald)

@@ -40,6 +40,8 @@ jobs:
             rails: '72'
           - ruby: '3.0'
             rails: '80'
+          - ruby: '3.1'
+            rails: '80'
     env:
       BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}.gemfile
 

@@ -1,19 +1,24 @@
 class MigrationHelper
   class << self
     def migrate(path)
-      ActiveRecord::MigrationContext.new(path).migrate
+      if Rails.version >= '7.0'
+        ActiveRecord::MigrationContext.new(path).migrate
+      elsif Rails.version < '7.0'
+        ActiveRecord::MigrationContext.new(path, schema_migration).migrate
+      end
     end
 
     def rollback(path)
-      ActiveRecord::MigrationContext.new(path).rollback
+      if Rails.version >= '7.0'
+        ActiveRecord::MigrationContext.new(path).rollback
+      elsif Rails.version < '7.0'
+        ActiveRecord::MigrationContext.new(path, schema_migration).rollback
+      end
     end
 
-    # private
-    # Commenting out as this is not needed. Was causing error due to deprecation of .connection superseded by
-    # .with_connection. Removed schema_migration from new(path, schema_migrations) since it is optional
-    # and all test now passing with rails 7.2.
-    # def schema_migration
-    #  ActiveRecord::Base.connection.schema_migration
-    # end
+    private
+    def schema_migration
+      ActiveRecord::Base.connection.schema_migration
+    end
   end
 end

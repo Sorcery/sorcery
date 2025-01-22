@@ -20,6 +20,15 @@ Magical Authentication for Rails. Supports ActiveRecord, DataMapper, Mongoid and
 
 Inspired by Restful Authentication, Authlogic and Devise. Crypto code taken almost unchanged from Authlogic. OAuth code inspired by OmniAuth and Ryan Bates's Railscast about it.
 
+### Testing Matrix
+
+Rails | 6.1 | 7.0 | 7.1 | 7.2 | 8.0 
+--- | --- | --- | --- |--- |--- 
+Ruby 3.0 | ✅ | ✅ | ✅ | 🛑 | 🛑 
+Ruby 3.1 | ✅ | ✅ | ✅ | ✅ | 🛑 
+Ruby 3.2 | 🛑 | ✅ | ✅ | ✅ | ✅ 
+Ruby 3.3 | 🛑 | 🛑 | ✅ | ✅ | ✅ 
+
 ### Philosophy
 
 Sorcery is a stripped-down, bare-bones authentication library, with which you can write your own authentication flow. It was built with a few goals in mind:

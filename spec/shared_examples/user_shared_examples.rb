@@ -154,6 +154,20 @@ shared_examples_for 'rails_3_core_model' do
         end
       end
 
+      context 'and class implements scope_for_authentication' do
+        it 'finds user with additional conditions' do
+          allow(User).to receive(:scope_for_authentication) { User.where('1 = 1') }
+
+          expect(User.authenticate(user.email, 'secret')).to eq user
+        end
+
+        it 'does not find user with impossible conditions' do
+          allow(User).to receive(:scope_for_authentication) { User.where('1 <> 1') }
+
+          expect(User.authenticate(user.email, 'secret')).to be_nil
+        end
+      end
+
       context 'in block mode' do
         it 'yields the user if credentials are good' do
           User.authenticate(user.email, 'secret') do |user2, failure|

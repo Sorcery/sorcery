@@ -2,6 +2,7 @@ name: Test Suite
 
 # Run against all commits and pull requests.
 on:
+  workflow_dispatch:
   schedule:
     - cron: '0 0 * * *'
   push:
@@ -25,6 +26,8 @@ jobs:
           - '61'
           - '70'
           - '71'
+          - '72'
+          - '80'
 
         exclude:
           - ruby: '3.3'
@@ -33,6 +36,12 @@ jobs:
             rails: '61'
           - ruby: '3.2'
             rails: '61'
+          - ruby: '3.0'
+            rails: '72'
+          - ruby: '3.0'
+            rails: '80'
+          - ruby: '3.1'
+            rails: '80'
     env:
       BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}.gemfile
 

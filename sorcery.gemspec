@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'oauth', '>= 0.6'
   s.add_dependency 'oauth2', '~> 2.0'
 
-  s.add_development_dependency 'byebug', '~> 10.0.0'
+  s.add_development_dependency 'byebug', '~> 11.1.3'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'test-unit', '~> 3.2.0'

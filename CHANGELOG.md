@@ -1,6 +1,6 @@
 # Changelog
 ## HEAD
-
+* Add Ruby 3.4 to CI matrix [#381](https://github.com/Sorcery/sorcery/pull/381)
 * Fix CI failures [#379](https://github.com/Sorcery/sorcery/pull/379)
 * Fixed minor issues with test to get all green so that we can continue development [#377](https://github.com/Sorcery/sorcery/pull/377)
 * Remove unused SimpleCov [#374](https://github.com/Sorcery/sorcery/pull/374)

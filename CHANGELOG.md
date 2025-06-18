@@ -1,5 +1,6 @@
 # Changelog
 ## HEAD
+* Remove the dependency on OpenStruct in the test code [#382](https://github.com/Sorcery/sorcery/pull/382)
 * Add Ruby 3.4 to CI matrix [#381](https://github.com/Sorcery/sorcery/pull/381)
 * Fix CI failures [#379](https://github.com/Sorcery/sorcery/pull/379)
 * Fixed minor issues with test to get all green so that we can continue development [#377](https://github.com/Sorcery/sorcery/pull/377)

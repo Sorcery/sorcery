@@ -19,6 +19,7 @@ module Sorcery
         attr_accessor :before_logout
         attr_accessor :after_logout
         attr_accessor :after_remember_me
+        attr_accessor :after_login_lock
 
         def init!
           @defaults = {
@@ -31,6 +32,7 @@ module Sorcery
             :@before_logout                        => Set.new,
             :@after_logout                         => Set.new,
             :@after_remember_me                    => Set.new,
+            :@after_login_lock                     => Set.new,
             :@save_return_to_url                   => true,
             :@cookie_domain                        => nil
           }

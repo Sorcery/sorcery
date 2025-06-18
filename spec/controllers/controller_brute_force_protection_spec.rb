@@ -22,6 +22,7 @@ describe SorceryController, type: :controller do
     it 'counts login retries' do
       allow(User).to receive(:authenticate) { |&block| block.call(nil, :other) }
       allow(User.sorcery_adapter).to receive(:find_by_credentials).with(['bla@bla.com', 'blabla']).and_return(user)
+      allow(user).to receive(:login_locked?).and_return(false)
 
       expect(user).to receive(:register_failed_login!).exactly(3).times
 
@@ -36,6 +37,17 @@ describe SorceryController, type: :controller do
       expect(user).to receive_message_chain(:sorcery_adapter, :update_attribute).with(:failed_logins_count, 0)
 
       get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
+    end
+
+    it 'calls after_login_lock when user locked' do
+      allow(User).to receive(:authenticate) { |&block| block.call(nil, :other) }
+      allow(User.sorcery_adapter).to receive(:find_by_credentials).with(['bla@bla.com', 'blabla']).and_return(user)
+      allow(user).to receive(:register_failed_login!)
+      allow(user).to receive(:login_locked?).and_return(false, true)
+
+      expect(@controller).to receive(:after_login_lock!).exactly(1).times
+
+      request_test_login
     end
   end
 end

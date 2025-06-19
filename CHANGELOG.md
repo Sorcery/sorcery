@@ -11,6 +11,8 @@
 * Bump up required ruby version to 3.0.0 [#369](https://github.com/Sorcery/sorcery/pull/369)
 * Move `token_randomness` config to Model::Config in initializer template [#375](https://github.com/Sorcery/sorcery/pull/375)
 
+* Allow open redirect for Rails 7.0 in #redirect_back_or_to method [#351](https://github.com/Sorcery/sorcery/pull/351)
+
 ## 0.17.0
 
 * Fix Rails 7.1 compatibility by using `ActiveRecord.timestamped_migrations` [#352](https://github.com/Sorcery/sorcery/pull/352)

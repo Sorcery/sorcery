@@ -1,5 +1,7 @@
 # Changelog
 ## HEAD
+
+* Drop support for versions below Ruby 3.2 and Rails 7.1 [#383](https://github.com/Sorcery/sorcery/pull/383)
 * Remove the dependency on OpenStruct in the test code [#382](https://github.com/Sorcery/sorcery/pull/382)
 * Add Ruby 3.4 to CI matrix [#381](https://github.com/Sorcery/sorcery/pull/381)
 * Fix CI failures [#379](https://github.com/Sorcery/sorcery/pull/379)

@@ -2,7 +2,7 @@ module Sorcery
   module Adapters
     class MongoidAdapter < BaseAdapter
       def increment(attr)
-        mongoid_4? ? @model.inc(attr => 1) : @model.inc(attr, 1)
+        @model.inc(attr => 1)
       end
 
       def update_attributes(attrs)
@@ -22,9 +22,6 @@ module Sorcery
         @model.send(mthd, options)
       end
 
-      def mongoid_4?
-        Gem::Version.new(::Mongoid::VERSION) >= Gem::Version.new('4.0.0.alpha')
-      end
 
       class << self
         def define_field(name, type, options = {})

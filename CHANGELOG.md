@@ -1,6 +1,7 @@
 # Changelog
 ## HEAD
 
+* Remove Testing Matrix from README [#384](https://github.com/Sorcery/sorcery/pull/384)
 * Drop support for versions below Ruby 3.2 and Rails 7.1 [#383](https://github.com/Sorcery/sorcery/pull/383)
 * Remove the dependency on OpenStruct in the test code [#382](https://github.com/Sorcery/sorcery/pull/382)
 * Add Ruby 3.4 to CI matrix [#381](https://github.com/Sorcery/sorcery/pull/381)

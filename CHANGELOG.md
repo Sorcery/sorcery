@@ -1,6 +1,7 @@
 # Changelog
 ## HEAD
 
+* Remove check for rails-controller-testing gem [#385](https://github.com/Sorcery/sorcery/pull/385)
 * Remove Testing Matrix from README [#384](https://github.com/Sorcery/sorcery/pull/384)
 * Drop support for versions below Ruby 3.2 and Rails 7.1 [#383](https://github.com/Sorcery/sorcery/pull/383)
 * Remove the dependency on OpenStruct in the test code [#382](https://github.com/Sorcery/sorcery/pull/382)

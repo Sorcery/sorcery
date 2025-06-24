@@ -62,6 +62,14 @@ module Sorcery
         end
       end
 
+      def login!(*credentials, &block)
+        user = login(*credentials, &block)
+
+        raise Sorcery::Errors::InvalidCredentials if user.nil?
+
+        user
+      end
+
       def reset_sorcery_session
         reset_session # protect from session fixation attacks
       end

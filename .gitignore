@@ -10,6 +10,7 @@ doc
 
 # bundler
 .bundle
+vendor
 
 # jeweler generated
 pkg
@@ -52,7 +53,7 @@ tmtags
 #
 spec/rails_app/log/*
 *.log
-*.sqlite3
+*.sqlite3*
 Gemfile*.lock
 gemfiles/*.lock
 .ruby-version

@@ -32,6 +32,7 @@ module Sorcery
       def build_client(options = {})
         defaults = {
           site: @site,
+          auth_scheme: :request_body,
           ssl: { ca_file: Sorcery::Controller::Config.ca_file }
         }
         ::OAuth2::Client.new(

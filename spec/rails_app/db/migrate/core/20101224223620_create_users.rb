@@ -1,4 +1,4 @@
-class CreateUsers < ActiveRecord::CompatibleLegacyMigration.migration_class
+class CreateUsers < ActiveRecord::Migration::Current
   def self.up
     create_table :users do |t|
       t.string :username,         null: false

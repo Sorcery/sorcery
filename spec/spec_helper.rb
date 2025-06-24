@@ -5,9 +5,6 @@ ENV['RAILS_ENV'] ||= 'test'
 
 SORCERY_ORM = :active_record
 
-# require 'simplecov'
-# SimpleCov.root File.join(File.dirname(__FILE__), '..', 'lib')
-# SimpleCov.start
 require 'rails/all'
 require 'rspec/rails'
 require 'timecop'

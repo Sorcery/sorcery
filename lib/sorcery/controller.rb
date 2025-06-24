@@ -54,7 +54,6 @@ module Sorcery
           old_session.each_pair do |k, v|
             session[k.to_sym] = v
           end
-          form_authenticity_token
 
           auto_login(user, credentials[2])
           after_login!(user, credentials)

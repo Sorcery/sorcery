@@ -1,39 +1,40 @@
 require 'spec_helper'
 
 # require 'shared_examples/controller_oauth_shared_examples'
-require 'ostruct'
 
 def stub_all_oauth_requests!
   consumer = OAuth::Consumer.new('key', 'secret', site: 'http://myapi.com')
   req_token = OAuth::RequestToken.new(consumer)
   acc_token = OAuth::AccessToken.new(consumer)
 
-  response = OpenStruct.new
-  response.body = {
-    'following' => false, 'listed_count' => 0, 'profile_link_color' => '0084B4',
-    'profile_image_url' => 'http://a1.twimg.com/profile_images/536178575/noamb_normal.jpg',
-    'description' => 'Programmer/Heavy Metal Fan/New Father',
-    'status' => {
-      'text' => 'coming soon to sorcery gem: twitter and facebook authentication support.',
-      'truncated' => false, 'favorited' => false, 'source' => 'web', 'geo' => nil,
-      'in_reply_to_screen_name' => nil, 'in_reply_to_user_id' => nil,
-      'in_reply_to_status_id_str' => nil, 'created_at' => 'Sun Mar 06 23:01:12 +0000 2011',
-      'contributors' => nil, 'place' => nil, 'retweeted' => false, 'in_reply_to_status_id' => nil,
-      'in_reply_to_user_id_str' => nil, 'coordinates' => nil, 'retweet_count' => 0,
-      'id' => 44_533_012_284_706_816, 'id_str' => '44533012284706816'
-    },
-    'show_all_inline_media' => false, 'geo_enabled' => true,
-    'profile_sidebar_border_color' => 'a8c7f7', 'url' => nil, 'followers_count' => 10,
-    'screen_name' => 'nbenari', 'profile_use_background_image' => true, 'location' => 'Israel',
-    'statuses_count' => 25, 'profile_background_color' => '022330', 'lang' => 'en',
-    'verified' => false, 'notifications' => false,
-    'profile_background_image_url' => 'http://a3.twimg.com/profile_background_images/104087198/04042010339.jpg',
-    'favourites_count' => 5, 'created_at' => 'Fri Nov 20 21:58:19 +0000 2009',
-    'is_translator' => false, 'contributors_enabled' => false, 'protected' => false,
-    'follow_request_sent' => false, 'time_zone' => 'Greenland', 'profile_text_color' => '333333',
-    'name' => 'Noam Ben Ari', 'friends_count' => 10, 'profile_sidebar_fill_color' => 'C0DFEC',
-    'id' => 123, 'id_str' => '91434812', 'profile_background_tile' => false, 'utc_offset' => -10_800
-  }.to_json
+  response = Object.new
+  def response.body
+    {
+      'following' => false, 'listed_count' => 0, 'profile_link_color' => '0084B4',
+      'profile_image_url' => 'http://a1.twimg.com/profile_images/536178575/noamb_normal.jpg',
+      'description' => 'Programmer/Heavy Metal Fan/New Father',
+      'status' => {
+        'text' => 'coming soon to sorcery gem: twitter and facebook authentication support.',
+        'truncated' => false, 'favorited' => false, 'source' => 'web', 'geo' => nil,
+        'in_reply_to_screen_name' => nil, 'in_reply_to_user_id' => nil,
+        'in_reply_to_status_id_str' => nil, 'created_at' => 'Sun Mar 06 23:01:12 +0000 2011',
+        'contributors' => nil, 'place' => nil, 'retweeted' => false, 'in_reply_to_status_id' => nil,
+        'in_reply_to_user_id_str' => nil, 'coordinates' => nil, 'retweet_count' => 0,
+        'id' => 44_533_012_284_706_816, 'id_str' => '44533012284706816'
+      },
+      'show_all_inline_media' => false, 'geo_enabled' => true,
+      'profile_sidebar_border_color' => 'a8c7f7', 'url' => nil, 'followers_count' => 10,
+      'screen_name' => 'nbenari', 'profile_use_background_image' => true, 'location' => 'Israel',
+      'statuses_count' => 25, 'profile_background_color' => '022330', 'lang' => 'en',
+      'verified' => false, 'notifications' => false,
+      'profile_background_image_url' => 'http://a3.twimg.com/profile_background_images/104087198/04042010339.jpg',
+      'favourites_count' => 5, 'created_at' => 'Fri Nov 20 21:58:19 +0000 2009',
+      'is_translator' => false, 'contributors_enabled' => false, 'protected' => false,
+      'follow_request_sent' => false, 'time_zone' => 'Greenland', 'profile_text_color' => '333333',
+      'name' => 'Noam Ben Ari', 'friends_count' => 10, 'profile_sidebar_fill_color' => 'C0DFEC',
+      'id' => 123, 'id_str' => '91434812', 'profile_background_tile' => false, 'utc_offset' => -10_800
+    }.to_json
+  end
 
   session[:request_token] = req_token.token
   session[:request_token_secret] = req_token.secret
@@ -136,7 +137,7 @@ describe SorceryController, type: :controller do
       it 'creates a new user' do
         sorcery_controller_external_property_set(:twitter, :user_info_mapping, username: 'screen_name')
         expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
-        expect(User).to receive(:create_from_provider).with('twitter', '123', username: 'nbenari').and_return(user)
+        expect(User).to receive(:create_from_provider).with('twitter', '123', { username: 'nbenari' }).and_return(user)
 
         get :test_create_from_provider, params: { provider: 'twitter' }
       end
@@ -144,7 +145,7 @@ describe SorceryController, type: :controller do
       it 'supports nested attributes' do
         sorcery_controller_external_property_set(:twitter, :user_info_mapping, username: 'status/text')
         expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
-        expect(User).to receive(:create_from_provider).with('twitter', '123', username: 'coming soon to sorcery gem: twitter and facebook authentication support.').and_return(user)
+        expect(User).to receive(:create_from_provider).with('twitter', '123', { username: 'coming soon to sorcery gem: twitter and facebook authentication support.' }).and_return(user)
 
         get :test_create_from_provider, params: { provider: 'twitter' }
       end
@@ -152,7 +153,7 @@ describe SorceryController, type: :controller do
       it 'does not crash on missing nested attributes' do
         sorcery_controller_external_property_set(:twitter, :user_info_mapping, username: 'status/text', created_at: 'does/not/exist')
         expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
-        expect(User).to receive(:create_from_provider).with('twitter', '123', username: 'coming soon to sorcery gem: twitter and facebook authentication support.').and_return(user)
+        expect(User).to receive(:create_from_provider).with('twitter', '123', { username: 'coming soon to sorcery gem: twitter and facebook authentication support.' }).and_return(user)
 
         get :test_create_from_provider, params: { provider: 'twitter' }
       end
@@ -175,7 +176,7 @@ describe SorceryController, type: :controller do
 
           u = double('user')
           expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
-          expect(User).to receive(:create_from_provider).with('twitter', '123', username: 'nbenari').and_return(u).and_yield(u)
+          expect(User).to receive(:create_from_provider).with('twitter', '123', { username: 'nbenari' }).and_return(u).and_yield(u)
 
           get :test_create_from_provider_with_block, params: { provider: 'twitter' }
         end

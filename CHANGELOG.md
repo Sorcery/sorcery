@@ -2,7 +2,29 @@
 ## HEAD
 
 * Add a `#login!` helper that raises an exception if the login fails [#332](https://github.com/Sorcery/sorcery/pull/322)
+* Remove Testing Matrix from README [#384](https://github.com/Sorcery/sorcery/pull/384)
+* Drop support for versions below Ruby 3.2 and Rails 7.1 [#383](https://github.com/Sorcery/sorcery/pull/383)
+* Remove the dependency on OpenStruct in the test code [#382](https://github.com/Sorcery/sorcery/pull/382)
+* Add Ruby 3.4 to CI matrix [#381](https://github.com/Sorcery/sorcery/pull/381)
+* Fix CI failures [#379](https://github.com/Sorcery/sorcery/pull/379)
+* Fixed minor issues with test to get all green so that we can continue development [#377](https://github.com/Sorcery/sorcery/pull/377)
+* Remove unused SimpleCov [#374](https://github.com/Sorcery/sorcery/pull/374)
+* Add bug tracker & changelog URLs to gemspec metadata [#372](https://github.com/Sorcery/sorcery/pull/372)
+* Remove form_authenticity_token method [#371](https://github.com/Sorcery/sorcery/pull/371)
+* Remove legacy Rails version conditionals [#370](https://github.com/Sorcery/sorcery/pull/370)
+* Bump up required ruby version to 3.0.0 [#369](https://github.com/Sorcery/sorcery/pull/369)
+* Move `token_randomness` config to Model::Config in initializer template [#375](https://github.com/Sorcery/sorcery/pull/375)
+
+## 0.17.0
+
+* Fix Rails 7.1 compatibility by using `ActiveRecord.timestamped_migrations` [#352](https://github.com/Sorcery/sorcery/pull/352)
+* Change CI settings for support Ruby3.0+ Rails6.1+ [#357](https://github.com/Sorcery/sorcery/pull/357)
+* Fix error when running the install generator [#339](https://github.com/Sorcery/sorcery/pull/339)
+
+## 0.16.5
+
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)
+* Update auth_scheme to oauth2 v1 defaults per v2 breaking changes [#341](https://github.com/Sorcery/sorcery/pull/341)
 
 ## 0.16.4
 

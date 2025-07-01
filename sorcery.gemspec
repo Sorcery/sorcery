@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.post_install_message += 'You may need oauth2 if you use external providers such as any of these: https://github.com/Sorcery/sorcery/tree/master/lib/sorcery/providers'
   # rubocop:enable Layout/LineLength
 
-  s.files         = `git ls-files`.split($INPUT_RECORD_SEPARATOR)
+  s.files         = Dir['lib/**/*'] + ['README.md', 'LICENSE.md', 'CHANGELOG.md']
   s.require_paths = ['lib']
 
   s.licenses = ['MIT']

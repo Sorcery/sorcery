@@ -1,6 +1,6 @@
 # Changelog
 ## HEAD
-
+* Limit the files included in the gem to only the necessary ones [#386](https://github.com/Sorcery/sorcery/pull/386)
 * Remove check for rails-controller-testing gem [#385](https://github.com/Sorcery/sorcery/pull/385)
 * Remove Testing Matrix from README [#384](https://github.com/Sorcery/sorcery/pull/384)
 * Drop support for versions below Ruby 3.2 and Rails 7.1 [#383](https://github.com/Sorcery/sorcery/pull/383)

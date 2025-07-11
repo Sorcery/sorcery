@@ -70,7 +70,7 @@ describe SorceryController, type: :controller do
       stub_all_oauth_requests!
     end
 
-    context 'when callback_url begin with /' do
+    context 'when callback_url begins with /' do
       before do
         sorcery_controller_external_property_set(:twitter, :callback_url, '/oauth/twitter/callback')
       end
@@ -85,7 +85,7 @@ describe SorceryController, type: :controller do
       end
     end
 
-    context 'when callback_url begin with http://' do
+    context 'when callback_url begins with http://' do
       before do
         sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com/oauth/twitter/callback')
       end

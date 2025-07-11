@@ -81,20 +81,22 @@ describe SorceryController, type: :controller do
       end
       after do
         sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com')
+        sorcery_controller_external_property_set(:twitter, :original_callback_url, nil)
       end
     end
 
     context 'when callback_url begin with http://' do
       before do
-        sorcery_controller_external_property_set(:twitter, :callback_url, '/oauth/twitter/callback')
+        sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com/oauth/twitter/callback')
       end
-      it 'login_at redirects correctly', pending: true do
+      it 'login_at redirects correctly' do
         get :login_at_test
         expect(response).to be_a_redirect
-        expect(response).to redirect_to('http://myapi.com/oauth/authorize?oauth_callback=http%3A%2F%2Fblabla.com&oauth_token=')
+        expect(response).to redirect_to('http://myapi.com/oauth/authorize?oauth_callback=http%3A%2F%2Fblabla.com%2Foauth%2Ftwitter%2Fcallback&oauth_token=')
       end
       after do
         sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com')
+        sorcery_controller_external_property_set(:twitter, :original_callback_url, nil)
       end
     end
 

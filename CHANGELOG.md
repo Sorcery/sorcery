@@ -1,6 +1,7 @@
 # Changelog
 ## HEAD
 
+* Fix a pending test [#387](https://github.com/Sorcery/sorcery/pull/387)
 * Remove check for rails-controller-testing gem [#385](https://github.com/Sorcery/sorcery/pull/385)
 * Remove Testing Matrix from README [#384](https://github.com/Sorcery/sorcery/pull/384)
 * Drop support for versions below Ruby 3.2 and Rails 7.1 [#383](https://github.com/Sorcery/sorcery/pull/383)

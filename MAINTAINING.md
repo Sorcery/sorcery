@@ -43,14 +43,10 @@ this checklist and prepare a release commit:
 NOTE: `X.Y.Z` and `vX.Y.Z` are given as examples, and should be replaced with
       whatever version you are releasing. See: [Version Naming](#version-naming)
 
-1. Update CHANGELOG.md
-   1. Check for any changes that have been included since the last release that
-      are not reflected in the changelog. Add any missing entries to the `HEAD`
-      section.
-   1. Check the changes in `HEAD` to determine what version increment is
-      appropriate. See [Version Naming](#version-naming) if unsure.
-   1. Replace `## HEAD` with `## vX.Y.Z` and create a new `## HEAD` section
-      above the latest version.
+1. Decide the next version number
+   1. Review all changes that have been included since the last release.
+   1. Check the changes to determine what version increment is appropriate.
+      See [Version Naming](#version-naming) if unsure.
 1. Update Gem Version
    1. Update `./lib/sorcery/version.rb` to 'X.Y.Z'
 1. Stage your changes and create a commit
@@ -60,5 +56,8 @@ NOTE: `X.Y.Z` and `vX.Y.Z` are given as examples, and should be replaced with
    1. `cd <dir>`
    1. `gem build`
    1. `gem push <filename>`
-1. TODO: Version tagging
-   1. Release new version via github interface
+1. Create GitHub Release
+   1. Create a new release via GitHub interface at https://github.com/Sorcery/sorcery/releases/new
+   1. Use tag `vX.Y.Z` and title `vX.Y.Z`
+   1. Include the prepared release notes in the description
+   1. This will automatically create the git tag and publish the release

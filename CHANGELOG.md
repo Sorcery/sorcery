@@ -21,6 +21,9 @@
 * Change CI settings for support Ruby3.0+ Rails6.1+ [#357](https://github.com/Sorcery/sorcery/pull/357)
 * Fix error when running the install generator [#339](https://github.com/Sorcery/sorcery/pull/339)
 
+* Add support for Google One Tap sign-in
+[#336](https://github.com/Sorcery/sorcery/pull/336)
+
 ## 0.16.5
 
 * Raise ArgumentError when calling change_password! with blank password [#333](https://github.com/Sorcery/sorcery/pull/333)

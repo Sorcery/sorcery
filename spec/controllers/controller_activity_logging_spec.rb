@@ -45,6 +45,8 @@ describe SorceryController, type: :controller do
       login_user(user)
       now = Time.now.in_time_zone
       Timecop.freeze(now)
+
+      sorcery_controller_property_set(:register_logout_time, true)
       expect(user).to receive(:set_last_logout_at).with(be_within(0.1).of(now))
 
       logout_user

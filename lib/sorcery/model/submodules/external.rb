@@ -95,15 +95,13 @@ module Sorcery
           def add_provider_to_user(provider, uid)
             authentications = sorcery_config.authentications_class.name.demodulize.underscore.pluralize
             # first check to see if user has a particular authentication already
-            if sorcery_adapter.find_authentication_by_oauth_credentials(authentications, provider, uid).nil?
-              user = send(authentications).build(sorcery_config.provider_uid_attribute_name => uid,
-                                                 sorcery_config.provider_attribute_name => provider)
-              user.sorcery_adapter.save(validate: false)
-            else
-              user = false
-            end
+            return false if sorcery_adapter.find_authentication_by_oauth_credentials(authentications, provider, uid)
 
-            user
+            authentication = send(authentications).build(sorcery_config.provider_uid_attribute_name => uid,
+                                                         sorcery_config.provider_attribute_name => provider)
+            authentication.sorcery_adapter.save(validate: false)
+
+            authentication
           end
         end
       end

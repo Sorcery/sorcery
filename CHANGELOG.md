@@ -1,19 +1,8 @@
 # Changelog
-## HEAD
-* Limit the files included in the gem to only the necessary ones [#386](https://github.com/Sorcery/sorcery/pull/386)
-* Remove check for rails-controller-testing gem [#385](https://github.com/Sorcery/sorcery/pull/385)
-* Remove Testing Matrix from README [#384](https://github.com/Sorcery/sorcery/pull/384)
-* Drop support for versions below Ruby 3.2 and Rails 7.1 [#383](https://github.com/Sorcery/sorcery/pull/383)
-* Remove the dependency on OpenStruct in the test code [#382](https://github.com/Sorcery/sorcery/pull/382)
-* Add Ruby 3.4 to CI matrix [#381](https://github.com/Sorcery/sorcery/pull/381)
-* Fix CI failures [#379](https://github.com/Sorcery/sorcery/pull/379)
-* Fixed minor issues with test to get all green so that we can continue development [#377](https://github.com/Sorcery/sorcery/pull/377)
-* Remove unused SimpleCov [#374](https://github.com/Sorcery/sorcery/pull/374)
-* Add bug tracker & changelog URLs to gemspec metadata [#372](https://github.com/Sorcery/sorcery/pull/372)
-* Remove form_authenticity_token method [#371](https://github.com/Sorcery/sorcery/pull/371)
-* Remove legacy Rails version conditionals [#370](https://github.com/Sorcery/sorcery/pull/370)
-* Bump up required ruby version to 3.0.0 [#369](https://github.com/Sorcery/sorcery/pull/369)
-* Move `token_randomness` config to Model::Config in initializer template [#375](https://github.com/Sorcery/sorcery/pull/375)
+
+**Note: As of version 0.17.0, we no longer maintain this CHANGELOG.md file manually. For the latest changes and release notes, please refer to [GitHub Releases](https://github.com/Sorcery/sorcery/releases).**
+
+This file contains historical changelog entries for reference. New releases and their changes are documented in GitHub Releases.
 
 ## 0.17.0
 

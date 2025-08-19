@@ -164,7 +164,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(flash[:notice]).to eq 'Success!'
     end
 
-    %i[github google liveid vk salesforce paypal slack wechat microsoft instagram auth0 discord battlenet].each do |provider|
+    %i[github google liveid vk salesforce paypal slack wechat microsoft instagram auth0 discord battlenet qq].each do |provider|
       describe "with #{provider}" do
         it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
@@ -228,6 +228,7 @@ describe SorceryController, active_record: true, type: :controller do
           line
           discord
           battlenet
+          qq
         ]
       )
 
@@ -278,6 +279,9 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:battlenet, :key, '4c43d4862c774ca5bbde89873bf0d338')
       sorcery_controller_external_property_set(:battlenet, :secret, 'TxY7IwKOykACd8kUxPyVGTqBs44UBDdX')
       sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:qq, :key, '4c43d4862c774ca5bbde89873bf0d338')
+      sorcery_controller_external_property_set(:qq, :secret, 'TxY7IwKOykACd8kUxPyVGTqBs44UBDdX')
+      sorcery_controller_external_property_set(:qq, :callback_url, 'http://blabla.com')
     end
 
     after(:each) do
@@ -300,7 +304,7 @@ describe SorceryController, active_record: true, type: :controller do
       expect(ActionMailer::Base.deliveries.size).to eq old_size
     end
 
-    %i[github google liveid vk salesforce paypal wechat microsoft instagram auth0 discord battlenet].each do |provider|
+    %i[github google liveid vk salesforce paypal wechat microsoft instagram auth0 discord battlenet qq].each do |provider|
       it "does not send activation email to external users (#{provider})" do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user provider
@@ -363,7 +367,7 @@ describe SorceryController, active_record: true, type: :controller do
 
     let(:user) { double('user', id: 42) }
 
-    %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
+    %w[facebook github google liveid vk salesforce slack discord battlenet qq].each do |provider|
       context "when #{provider}" do
         before(:each) do
           sorcery_model_property_set(:authentications_class, Authentication)
@@ -456,6 +460,8 @@ describe SorceryController, active_record: true, type: :controller do
         },
         # response for wechat auth
         'unionid' => '123',
+        # response for qq auth
+        'openid' => '123',
         # response for instagram
         'data' => {
           'username' => 'pnmahoney',
@@ -498,6 +504,7 @@ describe SorceryController, active_record: true, type: :controller do
         line
         discord
         battlenet
+        qq
       ]
     )
     sorcery_controller_external_property_set(:facebook, :key, 'eYVNBjBDi33aa9GkA3w')
@@ -546,6 +553,9 @@ describe SorceryController, active_record: true, type: :controller do
     sorcery_controller_external_property_set(:battlenet, :key, '4c43d4862c774ca5bbde89873bf0d338')
     sorcery_controller_external_property_set(:battlenet, :secret, 'TxY7IwKOykACd8kUxPyVGTqBs44UBDdX')
     sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:qq, :key, "eYVNBjBDi33aa9GkA3w")
+    sorcery_controller_external_property_set(:qq, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
+    sorcery_controller_external_property_set(:qq, :callback_url, "http://blabla.com")
   end
 
   def provider_url(provider)
@@ -562,7 +572,8 @@ describe SorceryController, active_record: true, type: :controller do
       instagram: "https://api.instagram.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.instagram.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=#{::Sorcery::Controller::Config.instagram.scope}&state",
       auth0: "https://sorcery-test.auth0.com/authorize?client_id=#{::Sorcery::Controller::Config.auth0.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid%20profile%20email&state",
       discord: "https://discordapp.com/api/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.discord.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=identify&state",
-      battlenet: "https://eu.battle.net/oauth/authorize?client_id=#{::Sorcery::Controller::Config.battlenet.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid&state"
+      battlenet: "https://eu.battle.net/oauth/authorize?client_id=#{::Sorcery::Controller::Config.battlenet.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid&state",
+      qq: "https://graph.qq.com/oauth2.0/authorize?client_id=#{::Sorcery::Controller::Config.wechat.key}&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=get_user_info&state=#qq_redirect",
     }[provider]
   end
 end

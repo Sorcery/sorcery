@@ -38,6 +38,8 @@ This file contains historical changelog entries for reference. New releases and 
 * Fix default table name being incorrect in migration generator [#274](https://github.com/Sorcery/sorcery/pull/274)
 * Update `oauth` dependency per CVE-2016-11086
 
+* Add `after_login_lock` callback [#236](https://github.com/Sorcery/sorcery/pull/236)
+
 ## 0.16.0
 
 * Add BattleNet Provider [#260](https://github.com/Sorcery/sorcery/pull/260)

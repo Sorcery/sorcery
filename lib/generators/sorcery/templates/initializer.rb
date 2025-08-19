@@ -496,6 +496,11 @@ Rails.application.config.sorcery.configure do |config|
     #
     # user.login_lock_time_period =
 
+    # When true, sorcery continue to count failed login after reached limit.
+    # Default: `false`
+    #
+    # user.limitless_counting_failed_login =
+
     # Unlock token attribute name
     # Default: `:unlock_token`
     #

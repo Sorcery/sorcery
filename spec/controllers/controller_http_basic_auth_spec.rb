@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SorceryController, type: :controller do
-  let(:user) { double('user', id: 42, email: 'bla@bla.com') }
+  let!(:user) { User.create!(username: 'test_user', email: 'bla@bla.com', password: 'password') }
 
   describe 'with http basic auth features' do
     before(:all) do
@@ -21,9 +21,6 @@ describe SorceryController, type: :controller do
     end
 
     it 'authenticates from http basic if credentials are sent' do
-      # dirty hack for rails 4
-      allow(subject).to receive(:register_last_activity_time_to_db)
-
       @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{user.email}:secret")}"
       expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
       get :test_http_basic_auth, params: {}, session: { http_authentication_used: true }
@@ -53,15 +50,12 @@ describe SorceryController, type: :controller do
     end
 
     it "signs in the user's session on successful login" do
-      # dirty hack for rails 4
-      allow(controller).to receive(:register_last_activity_time_to_db)
-
       @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{user.email}:secret")}"
       expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
 
       get :test_http_basic_auth, params: {}, session: { http_authentication_used: true }
 
-      expect(session[:user_id]).to eq '42'
+      expect(session[:user_id]).to eq user.id.to_s
     end
   end
 end

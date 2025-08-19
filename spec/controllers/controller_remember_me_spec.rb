@@ -1,30 +1,18 @@
 require 'spec_helper'
 
 describe SorceryController, type: :controller do
-  let!(:user) { double('user', id: 42) }
+  let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
   # ----------------- REMEMBER ME -----------------------
   context 'with remember me features' do
     before(:all) do
-      if SORCERY_ORM == :active_record
-        MigrationHelper.migrate("#{Rails.root}/db/migrate/remember_me")
-        User.reset_column_information
-      end
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/remember_me")
 
       sorcery_reload!([:remember_me])
     end
 
     after(:all) do
-      if SORCERY_ORM == :active_record
-        MigrationHelper.rollback("#{Rails.root}/db/migrate/remember_me")
-      end
-    end
-
-    before(:each) do
-      allow(user).to receive(:remember_me_token)
-      allow(user).to receive(:remember_me_token_expires_at)
-      allow(user).to receive_message_chain(:sorcery_config, :remember_me_token_attribute_name).and_return(:remember_me_token)
-      allow(user).to receive_message_chain(:sorcery_config, :remember_me_token_expires_at_attribute_name).and_return(:remember_me_token_expires_at)
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/remember_me")
     end
 
     it 'sets cookie on remember_me!' do
@@ -73,10 +61,7 @@ describe SorceryController, type: :controller do
 
     it 'logs user in from cookie' do
       session[:user_id] = user.id.to_s
-      expect(User.sorcery_adapter).to receive(:find_by_id).with(user.id.to_s).and_return(user)
-      expect(user).to receive(:remember_me!)
-      expect(user).to receive(:remember_me_token).and_return('token').twice
-      expect(user).to receive(:has_remember_me_token?) { true }
+      user.remember_me!
 
       subject.remember_me!
       subject.instance_eval do
@@ -84,10 +69,7 @@ describe SorceryController, type: :controller do
       end
       session[:user_id] = nil
 
-      expect(User.sorcery_adapter).to receive(:find_by_remember_me_token).with('token').and_return(user)
-
-      expect(subject).to receive(:after_remember_me!).with(user)
-
+      # The real token will be used to find the user from cookie
       get :test_login_from_cookie
 
       expect(assigns[:current_user]).to eq user

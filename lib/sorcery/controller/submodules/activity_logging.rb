@@ -16,10 +16,7 @@ module Sorcery
           base.send(:include, InstanceMethods)
           Config.module_eval do
             class << self
-              attr_accessor :register_login_time
-              attr_accessor :register_logout_time
-              attr_accessor :register_last_activity_time
-              attr_accessor :register_last_ip_address
+              attr_accessor :register_login_time, :register_logout_time, :register_last_activity_time, :register_last_ip_address
 
               def merge_activity_logging_defaults!
                 @defaults.merge!(:@register_login_time         => true,

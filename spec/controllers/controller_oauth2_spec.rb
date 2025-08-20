@@ -4,23 +4,18 @@ require 'spec_helper'
 
 describe SorceryController, active_record: true, type: :controller do
   before(:all) do
-    if SORCERY_ORM == :active_record
-      MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
-      MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
-      MigrationHelper.migrate("#{Rails.root}/db/migrate/activity_logging")
-      User.reset_column_information
-    end
+    MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
+    MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
+    MigrationHelper.migrate("#{Rails.root}/db/migrate/activity_logging")
 
     sorcery_reload!([:external])
     set_external_property
   end
 
   after(:all) do
-    if SORCERY_ORM == :active_record
-      MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
-      MigrationHelper.rollback("#{Rails.root}/db/migrate/activity_logging")
-      MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
-    end
+    MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
+    MigrationHelper.rollback("#{Rails.root}/db/migrate/activity_logging")
+    MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
   end
 
   describe 'using create_from' do
@@ -58,7 +53,7 @@ describe SorceryController, active_record: true, type: :controller do
         sorcery_model_property_set(:authentications_class, Authentication)
         sorcery_controller_external_property_set(:facebook, :user_info_mapping, username: 'name')
 
-        u = double('user')
+        u = User.new
         expect(User).to receive(:create_from_provider).with('facebook', '123', { username: 'Noam Ben Ari' }).and_return(u).and_yield(u)
         # test_create_from_provider_with_block in controller will check for uniqueness of username
         get :test_create_from_provider_with_block, params: { provider: 'facebook' }
@@ -68,15 +63,10 @@ describe SorceryController, active_record: true, type: :controller do
 
   # ----------------- OAuth -----------------------
   context 'with OAuth features' do
-    let(:user) { double('user', id: 42) }
+    let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
     before(:each) do
       stub_all_oauth2_requests!
-    end
-
-    after(:each) do
-      User.sorcery_adapter.delete_all
-      Authentication.sorcery_adapter.delete_all
     end
 
     context 'when callback_url begin with /' do
@@ -134,9 +124,6 @@ describe SorceryController, active_record: true, type: :controller do
     end
 
     it "'login_from' logins if user exists" do
-      # dirty hack for rails 4
-      allow(subject).to receive(:register_last_activity_time_to_db)
-
       sorcery_model_property_set(:authentications_class, Authentication)
       expect(User).to receive(:load_from_provider).with(:facebook, '123').and_return(user)
       get :test_login_from_facebook
@@ -153,9 +140,6 @@ describe SorceryController, active_record: true, type: :controller do
     end
 
     it 'on successful login_from the user is redirected to the url he originally wanted' do
-      # dirty hack for rails 4
-      allow(subject).to receive(:register_last_activity_time_to_db)
-
       sorcery_model_property_set(:authentications_class, Authentication)
       expect(User).to receive(:load_from_provider).with(:facebook, '123').and_return(user)
       get :test_return_to_with_external_facebook, params: {}, session: { return_to_url: 'fuu' }
@@ -174,9 +158,6 @@ describe SorceryController, active_record: true, type: :controller do
         end
 
         it "'login_from' logins if user exists" do
-          # dirty hack for rails 4
-          allow(subject).to receive(:register_last_activity_time_to_db)
-
           sorcery_model_property_set(:authentications_class, Authentication)
           expect(User).to receive(:load_from_provider).with(provider, '123').and_return(user)
           get :"test_login_from_#{provider}"
@@ -193,9 +174,6 @@ describe SorceryController, active_record: true, type: :controller do
         end
 
         it "on successful login_from the user is redirected to the url he originally wanted (#{provider})" do
-          # dirty hack for rails 4
-          allow(subject).to receive(:register_last_activity_time_to_db)
-
           sorcery_model_property_set(:authentications_class, Authentication)
           expect(User).to receive(:load_from_provider).with(provider, '123').and_return(user)
           get :"test_return_to_with_external_#{provider}", params: {}, session: { return_to_url: 'fuu' }
@@ -318,7 +296,7 @@ describe SorceryController, active_record: true, type: :controller do
   end
 
   describe 'OAuth with user activation features' do
-    let(:user) { double('user', id: 42) }
+    let!(:user) { User.create!(username: 'activation_user', email: 'activation@example.com', password: 'password') }
 
     before(:all) do
       sorcery_reload!(%i[activity_logging external])
@@ -361,7 +339,7 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_reload!(%i[session_timeout external])
     end
 
-    let(:user) { double('user', id: 42) }
+    let!(:user) { User.create!(username: 'timeout_user', email: 'timeout@example.com', password: 'password') }
 
     %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
       context "when #{provider}" do
@@ -386,7 +364,7 @@ describe SorceryController, active_record: true, type: :controller do
         it 'resets session after session timeout' do
           expect(User).to receive(:load_from_provider).with(provider.to_sym, '123').and_return(user)
           get "test_login_from_#{provider}".to_sym
-          expect(session[:user_id]).to eq '42'
+          expect(session[:user_id]).to eq user.id.to_s
           Timecop.travel(Time.now.in_time_zone + 0.6)
           get :test_should_be_logged_in
 

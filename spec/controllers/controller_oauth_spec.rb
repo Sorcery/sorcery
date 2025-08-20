@@ -47,7 +47,7 @@ def stub_all_oauth_requests!
 end
 
 describe SorceryController, type: :controller do
-  let(:user) { double('user', id: 42) }
+  let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
   before(:all) do
     sorcery_reload!([:external])
@@ -174,7 +174,7 @@ describe SorceryController, type: :controller do
           sorcery_model_property_set(:authentications_class, Authentication)
           sorcery_controller_external_property_set(:twitter, :user_info_mapping, username: 'screen_name')
 
-          u = double('user')
+          u = User.new
           expect(User).to receive(:load_from_provider).with('twitter', '123').and_return(nil)
           expect(User).to receive(:create_from_provider).with('twitter', '123', { username: 'nbenari' }).and_return(u).and_yield(u)
 
@@ -221,18 +221,12 @@ describe SorceryController, type: :controller do
 
   describe SorceryController, 'OAuth with session timeout features' do
     before(:all) do
-      if SORCERY_ORM == :active_record
-        MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
-        User.reset_column_information
-      end
-
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
       sorcery_reload!(%i[session_timeout external])
     end
 
     after(:all) do
-      if SORCERY_ORM == :active_record
-        MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
-      end
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
     end
 
     context 'when twitter' do

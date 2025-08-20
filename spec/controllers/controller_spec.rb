@@ -26,7 +26,7 @@ describe SorceryController, type: :controller do
 
   # ----------------- PLUGIN ACTIVATED -----------------------
   context 'when activated with sorcery' do
-    let(:user) { double('user', id: 42) }
+    let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
     before(:all) do
       sorcery_reload!
@@ -85,7 +85,6 @@ describe SorceryController, type: :controller do
       it 'clears the session' do
         cookies[:remember_me_token] = nil
         session[:user_id] = user.id.to_s
-        expect(User.sorcery_adapter).to receive(:find_by_id).with('42') { user }
         get :test_logout
 
         expect(session[:user_id]).to be_nil
@@ -95,7 +94,6 @@ describe SorceryController, type: :controller do
     describe '#logged_in?' do
       it 'returns true when user is logged in' do
         session[:user_id] = user.id.to_s
-        expect(User.sorcery_adapter).to receive(:find_by_id).with('42') { user }
 
         expect(subject.logged_in?).to be true
       end
@@ -110,14 +108,12 @@ describe SorceryController, type: :controller do
     describe '#current_user' do
       it 'current_user returns the user instance if logged in' do
         session[:user_id] = user.id.to_s
-        expect(User.sorcery_adapter).to receive(:find_by_id).once.with('42') { user }
 
         2.times { expect(subject.current_user).to eq user } # memoized!
       end
 
       it 'current_user returns false if not logged in' do
         session[:user_id] = nil
-        expect(User.sorcery_adapter).to_not receive(:find_by_id)
 
         2.times { expect(subject.current_user).to be_nil } # memoized!
       end

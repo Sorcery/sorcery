@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SorceryController, type: :controller do
-  let!(:user) { double('user', id: 42) }
+  let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
   # ----------------- SESSION TIMEOUT -----------------------
   context 'with session timeout features' do
@@ -12,11 +12,6 @@ describe SorceryController, type: :controller do
 
     after(:each) do
       Timecop.return
-    end
-
-    before(:each) do
-      allow(user).to receive(:username)
-      allow(user).to receive_message_chain(:sorcery_config, :username_attribute_names, :first) { :username }
     end
 
     it 'does not reset session before session timeout' do
@@ -130,7 +125,6 @@ describe SorceryController, type: :controller do
 
     context "with 'session_timeout_from_last_action'" do
       before { create_new_user }
-      after { User.delete_all }
 
       it 'does not logout if there was activity' do
         sorcery_controller_property_set(:session_timeout_from_last_action, true)

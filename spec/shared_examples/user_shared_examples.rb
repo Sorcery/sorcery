@@ -319,7 +319,7 @@ shared_examples_for 'rails_3_core_model' do
   describe 'generic send email' do
     before(:all) do
       MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
-      User.reset_column_information
+      sorcery_reload!([:activation])
     end
 
     after(:all) do
@@ -572,18 +572,14 @@ shared_examples_for 'external_user' do
   let(:external_user) { create_new_external_user :twitter }
 
   before(:all) do
-    if SORCERY_ORM == :active_record
-      MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
-      MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
-    end
+    MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
+    MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
     sorcery_reload!
   end
 
   after(:all) do
-    if SORCERY_ORM == :active_record
-      MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
-      MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
-    end
+    MigrationHelper.rollback("#{Rails.root}/db/migrate/external")
+    MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
   end
 
   before(:each) do

@@ -199,7 +199,7 @@ describe SorceryController, type: :controller do
 
           context 'when Rails::VERSION::MAJOR >= 7', skip: Rails::VERSION::MAJOR < 7 do
             it 'uses Rails 7 redirect_back_or_to method' do
-              get :test_return_to
+              get :test_redirect_back_or_to
 
               expect(response).to redirect_to('http://test.host/referer_action')
             end
@@ -207,7 +207,7 @@ describe SorceryController, type: :controller do
 
           context 'when Rails::VERSION::MAJOR < 7', skip: Rails::VERSION::MAJOR >= 7 do
             it 'raise NoMethodError' do
-              expect { get :test_return_to }.to raise_error(NoMethodError)
+              expect { get :test_redirect_back_or_to }.to raise_error(NoMethodError)
             end
           end
         end
@@ -217,7 +217,7 @@ describe SorceryController, type: :controller do
 
           it 'uses Sorcery redirect_back_or_to method' do
             session[:return_to_url] = 'http://test.host/some_action'
-            get :test_return_to
+            get :test_redirect_back_or_to
 
             expect(response).to redirect_to('http://test.host/some_action')
             expect(flash[:notice]).to eq 'haha!'

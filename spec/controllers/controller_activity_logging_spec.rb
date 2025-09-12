@@ -1,30 +1,24 @@
 require 'spec_helper'
 
-# require 'shared_examples/controller_activity_logging_shared_examples'
-
 describe SorceryController, type: :controller do
+  before(:all) do
+    MigrationHelper.migrate("#{Rails.root}/db/migrate/activity_logging")
+  end
+
   after(:all) do
+    MigrationHelper.rollback("#{Rails.root}/db/migrate/activity_logging")
     sorcery_controller_property_set(:register_login_time, true)
     sorcery_controller_property_set(:register_logout_time, true)
     sorcery_controller_property_set(:register_last_activity_time, true)
-    # sorcery_controller_property_set(:last_login_from_ip_address_name, true)
   end
 
   # ----------------- ACTIVITY LOGGING -----------------------
   context 'with activity logging features' do
-    let(:adapter) { double('sorcery_adapter') }
-    let(:user) { double('user', id: 42, sorcery_adapter: adapter) }
+    let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
-    before(:all) do
-      sorcery_reload!([:activity_logging])
-    end
+    before(:all) { sorcery_reload!([:activity_logging]) }
 
     before(:each) do
-      allow(user).to receive(:username)
-      allow(user).to receive_message_chain(:sorcery_config, :username_attribute_names, :first) { :username }
-      allow(User.sorcery_config).to receive(:last_login_at_attribute_name) { :last_login_at }
-      allow(User.sorcery_config).to receive(:last_login_from_ip_address_name) { :last_login_from_ip_address }
-
       sorcery_controller_property_set(:register_login_time, false)
       sorcery_controller_property_set(:register_last_ip_address, false)
       sorcery_controller_property_set(:register_last_activity_time, false)
@@ -35,8 +29,9 @@ describe SorceryController, type: :controller do
       Timecop.freeze(now)
 
       sorcery_controller_property_set(:register_login_time, true)
-      expect(user).to receive(:set_last_login_at).with(be_within(0.1).of(now))
       login_user(user)
+
+      expect(user.reload.last_login_at).to be_within(0.1).of(now)
 
       Timecop.return
     end
@@ -45,9 +40,10 @@ describe SorceryController, type: :controller do
       login_user(user)
       now = Time.now.in_time_zone
       Timecop.freeze(now)
-      expect(user).to receive(:set_last_logout_at).with(be_within(0.1).of(now))
 
       logout_user
+
+      expect(user.reload.last_logout_at).to be_within(0.1).of(now)
 
       Timecop.return
     end
@@ -58,56 +54,66 @@ describe SorceryController, type: :controller do
       login_user(user)
       now = Time.now.in_time_zone
       Timecop.freeze(now)
-      expect(user).to receive(:set_last_activity_at).with(be_within(0.1).of(now))
 
       get :some_action
+
+      expect(user.reload.last_activity_at).to be_within(0.1).of(now)
 
       Timecop.return
     end
 
     it 'logs last IP address when logged in' do
       sorcery_controller_property_set(:register_last_ip_address, true)
-      expect(user).to receive(:set_last_ip_address).with('0.0.0.0')
 
       login_user(user)
+
+      expect(user.reload.last_login_from_ip_address).to eq('0.0.0.0')
     end
 
     it 'updates nothing but activity fields' do
-      pending 'Move to model'
-      original_user_name = User.last.username
+      sorcery_controller_property_set(:register_last_activity_time, true)
+      user = User.last
+      original_email = user.email
+      original_activity_at = user.last_activity_at
       login_user(user)
       get :some_action_making_a_non_persisted_change_to_the_user
-
-      expect(User.last.username).to eq original_user_name
+      user.reload
+      expect(user.email).to eq original_email
+      expect(user.last_activity_at).not_to eq original_activity_at
     end
 
     it 'does not register login time if configured so' do
       sorcery_controller_property_set(:register_login_time, false)
 
-      expect(user).to receive(:set_last_login_at).never
       login_user(user)
+
+      expect(user.reload.last_login_at).to be_nil
     end
 
     it 'does not register logout time if configured so' do
       sorcery_controller_property_set(:register_logout_time, false)
       login_user(user)
 
-      expect(user).to receive(:set_last_logout_at).never
       logout_user
+
+      expect(user.reload.last_logout_at).to be_nil
     end
 
     it 'does not register last activity time if configured so' do
       sorcery_controller_property_set(:register_last_activity_time, false)
 
-      expect(user).to receive(:set_last_activity_at).never
       login_user(user)
+      get :some_action
+
+      expect(user.reload.last_activity_at).to be_nil
     end
 
     it 'does not register last IP address if configured so' do
       sorcery_controller_property_set(:register_last_ip_address, false)
-      expect(user).to receive(:set_last_ip_address).never
 
       login_user(user)
+
+      expect(user.reload.last_login_from_ip_address).to be_nil
     end
   end
 end

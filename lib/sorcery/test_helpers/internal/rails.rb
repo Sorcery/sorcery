@@ -19,14 +19,16 @@ module Sorcery
 
           # remove all plugin before_actions so they won't fail other tests.
           # I don't like this way, but I didn't find another.
-          chain = SorceryController._process_action_callbacks.send :chain
+          callbacks = SorceryController._process_action_callbacks
+          chain = callbacks.send :chain
           chain.delete_if { |c| SUBMODULES_AUTO_ADDED_CONTROLLER_FILTERS.include?(c.filter) }
+          callbacks.instance_variable_set(:@all_callbacks, nil)
+          callbacks.instance_variable_set(:@single_callbacks, {})
 
           # configure
           ::Sorcery::Controller::Config.submodules = submodules
-          ::Sorcery::Controller::Config.user_class = nil
-          ActionController::Base.send(:include, ::Sorcery::Controller)
           ::Sorcery::Controller::Config.user_class = 'User'
+          ActionController::Base.include(::Sorcery::Controller)
 
           ::Sorcery::Controller::Config.user_config do |user|
             options.each do |property, value|
@@ -34,11 +36,6 @@ module Sorcery
             end
           end
           User.authenticates_with_sorcery!
-          return unless defined?(DataMapper) && User.ancestors.include?(DataMapper::Resource)
-
-          DataMapper.auto_migrate!
-          User.finalize
-          Authentication.finalize
         end
 
         def sorcery_controller_property_set(property, value)

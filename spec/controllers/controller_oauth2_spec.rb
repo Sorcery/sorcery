@@ -101,7 +101,7 @@ describe SorceryController, active_record: true, type: :controller do
       end
 
       after do
-        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://blabla.com')
+        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
       end
     end
 
@@ -119,7 +119,7 @@ describe SorceryController, active_record: true, type: :controller do
       end
 
       after do
-        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://blabla.com')
+        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
       end
     end
 
@@ -212,50 +212,50 @@ describe SorceryController, active_record: true, type: :controller do
       # TODO: refactor
       sorcery_controller_external_property_set(:facebook, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:facebook, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:facebook, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:github, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:github, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:github, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:github, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:google, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:google, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:google, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:google, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:liveid, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:liveid, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:liveid, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:liveid, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:vk, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:vk, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:vk, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:vk, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:salesforce, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:salesforce, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:salesforce, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:salesforce, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:paypal, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:paypal, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:paypal, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:paypal, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:slack, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:slack, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:slack, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:slack, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:wechat, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:wechat, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:wechat, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:wechat, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:microsoft, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:microsoft, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:microsoft, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:microsoft, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:instagram, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:instagram, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:instagram, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:instagram, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:auth0, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:auth0, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:auth0, :callback_url, 'http://blabla.com')
-      sorcery_controller_external_property_set(:auth0, :site, 'https://sorcery-test.auth0.com')
+      sorcery_controller_external_property_set(:auth0, :callback_url, 'http://example.com')
+      sorcery_controller_external_property_set(:auth0, :site, 'https://auth0.example.com')
       sorcery_controller_external_property_set(:line, :key, "eYVNBjBDi33aa9GkA3w")
       sorcery_controller_external_property_set(:line, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:line, :callback_url, "http://blabla.com")
+      sorcery_controller_external_property_set(:line, :callback_url, "http://example.com")
       sorcery_controller_external_property_set(:discord, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:discord, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:discord, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:discord, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:battlenet, :key, '4c43d4862c774ca5bbde89873bf0d338')
       sorcery_controller_external_property_set(:battlenet, :secret, 'TxY7IwKOykACd8kUxPyVGTqBs44UBDdX')
-      sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://example.com')
     end
 
     after(:each) do
@@ -389,7 +389,7 @@ describe SorceryController, active_record: true, type: :controller do
         'name' => 'Noam Ben Ari',
         'first_name' => 'Noam',
         'last_name' => 'Ben Ari',
-        'link' => 'http://www.facebook.com/nbenari1',
+        'link' => 'http://profile.example.com/testuser1',
         'hometown' => {
           'id' => '110619208966868',
           'name' => 'Haifa, Israel'
@@ -400,7 +400,7 @@ describe SorceryController, active_record: true, type: :controller do
         },
         'bio' => "I'm a new daddy, and enjoying it!",
         'gender' => 'male',
-        'email' => 'nbenari@gmail.com',
+        'email' => 'nbenari@example.com',
         'timezone' => 2,
         'locale' => 'en_US',
         'languages' => [
@@ -439,7 +439,7 @@ describe SorceryController, active_record: true, type: :controller do
           'username' => 'pnmahoney',
           'bio' => 'turn WHAT down?',
           'website' => '',
-          'profile_picture' => 'http://photos-d.ak.instagram.com/hphotos-ak-xpa1/10454121_417985815007395_867850883_a.jpg',
+          'profile_picture' => 'http://images.example.com/test-profile.jpg',
           'full_name' => 'Patrick Mahoney',
           'counts' => {
             'media' => 2,
@@ -453,7 +453,7 @@ describe SorceryController, active_record: true, type: :controller do
     allow(access_token).to receive(:get) { response }
     allow(access_token).to receive(:token) { '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3' }
     # access_token params for VK auth
-    allow(access_token).to receive(:params) { { 'user_id' => '100500', 'email' => 'nbenari@gmail.com' } }
+    allow(access_token).to receive(:params) { { 'user_id' => '100500', 'email' => 'nbenari@example.com' } }
     allow_any_instance_of(OAuth2::Strategy::AuthCode).to receive(:get_token) { access_token }
   end
 
@@ -480,67 +480,67 @@ describe SorceryController, active_record: true, type: :controller do
     )
     sorcery_controller_external_property_set(:facebook, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:facebook, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:facebook, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:github, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:github, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:github, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:github, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:google, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:google, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:google, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:google, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:liveid, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:liveid, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:liveid, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:liveid, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:vk, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:vk, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:vk, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:vk, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:salesforce, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:salesforce, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:salesforce, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:salesforce, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:paypal, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:paypal, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:paypal, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:paypal, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:slack, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:slack, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:slack, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:slack, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:wechat, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:wechat, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:wechat, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:wechat, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:microsoft, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:microsoft, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:microsoft, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:microsoft, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:instagram, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:instagram, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:instagram, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:instagram, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:auth0, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:auth0, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:auth0, :callback_url, 'http://blabla.com')
-    sorcery_controller_external_property_set(:auth0, :site, 'https://sorcery-test.auth0.com')
+    sorcery_controller_external_property_set(:auth0, :callback_url, 'http://example.com')
+    sorcery_controller_external_property_set(:auth0, :site, 'https://auth0.example.com')
     sorcery_controller_external_property_set(:line, :key, "eYVNBjBDi33aa9GkA3w")
     sorcery_controller_external_property_set(:line, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:line, :callback_url, "http://blabla.com")
+    sorcery_controller_external_property_set(:line, :callback_url, "http://example.com")
     sorcery_controller_external_property_set(:discord, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:discord, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:discord, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:discord, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:battlenet, :key, '4c43d4862c774ca5bbde89873bf0d338')
     sorcery_controller_external_property_set(:battlenet, :secret, 'TxY7IwKOykACd8kUxPyVGTqBs44UBDdX')
-    sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://example.com')
   end
 
   def provider_url(provider)
     {
-      github: "https://github.com/login/oauth/authorize?client_id=#{::Sorcery::Controller::Config.github.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope&state",
-      paypal: "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize?client_id=#{::Sorcery::Controller::Config.paypal.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid%20email&state",
-      google: "https://accounts.google.com/o/oauth2/auth?client_id=#{::Sorcery::Controller::Config.google.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state",
-      liveid: "https://oauth.live.com/authorize?client_id=#{::Sorcery::Controller::Config.liveid.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=wl.basic%20wl.emails%20wl.offline_access&state",
-      vk: "https://oauth.vk.com/authorize?client_id=#{::Sorcery::Controller::Config.vk.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=#{::Sorcery::Controller::Config.vk.scope}&state",
-      salesforce: "https://login.salesforce.com/services/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.salesforce.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope#{'=' + ::Sorcery::Controller::Config.salesforce.scope unless ::Sorcery::Controller::Config.salesforce.scope.nil?}&state",
-      slack: "https://slack.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.slack.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=identity.basic%2C%20identity.email&state",
-      wechat: "https://open.weixin.qq.com/connect/qrconnect?appid=#{::Sorcery::Controller::Config.wechat.key}&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=snsapi_login&state=#wechat_redirect",
-      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid%20email%20https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state",
-      instagram: "https://api.instagram.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.instagram.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=#{::Sorcery::Controller::Config.instagram.scope}&state",
-      auth0: "https://sorcery-test.auth0.com/authorize?client_id=#{::Sorcery::Controller::Config.auth0.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid%20profile%20email&state",
-      discord: "https://discordapp.com/api/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.discord.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=identify&state",
-      battlenet: "https://eu.battle.net/oauth/authorize?client_id=#{::Sorcery::Controller::Config.battlenet.key}&display&redirect_uri=http%3A%2F%2Fblabla.com&response_type=code&scope=openid&state"
+      github: "https://github.com/login/oauth/authorize?client_id=#{::Sorcery::Controller::Config.github.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope&state",
+      paypal: "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize?client_id=#{::Sorcery::Controller::Config.paypal.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=openid%20email&state",
+      google: "https://accounts.google.com/o/oauth2/auth?client_id=#{::Sorcery::Controller::Config.google.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state",
+      liveid: "https://oauth.live.com/authorize?client_id=#{::Sorcery::Controller::Config.liveid.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=wl.basic%20wl.emails%20wl.offline_access&state",
+      vk: "https://oauth.vk.com/authorize?client_id=#{::Sorcery::Controller::Config.vk.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=#{::Sorcery::Controller::Config.vk.scope}&state",
+      salesforce: "https://login.salesforce.com/services/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.salesforce.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope#{'=' + ::Sorcery::Controller::Config.salesforce.scope unless ::Sorcery::Controller::Config.salesforce.scope.nil?}&state",
+      slack: "https://slack.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.slack.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=identity.basic%2C%20identity.email&state",
+      wechat: "https://open.weixin.qq.com/connect/qrconnect?appid=#{::Sorcery::Controller::Config.wechat.key}&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=snsapi_login&state=#wechat_redirect",
+      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{::Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=openid%20email%20https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state",
+      instagram: "https://api.instagram.com/oauth/authorize?client_id=#{::Sorcery::Controller::Config.instagram.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=#{::Sorcery::Controller::Config.instagram.scope}&state",
+      auth0: "https://auth0.example.com/authorize?client_id=#{::Sorcery::Controller::Config.auth0.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=openid%20profile%20email&state",
+      discord: "https://discordapp.com/api/oauth2/authorize?client_id=#{::Sorcery::Controller::Config.discord.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=identify&state",
+      battlenet: "https://eu.battle.net/oauth/authorize?client_id=#{::Sorcery::Controller::Config.battlenet.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=openid&state"
     }[provider]
   end
 end

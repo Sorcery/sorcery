@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SorceryController, type: :controller do
-  let!(:user) { User.create!(username: 'test_user', email: 'bla@bla.com', password: 'password') }
+  let!(:user) { User.create!(username: 'test_user', email: 'bla@example.com', password: 'password') }
 
   describe 'with http basic auth features' do
     before(:all) do
@@ -22,7 +22,7 @@ describe SorceryController, type: :controller do
 
     it 'authenticates from http basic if credentials are sent' do
       @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{user.email}:secret")}"
-      expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
+      expect(User).to receive('authenticate').with('bla@example.com', 'secret').and_return(user)
       get :test_http_basic_auth, params: {}, session: { http_authentication_used: true }
 
       expect(response).to be_successful
@@ -30,7 +30,7 @@ describe SorceryController, type: :controller do
 
     it 'fails authentication if credentials are wrong' do
       @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{user.email}:wrong!")}"
-      expect(User).to receive('authenticate').with('bla@bla.com', 'wrong!').and_return(nil)
+      expect(User).to receive('authenticate').with('bla@example.com', 'wrong!').and_return(nil)
       get :test_http_basic_auth, params: {}, session: { http_authentication_used: true }
 
       expect(response).to redirect_to root_url
@@ -51,7 +51,7 @@ describe SorceryController, type: :controller do
 
     it "signs in the user's session on successful login" do
       @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{user.email}:secret")}"
-      expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
+      expect(User).to receive('authenticate').with('bla@example.com', 'secret').and_return(user)
 
       get :test_http_basic_auth, params: {}, session: { http_authentication_used: true }
 

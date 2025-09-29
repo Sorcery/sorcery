@@ -24,7 +24,7 @@ module Sorcery
       end
 
       def build_new_user(attributes_hash = nil)
-        user_attributes_hash = attributes_hash || { username: 'gizmo', email: 'bla@bla.com', password: 'secret' }
+        user_attributes_hash = attributes_hash || { username: 'gizmo', email: 'bla@example.com', password: 'secret' }
         @user = User.new(user_attributes_hash)
       end
 

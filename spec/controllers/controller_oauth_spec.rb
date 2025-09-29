@@ -3,7 +3,7 @@ require 'spec_helper'
 # require 'shared_examples/controller_oauth_shared_examples'
 
 def stub_all_oauth_requests!
-  consumer = OAuth::Consumer.new('key', 'secret', site: 'http://myapi.com')
+  consumer = OAuth::Consumer.new('key', 'secret', site: 'http://api.example.com')
   req_token = OAuth::RequestToken.new(consumer)
   acc_token = OAuth::AccessToken.new(consumer)
 
@@ -11,7 +11,7 @@ def stub_all_oauth_requests!
   def response.body
     {
       'following' => false, 'listed_count' => 0, 'profile_link_color' => '0084B4',
-      'profile_image_url' => 'http://a1.twimg.com/profile_images/536178575/noamb_normal.jpg',
+      'profile_image_url' => 'http://media.example.com/profile_images/536178575/noamb_normal.jpg',
       'description' => 'Programmer/Heavy Metal Fan/New Father',
       'status' => {
         'text' => 'coming soon to sorcery gem: twitter and facebook authentication support.',
@@ -27,7 +27,7 @@ def stub_all_oauth_requests!
       'screen_name' => 'nbenari', 'profile_use_background_image' => true, 'location' => 'Israel',
       'statuses_count' => 25, 'profile_background_color' => '022330', 'lang' => 'en',
       'verified' => false, 'notifications' => false,
-      'profile_background_image_url' => 'http://a3.twimg.com/profile_background_images/104087198/04042010339.jpg',
+      'profile_background_image_url' => 'http://media.example.com/profile_background_images/104087198/04042010339.jpg',
       'favourites_count' => 5, 'created_at' => 'Fri Nov 20 21:58:19 +0000 2009',
       'is_translator' => false, 'contributors_enabled' => false, 'protected' => false,
       'follow_request_sent' => false, 'time_zone' => 'Greenland', 'profile_text_color' => '333333',
@@ -54,14 +54,14 @@ describe SorceryController, type: :controller do
     sorcery_controller_property_set(:external_providers, %i[twitter jira])
     sorcery_controller_external_property_set(:twitter, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:twitter, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com')
+    sorcery_controller_external_property_set(:twitter, :callback_url, 'http://example.com')
 
     sorcery_controller_external_property_set(:jira, :key, '7810b8e317ebdc81601c72f8daecc0f1')
     sorcery_controller_external_property_set(:jira, :secret, 'MyAppUsingJira')
-    sorcery_controller_external_property_set(:jira, :site, 'http://jira.mycompany.com/plugins/servlet/oauth')
+    sorcery_controller_external_property_set(:jira, :site, 'http://jira.example.com/plugins/servlet/oauth')
     sorcery_controller_external_property_set(:jira, :signature_method, 'RSA-SHA1')
     sorcery_controller_external_property_set(:jira, :private_key_file, 'myrsakey.pem')
-    sorcery_controller_external_property_set(:jira, :callback_url, 'http://myappusingjira.com/home')
+    sorcery_controller_external_property_set(:jira, :callback_url, 'http://app.example.com/home')
   end
 
   # ----------------- OAuth -----------------------
@@ -71,7 +71,7 @@ describe SorceryController, type: :controller do
     end
 
     after do
-      sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:twitter, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:twitter, :original_callback_url, nil)
     end
 
@@ -83,19 +83,19 @@ describe SorceryController, type: :controller do
       it 'login_at redirects correctly' do
         get :login_at_test
         expect(response).to be_a_redirect
-        expect(response).to redirect_to('http://myapi.com/oauth/authorize?oauth_callback=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&oauth_token=')
+        expect(response).to redirect_to('http://api.example.com/oauth/authorize?oauth_callback=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&oauth_token=')
       end
     end
 
     context 'when callback_url begins with http://' do
       before do
-        sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com/oauth/twitter/callback')
+        sorcery_controller_external_property_set(:twitter, :callback_url, 'http://example.com/oauth/twitter/callback')
       end
 
       it 'login_at redirects correctly' do
         get :login_at_test
         expect(response).to be_a_redirect
-        expect(response).to redirect_to('http://myapi.com/oauth/authorize?oauth_callback=http%3A%2F%2Fblabla.com%2Foauth%2Ftwitter%2Fcallback&oauth_token=')
+        expect(response).to redirect_to('http://api.example.com/oauth/authorize?oauth_callback=http%3A%2F%2Fexample.com%2Foauth%2Ftwitter%2Fcallback&oauth_token=')
       end
     end
 
@@ -163,7 +163,7 @@ describe SorceryController, type: :controller do
         sorcery_model_property_set(:authentications_class, UserProvider)
 
         allow(user).to receive_message_chain(:sorcery_config, :username_attribute_names, :first) { :username }
-        allow(user).to receive(:username).and_return('bla@bla.com')
+        allow(user).to receive(:username).and_return('bla@example.com')
         login_user(user)
 
         expect(user).to receive(:add_provider_to_user).with('twitter', '123')

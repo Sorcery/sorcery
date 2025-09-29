@@ -107,7 +107,7 @@ shared_examples_for 'rails_3_brute_force_protection_model' do
       expect(lock_expires_at).not_to be_nil
 
       Timecop.travel(Time.now.in_time_zone + 0.3)
-      User.authenticate('bla@bla.com', 'secret')
+      User.authenticate('bla@example.com', 'secret')
 
       lock_expires_at = User.sorcery_adapter.find_by_id(user.id).lock_expires_at
       expect(lock_expires_at).to be_nil

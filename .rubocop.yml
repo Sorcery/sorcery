@@ -21,6 +21,7 @@ Metrics/BlockLength:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'
+    - 'sorcery.gemspec'
 Layout/LineLength:
   Exclude:
     - 'lib/**/*'

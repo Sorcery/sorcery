@@ -204,12 +204,6 @@ describe SorceryController, type: :controller do
               expect(response).to redirect_to('http://test.host/referer_action')
             end
           end
-
-          context 'when Rails::VERSION::MAJOR < 7', skip: Rails::VERSION::MAJOR >= 7 do
-            it 'raise NoMethodError' do
-              expect { get :test_redirect_back_or_to }.to raise_error(NoMethodError)
-            end
-          end
         end
 
         context 'when false' do

@@ -20,6 +20,9 @@ module Sorcery
         attr_accessor :after_logout
         attr_accessor :after_remember_me
 
+        # set whether to use 'redirect_back_or_to' defined in Rails 7.
+        attr_accessor :use_redirect_back_or_to_by_rails
+
         def init!
           @defaults = {
             :@user_class                           => nil,
@@ -32,7 +35,8 @@ module Sorcery
             :@after_logout                         => Set.new,
             :@after_remember_me                    => Set.new,
             :@save_return_to_url                   => true,
-            :@cookie_domain                        => nil
+            :@cookie_domain                        => nil,
+            :@use_redirect_back_or_to_by_rails     => false
           }
         end
 

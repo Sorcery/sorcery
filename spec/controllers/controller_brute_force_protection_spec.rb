@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe SorceryController, type: :controller do
-  let!(:user) { User.create!(username: 'test_user', email: 'bla@bla.com', password: 'password') }
+  let!(:user) { User.create!(username: 'test_user', email: 'bla@example.com', password: 'password') }
 
   def request_test_login
-    get :test_login, params: { email: 'bla@bla.com', password: 'blabla' }
+    get :test_login, params: { email: 'bla@example.com', password: 'blabla' }
   end
 
   # ----------------- BRUTE FORCE PROTECTION -----------------------
@@ -20,7 +20,7 @@ describe SorceryController, type: :controller do
 
     it 'counts login retries' do
       allow(User).to receive(:authenticate) { |&block| block.call(nil, :other) }
-      allow(User.sorcery_adapter).to receive(:find_by_credentials).with(['bla@bla.com', 'blabla']).and_return(user)
+      allow(User.sorcery_adapter).to receive(:find_by_credentials).with(['bla@example.com', 'blabla']).and_return(user)
 
       expect(user).to receive(:register_failed_login!).exactly(3).times
 
@@ -33,7 +33,7 @@ describe SorceryController, type: :controller do
 
       allow(User).to receive(:authenticate) { |&block| block.call(user, nil) }
 
-      get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
+      get :test_login, params: { email: 'bla@example.com', password: 'secret' }
 
       user.reload
       expect(user.failed_logins_count).to eq(0)

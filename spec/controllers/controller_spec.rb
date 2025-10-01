@@ -52,8 +52,8 @@ describe SorceryController, type: :controller do
     describe '#login' do
       context 'when succeeds' do
         before do
-          expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
-          get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
+          expect(User).to receive(:authenticate).with('bla@example.com', 'secret') { |&block| block.call(user, nil) }
+          get :test_login, params: { email: 'bla@example.com', password: 'secret' }
         end
 
         it 'assigns user to @user variable' do
@@ -67,8 +67,8 @@ describe SorceryController, type: :controller do
 
       context 'when fails' do
         before do
-          expect(User).to receive(:authenticate).with('bla@bla.com', 'opensesame!').and_return(nil)
-          get :test_login, params: { email: 'bla@bla.com', password: 'opensesame!' }
+          expect(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_return(nil)
+          get :test_login, params: { email: 'bla@example.com', password: 'opensesame!' }
         end
 
         it 'sets @user variable to nil' do
@@ -154,7 +154,7 @@ describe SorceryController, type: :controller do
 
     it 'on successful login the user is redirected to the url he originally wanted' do
       session[:return_to_url] = 'http://test.host/some_action'
-      post :test_return_to, params: { email: 'bla@bla.com', password: 'secret' }
+      post :test_return_to, params: { email: 'bla@example.com', password: 'secret' }
 
       expect(response).to redirect_to('http://test.host/some_action')
       expect(flash[:notice]).to eq 'haha!'

@@ -170,7 +170,7 @@ shared_examples_for 'rails_3_core_model' do
         end
 
         it 'yields the proper error if no user exists' do
-          [nil, '', 'not@a.user'].each do |email|
+          [nil, '', 'doesnotexists@example.com'].each do |email|
             User.authenticate(email, 'wrong!') do |user2, failure|
               expect(user2).to be_nil
               expect(failure).to eq :invalid_login
@@ -247,7 +247,7 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     it 'does not encrypt the password twice when a user is updated' do
-      user.email = 'blup@bla.com'
+      user.email = 'blup@example.com'
       user.save
 
       expect(
@@ -302,7 +302,7 @@ shared_examples_for 'rails_3_core_model' do
 
   describe 'password validation' do
     let(:user_with_pass) do
-      create_new_user(username: 'foo_bar', email: 'foo@bar.com', password: 'foobar')
+      create_new_user(username: 'foo_bar', email: 'foo@example.com', password: 'foobar')
     end
 
     specify { expect(user_with_pass).to respond_to :valid_password? }
@@ -562,7 +562,7 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     it 'find_by_email works as expected' do
-      expect(User.sorcery_adapter.find_by_email('bla@bla.com')).to eq user
+      expect(User.sorcery_adapter.find_by_email('bla@example.com')).to eq user
     end
   end
 end

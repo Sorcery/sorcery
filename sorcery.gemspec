@@ -37,7 +37,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'byebug', '~> 11.1.3'
   s.add_development_dependency 'rspec-rails'
-  s.add_development_dependency 'rubocop'
   s.add_development_dependency 'timecop'
   s.add_development_dependency 'webmock', '~> 3.3.0'
   s.add_development_dependency 'yard', '~> 0.9.0', '>= 0.9.12'

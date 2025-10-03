@@ -1,9 +1,14 @@
 inherit_from: .rubocop_todo.yml
+plugins:
+  - rubocop-performance
+  - rubocop-rspec
 
 AllCops:
   Exclude:
     - 'lib/generators/sorcery/templates/**/*'
-  TargetRubyVersion: 2.6
+    - 'vendor/bundle/**/*'
+  TargetRubyVersion: 3.2
+  NewCops: enable
 
 # See: https://github.com/rubocop-hq/rubocop/issues/3344
 Style/DoubleNegation:
@@ -46,7 +51,7 @@ Naming/AccessorMethodName:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'

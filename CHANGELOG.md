@@ -4,6 +4,8 @@
 
 This file contains historical changelog entries for reference. New releases and their changes are documented in GitHub Releases.
 
+* Allow open redirect for Rails 7.0 in #redirect_back_or_to method [#351](https://github.com/Sorcery/sorcery/pull/351)
+
 ## 0.17.0
 
 * Fix Rails 7.1 compatibility by using `ActiveRecord.timestamped_migrations` [#352](https://github.com/Sorcery/sorcery/pull/352)

@@ -100,7 +100,7 @@ module Sorcery
         if Config.use_redirect_back_or_to_by_rails
           super
         else
-          ActiveSupport::Deprecation.warn(
+          ActiveSupport.deprecator.warn(
             '`redirect_back_or_to` overrides the method of the same name defined in Rails 7. ' \
             'To avoid overriding, set `config.use_redirect_back_or_to_by_rails = true` and use `redirect_to_before_login_path`. ' \
             'In a future release, `config.use_redirect_back_or_to_by_rails = true` will become the default.'

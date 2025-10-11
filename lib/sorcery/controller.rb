@@ -18,7 +18,7 @@ module Sorcery
       Config.configure!
     end
 
-    module InstanceMethods
+    module InstanceMethods # rubocop:disable Metrics/ModuleLength
       # To be used as before_action.
       # Will trigger auto-login attempts via the call to logged_in?
       # If all attempts to auto-login fail, the failure callback will be called.
@@ -100,7 +100,7 @@ module Sorcery
         if Config.use_redirect_back_or_to_by_rails
           super
         else
-          ActiveSupport.deprecator.warn(
+          Sorcery.deprecator.warn(
             '`redirect_back_or_to` overrides the method of the same name defined in Rails 7. ' \
             'To avoid overriding, set `config.use_redirect_back_or_to_by_rails = true` and use `redirect_to_before_login_path`. ' \
             'In a future release, `config.use_redirect_back_or_to_by_rails = true` will become the default.'

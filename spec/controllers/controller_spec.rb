@@ -194,7 +194,8 @@ describe SorceryController, type: :controller do
         context 'when true' do
           before do
             sorcery_controller_property_set(:use_redirect_back_or_to_by_rails, true)
-            allow_any_instance_of(ActionController::TestRequest).to receive(:referer).and_return('http://test.host/referer_action')
+            allow_any_instance_of(ActionController::TestRequest) # rubocop:disable RSpec/AnyInstance
+              .to receive(:referer).and_return('http://test.host/referer_action')
           end
 
           context 'when Rails::VERSION::MAJOR >= 7', skip: Rails::VERSION::MAJOR < 7 do

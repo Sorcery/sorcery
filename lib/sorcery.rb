@@ -1,4 +1,5 @@
 require 'sorcery/version'
+require 'sorcery/deprecator'
 
 module Sorcery
   require 'sorcery/model'

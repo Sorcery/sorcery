@@ -6,6 +6,7 @@ This file contains historical changelog entries for reference. New releases and 
 
 ## 0.17.0
 
+* Fix to invalidate sessions with remember_me cookie [#358](https://github.com/Sorcery/sorcery/pull/358)
 * Fix Rails 7.1 compatibility by using `ActiveRecord.timestamped_migrations` [#352](https://github.com/Sorcery/sorcery/pull/352)
 * Change CI settings for support Ruby3.0+ Rails6.1+ [#357](https://github.com/Sorcery/sorcery/pull/357)
 * Fix error when running the install generator [#339](https://github.com/Sorcery/sorcery/pull/339)

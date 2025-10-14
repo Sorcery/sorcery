@@ -1,7 +1,10 @@
 require 'sorcery/version'
-require 'sorcery/deprecator'
 
 module Sorcery
+  def self.deprecator
+    @deprecator ||= ActiveSupport::Deprecation.new(nil, 'Sorcery')
+  end
+
   require 'sorcery/model'
 
   module Adapters

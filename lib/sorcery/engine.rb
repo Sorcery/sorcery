@@ -7,6 +7,10 @@ module Sorcery
   class Engine < Rails::Engine
     config.sorcery = ::Sorcery::Controller::Config
 
+    initializer 'sorcery.deprecator' do |app|
+      app.deprecators[:sorcery] = Sorcery.deprecator
+    end
+
     # TODO: Should this include a modified version of the helper methods?
     initializer 'extend Controller with sorcery' do
       # FIXME: on_load is needed to fix Rails 6 deprecations, but it breaks

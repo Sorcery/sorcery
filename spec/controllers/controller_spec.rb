@@ -210,7 +210,14 @@ describe SorceryController, type: :controller do
         context 'when false' do
           before { sorcery_controller_property_set(:use_redirect_back_or_to_by_rails, false) }
 
-          it 'uses Sorcery redirect_back_or_to method' do
+          it 'uses Sorcery redirect_back_or_to method and warns about overriding the Rails 7 method' do
+            deprecator = Sorcery.deprecator
+            expected_message = '`redirect_back_or_to` overrides the method of the same name defined in Rails 7. ' \
+                               'To avoid overriding, set `config.use_redirect_back_or_to_by_rails = true` and use `redirect_to_before_login_path`. ' \
+                               'In a future release, `config.use_redirect_back_or_to_by_rails = true` will become the default.'
+
+            expect(deprecator).to receive(:warn).with(expected_message)
+
             session[:return_to_url] = 'http://test.host/some_action'
             get :test_redirect_back_or_to
 

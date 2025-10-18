@@ -22,6 +22,12 @@ describe SorceryController, type: :controller do
 
       expect(Sorcery::Controller::Config.not_authenticated_action).to eq :my_action
     end
+
+    it "enables configuration option 'use_redirect_back_or_to_by_rails'" do
+      sorcery_controller_property_set(:use_redirect_back_or_to_by_rails, true)
+
+      expect(Sorcery::Controller::Config.use_redirect_back_or_to_by_rails).to be true
+    end
   end
 
   # ----------------- PLUGIN ACTIVATED -----------------------
@@ -181,6 +187,45 @@ describe SorceryController, type: :controller do
       get :test_auto_login
 
       expect(assigns[:result]).to eq user
+    end
+
+    describe 'redirect_back_or_to' do
+      describe 'use_redirect_back_or_to_by_rails' do
+        context 'when true' do
+          before do
+            sorcery_controller_property_set(:use_redirect_back_or_to_by_rails, true)
+            allow_any_instance_of(ActionController::TestRequest) # rubocop:disable RSpec/AnyInstance
+              .to receive(:referer).and_return('http://test.host/referer_action')
+          end
+
+          context 'when Rails::VERSION::MAJOR >= 7', skip: Rails::VERSION::MAJOR < 7 do
+            it 'uses Rails 7 redirect_back_or_to method' do
+              get :test_redirect_back_or_to
+
+              expect(response).to redirect_to('http://test.host/referer_action')
+            end
+          end
+        end
+
+        context 'when false' do
+          before { sorcery_controller_property_set(:use_redirect_back_or_to_by_rails, false) }
+
+          it 'uses Sorcery redirect_back_or_to method and warns about overriding the Rails 7 method' do
+            deprecator = Sorcery.deprecator
+            expected_message = '`redirect_back_or_to` overrides the method of the same name defined in Rails 7. ' \
+                               'To avoid overriding, set `config.use_redirect_back_or_to_by_rails = true` and use `redirect_to_before_login_path`. ' \
+                               'In a future release, `config.use_redirect_back_or_to_by_rails = true` will become the default.'
+
+            expect(deprecator).to receive(:warn).with(expected_message)
+
+            session[:return_to_url] = 'http://test.host/some_action'
+            get :test_redirect_back_or_to
+
+            expect(response).to redirect_to('http://test.host/some_action')
+            expect(flash[:notice]).to eq 'haha!'
+          end
+        end
+      end
     end
   end
 end

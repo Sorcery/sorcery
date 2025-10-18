@@ -16,10 +16,19 @@ Rails.application.config.sorcery.configure do |config|
   # config.not_authenticated_action =
 
   # When a non logged-in user tries to enter a page that requires login, save
-  # the URL he wants to reach, and send him there after login, using 'redirect_back_or_to'.
+  # the URL he wants to reach, and send him there after login, using 'redirect_to_before_login_path'.
   # Default: `true`
   #
   # config.save_return_to_url =
+
+  # Set whether to use 'redirect_back_or_to' defined in Rails 7.
+  # Rails 7 released a new method called 'redirect_back_or_to' as a replacement for 'redirect_back'.
+  # That may conflict with the method by the same name defined by Sorcery.
+  # If you set this option to true, Sorcery's 'redirect_back_or_to' calls 'super' to use
+  # the method of the same name defined in Rails 7.
+  # Default: `false`
+  #
+  # config.use_redirect_back_or_to_by_rails =
 
   # Set domain option for cookies; Useful for remember_me submodule.
   # Default: `nil`

@@ -22,7 +22,6 @@ module Sorcery
         @model.send(mthd, options)
       end
 
-
       class << self
         def define_field(name, type, options = {})
           @klass.field name, options.slice(:default).merge(type: type)
@@ -41,7 +40,9 @@ module Sorcery
         end
 
         def credential_regex(credential)
-          return { :$regex => /^#{Regexp.escape(credential)}$/i } if @klass.sorcery_config.downcase_username_before_authenticating
+          if @klass.sorcery_config.downcase_username_before_authenticating
+            return { :$regex => /^#{Regexp.escape(credential)}$/i }
+          end
 
           credential
         end
@@ -67,8 +68,8 @@ module Sorcery
           @klass.where(@klass.sorcery_config.remember_me_token_attribute_name => token).first
         end
 
-        def transaction(&blk)
-          tap(&blk)
+        def transaction(&)
+          tap(&)
         end
 
         def find_by_id(id)

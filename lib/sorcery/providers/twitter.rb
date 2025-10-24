@@ -44,8 +44,8 @@ module Sorcery
       # tries to login the user from access token
       def process_callback(params, session)
         args = {
-          oauth_verifier:       params[:oauth_verifier],
-          request_token:        session[:request_token],
+          oauth_verifier: params[:oauth_verifier],
+          request_token: session[:request_token],
           request_token_secret: session[:request_token_secret]
         }
 

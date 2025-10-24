@@ -21,15 +21,15 @@ module Sorcery
           end
 
           base.sorcery_config.instance_eval do
-            @defaults.merge!(:@failed_logins_count_attribute_name              => :failed_logins_count,
-                             :@lock_expires_at_attribute_name                  => :lock_expires_at,
-                             :@consecutive_login_retries_amount_limit          => 50,
-                             :@login_lock_time_period                          => 60 * 60,
+            @defaults.merge!(:@failed_logins_count_attribute_name => :failed_logins_count,
+                             :@lock_expires_at_attribute_name => :lock_expires_at,
+                             :@consecutive_login_retries_amount_limit => 50,
+                             :@login_lock_time_period => 60 * 60,
 
-                             :@unlock_token_attribute_name                     => :unlock_token,
-                             :@unlock_token_email_method_name                  => :send_unlock_token_email,
-                             :@unlock_token_mailer_disabled                    => false,
-                             :@unlock_token_mailer                             => nil)
+                             :@unlock_token_attribute_name => :unlock_token,
+                             :@unlock_token_email_method_name => :send_unlock_token_email,
+                             :@unlock_token_mailer_disabled => false,
+                             :@unlock_token_mailer => nil)
             reset!
           end
 
@@ -41,13 +41,13 @@ module Sorcery
 
         module ClassMethods
           # This doesn't check to see if the account is still locked
-          def load_from_unlock_token(token, &block)
+          def load_from_unlock_token(token, &)
             return if token.blank?
 
             load_from_token(
               token,
               sorcery_config.unlock_token_attribute_name,
-              &block
+              &
             )
           end
 
@@ -69,7 +69,9 @@ module Sorcery
 
             sorcery_adapter.increment(config.failed_logins_count_attribute_name)
 
-            return unless send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
+            unless send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
+              return
+            end
 
             login_lock!
           end

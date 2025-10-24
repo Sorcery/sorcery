@@ -11,6 +11,7 @@ module Sorcery
           Config.module_eval do
             class << self
               attr_accessor :remember_me_httponly
+
               def merge_remember_me_defaults!
                 @defaults.merge!(:@remember_me_httponly => true)
               end

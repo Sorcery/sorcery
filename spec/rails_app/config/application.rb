@@ -47,8 +47,6 @@ module AppRoot
 
     config.action_mailer.delivery_method = :test
     config.active_support.deprecation = :stderr
-    if config.active_record.sqlite3.present?
-      config.active_record.sqlite3.represent_boolean_as_integer = true
-    end
+    config.active_record.sqlite3.represent_boolean_as_integer = true if config.active_record.sqlite3.present?
   end
 end

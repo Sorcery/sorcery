@@ -8,8 +8,7 @@ module Sorcery
     # config.heroku.scope = "read"
     # config.heroku.user_info_mapping = {:email => "email", :name => "email" }
 
-    # NOTE:
-    # The full path must be set for OAuth Callback URL when configuring the API Client Information on Heroku.
+    # NOTE: The full path must be set for OAuth Callback URL when configuring the API Client Information on Heroku.
 
     class Heroku < Base
       include Protocols::Oauth2

@@ -29,15 +29,15 @@ module Sorcery
           end
 
           base.sorcery_config.instance_eval do
-            @defaults.merge!(:@activation_state_attribute_name             => :activation_state,
-                             :@activation_token_attribute_name             => :activation_token,
-                             :@activation_token_expires_at_attribute_name  => :activation_token_expires_at,
-                             :@activation_token_expiration_period          => nil,
-                             :@user_activation_mailer                      => nil,
-                             :@activation_mailer_disabled                  => false,
-                             :@activation_needed_email_method_name         => :activation_needed_email,
-                             :@activation_success_email_method_name        => :activation_success_email,
-                             :@prevent_non_active_users_to_login           => true)
+            @defaults.merge!(:@activation_state_attribute_name => :activation_state,
+                             :@activation_token_attribute_name => :activation_token,
+                             :@activation_token_expires_at_attribute_name => :activation_token_expires_at,
+                             :@activation_token_expiration_period => nil,
+                             :@user_activation_mailer => nil,
+                             :@activation_mailer_disabled => false,
+                             :@activation_needed_email_method_name => :activation_needed_email,
+                             :@activation_success_email_method_name => :activation_success_email,
+                             :@prevent_non_active_users_to_login => true)
             reset!
           end
 
@@ -59,12 +59,12 @@ module Sorcery
         module ClassMethods
           # Find user by token, also checks for expiration.
           # Returns the user if token found and is valid.
-          def load_from_activation_token(token, &block)
+          def load_from_activation_token(token, &)
             load_from_token(
               token,
               @sorcery_config.activation_token_attribute_name,
               @sorcery_config.activation_token_expires_at_attribute_name,
-              &block
+              &
             )
           end
 
@@ -74,7 +74,9 @@ module Sorcery
           # when activation_mailer_disabled is false
           def validate_mailer_defined
             message = 'To use user_activation submodule, you must define a mailer (config.user_activation_mailer = YourMailerClass).'
-            raise ArgumentError, message if @sorcery_config.user_activation_mailer.nil? && @sorcery_config.activation_mailer_disabled == false
+            if @sorcery_config.user_activation_mailer.nil? && @sorcery_config.activation_mailer_disabled == false
+              raise ArgumentError, message
+            end
           end
 
           def define_user_activation_fields
@@ -92,7 +94,9 @@ module Sorcery
             generated_activation_token = TemporaryToken.generate_random_token
             send(:"#{config.activation_token_attribute_name}=", generated_activation_token)
             send(:"#{config.activation_state_attribute_name}=", 'pending')
-            send(:"#{config.activation_token_expires_at_attribute_name}=", Time.now.in_time_zone + config.activation_token_expiration_period) if config.activation_token_expiration_period
+            return unless config.activation_token_expiration_period
+
+            send(:"#{config.activation_token_expires_at_attribute_name}=", Time.now.in_time_zone + config.activation_token_expiration_period)
           end
 
           # clears activation code, sets the user as 'active' and optionaly sends a success email.
@@ -133,9 +137,7 @@ module Sorcery
             config = sorcery_config
 
             if config.prevent_non_active_users_to_login
-              unless send(config.activation_state_attribute_name) == 'active'
-                return false, :inactive
-              end
+              return false, :inactive unless send(config.activation_state_attribute_name) == 'active'
             end
 
             true

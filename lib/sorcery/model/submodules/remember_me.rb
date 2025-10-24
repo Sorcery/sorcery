@@ -14,10 +14,10 @@ module Sorcery
           end
 
           base.sorcery_config.instance_eval do
-            @defaults.merge!(:@remember_me_token_attribute_name            => :remember_me_token,
+            @defaults.merge!(:@remember_me_token_attribute_name => :remember_me_token,
                              :@remember_me_token_expires_at_attribute_name => :remember_me_token_expires_at,
-                             :@remember_me_token_persist_globally          => false,
-                             :@remember_me_for                             => 7 * 60 * 60 * 24)
+                             :@remember_me_token_persist_globally => false,
+                             :@remember_me_for => 7 * 60 * 60 * 24)
 
             reset!
           end

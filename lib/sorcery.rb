@@ -86,7 +86,7 @@ module Sorcery
 
   if defined?(Mongoid::Document)
     require 'sorcery/adapters/mongoid_adapter'
-    Mongoid::Document::ClassMethods.send :include, Sorcery::Model
+    Mongoid::Document::ClassMethods.include Sorcery::Model
 
     Mongoid::Document.send :define_method, :sorcery_adapter do
       @sorcery_adapter ||= Sorcery::Adapters::MongoidAdapter.new(self)

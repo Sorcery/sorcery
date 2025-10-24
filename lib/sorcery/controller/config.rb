@@ -2,7 +2,7 @@ module Sorcery
   module Controller
     module Config
       class << self
-        attr_accessor :submodules
+        attr_accessor :submodules, :login_sources, :after_login, :after_failed_login, :before_logout, :after_logout, :after_remember_me
         # what class to use as the user class.
         attr_accessor :user_class
         # what controller action to call for non-authenticated users.
@@ -13,30 +13,23 @@ module Sorcery
         # set domain option for cookies
         attr_accessor :cookie_domain
 
-        attr_accessor :login_sources
-        attr_accessor :after_login
-        attr_accessor :after_failed_login
-        attr_accessor :before_logout
-        attr_accessor :after_logout
-        attr_accessor :after_remember_me
-
         # set whether to use 'redirect_back_or_to' defined in Rails 7.
         attr_accessor :use_redirect_back_or_to_by_rails
 
         def init!
           @defaults = {
-            :@user_class                           => nil,
-            :@submodules                           => [],
-            :@not_authenticated_action             => :not_authenticated,
-            :@login_sources                        => Set.new,
-            :@after_login                          => Set.new,
-            :@after_failed_login                   => Set.new,
-            :@before_logout                        => Set.new,
-            :@after_logout                         => Set.new,
-            :@after_remember_me                    => Set.new,
-            :@save_return_to_url                   => true,
-            :@cookie_domain                        => nil,
-            :@use_redirect_back_or_to_by_rails     => false
+            :@user_class => nil,
+            :@submodules => [],
+            :@not_authenticated_action => :not_authenticated,
+            :@login_sources => Set.new,
+            :@after_login => Set.new,
+            :@after_failed_login => Set.new,
+            :@before_logout => Set.new,
+            :@after_logout => Set.new,
+            :@after_remember_me => Set.new,
+            :@save_return_to_url => true,
+            :@cookie_domain => nil,
+            :@use_redirect_back_or_to_by_rails => false
           }
         end
 

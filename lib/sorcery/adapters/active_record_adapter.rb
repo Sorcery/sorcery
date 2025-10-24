@@ -23,7 +23,7 @@ module Sorcery
         @user_config ||= ::Sorcery::Controller::Config.user_class.to_s.constantize.sorcery_config
         conditions = {
           @user_config.provider_uid_attribute_name => uid,
-          @user_config.provider_attribute_name     => provider
+          @user_config.provider_attribute_name => provider
         }
 
         @model.public_send(relation_name).where(conditions).first
@@ -42,7 +42,7 @@ module Sorcery
           @user_config ||= ::Sorcery::Controller::Config.user_class.to_s.constantize.sorcery_config
           conditions = {
             @user_config.provider_uid_attribute_name => uid,
-            @user_config.provider_attribute_name     => provider
+            @user_config.provider_attribute_name => provider
           }
 
           @klass.where(conditions).first

@@ -29,15 +29,15 @@ module Sorcery
           end
 
           base.sorcery_config.instance_eval do
-            @defaults.merge!(:@activation_state_attribute_name             => :activation_state,
-                             :@activation_token_attribute_name             => :activation_token,
-                             :@activation_token_expires_at_attribute_name  => :activation_token_expires_at,
-                             :@activation_token_expiration_period          => nil,
-                             :@user_activation_mailer                      => nil,
-                             :@activation_mailer_disabled                  => false,
-                             :@activation_needed_email_method_name         => :activation_needed_email,
-                             :@activation_success_email_method_name        => :activation_success_email,
-                             :@prevent_non_active_users_to_login           => true)
+            @defaults.merge!(:@activation_state_attribute_name => :activation_state,
+                             :@activation_token_attribute_name => :activation_token,
+                             :@activation_token_expires_at_attribute_name => :activation_token_expires_at,
+                             :@activation_token_expiration_period => nil,
+                             :@user_activation_mailer => nil,
+                             :@activation_mailer_disabled => false,
+                             :@activation_needed_email_method_name => :activation_needed_email,
+                             :@activation_success_email_method_name => :activation_success_email,
+                             :@prevent_non_active_users_to_login => true)
             reset!
           end
 

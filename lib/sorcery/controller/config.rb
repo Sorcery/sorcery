@@ -25,18 +25,18 @@ module Sorcery
 
         def init!
           @defaults = {
-            :@user_class                           => nil,
-            :@submodules                           => [],
-            :@not_authenticated_action             => :not_authenticated,
-            :@login_sources                        => Set.new,
-            :@after_login                          => Set.new,
-            :@after_failed_login                   => Set.new,
-            :@before_logout                        => Set.new,
-            :@after_logout                         => Set.new,
-            :@after_remember_me                    => Set.new,
-            :@save_return_to_url                   => true,
-            :@cookie_domain                        => nil,
-            :@use_redirect_back_or_to_by_rails     => false
+            :@user_class => nil,
+            :@submodules => [],
+            :@not_authenticated_action => :not_authenticated,
+            :@login_sources => Set.new,
+            :@after_login => Set.new,
+            :@after_failed_login => Set.new,
+            :@before_logout => Set.new,
+            :@after_logout => Set.new,
+            :@after_remember_me => Set.new,
+            :@save_return_to_url => true,
+            :@cookie_domain => nil,
+            :@use_redirect_back_or_to_by_rails => false
           }
         end
 

@@ -40,7 +40,7 @@ module Sorcery
       def authorize_url(options = {})
         options.merge!({ connection_opts: { params: { bot_prompt: bot_prompt } } }) if bot_prompt.present?
 
-        super(options)
+        super
       end
 
       # tries to login the user from access token

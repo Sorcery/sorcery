@@ -217,7 +217,7 @@ describe 'Crypto Providers wrappers' do
       end
     end
 
-    context "when pepper is an empty string (default)" do
+    context 'when pepper is an empty string (default)' do
       before(:each) do
         Sorcery::CryptoProviders::BCrypt.pepper = ''
         @digest = Sorcery::CryptoProviders::BCrypt.encrypt(@tokens) # a BCrypt::Password object

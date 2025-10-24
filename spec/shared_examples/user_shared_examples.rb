@@ -326,7 +326,7 @@ shared_examples_for 'rails_3_core_model' do
 
     before do
       @mail = double('mail')
-      allow(::SorceryMailer).to receive(:activation_success_email).and_return(@mail)
+      allow(SorceryMailer).to receive(:activation_success_email).and_return(@mail)
     end
 
     it 'use deliver_later' do
@@ -492,10 +492,10 @@ shared_examples_for 'rails_3_core_model' do
 
       # password comparison is done using BCrypt::Password#==(raw_token), not String#==
       bcrypt_password = BCrypt::Password.new(user.crypted_password)
-      allow(::BCrypt::Password).to receive(:create) do |token, _options = {}|
+      allow(BCrypt::Password).to receive(:create) do |token, _options = {}|
         # need to use common BCrypt's salt when genarating BCrypt::Password objects
         # so that any generated password hashes can be compared each other
-        ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
+        BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
       end
 
       expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret')
@@ -516,10 +516,10 @@ shared_examples_for 'rails_3_core_model' do
 
       # password comparison is done using BCrypt::Password#==(raw_token), not String#==
       bcrypt_password = BCrypt::Password.new(user.crypted_password)
-      allow(::BCrypt::Password).to receive(:create) do |token, _options = {}|
+      allow(BCrypt::Password).to receive(:create) do |token, _options = {}|
         # need to use common BCrypt's salt when genarating BCrypt::Password objects
         # so that any generated password hashes can be compared each other
-        ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
+        BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
       end
 
       expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret')
@@ -627,7 +627,7 @@ shared_examples_for 'external_user' do
 
   describe 'activation' do
     before(:each) do
-      sorcery_reload!(%i[user_activation external], user_activation_mailer: ::SorceryMailer)
+      sorcery_reload!(%i[user_activation external], user_activation_mailer: SorceryMailer)
     end
 
     after(:each) do

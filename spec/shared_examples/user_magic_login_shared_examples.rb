@@ -90,7 +90,7 @@ shared_examples_for 'magic_login_model' do
           Timecop.travel(10.days.ago) do
             user.send(:"#{config.magic_login_email_sent_at_attribute_name}=", DateTime.now)
           end
-          sorcery_model_property_set(:magic_login_mailer_class, ::SorceryMailer)
+          sorcery_model_property_set(:magic_login_mailer_class, SorceryMailer)
         end
 
         it do

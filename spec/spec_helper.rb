@@ -30,10 +30,10 @@ RSpec.configure do |config|
   config.after(:suite) { teardown_orm }
   config.before(:each) { ActionMailer::Base.deliveries.clear }
 
-  config.include ::Sorcery::TestHelpers::Internal
-  config.include ::Sorcery::TestHelpers::Internal::Rails
+  config.include Sorcery::TestHelpers::Internal
+  config.include Sorcery::TestHelpers::Internal::Rails
 
-  config.include ::Rails::Controller::Testing::TestProcess, type: :controller
-  config.include ::Rails::Controller::Testing::TemplateAssertions, type: :controller
-  config.include ::Rails::Controller::Testing::Integration, type: :controller
+  config.include Rails::Controller::Testing::TestProcess, type: :controller
+  config.include Rails::Controller::Testing::TemplateAssertions, type: :controller
+  config.include Rails::Controller::Testing::Integration, type: :controller
 end

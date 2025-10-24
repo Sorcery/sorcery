@@ -20,13 +20,6 @@ Gemspec/RequireMFA:
   Exclude:
     - 'sorcery.gemspec'
 
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-Lint/AmbiguousOperatorPrecedence:
-  Exclude:
-    - 'lib/sorcery/providers/github.rb'
-    - 'spec/shared_examples/user_remember_me_shared_examples.rb'
-
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: AllowSafeAssignment.

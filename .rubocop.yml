@@ -55,6 +55,10 @@ Naming/PredicatePrefix:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'
+Naming/PredicateMethod:
+  Exclude:
+    - 'lib/**/*'
+    - 'spec/**/*'
 Style/Documentation:
   Exclude:
     - 'lib/**/*'

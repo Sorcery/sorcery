@@ -44,6 +44,7 @@ module Sorcery
         # Basically it's equivalent to :salt_join_token option, but have a different name to ensure
         # backward compatibility in generating/matching passwords.
         attr_accessor :pepper
+
         # This is the :cost option for the BCrpyt library.
         # The higher the cost the more secure it is and the longer is take the generate a hash. By default this is 10.
         # Set this to whatever you want, play around with it to get that perfect balance between

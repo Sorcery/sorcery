@@ -26,6 +26,7 @@ module Sorcery
     # Uses the Sha512 hash algorithm to encrypt passwords.
     class SHA512
       include Common
+
       class << self
         def secure_digest(digest)
           Digest::SHA512.hexdigest(digest)

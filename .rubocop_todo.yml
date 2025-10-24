@@ -425,60 +425,6 @@ RSpec/Yield:
     - 'spec/controllers/controller_session_timeout_spec.rb'
     - 'spec/controllers/controller_spec.rb'
 
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: separated, grouped
-Style/AccessorGrouping:
-  Exclude:
-    - 'lib/sorcery/controller/config.rb'
-
-# Offense count: 23
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowOnlyRestArgument, UseAnonymousForwarding, RedundantRestArgumentNames, RedundantKeywordRestArgumentNames, RedundantBlockArgumentNames.
-# RedundantRestArgumentNames: args, arguments
-# RedundantKeywordRestArgumentNames: kwargs, options, opts
-# RedundantBlockArgumentNames: blk, block, proc
-Style/ArgumentsForwarding:
-  Exclude:
-    - 'lib/sorcery/adapters/active_record_adapter.rb'
-    - 'lib/sorcery/adapters/mongoid_adapter.rb'
-    - 'lib/sorcery/controller/submodules/external.rb'
-    - 'lib/sorcery/model/submodules/brute_force_protection.rb'
-    - 'lib/sorcery/model/submodules/magic_login.rb'
-    - 'lib/sorcery/model/submodules/reset_password.rb'
-    - 'lib/sorcery/model/submodules/user_activation.rb'
-    - 'lib/sorcery/model/temporary_token.rb'
-    - 'lib/sorcery/test_helpers/internal.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, ProceduralMethods, FunctionalMethods, AllowedMethods, AllowedPatterns, AllowBracesOnProceduralOneLiners, BracesRequiredMethods.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining, always_braces
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# AllowedMethods: lambda, proc, it
-Style/BlockDelimiters:
-  Exclude:
-    - 'spec/shared_examples/user_reset_password_shared_examples.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Keywords, RequireColon.
-# Keywords: TODO, FIXME, OPTIMIZE, HACK, REVIEW, NOTE
-Style/CommentAnnotation:
-  Exclude:
-    - 'lib/sorcery/providers/heroku.rb'
-    - 'spec/sorcery_crypto_providers_spec.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
-# SupportedStyles: assign_to_condition, assign_inside_condition
-Style/ConditionalAssignment:
-  Exclude:
-    - 'lib/sorcery/adapters/active_record_adapter.rb'
-
 # Offense count: 1
 Style/DocumentDynamicEvalDefinition:
   Exclude:
@@ -497,26 +443,10 @@ Style/ExpandPathArguments:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, EnforcedShorthandSyntax, UseHashRocketsWithSymbolValues, PreferHashRocketsForNonAlnumEndingSymbols.
-# SupportedStyles: ruby19, hash_rockets, no_mixed_keys, ruby19_no_mixed_keys
-# SupportedShorthandSyntax: always, never, either, consistent, either_consistent
-Style/HashSyntax:
-  Exclude:
-    - 'lib/sorcery/adapters/active_record_adapter.rb'
-    - 'lib/sorcery/test_helpers/rails/integration.rb'
-
 # Offense count: 32
 # This cop supports safe autocorrection (--autocorrect).
 Style/IfUnlessModifier:
   Enabled: false
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/MultilineIfModifier:
-  Exclude:
-    - 'lib/sorcery/providers/line.rb'
 
 # Offense count: 3
 # Configuration parameters: AllowedMethods.
@@ -526,27 +456,6 @@ Style/OptionalBooleanParameter:
     - 'lib/sorcery/controller.rb'
     - 'lib/sorcery/controller/submodules/external.rb'
     - 'lib/sorcery/controller/submodules/remember_me.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Methods.
-Style/RedundantArgument:
-  Exclude:
-    - 'spec/shared_examples/user_shared_examples.rb'
-
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/RedundantArrayFlatten:
-  Exclude:
-    - 'lib/sorcery/crypto_providers/bcrypt.rb'
-    - 'spec/sorcery_crypto_providers_spec.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantBegin:
-  Exclude:
-    - 'lib/sorcery/controller.rb'
-    - 'lib/sorcery/model.rb'
 
 # Offense count: 46
 # This cop supports safe autocorrection (--autocorrect).

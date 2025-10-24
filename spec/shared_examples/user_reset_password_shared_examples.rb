@@ -329,15 +329,15 @@ shared_examples_for 'rails_3_reset_password_model' do
     end
 
     it 'when change_password! is called with empty argument, raise an exception' do
-      expect {
+      expect do
         user.change_password!('')
-      }.to raise_error(ArgumentError, 'Blank password passed to change_password!')
+      end.to raise_error(ArgumentError, 'Blank password passed to change_password!')
     end
 
     it 'when change_password! is called with nil argument, raise an exception' do
-      expect {
+      expect do
         user.change_password!(nil)
-      }.to raise_error(ArgumentError, 'Blank password passed to change_password!')
+      end.to raise_error(ArgumentError, 'Blank password passed to change_password!')
     end
 
     it 'when change_password is called, deletes reset_password_token and calls #save' do

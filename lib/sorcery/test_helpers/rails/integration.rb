@@ -10,7 +10,7 @@ module Sorcery
 
           username_attr = user.sorcery_config.username_attribute_names.first
           username = user.send(username_attr)
-          page.driver.send(http_method, route, :"#{username_attr}" => username, :password => 'secret')
+          page.driver.send(http_method, route, "#{username_attr}": username, password: 'secret')
         end
 
         # Accepts route and HTTP method arguments

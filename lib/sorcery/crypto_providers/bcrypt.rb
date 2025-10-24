@@ -88,7 +88,7 @@ module Sorcery
         private
 
         def join_tokens(tokens)
-          tokens.flatten.join.concat(pepper.to_s) # make sure to add pepper in case tokens have only one element
+          tokens.join.concat(pepper.to_s) # make sure to add pepper in case tokens have only one element
         end
 
         def new_from_hash(hash)

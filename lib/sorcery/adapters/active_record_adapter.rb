@@ -6,7 +6,7 @@ module Sorcery
           @model.send(:"#{name}=", value)
         end
         primary_key = @model.class.primary_key
-        updated_count = @model.class.where(:"#{primary_key}" => @model.send(:"#{primary_key}")).update_all(attrs)
+        updated_count = @model.class.where("#{primary_key}": @model.send(:"#{primary_key}")).update_all(attrs)
         updated_count == 1
       end
 
@@ -56,11 +56,11 @@ module Sorcery
           relation = nil
 
           @klass.sorcery_config.username_attribute_names.each do |attribute|
-            if @klass.sorcery_config.downcase_username_before_authenticating
-              condition = @klass.arel_table[attribute].lower.eq(@klass.arel_table.lower(credentials[0]))
-            else
-              condition = @klass.arel_table[attribute].eq(credentials[0])
-            end
+            condition = if @klass.sorcery_config.downcase_username_before_authenticating
+                          @klass.arel_table[attribute].lower.eq(@klass.arel_table.lower(credentials[0]))
+                        else
+                          @klass.arel_table[attribute].eq(credentials[0])
+                        end
 
             relation = if relation.nil?
                          condition

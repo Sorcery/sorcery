@@ -1,7 +1,7 @@
 module Sorcery
   module Adapters
     class ActiveRecordAdapter < BaseAdapter
-      def update_attributes(attrs)
+      def update_attributes(attrs) # rubocop:disable Naming/PredicateMethod
         attrs.each do |name, value|
           @model.send(:"#{name}=", value)
         end

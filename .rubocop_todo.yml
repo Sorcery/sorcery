@@ -47,13 +47,6 @@ Lint/SymbolConversion:
   Exclude:
     - 'spec/controllers/controller_oauth2_spec.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: IgnoreEmptyBlocks, AllowUnusedKeywordArguments.
-Lint/UnusedBlockArgument:
-  Exclude:
-    - 'spec/shared_examples/user_shared_examples.rb'
-
 # Offense count: 1
 # Configuration parameters: Max, CountKeywordArgs, MaxOptionalParameters.
 Metrics/ParameterLists:

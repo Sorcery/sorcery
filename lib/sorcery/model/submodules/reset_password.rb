@@ -59,12 +59,12 @@ module Sorcery
         module ClassMethods
           # Find user by token, also checks for expiration.
           # Returns the user if token found and is valid.
-          def load_from_reset_password_token(token, &block)
+          def load_from_reset_password_token(token, &)
             load_from_token(
               token,
               @sorcery_config.reset_password_token_attribute_name,
               @sorcery_config.reset_password_token_expires_at_attribute_name,
-              &block
+              &
             )
           end
 

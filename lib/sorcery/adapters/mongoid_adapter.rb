@@ -66,8 +66,8 @@ module Sorcery
           @klass.where(@klass.sorcery_config.remember_me_token_attribute_name => token).first
         end
 
-        def transaction(&blk)
-          tap(&blk)
+        def transaction(&)
+          tap(&)
         end
 
         def find_by_id(id)

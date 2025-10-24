@@ -443,11 +443,6 @@ Style/ExpandPathArguments:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-# Offense count: 32
-# This cop supports safe autocorrection (--autocorrect).
-Style/IfUnlessModifier:
-  Enabled: false
-
 # Offense count: 3
 # Configuration parameters: AllowedMethods.
 # AllowedMethods: respond_to_missing?

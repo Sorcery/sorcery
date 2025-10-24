@@ -247,9 +247,9 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:auth0, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
       sorcery_controller_external_property_set(:auth0, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:auth0, :site, 'https://auth0.example.com')
-      sorcery_controller_external_property_set(:line, :key, "eYVNBjBDi33aa9GkA3w")
-      sorcery_controller_external_property_set(:line, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-      sorcery_controller_external_property_set(:line, :callback_url, "http://example.com")
+      sorcery_controller_external_property_set(:line, :key, 'eYVNBjBDi33aa9GkA3w')
+      sorcery_controller_external_property_set(:line, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+      sorcery_controller_external_property_set(:line, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:discord, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:discord, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
       sorcery_controller_external_property_set(:discord, :callback_url, 'http://example.com')
@@ -515,9 +515,9 @@ describe SorceryController, active_record: true, type: :controller do
     sorcery_controller_external_property_set(:auth0, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
     sorcery_controller_external_property_set(:auth0, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:auth0, :site, 'https://auth0.example.com')
-    sorcery_controller_external_property_set(:line, :key, "eYVNBjBDi33aa9GkA3w")
-    sorcery_controller_external_property_set(:line, :secret, "XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8")
-    sorcery_controller_external_property_set(:line, :callback_url, "http://example.com")
+    sorcery_controller_external_property_set(:line, :key, 'eYVNBjBDi33aa9GkA3w')
+    sorcery_controller_external_property_set(:line, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
+    sorcery_controller_external_property_set(:line, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:discord, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:discord, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
     sorcery_controller_external_property_set(:discord, :callback_url, 'http://example.com')
@@ -527,20 +527,52 @@ describe SorceryController, active_record: true, type: :controller do
   end
 
   def provider_url(provider)
-    {
-      github: "https://github.com/login/oauth/authorize?client_id=#{Sorcery::Controller::Config.github.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope&state",
-      paypal: "https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize?client_id=#{Sorcery::Controller::Config.paypal.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=openid%20email&state",
-      google: "https://accounts.google.com/o/oauth2/auth?client_id=#{Sorcery::Controller::Config.google.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state",
-      liveid: "https://oauth.live.com/authorize?client_id=#{Sorcery::Controller::Config.liveid.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=wl.basic%20wl.emails%20wl.offline_access&state",
-      vk: "https://oauth.vk.com/authorize?client_id=#{Sorcery::Controller::Config.vk.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=#{Sorcery::Controller::Config.vk.scope}&state",
-      salesforce: "https://login.salesforce.com/services/oauth2/authorize?client_id=#{Sorcery::Controller::Config.salesforce.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope#{'=' + Sorcery::Controller::Config.salesforce.scope unless Sorcery::Controller::Config.salesforce.scope.nil?}&state",
-      slack: "https://slack.com/oauth/authorize?client_id=#{Sorcery::Controller::Config.slack.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=identity.basic%2C%20identity.email&state",
-      wechat: "https://open.weixin.qq.com/connect/qrconnect?appid=#{Sorcery::Controller::Config.wechat.key}&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=snsapi_login&state=teststate#wechat_redirect",
-      microsoft: "https://login.microsoftonline.com/common/oauth2/v2.0/authorize?client_id=#{Sorcery::Controller::Config.microsoft.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=openid%20email%20https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state",
-      instagram: "https://api.instagram.com/oauth/authorize?client_id=#{Sorcery::Controller::Config.instagram.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=#{Sorcery::Controller::Config.instagram.scope}&state",
-      auth0: "https://auth0.example.com/authorize?client_id=#{Sorcery::Controller::Config.auth0.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=openid%20profile%20email&state",
-      discord: "https://discordapp.com/api/oauth2/authorize?client_id=#{Sorcery::Controller::Config.discord.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=identify&state",
-      battlenet: "https://eu.battle.net/oauth/authorize?client_id=#{Sorcery::Controller::Config.battlenet.key}&display&redirect_uri=http%3A%2F%2Fexample.com&response_type=code&scope=openid&state"
-    }[provider]
+    config = Sorcery::Controller::Config
+    redirect_uri = 'http%3A%2F%2Fexample.com'
+
+    urls = {
+      github: 'https://github.com/login/oauth/authorize?' \
+              "client_id=#{config.github.key}&display&redirect_uri=#{redirect_uri}" \
+              '&response_type=code&scope&state',
+      paypal: 'https://www.paypal.com/webapps/auth/protocol/openidconnect/v1/authorize?' \
+              "client_id=#{config.paypal.key}&display&redirect_uri=#{redirect_uri}" \
+              '&response_type=code&scope=openid%20email&state',
+      google: 'https://accounts.google.com/o/oauth2/auth?' \
+              "client_id=#{config.google.key}&display&redirect_uri=#{redirect_uri}" \
+              '&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20' \
+              'https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state',
+      liveid: 'https://oauth.live.com/authorize?' \
+              "client_id=#{config.liveid.key}&display&redirect_uri=#{redirect_uri}" \
+              '&response_type=code&scope=wl.basic%20wl.emails%20wl.offline_access&state',
+      vk: 'https://oauth.vk.com/authorize?' \
+          "client_id=#{config.vk.key}&display&redirect_uri=#{redirect_uri}" \
+          "&response_type=code&scope=#{config.vk.scope}&state",
+      salesforce: 'https://login.salesforce.com/services/oauth2/authorize?' \
+                  "client_id=#{config.salesforce.key}&display&redirect_uri=#{redirect_uri}" \
+                  "&response_type=code&scope#{'=' + config.salesforce.scope unless config.salesforce.scope.nil?}&state",
+      slack: 'https://slack.com/oauth/authorize?' \
+             "client_id=#{config.slack.key}&display&redirect_uri=#{redirect_uri}" \
+             '&response_type=code&scope=identity.basic%2C%20identity.email&state',
+      wechat: 'https://open.weixin.qq.com/connect/qrconnect?' \
+              "appid=#{config.wechat.key}&redirect_uri=#{redirect_uri}" \
+              '&response_type=code&scope=snsapi_login&state=teststate#wechat_redirect',
+      microsoft: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize?' \
+                 "client_id=#{config.microsoft.key}&display&redirect_uri=#{redirect_uri}" \
+                 '&response_type=code&scope=openid%20email%20https%3A%2F%2Fgraph.microsoft.com%2FUser.Read&state',
+      instagram: 'https://api.instagram.com/oauth/authorize?' \
+                 "client_id=#{config.instagram.key}&display&redirect_uri=#{redirect_uri}" \
+                 "&response_type=code&scope=#{config.instagram.scope}&state",
+      auth0: 'https://auth0.example.com/authorize?' \
+             "client_id=#{config.auth0.key}&display&redirect_uri=#{redirect_uri}" \
+             '&response_type=code&scope=openid%20profile%20email&state',
+      discord: 'https://discordapp.com/api/oauth2/authorize?' \
+               "client_id=#{config.discord.key}&display&redirect_uri=#{redirect_uri}" \
+               '&response_type=code&scope=identify&state',
+      battlenet: 'https://eu.battle.net/oauth/authorize?' \
+                 "client_id=#{config.battlenet.key}&display&redirect_uri=#{redirect_uri}" \
+                 '&response_type=code&scope=openid&state'
+    }
+
+    urls[provider]
   end
 end

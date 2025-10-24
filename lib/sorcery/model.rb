@@ -82,19 +82,13 @@ module Sorcery
       def authenticate(*credentials, &block)
         raise ArgumentError, 'at least 2 arguments required' if credentials.size < 2
 
-        if credentials[0].blank?
-          return authentication_response(return_value: false, failure: :invalid_login, &block)
-        end
+        return authentication_response(return_value: false, failure: :invalid_login, &block) if credentials[0].blank?
 
-        if @sorcery_config.downcase_username_before_authenticating
-          credentials[0].downcase!
-        end
+        credentials[0].downcase! if @sorcery_config.downcase_username_before_authenticating
 
         user = sorcery_adapter.find_by_credentials(credentials)
 
-        unless user
-          return authentication_response(failure: :invalid_login, &block)
-        end
+        return authentication_response(failure: :invalid_login, &block) unless user
 
         set_encryption_attributes
 
@@ -105,9 +99,7 @@ module Sorcery
         @sorcery_config.before_authenticate.each do |callback|
           success, reason = user.send(callback)
 
-          unless success
-            return authentication_response(user: user, failure: reason, &block)
-          end
+          return authentication_response(user: user, failure: reason, &block) unless success
         end
 
         unless user.valid_password?(credentials[1])
@@ -130,9 +122,15 @@ module Sorcery
       # FIXME: This method of passing config to the hashing provider is
       #        questionable, and has been refactored in Sorcery v1.
       def set_encryption_attributes
-        @sorcery_config.encryption_provider.stretches = @sorcery_config.stretches if @sorcery_config.encryption_provider.respond_to?(:stretches) && @sorcery_config.stretches
-        @sorcery_config.encryption_provider.join_token = @sorcery_config.salt_join_token if @sorcery_config.encryption_provider.respond_to?(:join_token) && @sorcery_config.salt_join_token
-        @sorcery_config.encryption_provider.pepper = @sorcery_config.pepper if @sorcery_config.encryption_provider.respond_to?(:pepper) && @sorcery_config.pepper
+        if @sorcery_config.encryption_provider.respond_to?(:stretches) && @sorcery_config.stretches
+          @sorcery_config.encryption_provider.stretches = @sorcery_config.stretches
+        end
+        if @sorcery_config.encryption_provider.respond_to?(:join_token) && @sorcery_config.salt_join_token
+          @sorcery_config.encryption_provider.join_token = @sorcery_config.salt_join_token
+        end
+        return unless @sorcery_config.encryption_provider.respond_to?(:pepper) && @sorcery_config.pepper
+
+        @sorcery_config.encryption_provider.pepper = @sorcery_config.pepper
       end
 
       protected
@@ -189,7 +187,9 @@ module Sorcery
       # encrypts password with salt and saves it.
       def encrypt_password
         config = sorcery_config
-        send(:"#{config.salt_attribute_name}=", new_salt = TemporaryToken.generate_random_token) unless config.salt_attribute_name.nil?
+        unless config.salt_attribute_name.nil?
+          send(:"#{config.salt_attribute_name}=", new_salt = TemporaryToken.generate_random_token)
+        end
         send(:"#{config.crypted_password_attribute_name}=", self.class.encrypt(send(config.password_attribute_name), new_salt))
       end
 

@@ -81,9 +81,7 @@ module Sorcery
       # attempts to auto-login from the sources defined (session, basic_auth, cookie, etc.)
       # returns the logged in user if found, nil if not
       def current_user
-        unless defined?(@current_user)
-          @current_user = login_from_session || login_from_other_sources || nil
-        end
+        @current_user = login_from_session || login_from_other_sources || nil unless defined?(@current_user)
         @current_user
       end
 
@@ -146,9 +144,7 @@ module Sorcery
       end
 
       def login_from_session
-        @current_user = if session[:user_id]
-                          user_class.sorcery_adapter.find_by_id(session[:user_id])
-                        end
+        @current_user = (user_class.sorcery_adapter.find_by_id(session[:user_id]) if session[:user_id])
       end
 
       def after_login!(user, credentials = [])

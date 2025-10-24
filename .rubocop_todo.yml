@@ -41,14 +41,6 @@ Lint/MissingSuper:
 
 # Offense count: 3
 # This cop supports safe autocorrection (--autocorrect).
-Lint/RedundantCopDisableDirective:
-  Exclude:
-    - 'lib/sorcery/controller.rb'
-    - 'lib/sorcery/model.rb'
-    - 'spec/shared_examples/user_shared_examples.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
 Lint/SendWithMixinArgument:
   Exclude:
     - 'lib/sorcery.rb'

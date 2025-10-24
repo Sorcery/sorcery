@@ -235,13 +235,11 @@ shared_examples_for 'rails_3_core_model' do
 
       expect(user).to receive(:save) { raise RuntimeError }
 
-      # rubocop:disable Lint/HandleExceptions
       begin
         user.save
       rescue RuntimeError
         # Intentionally force exception during save
       end
-      # rubocop:enable Lint/HandleExceptions
 
       expect(user.password).not_to be_nil
     end

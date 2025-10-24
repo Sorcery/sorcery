@@ -6,13 +6,11 @@ module Sorcery
 
         Config.submodules.each do |mod|
           # FIXME: Is there a cleaner way to handle missing submodules?
-          # rubocop:disable Lint/HandleExceptions
           begin
             include Submodules.const_get(mod.to_s.split('_').map(&:capitalize).join) # rubocop:disable Layout/EmptyLinesAfterModuleInclusion
           rescue NameError
             # don't stop on a missing submodule.
           end
-          # rubocop:enable Lint/HandleExceptions
         end
       end
       Config.update!

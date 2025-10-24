@@ -48,7 +48,6 @@ module Sorcery
         @sorcery_config.submodules = ::Sorcery::Controller::Config.submodules
         @sorcery_config.submodules.each do |mod|
           # TODO: Is there a cleaner way to handle missing submodules?
-          # rubocop:disable Lint/HandleExceptions
           begin
             # rubocop:disable Layout/EmptyLinesAfterModuleInclusion
             include Submodules.const_get(mod.to_s.split('_').map(&:capitalize).join)
@@ -57,7 +56,6 @@ module Sorcery
             # don't stop on a missing submodule. Needed because some submodules are only defined
             # in the controller side.
           end
-          # rubocop:enable Lint/HandleExceptions
         end
       end
     end

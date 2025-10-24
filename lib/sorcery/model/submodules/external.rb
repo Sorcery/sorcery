@@ -41,7 +41,9 @@ module Sorcery
             config = sorcery_config
             authentication = config.authentications_class.sorcery_adapter.find_by_oauth_credentials(provider, uid)
             # Return user if matching authentication found
-            sorcery_adapter.find_by_id(authentication.send(config.authentications_user_id_attribute_name)) if authentication
+            return unless authentication
+
+            sorcery_adapter.find_by_id(authentication.send(config.authentications_user_id_attribute_name))
           end
 
           def create_and_validate_from_provider(provider, uid, attrs)

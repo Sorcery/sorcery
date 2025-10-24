@@ -69,7 +69,9 @@ module Sorcery
 
             sorcery_adapter.increment(config.failed_logins_count_attribute_name)
 
-            return unless send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
+            unless send(config.failed_logins_count_attribute_name) >= config.consecutive_login_retries_amount_limit
+              return
+            end
 
             login_lock!
           end

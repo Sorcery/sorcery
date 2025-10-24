@@ -88,9 +88,7 @@ module Sorcery
 
         def find_by_username(username)
           @klass.sorcery_config.username_attribute_names.each do |attribute|
-            if @klass.sorcery_config.downcase_username_before_authenticating
-              username = username.downcase
-            end
+            username = username.downcase if @klass.sorcery_config.downcase_username_before_authenticating
 
             result = @klass.where(attribute => username).first
             return result if result

@@ -4,7 +4,7 @@ shared_examples_for 'rails_3_reset_password_model' do
 
   describe 'loaded plugin configuration' do
     before(:all) do
-      sorcery_reload!([:reset_password], reset_password_mailer: ::SorceryMailer)
+      sorcery_reload!([:reset_password], reset_password_mailer: SorceryMailer)
     end
 
     after(:each) do
@@ -76,7 +76,7 @@ shared_examples_for 'rails_3_reset_password_model' do
 
   describe 'when activated with sorcery' do
     before(:all) do
-      sorcery_reload!([:reset_password], reset_password_mailer: ::SorceryMailer)
+      sorcery_reload!([:reset_password], reset_password_mailer: SorceryMailer)
     end
 
     before(:each) do
@@ -274,7 +274,7 @@ shared_examples_for 'rails_3_reset_password_model' do
 
     context 'mailer is disabled' do
       before(:all) do
-        sorcery_reload!([:reset_password], reset_password_mailer_disabled: true, reset_password_mailer: ::SorceryMailer)
+        sorcery_reload!([:reset_password], reset_password_mailer_disabled: true, reset_password_mailer: SorceryMailer)
       end
 
       it 'sends an email on reset' do

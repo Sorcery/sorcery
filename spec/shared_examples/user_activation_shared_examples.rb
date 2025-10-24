@@ -4,12 +4,12 @@ shared_examples_for 'rails_3_activation_model' do
 
   context 'loaded plugin configuration' do
     before(:all) do
-      sorcery_reload!([:user_activation], user_activation_mailer: ::SorceryMailer)
+      sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
     after(:each) do
       User.sorcery_config.reset!
-      sorcery_reload!([:user_activation], user_activation_mailer: ::SorceryMailer)
+      sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
     it "enables configuration option 'activation_state_attribute_name'" do
@@ -59,7 +59,7 @@ shared_examples_for 'rails_3_activation_model' do
 
   context 'activation process' do
     before(:all) do
-      sorcery_reload!([:user_activation], user_activation_mailer: ::SorceryMailer)
+      sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
     it "initializes user state to 'pending'" do
@@ -184,7 +184,7 @@ shared_examples_for 'rails_3_activation_model' do
 
     context 'mailer has been disabled' do
       before(:each) do
-        sorcery_reload!([:user_activation], activation_mailer_disabled: true, user_activation_mailer: ::SorceryMailer)
+        sorcery_reload!([:user_activation], activation_mailer_disabled: true, user_activation_mailer: SorceryMailer)
       end
 
       it 'does not send the user an activation email' do
@@ -219,7 +219,7 @@ shared_examples_for 'rails_3_activation_model' do
 
   describe 'prevent non-active login feature' do
     before(:all) do
-      sorcery_reload!([:user_activation], user_activation_mailer: ::SorceryMailer)
+      sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
     before(:each) do
@@ -260,7 +260,7 @@ shared_examples_for 'rails_3_activation_model' do
 
   describe 'load_from_activation_token' do
     before(:all) do
-      sorcery_reload!([:user_activation], user_activation_mailer: ::SorceryMailer)
+      sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
     after(:each) do

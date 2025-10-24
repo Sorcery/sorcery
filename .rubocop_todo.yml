@@ -457,26 +457,6 @@ Style/OptionalBooleanParameter:
     - 'lib/sorcery/controller/submodules/external.rb'
     - 'lib/sorcery/controller/submodules/remember_me.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantParentheses:
-  Exclude:
-    - 'lib/generators/sorcery/install_generator.rb'
-    - 'lib/sorcery/controller/submodules/http_basic_auth.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantRegexpArgument:
-  Exclude:
-    - 'lib/generators/sorcery/helpers.rb'
-    - 'lib/sorcery/providers/base.rb'
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantRegexpEscape:
-  Exclude:
-    - 'spec/providers/vk_spec.rb'
-
 # Offense count: 4
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.

@@ -492,7 +492,7 @@ shared_examples_for 'rails_3_core_model' do
 
       # password comparison is done using BCrypt::Password#==(raw_token), not String#==
       bcrypt_password = BCrypt::Password.new(user.crypted_password)
-      allow(::BCrypt::Password).to receive(:create) do |token, options = {}|
+      allow(::BCrypt::Password).to receive(:create) do |token, _options = {}|
         # need to use common BCrypt's salt when genarating BCrypt::Password objects
         # so that any generated password hashes can be compared each other
         ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
@@ -516,7 +516,7 @@ shared_examples_for 'rails_3_core_model' do
 
       # password comparison is done using BCrypt::Password#==(raw_token), not String#==
       bcrypt_password = BCrypt::Password.new(user.crypted_password)
-      allow(::BCrypt::Password).to receive(:create) do |token, options = {}|
+      allow(::BCrypt::Password).to receive(:create) do |token, _options = {}|
         # need to use common BCrypt's salt when genarating BCrypt::Password objects
         # so that any generated password hashes can be compared each other
         ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)

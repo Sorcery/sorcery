@@ -27,14 +27,6 @@ Lint/AssignmentInCondition:
   Exclude:
     - 'spec/rails_app/app/controllers/sorcery_controller.rb'
 
-# Offense count: 4
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: enums
-Lint/ConstantDefinitionInBlock:
-  Exclude:
-    - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-    - 'spec/shared_examples/user_shared_examples.rb'
-
 # Offense count: 1
 Lint/IneffectiveAccessModifier:
   Exclude:

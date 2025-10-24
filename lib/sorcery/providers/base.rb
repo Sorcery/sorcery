@@ -26,7 +26,7 @@ module Sorcery
       end
 
       def self.name
-        super.gsub(/Sorcery::Providers::/, '').downcase
+        super.gsub('Sorcery::Providers::', '').downcase
       end
 
       # Ensure that all descendant classes are loaded before run this

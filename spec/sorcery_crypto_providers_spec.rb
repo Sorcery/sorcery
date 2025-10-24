@@ -184,7 +184,7 @@ describe 'Crypto Providers wrappers' do
     end
 
     it 'matches token encrypted with salt from upstream' do
-      # note: actual comparison is done by BCrypt::Password#==(raw_token)
+      # NOTE: actual comparison is done by BCrypt::Password#==(raw_token)
       expect(Sorcery::CryptoProviders::BCrypt.encrypt(@tokens)).to eq @tokens.flatten.join
     end
 
@@ -199,7 +199,7 @@ describe 'Crypto Providers wrappers' do
       end
 
       it 'matches token encrypted with salt and pepper from upstream' do
-        # note: actual comparison is done by BCrypt::Password#==(raw_token)
+        # NOTE: actual comparison is done by BCrypt::Password#==(raw_token)
         expect(@digest).to eq @tokens.flatten.join.concat('pepper')
       end
 

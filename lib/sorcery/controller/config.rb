@@ -2,7 +2,7 @@ module Sorcery
   module Controller
     module Config
       class << self
-        attr_accessor :submodules
+        attr_accessor :submodules, :login_sources, :after_login, :after_failed_login, :before_logout, :after_logout, :after_remember_me
         # what class to use as the user class.
         attr_accessor :user_class
         # what controller action to call for non-authenticated users.
@@ -12,13 +12,6 @@ module Sorcery
         attr_accessor :save_return_to_url
         # set domain option for cookies
         attr_accessor :cookie_domain
-
-        attr_accessor :login_sources
-        attr_accessor :after_login
-        attr_accessor :after_failed_login
-        attr_accessor :before_logout
-        attr_accessor :after_logout
-        attr_accessor :after_remember_me
 
         # set whether to use 'redirect_back_or_to' defined in Rails 7.
         attr_accessor :use_redirect_back_or_to_by_rails

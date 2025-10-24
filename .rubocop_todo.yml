@@ -28,32 +28,6 @@ Layout/BeginEndAlignment:
   Exclude:
     - 'lib/sorcery/controller/submodules/external.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Layout/EmptyLines:
-  Exclude:
-    - 'lib/sorcery/adapters/mongoid_adapter.rb'
-
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
-Layout/EmptyLinesAfterModuleInclusion:
-  Exclude:
-    - 'lib/sorcery/controller.rb'
-    - 'lib/sorcery/crypto_providers/md5.rb'
-    - 'lib/sorcery/crypto_providers/sha1.rb'
-    - 'lib/sorcery/crypto_providers/sha256.rb'
-    - 'lib/sorcery/crypto_providers/sha512.rb'
-    - 'lib/sorcery/model.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowAliasSyntax, AllowedMethods.
-# AllowedMethods: alias_method, public, protected, private
-Layout/EmptyLinesAroundAttributeAccessor:
-  Exclude:
-    - 'lib/sorcery/controller/submodules/remember_me.rb'
-    - 'lib/sorcery/crypto_providers/bcrypt.rb'
-
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: IndentationWidth.

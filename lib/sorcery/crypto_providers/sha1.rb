@@ -6,6 +6,7 @@ module Sorcery
     # crypto provider as it inferior to your other options. Please use any other provider offered by Sorcery.
     class SHA1
       include Common
+
       class << self
         def join_token
           @join_token ||= '--'

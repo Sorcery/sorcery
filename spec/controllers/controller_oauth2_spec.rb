@@ -549,7 +549,7 @@ describe SorceryController, active_record: true, type: :controller do
           "&response_type=code&scope=#{config.vk.scope}&state",
       salesforce: 'https://login.salesforce.com/services/oauth2/authorize?' \
                   "client_id=#{config.salesforce.key}&display&redirect_uri=#{redirect_uri}" \
-                  "&response_type=code&scope#{'=' + config.salesforce.scope unless config.salesforce.scope.nil?}&state",
+                  "&response_type=code&scope#{"=#{config.salesforce.scope}" unless config.salesforce.scope.nil?}&state",
       slack: 'https://slack.com/oauth/authorize?' \
              "client_id=#{config.slack.key}&display&redirect_uri=#{redirect_uri}" \
              '&response_type=code&scope=identity.basic%2C%20identity.email&state',

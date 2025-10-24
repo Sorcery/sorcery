@@ -36,7 +36,7 @@ module Sorcery
         def decrypt(crypted)
           aes.decrypt
           aes.key = @key
-          (aes.update(crypted.unpack('m').first) + aes.final)
+          (aes.update(crypted.unpack1('m')) + aes.final)
         end
 
         private

@@ -140,7 +140,7 @@ describe 'Crypto Providers wrappers' do
       aes = OpenSSL::Cipher.new('AES-256-ECB')
       aes.decrypt
       aes.key = @key
-      expect(aes.update(@digest.unpack('m').first) + aes.final).to eq 'Noam Ben-Ari'
+      expect(aes.update(@digest.unpack1('m')) + aes.final).to eq 'Noam Ben-Ari'
     end
   end
 

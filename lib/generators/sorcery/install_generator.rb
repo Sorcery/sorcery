@@ -35,7 +35,7 @@ module Sorcery
         # Add submodules to the initializer file.
         return unless submodules
 
-        submodule_names = submodules.collect { |submodule| ':' + submodule }
+        submodule_names = submodules.collect { |submodule| ":#{submodule}" }
 
         gsub_file sorcery_config_path, /submodules = \[.*\]/ do |str|
           current_submodule_names = (str =~ /\[(.*)\]/ ? Regexp.last_match(1) : '').delete(' ').split(',')

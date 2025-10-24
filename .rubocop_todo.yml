@@ -466,27 +466,6 @@ Style/OptionalBooleanParameter:
     - 'lib/sorcery/controller/submodules/external.rb'
     - 'lib/sorcery/controller/submodules/remember_me.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Methods.
-Style/RedundantArgument:
-  Exclude:
-    - 'spec/shared_examples/user_shared_examples.rb'
-
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/RedundantArrayFlatten:
-  Exclude:
-    - 'lib/sorcery/crypto_providers/bcrypt.rb'
-    - 'spec/sorcery_crypto_providers_spec.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantBegin:
-  Exclude:
-    - 'lib/sorcery/controller.rb'
-    - 'lib/sorcery/model.rb'
-
 # Offense count: 46
 # This cop supports safe autocorrection (--autocorrect).
 Style/RedundantConstantBase:

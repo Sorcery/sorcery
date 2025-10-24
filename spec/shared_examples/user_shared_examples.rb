@@ -388,7 +388,7 @@ shared_examples_for 'rails_3_core_model' do
     it 'works with custom password encryption' do
       class MyCrypto
         def self.encrypt(*tokens)
-          tokens.flatten.join('').tr('e', 'A')
+          tokens.join.tr('e', 'A')
         end
 
         def self.matches?(crypted, *tokens)

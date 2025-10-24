@@ -18,18 +18,18 @@ module Sorcery
       end
 
       module ClassMethods
-        def load_from_token(token, token_attr_name, token_expiration_date_attr = nil, &block)
-          return token_response(failure: :invalid_token, &block) if token.blank?
+        def load_from_token(token, token_attr_name, token_expiration_date_attr = nil, &)
+          return token_response(failure: :invalid_token, &) if token.blank?
 
           user = sorcery_adapter.find_by_token(token_attr_name, token)
 
-          return token_response(failure: :user_not_found, &block) unless user
+          return token_response(failure: :user_not_found, &) unless user
 
           unless check_expiration_date(user, token_expiration_date_attr)
-            return token_response(user: user, failure: :token_expired, &block)
+            return token_response(user: user, failure: :token_expired, &)
           end
 
-          token_response(user: user, return_value: user, &block)
+          token_response(user: user, return_value: user, &)
         end
 
         protected

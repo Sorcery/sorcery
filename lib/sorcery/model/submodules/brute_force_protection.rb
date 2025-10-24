@@ -41,13 +41,13 @@ module Sorcery
 
         module ClassMethods
           # This doesn't check to see if the account is still locked
-          def load_from_unlock_token(token, &block)
+          def load_from_unlock_token(token, &)
             return if token.blank?
 
             load_from_token(
               token,
               sorcery_config.unlock_token_attribute_name,
-              &block
+              &
             )
           end
 

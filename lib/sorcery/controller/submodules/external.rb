@@ -186,21 +186,21 @@ module Sorcery
           #
           #   create_from(provider) {|user| user.some_check }
           #
-          def create_from(provider_name, &block)
+          def create_from(provider_name, &)
             sorcery_fetch_user_hash provider_name
             # config = user_class.sorcery_config # TODO: Unused, remove?
 
             attrs = user_attrs(@provider.user_info_mapping, @user_hash)
-            @user = user_class.create_from_provider(provider_name, @user_hash[:uid], attrs, &block)
+            @user = user_class.create_from_provider(provider_name, @user_hash[:uid], attrs, &)
           end
 
           # follows the same patterns as create_from, but builds the user instead of creating
-          def build_from(provider_name, &block)
+          def build_from(provider_name, &)
             sorcery_fetch_user_hash provider_name
             # config = user_class.sorcery_config # TODO: Unused, remove?
 
             attrs = user_attrs(@provider.user_info_mapping, @user_hash)
-            @user = user_class.build_from_provider(attrs, &block)
+            @user = user_class.build_from_provider(attrs, &)
           end
 
           def user_attrs(user_info_mapping, user_hash)

@@ -101,8 +101,8 @@ module Sorcery
           @klass.where(@klass.sorcery_config.email_attribute_name => email).first
         end
 
-        def transaction(&blk)
-          @klass.tap(&blk)
+        def transaction(&)
+          @klass.tap(&)
         end
       end
     end

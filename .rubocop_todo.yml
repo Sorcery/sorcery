@@ -53,22 +53,6 @@ Metrics/ParameterLists:
   Exclude:
     - 'lib/sorcery/test_helpers/rails/request.rb'
 
-# Offense count: 23
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, BlockForwardingName.
-# SupportedStyles: anonymous, explicit
-Naming/BlockForwarding:
-  Exclude:
-    - 'lib/sorcery/adapters/active_record_adapter.rb'
-    - 'lib/sorcery/adapters/mongoid_adapter.rb'
-    - 'lib/sorcery/controller/submodules/external.rb'
-    - 'lib/sorcery/model/submodules/brute_force_protection.rb'
-    - 'lib/sorcery/model/submodules/magic_login.rb'
-    - 'lib/sorcery/model/submodules/reset_password.rb'
-    - 'lib/sorcery/model/submodules/user_activation.rb'
-    - 'lib/sorcery/model/temporary_token.rb'
-    - 'lib/sorcery/test_helpers/internal.rb'
-
 # Offense count: 1
 # Configuration parameters: Mode, AllowedMethods, AllowedPatterns, AllowBangMethods, WaywardPredicates.
 # AllowedMethods: call

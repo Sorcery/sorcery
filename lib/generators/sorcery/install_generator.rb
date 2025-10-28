@@ -85,8 +85,6 @@ module Sorcery
         end
       end
 
-      private
-
       def self.timestamped_migrations?
         if Rails::VERSION::MAJOR >= 7
           ActiveRecord.timestamped_migrations
@@ -94,6 +92,9 @@ module Sorcery
           ActiveRecord::Base.timestamped_migrations
         end
       end
+      private_class_method :timestamped_migrations?
+
+      private
 
       def only_submodules?
         options[:migrations] || options[:only_submodules]

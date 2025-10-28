@@ -20,11 +20,6 @@ Lint/AssignmentInCondition:
   Exclude:
     - 'spec/rails_app/app/controllers/sorcery_controller.rb'
 
-# Offense count: 1
-Lint/IneffectiveAccessModifier:
-  Exclude:
-    - 'lib/generators/sorcery/install_generator.rb'
-
 # Offense count: 2
 # Configuration parameters: AllowedParentClasses.
 Lint/MissingSuper:

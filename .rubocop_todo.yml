@@ -38,18 +38,6 @@ Metrics/ParameterLists:
   Exclude:
     - 'lib/sorcery/test_helpers/rails/request.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Performance/RegexpMatch:
-  Exclude:
-    - 'lib/sorcery/providers/github.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Performance/StringInclude:
-  Exclude:
-    - 'lib/sorcery/providers/github.rb'
-
 # Offense count: 3
 RSpec/AnyInstance:
   Exclude:

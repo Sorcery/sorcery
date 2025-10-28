@@ -26,7 +26,7 @@ module Sorcery
 
         auth_hash(access_token).tap do |h|
           h[:user_info] = JSON.parse(response.body).tap do |uih|
-            uih['email'] = primary_email(access_token) if scope =~ /user/
+            uih['email'] = primary_email(access_token) if scope&.include?('user')
           end
           h[:uid] = h[:user_info]['id']
         end

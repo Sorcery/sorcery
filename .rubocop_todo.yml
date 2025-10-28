@@ -415,12 +415,6 @@ Style/DocumentDynamicEvalDefinition:
   Exclude:
     - 'lib/sorcery/controller/submodules/external.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/ExpandPathArguments:
-  Exclude:
-    - 'spec/rails_app/config.ru'
-
 # Offense count: 125
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.

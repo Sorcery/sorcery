@@ -39,13 +39,6 @@ Metrics/ParameterLists:
     - 'lib/sorcery/test_helpers/rails/request.rb'
 
 # Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: MaxKeyValuePairs.
-Performance/RedundantMerge:
-  Exclude:
-    - 'lib/sorcery/providers/line.rb'
-
-# Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 Performance/RegexpMatch:
   Exclude:

@@ -32,12 +32,6 @@ Lint/MissingSuper:
     - 'lib/sorcery/providers/jira.rb'
     - 'lib/sorcery/providers/xing.rb'
 
-# Offense count: 1
-# Configuration parameters: Max, CountKeywordArgs, MaxOptionalParameters.
-Metrics/ParameterLists:
-  Exclude:
-    - 'lib/sorcery/test_helpers/rails/request.rb'
-
 # Offense count: 3
 RSpec/AnyInstance:
   Exclude:

@@ -20,7 +20,8 @@ Gem::Specification.new do |s|
                   'activating by email and resetting password.'
   s.summary = 'Magical authentication for Rails applications'
   s.homepage = 'https://github.com/Sorcery/sorcery'
-  s.metadata = { 'bug_tracker_uri' => 'https://github.com/Sorcery/sorcery/issues', 'changelog_uri' => 'https://github.com/Sorcery/sorcery/releases' }
+  s.metadata = { 'bug_tracker_uri' => 'https://github.com/Sorcery/sorcery/issues', 'changelog_uri' => 'https://github.com/Sorcery/sorcery/releases',
+                 'rubygems_mfa_required' => 'true' }
   s.post_install_message = "As of version 1.0 oauth/oauth2 won't be automatically bundled " \
                            "so you may need to add those dependencies to your Gemfile.\n"
   s.post_install_message += 'You may need oauth2 if you use external providers such as any of these: https://github.com/Sorcery/sorcery/tree/master/lib/sorcery/providers'

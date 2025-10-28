@@ -14,13 +14,6 @@ Gemspec/DevelopmentDependencies:
     - 'sorcery.gemspec'
 
 # Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: AllowSafeAssignment.
-Lint/AssignmentInCondition:
-  Exclude:
-    - 'spec/rails_app/app/controllers/sorcery_controller.rb'
-
-# Offense count: 2
 # Configuration parameters: AllowedParentClasses.
 Lint/MissingSuper:
   Exclude:

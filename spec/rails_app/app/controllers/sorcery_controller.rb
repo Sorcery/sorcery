@@ -124,7 +124,7 @@ class SorceryController < ApplicationController
   end
 
   def login_at_test_wechat
-    login_at(:wechat)
+    login_at(:wechat, state: 'teststate')
   end
 
   def login_at_test_microsoft

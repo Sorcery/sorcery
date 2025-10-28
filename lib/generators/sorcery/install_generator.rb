@@ -4,6 +4,7 @@ require 'generators/sorcery/helpers'
 module Sorcery
   module Generators
     class InstallGenerator < Rails::Generators::Base
+      EXCLUDED_SUBMODULES = %w[http_basic_auth session_timeout core].freeze
       include Rails::Generators::Migration
       include Sorcery::Generators::Helpers
 
@@ -68,7 +69,7 @@ module Sorcery
         return unless submodules
 
         submodules.each do |submodule|
-          unless %w[http_basic_auth session_timeout core].include?(submodule)
+          unless EXCLUDED_SUBMODULES.include?(submodule)
             migration_template "migration/#{submodule}.rb", "db/migrate/sorcery_#{submodule}.rb", migration_class_name: migration_class_name
           end
         end

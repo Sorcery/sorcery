@@ -39,12 +39,6 @@ Metrics/ParameterLists:
     - 'lib/sorcery/test_helpers/rails/request.rb'
 
 # Offense count: 1
-# Configuration parameters: MinSize.
-Performance/CollectionLiteralInLoop:
-  Exclude:
-    - 'lib/generators/sorcery/install_generator.rb'
-
-# Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: MaxKeyValuePairs.
 Performance/RedundantMerge:

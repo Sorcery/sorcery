@@ -59,6 +59,3 @@ Style/Documentation:
   Exclude:
     - 'lib/**/*'
     - 'spec/**/*'
-Lint/ConstantDefinitionInBlock:
-  Exclude:
-    - 'spec/**/*'

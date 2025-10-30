@@ -379,15 +379,6 @@ Style/DocumentDynamicEvalDefinition:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-# Offense count: 3
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: respond_to_missing?
-Style/OptionalBooleanParameter:
-  Exclude:
-    - 'lib/sorcery/controller.rb'
-    - 'lib/sorcery/controller/submodules/external.rb'
-    - 'lib/sorcery/controller/submodules/remember_me.rb'
-
 # Offense count: 4
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.

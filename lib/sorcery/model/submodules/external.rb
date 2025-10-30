@@ -62,9 +62,7 @@ module Sorcery
               user.send(:"#{k}=", v)
             end
 
-            if block_given?
-              return false unless yield user
-            end
+            return false if block_given? && !yield(user)
 
             sorcery_adapter.transaction do
               user.sorcery_adapter.save(validate: false)
@@ -85,9 +83,7 @@ module Sorcery
               user.send(:"#{k}=", v)
             end
 
-            if block_given?
-              return false unless yield user
-            end
+            return false if block_given? && !yield(user)
 
             user
           end

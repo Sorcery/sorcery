@@ -378,23 +378,3 @@ Style/DocumentDynamicEvalDefinition:
 # SupportedStyles: always, always_true, never
 Style/FrozenStringLiteralComment:
   Enabled: false
-
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.
-# AllowedMethods: present?, blank?, presence, try, try!
-Style/SafeNavigation:
-  Exclude:
-    - 'lib/sorcery/controller/config.rb'
-    - 'lib/sorcery/controller/submodules/brute_force_protection.rb'
-    - 'lib/sorcery/controller/submodules/remember_me.rb'
-    - 'lib/sorcery/model.rb'
-
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowModifier.
-Style/SoleNestedConditional:
-  Exclude:
-    - 'lib/sorcery/model/submodules/brute_force_protection.rb'
-    - 'lib/sorcery/model/submodules/external.rb'
-    - 'lib/sorcery/model/submodules/user_activation.rb'

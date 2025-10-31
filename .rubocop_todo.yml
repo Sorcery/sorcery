@@ -367,11 +367,6 @@ RSpec/Yield:
     - 'spec/controllers/controller_session_timeout_spec.rb'
     - 'spec/controllers/controller_spec.rb'
 
-# Offense count: 1
-Style/DocumentDynamicEvalDefinition:
-  Exclude:
-    - 'lib/sorcery/controller/submodules/external.rb'
-
 # Offense count: 126
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.

@@ -184,17 +184,17 @@ shared_examples_for 'rails_3_core_model' do
 
     it 'subclass inherits config if defined so' do
       sorcery_reload!([], subclasses_inherit_config: true)
-      stub_const('Admin', Class.new(User))
+      admin = Class.new(User)
 
-      expect(Admin.sorcery_config).not_to be_nil
-      expect(Admin.sorcery_config).to eq User.sorcery_config
+      expect(admin.sorcery_config).not_to be_nil
+      expect(admin.sorcery_config).to eq User.sorcery_config
     end
 
     it 'subclass does not inherit config if not defined so' do
       sorcery_reload!([], subclasses_inherit_config: false)
-      stub_const('Admin2', Class.new(User))
+      admin2 = Class.new(User)
 
-      expect(Admin2.sorcery_config).to be_nil
+      expect(admin2.sorcery_config).to be_nil
     end
   end
 
@@ -395,9 +395,9 @@ shared_examples_for 'rails_3_core_model' do
           crypted == encrypt(*tokens)
         end
       end
-      stub_const('MyCrypto', my_crypto)
+
       sorcery_model_property_set(:encryption_algorithm, :custom)
-      sorcery_model_property_set(:custom_encryption_provider, MyCrypto)
+      sorcery_model_property_set(:custom_encryption_provider, my_crypto)
 
       username = user.send(User.sorcery_config.username_attribute_names.first)
 

@@ -58,8 +58,8 @@ module Sorcery
         end
       end
 
-      def update_model(&block)
-        User.class_exec(&block)
+      def update_model(&)
+        User.class_exec(&)
       end
 
       private

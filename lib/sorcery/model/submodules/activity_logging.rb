@@ -25,11 +25,11 @@ module Sorcery
           end
 
           base.sorcery_config.instance_eval do
-            @defaults.merge!(:@last_login_at_attribute_name                => :last_login_at,
-                             :@last_logout_at_attribute_name               => :last_logout_at,
-                             :@last_activity_at_attribute_name             => :last_activity_at,
-                             :@last_login_from_ip_address_name             => :last_login_from_ip_address,
-                             :@activity_timeout                            => 10 * 60)
+            @defaults.merge!(:@last_login_at_attribute_name => :last_login_at,
+                             :@last_logout_at_attribute_name => :last_logout_at,
+                             :@last_activity_at_attribute_name => :last_activity_at,
+                             :@last_login_from_ip_address_name => :last_login_from_ip_address,
+                             :@activity_timeout => 10 * 60)
             reset!
           end
 
@@ -63,7 +63,9 @@ module Sorcery
           #  shows if user is logged in, but it not show if user is online - see online?
           def logged_in?
             return false if send(sorcery_config.last_login_at_attribute_name).nil?
-            return true if send(sorcery_config.last_login_at_attribute_name).present? && send(sorcery_config.last_logout_at_attribute_name).nil?
+            if send(sorcery_config.last_login_at_attribute_name).present? && send(sorcery_config.last_logout_at_attribute_name).nil?
+              return true
+            end
 
             send(sorcery_config.last_login_at_attribute_name) > send(sorcery_config.last_logout_at_attribute_name)
           end

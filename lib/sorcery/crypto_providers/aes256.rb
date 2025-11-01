@@ -36,13 +36,15 @@ module Sorcery
         def decrypt(crypted)
           aes.decrypt
           aes.key = @key
-          (aes.update(crypted.unpack('m').first) + aes.final)
+          (aes.update(crypted.unpack1('m')) + aes.final)
         end
 
         private
 
         def aes
-          raise ArgumentError, "#{name} expects a 32 bytes long key. Please use Sorcery::Model::Config.encryption_key to set it." if @key.nil? || @key == ''
+          if @key.nil? || @key == ''
+            raise ArgumentError, "#{name} expects a 32 bytes long key. Please use Sorcery::Model::Config.encryption_key to set it."
+          end
 
           @aes ||= OpenSSL::Cipher.new('AES-256-ECB')
         end

@@ -16,8 +16,8 @@ module Sorcery
               attr_accessor :session_timeout_invalidate_active_sessions_enabled
 
               def merge_session_timeout_defaults!
-                @defaults.merge!(:@session_timeout                                    => 3600, # 1.hour
-                                 :@session_timeout_from_last_action                   => false,
+                @defaults.merge!(:@session_timeout => 3600, # 1.hour
+                                 :@session_timeout_from_last_action => false,
                                  :@session_timeout_invalidate_active_sessions_enabled => false)
               end
             end

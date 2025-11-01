@@ -4,7 +4,7 @@ shared_examples_for 'rails_3_reset_password_model' do
 
   describe 'loaded plugin configuration' do
     before(:all) do
-      sorcery_reload!([:reset_password], reset_password_mailer: ::SorceryMailer)
+      sorcery_reload!([:reset_password], reset_password_mailer: SorceryMailer)
     end
 
     after(:each) do
@@ -76,7 +76,7 @@ shared_examples_for 'rails_3_reset_password_model' do
 
   describe 'when activated with sorcery' do
     before(:all) do
-      sorcery_reload!([:reset_password], reset_password_mailer: ::SorceryMailer)
+      sorcery_reload!([:reset_password], reset_password_mailer: SorceryMailer)
     end
 
     before(:each) do
@@ -274,7 +274,7 @@ shared_examples_for 'rails_3_reset_password_model' do
 
     context 'mailer is disabled' do
       before(:all) do
-        sorcery_reload!([:reset_password], reset_password_mailer_disabled: true, reset_password_mailer: ::SorceryMailer)
+        sorcery_reload!([:reset_password], reset_password_mailer_disabled: true, reset_password_mailer: SorceryMailer)
       end
 
       it 'sends an email on reset' do
@@ -329,15 +329,15 @@ shared_examples_for 'rails_3_reset_password_model' do
     end
 
     it 'when change_password! is called with empty argument, raise an exception' do
-      expect {
+      expect do
         user.change_password!('')
-      }.to raise_error(ArgumentError, 'Blank password passed to change_password!')
+      end.to raise_error(ArgumentError, 'Blank password passed to change_password!')
     end
 
     it 'when change_password! is called with nil argument, raise an exception' do
-      expect {
+      expect do
         user.change_password!(nil)
-      }.to raise_error(ArgumentError, 'Blank password passed to change_password!')
+      end.to raise_error(ArgumentError, 'Blank password passed to change_password!')
     end
 
     it 'when change_password is called, deletes reset_password_token and calls #save' do

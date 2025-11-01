@@ -26,10 +26,10 @@ module Sorcery
 
         params = {
           access_token: access_token.token,
-          uids:         access_token.params['user_id'],
-          fields:       user_info_mapping.values.join(','),
-          scope:        scope,
-          v:            api_version.to_s
+          uids: access_token.params['user_id'],
+          fields: user_info_mapping.values.join(','),
+          scope: scope,
+          v: api_version.to_s
         }
 
         response = access_token.get(user_info_url, params: params)

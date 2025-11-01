@@ -48,10 +48,10 @@ module Sorcery
       end
 
       def primary_email(access_token)
-        response = access_token.get(user_info_path + '/emails')
+        response = access_token.get("#{user_info_path}/emails")
         emails = JSON.parse(response.body)
         primary = emails.find { |i| i['primary'] }
-        primary && primary['email'] || emails.first && emails.first['email']
+        (primary && primary['email']) || (emails.first && emails.first['email'])
       end
     end
   end

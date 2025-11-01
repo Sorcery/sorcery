@@ -184,17 +184,17 @@ shared_examples_for 'rails_3_core_model' do
 
     it 'subclass inherits config if defined so' do
       sorcery_reload!([], subclasses_inherit_config: true)
-      class Admin < User; end
+      admin = Class.new(User)
 
-      expect(Admin.sorcery_config).not_to be_nil
-      expect(Admin.sorcery_config).to eq User.sorcery_config
+      expect(admin.sorcery_config).not_to be_nil
+      expect(admin.sorcery_config).to eq User.sorcery_config
     end
 
     it 'subclass does not inherit config if not defined so' do
       sorcery_reload!([], subclasses_inherit_config: false)
-      class Admin2 < User; end
+      admin2 = Class.new(User)
 
-      expect(Admin2.sorcery_config).to be_nil
+      expect(admin2.sorcery_config).to be_nil
     end
   end
 
@@ -219,7 +219,7 @@ shared_examples_for 'rails_3_core_model' do
     it 'does not clear the virtual password field if save failed due to validity' do
       User.class_eval do
         validates_format_of :email, with: /\A(.)+@(.)+\Z/,
-                                    if: proc { |r| r.email }, message: 'is invalid'
+                                    if: :email, message: 'is invalid'
       end
 
       user.password = 'blupush'
@@ -235,13 +235,11 @@ shared_examples_for 'rails_3_core_model' do
 
       expect(user).to receive(:save) { raise RuntimeError }
 
-      # rubocop:disable Lint/HandleExceptions
       begin
         user.save
       rescue RuntimeError
         # Intentionally force exception during save
       end
-      # rubocop:enable Lint/HandleExceptions
 
       expect(user.password).not_to be_nil
     end
@@ -328,7 +326,7 @@ shared_examples_for 'rails_3_core_model' do
 
     before do
       @mail = double('mail')
-      allow(::SorceryMailer).to receive(:activation_success_email).and_return(@mail)
+      allow(SorceryMailer).to receive(:activation_success_email).and_return(@mail)
     end
 
     it 'use deliver_later' do
@@ -388,17 +386,18 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     it 'works with custom password encryption' do
-      class MyCrypto
+      my_crypto = Class.new do
         def self.encrypt(*tokens)
-          tokens.flatten.join('').tr('e', 'A')
+          tokens.join.tr('e', 'A')
         end
 
         def self.matches?(crypted, *tokens)
           crypted == encrypt(*tokens)
         end
       end
+
       sorcery_model_property_set(:encryption_algorithm, :custom)
-      sorcery_model_property_set(:custom_encryption_provider, MyCrypto)
+      sorcery_model_property_set(:custom_encryption_provider, my_crypto)
 
       username = user.send(User.sorcery_config.username_attribute_names.first)
 
@@ -494,10 +493,10 @@ shared_examples_for 'rails_3_core_model' do
 
       # password comparison is done using BCrypt::Password#==(raw_token), not String#==
       bcrypt_password = BCrypt::Password.new(user.crypted_password)
-      allow(::BCrypt::Password).to receive(:create) do |token, options = {}|
+      allow(BCrypt::Password).to receive(:create) do |token, _options = {}|
         # need to use common BCrypt's salt when genarating BCrypt::Password objects
         # so that any generated password hashes can be compared each other
-        ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
+        BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
       end
 
       expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret')
@@ -518,10 +517,10 @@ shared_examples_for 'rails_3_core_model' do
 
       # password comparison is done using BCrypt::Password#==(raw_token), not String#==
       bcrypt_password = BCrypt::Password.new(user.crypted_password)
-      allow(::BCrypt::Password).to receive(:create) do |token, options = {}|
+      allow(BCrypt::Password).to receive(:create) do |token, _options = {}|
         # need to use common BCrypt's salt when genarating BCrypt::Password objects
         # so that any generated password hashes can be compared each other
-        ::BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
+        BCrypt::Engine.hash_secret(token, bcrypt_password.salt)
       end
 
       expect(user.crypted_password).not_to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret')
@@ -629,7 +628,7 @@ shared_examples_for 'external_user' do
 
   describe 'activation' do
     before(:each) do
-      sorcery_reload!(%i[user_activation external], user_activation_mailer: ::SorceryMailer)
+      sorcery_reload!(%i[user_activation external], user_activation_mailer: SorceryMailer)
     end
 
     after(:each) do

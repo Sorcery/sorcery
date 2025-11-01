@@ -52,12 +52,12 @@ module Sorcery
         module ClassMethods
           # Find user by token, also checks for expiration.
           # Returns the user if token found and is valid.
-          def load_from_magic_login_token(token, &block)
+          def load_from_magic_login_token(token, &)
             load_from_token(
               token,
               @sorcery_config.magic_login_token_attribute_name,
               @sorcery_config.magic_login_token_expires_at_attribute_name,
-              &block
+              &
             )
           end
 
@@ -67,7 +67,9 @@ module Sorcery
           # when magic_login_mailer_disabled is false
           def validate_mailer_defined
             msg = 'To use magic_login submodule, you must define a mailer (config.magic_login_mailer_class = YourMailerClass).'
-            raise ArgumentError, msg if @sorcery_config.magic_login_mailer_class.nil? && @sorcery_config.magic_login_mailer_disabled == false
+            if @sorcery_config.magic_login_mailer_class.nil? && @sorcery_config.magic_login_mailer_disabled == false
+              raise ArgumentError, msg
+            end
           end
 
           def define_magic_login_fields
@@ -85,7 +87,9 @@ module Sorcery
               config.magic_login_token_attribute_name => TemporaryToken.generate_random_token,
               config.magic_login_email_sent_at_attribute_name => Time.now.in_time_zone
             }
-            attributes[config.magic_login_token_expires_at_attribute_name] = Time.now.in_time_zone + config.magic_login_expiration_period if config.magic_login_expiration_period
+            if config.magic_login_expiration_period
+              attributes[config.magic_login_token_expires_at_attribute_name] = Time.now.in_time_zone + config.magic_login_expiration_period
+            end
 
             sorcery_adapter.update_attributes(attributes)
           end

@@ -1,12 +1,12 @@
 module Sorcery
   module Adapters
     class ActiveRecordAdapter < BaseAdapter
-      def update_attributes(attrs)
+      def update_attributes(attrs) # rubocop:disable Naming/PredicateMethod
         attrs.each do |name, value|
           @model.send(:"#{name}=", value)
         end
         primary_key = @model.class.primary_key
-        updated_count = @model.class.where(:"#{primary_key}" => @model.send(:"#{primary_key}")).update_all(attrs)
+        updated_count = @model.class.where("#{primary_key}": @model.send(:"#{primary_key}")).update_all(attrs)
         updated_count == 1
       end
 
@@ -23,7 +23,7 @@ module Sorcery
         @user_config ||= ::Sorcery::Controller::Config.user_class.to_s.constantize.sorcery_config
         conditions = {
           @user_config.provider_uid_attribute_name => uid,
-          @user_config.provider_attribute_name     => provider
+          @user_config.provider_attribute_name => provider
         }
 
         @model.public_send(relation_name).where(conditions).first
@@ -42,7 +42,7 @@ module Sorcery
           @user_config ||= ::Sorcery::Controller::Config.user_class.to_s.constantize.sorcery_config
           conditions = {
             @user_config.provider_uid_attribute_name => uid,
-            @user_config.provider_attribute_name     => provider
+            @user_config.provider_attribute_name => provider
           }
 
           @klass.where(conditions).first
@@ -56,11 +56,11 @@ module Sorcery
           relation = nil
 
           @klass.sorcery_config.username_attribute_names.each do |attribute|
-            if @klass.sorcery_config.downcase_username_before_authenticating
-              condition = @klass.arel_table[attribute].lower.eq(@klass.arel_table.lower(credentials[0]))
-            else
-              condition = @klass.arel_table[attribute].eq(credentials[0])
-            end
+            condition = if @klass.sorcery_config.downcase_username_before_authenticating
+                          @klass.arel_table[attribute].lower.eq(@klass.arel_table.lower(credentials[0]))
+                        else
+                          @klass.arel_table[attribute].eq(credentials[0])
+                        end
 
             relation = if relation.nil?
                          condition
@@ -88,9 +88,7 @@ module Sorcery
 
         def find_by_username(username)
           @klass.sorcery_config.username_attribute_names.each do |attribute|
-            if @klass.sorcery_config.downcase_username_before_authenticating
-              username = username.downcase
-            end
+            username = username.downcase if @klass.sorcery_config.downcase_username_before_authenticating
 
             result = @klass.where(attribute => username).first
             return result if result
@@ -101,8 +99,8 @@ module Sorcery
           @klass.where(@klass.sorcery_config.email_attribute_name => email).first
         end
 
-        def transaction(&blk)
-          @klass.tap(&blk)
+        def transaction(&)
+          @klass.tap(&)
         end
       end
     end

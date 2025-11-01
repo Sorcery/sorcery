@@ -140,7 +140,7 @@ describe 'Crypto Providers wrappers' do
       aes = OpenSSL::Cipher.new('AES-256-ECB')
       aes.decrypt
       aes.key = @key
-      expect(aes.update(@digest.unpack('m').first) + aes.final).to eq 'Noam Ben-Ari'
+      expect(aes.update(@digest.unpack1('m')) + aes.final).to eq 'Noam Ben-Ari'
     end
   end
 
@@ -184,8 +184,8 @@ describe 'Crypto Providers wrappers' do
     end
 
     it 'matches token encrypted with salt from upstream' do
-      # note: actual comparison is done by BCrypt::Password#==(raw_token)
-      expect(Sorcery::CryptoProviders::BCrypt.encrypt(@tokens)).to eq @tokens.flatten.join
+      # NOTE: actual comparison is done by BCrypt::Password#==(raw_token)
+      expect(Sorcery::CryptoProviders::BCrypt.encrypt(@tokens)).to eq @tokens.join
     end
 
     it 'respond_to?(:pepper) returns true' do
@@ -199,8 +199,8 @@ describe 'Crypto Providers wrappers' do
       end
 
       it 'matches token encrypted with salt and pepper from upstream' do
-        # note: actual comparison is done by BCrypt::Password#==(raw_token)
-        expect(@digest).to eq @tokens.flatten.join.concat('pepper')
+        # NOTE: actual comparison is done by BCrypt::Password#==(raw_token)
+        expect(@digest).to eq @tokens.join.concat('pepper')
       end
 
       it 'matches? returns true when matches' do
@@ -217,7 +217,7 @@ describe 'Crypto Providers wrappers' do
       end
     end
 
-    context "when pepper is an empty string (default)" do
+    context 'when pepper is an empty string (default)' do
       before(:each) do
         Sorcery::CryptoProviders::BCrypt.pepper = ''
         @digest = Sorcery::CryptoProviders::BCrypt.encrypt(@tokens) # a BCrypt::Password object
@@ -225,7 +225,7 @@ describe 'Crypto Providers wrappers' do
 
       # make sure the default pepper '' does nothing
       it 'matches token encrypted with salt only (without pepper)' do
-        expect(@digest).to eq @tokens.flatten.join # keep consistency with the older versions of #join_token
+        expect(@digest).to eq @tokens.join # keep consistency with the older versions of #join_token
       end
 
       it 'matches? returns true when matches' do

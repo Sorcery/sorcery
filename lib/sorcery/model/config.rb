@@ -51,25 +51,25 @@ module Sorcery
 
       def initialize
         @defaults = {
-          :@submodules                           => [],
-          :@username_attribute_names             => [:email],
-          :@password_attribute_name              => :password,
+          :@submodules => [],
+          :@username_attribute_names => [:email],
+          :@password_attribute_name => :password,
           :@downcase_username_before_authenticating => false,
-          :@email_attribute_name                 => :email,
-          :@crypted_password_attribute_name      => :crypted_password,
-          :@encryption_algorithm                 => :bcrypt,
-          :@encryption_provider                  => CryptoProviders::BCrypt,
-          :@custom_encryption_provider           => nil,
-          :@encryption_key                       => nil,
-          :@pepper                               => '',
-          :@salt_join_token                      => '',
-          :@salt_attribute_name                  => :salt,
-          :@stretches                            => nil,
-          :@subclasses_inherit_config            => false,
-          :@before_authenticate                  => [],
-          :@after_config                         => [],
-          :@email_delivery_method                => :deliver_now,
-          :@token_randomness                     => 15
+          :@email_attribute_name => :email,
+          :@crypted_password_attribute_name => :crypted_password,
+          :@encryption_algorithm => :bcrypt,
+          :@encryption_provider => CryptoProviders::BCrypt,
+          :@custom_encryption_provider => nil,
+          :@encryption_key => nil,
+          :@pepper => '',
+          :@salt_join_token => '',
+          :@salt_attribute_name => :salt,
+          :@stretches => nil,
+          :@subclasses_inherit_config => false,
+          :@before_authenticate => [],
+          :@after_config => [],
+          :@email_delivery_method => :deliver_now,
+          :@token_randomness => 15
         }
         reset!
       end

@@ -13,7 +13,8 @@ module Sorcery
                       :before_logout,
                       :after_logout,
                       :after_remember_me,
-                      :use_redirect_back_or_to_by_rails # set whether to use 'redirect_back_or_to' defined in Rails 7.
+                      :use_redirect_back_or_to_by_rails, # set whether to use 'redirect_back_or_to' defined in Rails 7.
+                      :after_login_lock
 
         def init!
           @defaults = {
@@ -28,7 +29,8 @@ module Sorcery
             :@after_remember_me => Set.new,
             :@save_return_to_url => true,
             :@cookie_domain => nil,
-            :@use_redirect_back_or_to_by_rails => false
+            :@use_redirect_back_or_to_by_rails => false,
+            :@after_login_lock => Set.new
           }
         end
 

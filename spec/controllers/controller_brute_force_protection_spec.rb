@@ -38,5 +38,13 @@ describe SorceryController, type: :controller do
       user.reload
       expect(user.failed_logins_count).to eq(0)
     end
+
+    it 'calls after_login_lock when user locked' do
+      user.update!(failed_logins_count: 2)
+      sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
+
+      expect(controller).to receive(:after_login_lock!).once
+      request_test_login
+    end
   end
 end

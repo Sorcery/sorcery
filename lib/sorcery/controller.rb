@@ -5,10 +5,8 @@ module Sorcery
         include InstanceMethods
 
         Config.submodules.each do |mod|
-          # FIXME: Is there a cleaner way to handle missing submodules?
-          include Submodules.const_get(mod.to_s.split('_').map(&:capitalize).join) # rubocop:disable Layout/EmptyLinesAfterModuleInclusion
-        rescue NameError
-          # don't stop on a missing submodule.
+          submodule_name = mod.to_s.split('_').map(&:capitalize).join
+          include Submodules.const_get(submodule_name) if Submodules.const_defined?(submodule_name, false)
         end
       end
       Config.update!

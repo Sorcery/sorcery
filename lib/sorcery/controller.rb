@@ -6,7 +6,7 @@ module Sorcery
 
         Config.submodules.each do |mod|
           submodule_name = mod.to_s.split('_').map(&:capitalize).join
-          include Submodules.const_get(submodule_name) if Submodules.const_defined?(submodule_name)
+          include Submodules.const_get(submodule_name) if Submodules.const_defined?(submodule_name, false)
         end
       end
       Config.update!

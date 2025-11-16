@@ -318,7 +318,7 @@ describe SorceryController, active_record: true, type: :controller do
           Timecop.freeze(now)
           expect(User).to receive(:load_from_provider).and_return(user)
           expect(user).to receive(:set_last_login_at).with(be_within(0.1).of(now))
-          get "test_login_from_#{provider}".to_sym
+          get :"test_login_from_#{provider}"
           Timecop.return
         end
 
@@ -328,7 +328,7 @@ describe SorceryController, active_record: true, type: :controller do
           Timecop.freeze(now)
           expect(User).to receive(:load_from_provider).and_return(user)
           expect(user).to receive(:set_last_login_at).never
-          get "test_login_from_#{provider}".to_sym
+          get :"test_login_from_#{provider}"
         end
       end
     end
@@ -355,7 +355,7 @@ describe SorceryController, active_record: true, type: :controller do
 
         it 'does not reset session before session timeout' do
           expect(User).to receive(:load_from_provider).with(provider.to_sym, '123').and_return(user)
-          get "test_login_from_#{provider}".to_sym
+          get :"test_login_from_#{provider}"
 
           expect(session[:user_id]).not_to be_nil
           expect(flash[:notice]).to eq 'Success!'
@@ -363,7 +363,7 @@ describe SorceryController, active_record: true, type: :controller do
 
         it 'resets session after session timeout' do
           expect(User).to receive(:load_from_provider).with(provider.to_sym, '123').and_return(user)
-          get "test_login_from_#{provider}".to_sym
+          get :"test_login_from_#{provider}"
           expect(session[:user_id]).to eq user.id.to_s
           Timecop.travel(Time.now.in_time_zone + 0.6)
           get :test_should_be_logged_in

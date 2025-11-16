@@ -83,13 +83,6 @@ RSpec/DescribedClass:
     - 'spec/sorcery_crypto_providers_spec.rb'
     - 'spec/sorcery_temporary_token_spec.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowConsecutiveOneLiners.
-RSpec/EmptyLineAfterHook:
-  Exclude:
-    - 'spec/controllers/controller_oauth2_spec.rb'
-
 # Offense count: 59
 # Configuration parameters: Max, CountAsOne.
 RSpec/ExampleLength:

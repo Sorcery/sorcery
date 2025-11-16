@@ -73,6 +73,7 @@ describe SorceryController, active_record: true, type: :controller do
       before do
         sorcery_controller_external_property_set(:facebook, :callback_url, '/oauth/twitter/callback')
       end
+
       it 'login_at redirects correctly' do
         get :login_at_test_facebook
         expect(response).to be_a_redirect

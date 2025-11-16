@@ -19,14 +19,6 @@ RSpec/AnyInstance:
     - 'spec/controllers/controller_oauth2_spec.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: be, be_nil
-RSpec/BeNil:
-  Exclude:
-    - 'spec/shared_examples/user_shared_examples.rb'
-
 # Offense count: 66
 RSpec/BeforeAfterAll:
   Enabled: false

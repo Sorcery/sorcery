@@ -103,7 +103,7 @@ shared_examples_for 'rails_3_core_model' do
       end
 
       it 'returns nil if credentials are bad' do
-        expect(User.authenticate(user.email, 'wrong!')).to be nil
+        expect(User.authenticate(user.email, 'wrong!')).to be_nil
       end
 
       context 'downcasing username' do

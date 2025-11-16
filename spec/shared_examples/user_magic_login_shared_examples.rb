@@ -39,7 +39,7 @@ shared_examples_for 'magic_login_model' do
 
       it do
         sorcery_model_property_set(:magic_login_mailer_disabled, false)
-        expect(config.magic_login_mailer_disabled).to eq false
+        expect(config.magic_login_mailer_disabled).to be false
       end
 
       it do
@@ -99,7 +99,7 @@ shared_examples_for 'magic_login_model' do
         end
 
         it do
-          expect(user.deliver_magic_login_instructions!).to eq true
+          expect(user.deliver_magic_login_instructions!).to be true
         end
       end
 
@@ -107,14 +107,14 @@ shared_examples_for 'magic_login_model' do
         context 'magic_login_time_between_emails is nil' do
           it 'returns false' do
             sorcery_model_property_set(:magic_login_time_between_emails, nil)
-            expect(user.deliver_magic_login_instructions!).to eq false
+            expect(user.deliver_magic_login_instructions!).to be false
           end
         end
 
         context 'magic_login_email_sent_at is nil' do
           it 'returns false' do
             user.send(:"#{config.magic_login_email_sent_at_attribute_name}=", nil)
-            expect(user.deliver_magic_login_instructions!).to eq false
+            expect(user.deliver_magic_login_instructions!).to be false
           end
         end
 
@@ -122,14 +122,14 @@ shared_examples_for 'magic_login_model' do
           it 'returns false' do
             user.send(:"#{config.magic_login_email_sent_at_attribute_name}=", DateTime.now)
             sorcery_model_property_set(:magic_login_time_between_emails, 30 * 60)
-            expect(user.deliver_magic_login_instructions!).to eq false
+            expect(user.deliver_magic_login_instructions!).to be false
           end
         end
 
         context 'magic_login_mailer_disabled is true' do
           it 'returns false' do
             sorcery_model_property_set(:magic_login_mailer_disabled, true)
-            expect(user.deliver_magic_login_instructions!).to eq false
+            expect(user.deliver_magic_login_instructions!).to be false
           end
         end
       end
@@ -142,8 +142,8 @@ shared_examples_for 'magic_login_model' do
 
         user.clear_magic_login_token!
 
-        expect(user.magic_login_token).to eq nil
-        expect(user.magic_login_token_expires_at).to eq nil
+        expect(user.magic_login_token).to be_nil
+        expect(user.magic_login_token_expires_at).to be_nil
       end
     end
   end

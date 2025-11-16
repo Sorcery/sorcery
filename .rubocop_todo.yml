@@ -101,12 +101,6 @@ RSpec/ExampleLength:
     - 'spec/shared_examples/user_reset_password_shared_examples.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ExcessiveDocstringSpacing:
-  Exclude:
-    - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.

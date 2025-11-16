@@ -60,7 +60,7 @@ shared_examples_for 'magic_login_model' do
 
     describe '#generate_magic_login_token!' do
       context 'magic_login_token is nil' do
-        it "magic_login_token_expires_at and magic_login_email_sent_at aren't nil " do
+        it "magic_login_token_expires_at and magic_login_email_sent_at aren't nil" do
           user.generate_magic_login_token!
           expect(user.magic_login_token_expires_at).not_to be_nil
           expect(user.magic_login_email_sent_at).not_to be_nil

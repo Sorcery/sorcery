@@ -142,13 +142,13 @@ shared_examples_for 'rails_3_core_model' do
 
       context 'and model implements active_for_authentication?' do
         it 'authenticates returns user if active_for_authentication? returns true' do
-          allow_any_instance_of(User).to receive(:active_for_authentication?) { true }
+          allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(true)
 
           expect(User.authenticate(user.email, 'secret')).to eq user
         end
 
         it 'authenticate returns nil if active_for_authentication? returns false' do
-          allow_any_instance_of(User).to receive(:active_for_authentication?) { false }
+          allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(false)
 
           expect(User.authenticate(user.email, 'secret')).to be_nil
         end

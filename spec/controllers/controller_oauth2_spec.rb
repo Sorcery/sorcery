@@ -328,7 +328,7 @@ describe SorceryController, :active_record, type: :controller do
           now = Time.now.in_time_zone
           Timecop.freeze(now)
           expect(User).to receive(:load_from_provider).and_return(user)
-          expect(user).to receive(:set_last_login_at).never
+          expect(user).not_to receive(:set_last_login_at)
           get :"test_login_from_#{provider}"
         end
       end

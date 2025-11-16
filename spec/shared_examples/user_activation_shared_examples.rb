@@ -154,13 +154,13 @@ shared_examples_for 'rails_3_activation_model' do
         end
 
         it 'does not call send_activation_needed_email! method of user' do
-          expect(@user).to receive(:send_activation_needed_email!).never
+          expect(@user).not_to receive(:send_activation_needed_email!)
 
           @user.sorcery_adapter.save(raise_on_failure: true)
         end
 
         it 'calls send_activation_success_email! method of user on activation' do
-          expect(@user).to receive(:send_activation_success_email!).never
+          expect(@user).not_to receive(:send_activation_success_email!)
 
           @user.activate!
         end
@@ -197,7 +197,7 @@ shared_examples_for 'rails_3_activation_model' do
       it 'does not call send_activation_needed_email! method of user' do
         user = build_new_user
 
-        expect(user).to receive(:send_activation_needed_email!).never
+        expect(user).not_to receive(:send_activation_needed_email!)
 
         user.sorcery_adapter.save(raise_on_failure: true)
       end
@@ -210,7 +210,7 @@ shared_examples_for 'rails_3_activation_model' do
       end
 
       it 'calls send_activation_success_email! method of user on activation' do
-        expect(user).to receive(:send_activation_success_email!).never
+        expect(user).not_to receive(:send_activation_success_email!)
 
         user.activate!
       end

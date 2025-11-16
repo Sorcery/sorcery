@@ -13,6 +13,7 @@ module Sorcery
                     :user_info_path
 
       def initialize
+        super
         @configuration = {
           site: 'https://api.xing.com/v1',
           authorize_path: '/authorize',

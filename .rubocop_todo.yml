@@ -13,13 +13,6 @@ Gemspec/DevelopmentDependencies:
   Exclude:
     - 'sorcery.gemspec'
 
-# Offense count: 2
-# Configuration parameters: AllowedParentClasses.
-Lint/MissingSuper:
-  Exclude:
-    - 'lib/sorcery/providers/jira.rb'
-    - 'lib/sorcery/providers/xing.rb'
-
 # Offense count: 3
 RSpec/AnyInstance:
   Exclude:

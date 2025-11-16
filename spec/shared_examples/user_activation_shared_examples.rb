@@ -53,7 +53,7 @@ shared_examples_for 'rails_3_activation_model' do
     end
 
     it 'if mailer is disabled and mailer is nil, do NOT throw exception' do
-      expect { sorcery_reload!([:user_activation], activation_mailer_disabled: true) }.to_not raise_error
+      expect { sorcery_reload!([:user_activation], activation_mailer_disabled: true) }.not_to raise_error
     end
   end
 

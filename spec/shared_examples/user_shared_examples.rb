@@ -89,7 +89,7 @@ shared_examples_for 'rails_3_core_model' do
     before(:all) { sorcery_reload! }
     before { User.sorcery_adapter.delete_all }
 
-    it 'does not add authenticate method to base class', active_record: true do
+    it 'does not add authenticate method to base class', :active_record do
       expect(ActiveRecord::Base).not_to respond_to(:authenticate) if defined?(ActiveRecord)
     end
 

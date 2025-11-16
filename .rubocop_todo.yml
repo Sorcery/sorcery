@@ -142,23 +142,6 @@ RSpec/MessageChain:
 RSpec/MessageSpies:
   EnforcedStyle: receive
 
-# Offense count: 10
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: hash, symbol
-RSpec/MetadataStyle:
-  Exclude:
-    - 'spec/active_record/user_activation_spec.rb'
-    - 'spec/active_record/user_activity_logging_spec.rb'
-    - 'spec/active_record/user_brute_force_protection_spec.rb'
-    - 'spec/active_record/user_magic_login_spec.rb'
-    - 'spec/active_record/user_oauth_spec.rb'
-    - 'spec/active_record/user_remember_me_spec.rb'
-    - 'spec/active_record/user_reset_password_spec.rb'
-    - 'spec/active_record/user_spec.rb'
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/shared_examples/user_shared_examples.rb'
-
 # Offense count: 104
 # Configuration parameters: Max.
 RSpec/MultipleExpectations:

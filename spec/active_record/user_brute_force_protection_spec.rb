@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'shared_examples/user_brute_force_protection_shared_examples'
 
-describe User, 'with brute_force_protection submodule', active_record: true do
+describe User, 'with brute_force_protection submodule', :active_record do
   before(:all) do
     MigrationHelper.migrate("#{Rails.root}/db/migrate/brute_force_protection")
     User.reset_column_information

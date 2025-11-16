@@ -46,7 +46,7 @@ shared_examples_for 'rails_3_reset_password_model' do
     end
 
     it 'if mailer is disabled and mailer is nil, do NOT throw exception' do
-      expect { sorcery_reload!([:reset_password], reset_password_mailer_disabled: true) }.to_not raise_error
+      expect { sorcery_reload!([:reset_password], reset_password_mailer_disabled: true) }.not_to raise_error
     end
 
     it "allows configuration option 'reset_password_email_method_name'" do
@@ -320,7 +320,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       user.deliver_reset_password_instructions!
 
       expect(user.reset_password_token).not_to be_nil
-      expect(user).to_not receive(:save)
+      expect(user).not_to receive(:save)
       expect(user).to receive(:save!)
 
       user.change_password!('blabulsdf')
@@ -345,7 +345,7 @@ shared_examples_for 'rails_3_reset_password_model' do
 
       user.deliver_reset_password_instructions!
       expect(user.reset_password_token).not_to be_nil
-      expect(user).to_not receive(:save!)
+      expect(user).not_to receive(:save!)
       expect(user).to receive(:save)
 
       user.change_password(new_password)

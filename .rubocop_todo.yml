@@ -103,14 +103,6 @@ RSpec/ExampleLength:
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: CustomTransform, IgnoredWords, DisallowedExamples.
-# DisallowedExamples: works
-RSpec/ExampleWording:
-  Exclude:
-    - 'spec/providers/vk_spec.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
 RSpec/ExcessiveDocstringSpacing:
   Exclude:
     - 'spec/shared_examples/user_magic_login_shared_examples.rb'

@@ -24,7 +24,7 @@ describe Sorcery::Providers::Vk do
   end
 
   context 'getting user info hash' do
-    it 'should provide VK API version' do
+    it 'provides VK API version' do
       stub_vk_authorize
       sorcery_controller_external_property_set(:vk, :api_version, '5.71')
 

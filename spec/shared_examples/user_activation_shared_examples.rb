@@ -21,7 +21,7 @@ shared_examples_for 'rails_3_activation_model' do
     it "enables configuration option 'activation_token_attribute_name'" do
       sorcery_model_property_set(:activation_token_attribute_name, :code)
 
-      expect(User.sorcery_config.activation_token_attribute_name).to eql :code
+      expect(User.sorcery_config.activation_token_attribute_name).to be :code
     end
 
     it "enables configuration option 'user_activation_mailer'" do

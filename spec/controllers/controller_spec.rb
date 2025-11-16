@@ -58,7 +58,7 @@ describe SorceryController, type: :controller do
     describe '#login' do
       context 'when succeeds' do
         before do
-          expect(User).to receive(:authenticate).with('bla@example.com', 'secret') { |&block| block.call(user, nil) }
+          expect(User).to receive(:authenticate).with('bla@example.com', 'secret').and_yield(user, nil)
           get :test_login, params: { email: 'bla@example.com', password: 'secret' }
         end
 

@@ -115,7 +115,7 @@ describe SorceryController, type: :controller do
     it 'works if the session is stored as a string or a Time' do
       session[:login_time] = Time.now.to_s
       # TODO: ???
-      expect(User).to receive(:authenticate).with('bla@example.com', 'secret') { |&block| block.call(user, nil) }
+      expect(User).to receive(:authenticate).with('bla@example.com', 'secret').and_yield(user, nil)
 
       get :test_login, params: { email: 'bla@example.com', password: 'secret' }
 

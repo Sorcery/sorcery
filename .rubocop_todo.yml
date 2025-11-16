@@ -206,15 +206,6 @@ RSpec/VerifiedDoubles:
     - 'spec/controllers/controller_oauth2_spec.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
 
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/Yield:
-  Exclude:
-    - 'spec/controllers/controller_brute_force_protection_spec.rb'
-    - 'spec/controllers/controller_remember_me_spec.rb'
-    - 'spec/controllers/controller_session_timeout_spec.rb'
-    - 'spec/controllers/controller_spec.rb'
-
 # Offense count: 126
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.

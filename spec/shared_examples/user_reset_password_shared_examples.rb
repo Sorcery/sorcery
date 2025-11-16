@@ -7,7 +7,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       sorcery_reload!([:reset_password], reset_password_mailer: SorceryMailer)
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
     end
 
@@ -79,12 +79,12 @@ shared_examples_for 'rails_3_reset_password_model' do
       sorcery_reload!([:reset_password], reset_password_mailer: SorceryMailer)
     end
 
-    before(:each) do
+    before do
       User.sorcery_adapter.delete_all
       user
     end
 
-    after(:each) do
+    after do
       Timecop.return
     end
 

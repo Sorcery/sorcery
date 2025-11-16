@@ -6,7 +6,7 @@ describe SorceryController, type: :controller do
       sorcery_reload!
     end
 
-    after(:each) do
+    after do
       Sorcery::Controller::Config.reset!
       sorcery_reload!
     end
@@ -38,7 +38,7 @@ describe SorceryController, type: :controller do
       sorcery_reload!
     end
 
-    after(:each) do
+    after do
       Sorcery::Controller::Config.reset!
       sorcery_reload!
       sorcery_controller_property_set(:user_class, User)

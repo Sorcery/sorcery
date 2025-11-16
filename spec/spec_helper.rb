@@ -28,7 +28,7 @@ RSpec.configure do |config|
 
   config.before(:suite) { setup_orm }
   config.after(:suite) { teardown_orm }
-  config.before(:each) { ActionMailer::Base.deliveries.clear }
+  config.before { ActionMailer::Base.deliveries.clear }
 
   config.include Sorcery::TestHelpers::Internal
   config.include Sorcery::TestHelpers::Internal::Rails

@@ -19,7 +19,7 @@ describe SorceryController, active_record: true, type: :controller do
   end
 
   describe 'using create_from' do
-    before(:each) do
+    before do
       stub_all_oauth2_requests!
     end
 
@@ -65,7 +65,7 @@ describe SorceryController, active_record: true, type: :controller do
   context 'with OAuth features' do
     let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
-    before(:each) do
+    before do
       stub_all_oauth2_requests!
     end
 
@@ -259,7 +259,7 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://example.com')
     end
 
-    after(:each) do
+    after do
       User.sorcery_adapter.delete_all
     end
 
@@ -305,7 +305,7 @@ describe SorceryController, active_record: true, type: :controller do
 
     %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
       context "when #{provider}" do
-        before(:each) do
+        before do
           sorcery_controller_property_set(:register_login_time, true)
           sorcery_controller_property_set(:register_logout_time, false)
           sorcery_controller_property_set(:register_last_activity_time, false)
@@ -344,13 +344,13 @@ describe SorceryController, active_record: true, type: :controller do
 
     %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
       context "when #{provider}" do
-        before(:each) do
+        before do
           sorcery_model_property_set(:authentications_class, Authentication)
           sorcery_controller_property_set(:session_timeout, 0.5)
           stub_all_oauth2_requests!
         end
 
-        after(:each) do
+        after do
           Timecop.return
         end
 

@@ -1,6 +1,6 @@
 shared_examples_for 'rails_3_brute_force_protection_model' do
   let(:user) { create_new_user }
-  before(:each) do
+  before do
     User.sorcery_adapter.delete_all
   end
 
@@ -11,7 +11,7 @@ shared_examples_for 'rails_3_brute_force_protection_model' do
       sorcery_reload!([:brute_force_protection])
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
     end
 

@@ -13,6 +13,7 @@ module Sorcery
                     :user_info_path, :site, :signature_method, :private_key_file, :callback_url
 
       def initialize
+        super
         @configuration = {
           authorize_path: '/authorize',
           request_token_path: '/request-token',

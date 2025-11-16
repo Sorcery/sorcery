@@ -17,7 +17,7 @@ module Sorcery
       include_required_submodules!
 
       # This runs the options block set in the initializer on the model class.
-      ::Sorcery::Controller::Config.user_config.tap { |blk| blk.call(@sorcery_config) if blk }
+      ::Sorcery::Controller::Config.user_config.tap { |blk| blk&.call(@sorcery_config) }
 
       define_base_fields
       init_orm_hooks!

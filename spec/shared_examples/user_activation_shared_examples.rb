@@ -7,7 +7,7 @@ shared_examples_for 'rails_3_activation_model' do
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
@@ -21,7 +21,7 @@ shared_examples_for 'rails_3_activation_model' do
     it "enables configuration option 'activation_token_attribute_name'" do
       sorcery_model_property_set(:activation_token_attribute_name, :code)
 
-      expect(User.sorcery_config.activation_token_attribute_name).to eql :code
+      expect(User.sorcery_config.activation_token_attribute_name).to be :code
     end
 
     it "enables configuration option 'user_activation_mailer'" do
@@ -53,7 +53,7 @@ shared_examples_for 'rails_3_activation_model' do
     end
 
     it 'if mailer is disabled and mailer is nil, do NOT throw exception' do
-      expect { sorcery_reload!([:user_activation], activation_mailer_disabled: true) }.to_not raise_error
+      expect { sorcery_reload!([:user_activation], activation_mailer_disabled: true) }.not_to raise_error
     end
   end
 
@@ -140,7 +140,7 @@ shared_examples_for 'rails_3_activation_model' do
       end
 
       context 'activation_needed_email is skipped' do
-        before(:each) do
+        before do
           @user = build_new_user
           @user.skip_activation_needed_email = true
         end
@@ -154,20 +154,20 @@ shared_examples_for 'rails_3_activation_model' do
         end
 
         it 'does not call send_activation_needed_email! method of user' do
-          expect(@user).to receive(:send_activation_needed_email!).never
+          expect(@user).not_to receive(:send_activation_needed_email!)
 
           @user.sorcery_adapter.save(raise_on_failure: true)
         end
 
         it 'calls send_activation_success_email! method of user on activation' do
-          expect(@user).to receive(:send_activation_success_email!).never
+          expect(@user).not_to receive(:send_activation_success_email!)
 
           @user.activate!
         end
       end
 
       context 'activation_success_email is skipped' do
-        before(:each) do
+        before do
           @user = build_new_user
           @user.skip_activation_success_email = true
         end
@@ -183,7 +183,7 @@ shared_examples_for 'rails_3_activation_model' do
     end
 
     context 'mailer has been disabled' do
-      before(:each) do
+      before do
         sorcery_reload!([:user_activation], activation_mailer_disabled: true, user_activation_mailer: SorceryMailer)
       end
 
@@ -197,7 +197,7 @@ shared_examples_for 'rails_3_activation_model' do
       it 'does not call send_activation_needed_email! method of user' do
         user = build_new_user
 
-        expect(user).to receive(:send_activation_needed_email!).never
+        expect(user).not_to receive(:send_activation_needed_email!)
 
         user.sorcery_adapter.save(raise_on_failure: true)
       end
@@ -210,7 +210,7 @@ shared_examples_for 'rails_3_activation_model' do
       end
 
       it 'calls send_activation_success_email! method of user on activation' do
-        expect(user).to receive(:send_activation_success_email!).never
+        expect(user).not_to receive(:send_activation_success_email!)
 
         user.activate!
       end
@@ -222,7 +222,7 @@ shared_examples_for 'rails_3_activation_model' do
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
-    before(:each) do
+    before do
       User.sorcery_adapter.delete_all
     end
 
@@ -263,7 +263,7 @@ shared_examples_for 'rails_3_activation_model' do
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
-    after(:each) do
+    after do
       Timecop.return
     end
 

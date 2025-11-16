@@ -3,7 +3,7 @@ shared_examples_for 'rails_3_core_model' do
   let(:crypted_password) { user.send User.sorcery_config.crypted_password_attribute_name }
 
   describe 'loaded plugin configuration' do
-    after(:each) { User.sorcery_config.reset! }
+    after { User.sorcery_config.reset! }
 
     it "enables configuration option 'username_attribute_names'" do
       sorcery_model_property_set(:username_attribute_names, :email)
@@ -87,9 +87,9 @@ shared_examples_for 'rails_3_core_model' do
 
   describe 'when activated with sorcery' do
     before(:all) { sorcery_reload! }
-    before(:each) { User.sorcery_adapter.delete_all }
+    before { User.sorcery_adapter.delete_all }
 
-    it 'does not add authenticate method to base class', active_record: true do
+    it 'does not add authenticate method to base class', :active_record do
       expect(ActiveRecord::Base).not_to respond_to(:authenticate) if defined?(ActiveRecord)
     end
 
@@ -103,7 +103,7 @@ shared_examples_for 'rails_3_core_model' do
       end
 
       it 'returns nil if credentials are bad' do
-        expect(User.authenticate(user.email, 'wrong!')).to be nil
+        expect(User.authenticate(user.email, 'wrong!')).to be_nil
       end
 
       context 'downcasing username' do
@@ -142,13 +142,13 @@ shared_examples_for 'rails_3_core_model' do
 
       context 'and model implements active_for_authentication?' do
         it 'authenticates returns user if active_for_authentication? returns true' do
-          allow_any_instance_of(User).to receive(:active_for_authentication?) { true }
+          allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(true)
 
           expect(User.authenticate(user.email, 'secret')).to eq user
         end
 
         it 'authenticate returns nil if active_for_authentication? returns false' do
-          allow_any_instance_of(User).to receive(:active_for_authentication?) { false }
+          allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(false)
 
           expect(User.authenticate(user.email, 'secret')).to be_nil
         end
@@ -200,7 +200,7 @@ shared_examples_for 'rails_3_core_model' do
 
   describe 'registration' do
     before(:all) { sorcery_reload! }
-    before(:each) { User.sorcery_adapter.delete_all }
+    before { User.sorcery_adapter.delete_all }
 
     it 'by default, encryption_provider is not nil' do
       expect(User.sorcery_config.encryption_provider).not_to be_nil
@@ -370,11 +370,11 @@ shared_examples_for 'rails_3_core_model' do
       @text = 'Some Text!'
     end
 
-    before(:each) do
+    before do
       User.sorcery_adapter.delete_all
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
     end
 
@@ -541,9 +541,9 @@ shared_examples_for 'rails_3_core_model' do
       User.sorcery_adapter.delete_all
     end
 
-    before(:each) { user }
+    before { user }
 
-    after(:each) do
+    after do
       User.sorcery_adapter.delete_all
       User.sorcery_config.reset!
     end
@@ -581,7 +581,7 @@ shared_examples_for 'external_user' do
     MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
   end
 
-  before(:each) do
+  before do
     User.sorcery_adapter.delete_all
   end
 
@@ -598,7 +598,7 @@ shared_examples_for 'external_user' do
   end
 
   describe '.create_from_provider' do
-    before(:each) do
+    before do
       sorcery_reload!([:external])
       sorcery_model_property_set(:authentications_class, Authentication)
     end
@@ -627,11 +627,11 @@ shared_examples_for 'external_user' do
   end
 
   describe 'activation' do
-    before(:each) do
+    before do
       sorcery_reload!(%i[user_activation external], user_activation_mailer: SorceryMailer)
     end
 
-    after(:each) do
+    after do
       User.sorcery_adapter.delete_all
     end
 

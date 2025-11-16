@@ -294,7 +294,7 @@ class SorceryController < ApplicationController
   end
 
   def test_login_from_line
-    if @user = login_from(:line)
+    if (@user = login_from(:line))
       redirect_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
@@ -432,7 +432,7 @@ class SorceryController < ApplicationController
   end
 
   def test_return_to_with_external_line
-    if @user = login_from(:line)
+    if (@user = login_from(:line))
       redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'

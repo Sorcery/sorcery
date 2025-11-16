@@ -16,7 +16,7 @@ describe SorceryController, type: :controller do
     end
 
     it 'sets cookie on remember_me!' do
-      expect(User).to receive(:authenticate).with('bla@example.com', 'secret') { |&block| block.call(user, nil) }
+      expect(User).to receive(:authenticate).with('bla@example.com', 'secret').and_yield(user, nil)
       expect(user).to receive(:remember_me!)
 
       post :test_login_with_remember, params: { email: 'bla@example.com', password: 'secret' }
@@ -39,7 +39,7 @@ describe SorceryController, type: :controller do
     end
 
     it 'login(email,password,remember_me) logs user in and remembers' do
-      expect(User).to receive(:authenticate).with('bla@example.com', 'secret', '1') { |&block| block.call(user, nil) }
+      expect(User).to receive(:authenticate).with('bla@example.com', 'secret', '1').and_yield(user, nil)
       expect(user).to receive(:remember_me!)
       expect(user).to receive(:remember_me_token).and_return('abracadabra').twice
 

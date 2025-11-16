@@ -97,7 +97,7 @@ shared_examples_for 'rails_3_brute_force_protection_model' do
     end
   end
 
-  context '.authenticate' do
+  describe '.authenticate' do
     it 'unlocks after lock time period passes' do
       sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
       sorcery_model_property_set(:login_lock_time_period, 0.2)

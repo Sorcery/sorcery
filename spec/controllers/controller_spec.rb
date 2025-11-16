@@ -45,15 +45,15 @@ describe SorceryController, type: :controller do
       sorcery_model_property_set(:username_attribute_names, [:email])
     end
 
-    specify { should respond_to(:login) }
+    it { is_expected.to respond_to(:login) }
 
-    specify { should respond_to(:logout) }
+    it { is_expected.to respond_to(:logout) }
 
-    specify { should respond_to(:logged_in?) }
+    it { is_expected.to respond_to(:logged_in?) }
 
-    specify { should respond_to(:current_user) }
+    it { is_expected.to respond_to(:current_user) }
 
-    specify { should respond_to(:require_login) }
+    it { is_expected.to respond_to(:require_login) }
 
     describe '#login' do
       context 'when succeeds' do
@@ -167,7 +167,7 @@ describe SorceryController, type: :controller do
     end
 
     # --- auto_login(user) ---
-    specify { should respond_to(:auto_login) }
+    it { is_expected.to respond_to(:auto_login) }
 
     it 'auto_login(user) logs in a user instance' do
       session[:user_id] = nil

@@ -114,14 +114,6 @@ RSpec/ExpectInHook:
   Exclude:
     - 'spec/controllers/controller_spec.rb'
 
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: is_expected, should
-RSpec/ImplicitExpect:
-  Exclude:
-    - 'spec/controllers/controller_spec.rb'
-
 # Offense count: 72
 # Configuration parameters: AssignmentOnly.
 RSpec/InstanceVariable:

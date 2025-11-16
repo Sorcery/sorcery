@@ -74,6 +74,10 @@ describe SorceryController, active_record: true, type: :controller do
         sorcery_controller_external_property_set(:facebook, :callback_url, '/oauth/twitter/callback')
       end
 
+      after do
+        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
+      end
+
       it 'login_at redirects correctly' do
         get :login_at_test_facebook
         expect(response).to be_a_redirect
@@ -100,10 +104,6 @@ describe SorceryController, active_record: true, type: :controller do
         get :login_at_test_facebook
         expect(response).to redirect_to("https://www.facebook.com/v2.2/dialog/oauth?client_id=#{Sorcery::Controller::Config.facebook.key}&display=page&redirect_uri=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&response_type=code&scope=email&state")
       end
-
-      after do
-        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
-      end
     end
 
     context 'when callback_url begin with http://' do
@@ -112,15 +112,15 @@ describe SorceryController, active_record: true, type: :controller do
         sorcery_controller_external_property_set(:facebook, :api_version, 'v2.2')
       end
 
+      after do
+        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
+      end
+
       it 'login_at redirects correctly' do
         create_new_user
         get :login_at_test_facebook
         expect(response).to be_a_redirect
         expect(response).to redirect_to("https://www.facebook.com/v2.2/dialog/oauth?client_id=#{Sorcery::Controller::Config.facebook.key}&display=page&redirect_uri=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&response_type=code&scope=email&state")
-      end
-
-      after do
-        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
       end
     end
 

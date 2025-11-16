@@ -114,12 +114,6 @@ RSpec/ExpectInHook:
   Exclude:
     - 'spec/controllers/controller_spec.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/HooksBeforeExamples:
-  Exclude:
-    - 'spec/controllers/controller_oauth2_spec.rb'
-
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.

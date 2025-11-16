@@ -35,7 +35,7 @@ describe SorceryController, type: :controller do
       it 'does not reset the session if invalidate_sessions_before is nil' do
         sorcery_controller_property_set(:session_timeout_invalidate_active_sessions_enabled, true)
         login_user user
-        allow(user).to receive(:invalidate_sessions_before) { nil }
+        allow(user).to receive(:invalidate_sessions_before).and_return(nil)
 
         get :test_should_be_logged_in
 

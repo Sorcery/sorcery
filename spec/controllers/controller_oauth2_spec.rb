@@ -380,7 +380,7 @@ describe SorceryController, :active_record, type: :controller do
     access_token = double(OAuth2::AccessToken)
     allow(access_token).to receive(:token_param=)
     # Needed for Instagram
-    allow(access_token).to receive(:[]).with(:client_id) { 'eYVNBjBDi33aa9GkA3w' }
+    allow(access_token).to receive(:[]).with(:client_id).and_return('eYVNBjBDi33aa9GkA3w')
     response = double(OAuth2::Response)
     allow(response).to receive(:body) {
       {
@@ -452,9 +452,8 @@ describe SorceryController, :active_record, type: :controller do
       }.to_json
     }
     allow(access_token).to receive(:get) { response }
-    allow(access_token).to receive(:token) { '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3' }
     # access_token params for VK auth
-    allow(access_token).to receive(:params) { { 'user_id' => '100500', 'email' => 'nbenari@example.com' } }
+    allow(access_token).to receive_messages(token: '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3', params: { 'user_id' => '100500', 'email' => 'nbenari@example.com' })
     allow_any_instance_of(OAuth2::Strategy::AuthCode).to receive(:get_token) { access_token }
   end
 

@@ -285,7 +285,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
 
       it 'does not call send_reset_password_email! on reset' do
-        expect(user).to receive(:send_reset_password_email!).never
+        expect(user).not_to receive(:send_reset_password_email!)
 
         user.deliver_reset_password_instructions!
       end

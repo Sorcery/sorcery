@@ -179,15 +179,6 @@ RSpec/NestedGroups:
     - 'spec/shared_examples/user_magic_login_shared_examples.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
 
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ReceiveNever:
-  Exclude:
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/controllers/controller_oauth_spec.rb'
-    - 'spec/shared_examples/user_activation_shared_examples.rb'
-    - 'spec/shared_examples/user_reset_password_shared_examples.rb'
-
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.

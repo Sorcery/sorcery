@@ -125,12 +125,6 @@ RSpec/InstanceVariable:
     - 'spec/shared_examples/user_shared_examples.rb'
     - 'spec/sorcery_crypto_providers_spec.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/LeadingSubject:
-  Exclude:
-    - 'spec/sorcery_temporary_token_spec.rb'
-
 # Offense count: 4
 RSpec/LeakyConstantDeclaration:
   Exclude:

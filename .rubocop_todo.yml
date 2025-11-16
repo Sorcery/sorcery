@@ -23,12 +23,6 @@ RSpec/AnyInstance:
 RSpec/BeforeAfterAll:
   Enabled: false
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ContextMethod:
-  Exclude:
-    - 'spec/shared_examples/user_brute_force_protection_shared_examples.rb'
-
 # Offense count: 35
 # Configuration parameters: Prefixes, AllowedPatterns.
 # Prefixes: when, with, without

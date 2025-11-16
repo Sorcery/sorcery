@@ -18,7 +18,7 @@ describe SorceryController, type: :controller do
 
     before(:all) { sorcery_reload!([:activity_logging]) }
 
-    before(:each) do
+    before do
       sorcery_controller_property_set(:register_login_time, false)
       sorcery_controller_property_set(:register_last_ip_address, false)
       sorcery_controller_property_set(:register_last_activity_time, false)

@@ -10,7 +10,7 @@ describe SorceryController, type: :controller do
       sorcery_controller_property_set(:controller_to_realm_map, 'sorcery' => 'sorcery')
     end
 
-    after(:each) do
+    after do
       logout_user
     end
 

@@ -10,7 +10,7 @@ describe SorceryController, type: :controller do
       sorcery_controller_property_set(:session_timeout, 0.5)
     end
 
-    after(:each) do
+    after do
       Timecop.return
     end
 

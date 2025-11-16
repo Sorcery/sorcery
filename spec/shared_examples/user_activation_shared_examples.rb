@@ -7,7 +7,7 @@ shared_examples_for 'rails_3_activation_model' do
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
@@ -140,7 +140,7 @@ shared_examples_for 'rails_3_activation_model' do
       end
 
       context 'activation_needed_email is skipped' do
-        before(:each) do
+        before do
           @user = build_new_user
           @user.skip_activation_needed_email = true
         end
@@ -167,7 +167,7 @@ shared_examples_for 'rails_3_activation_model' do
       end
 
       context 'activation_success_email is skipped' do
-        before(:each) do
+        before do
           @user = build_new_user
           @user.skip_activation_success_email = true
         end
@@ -183,7 +183,7 @@ shared_examples_for 'rails_3_activation_model' do
     end
 
     context 'mailer has been disabled' do
-      before(:each) do
+      before do
         sorcery_reload!([:user_activation], activation_mailer_disabled: true, user_activation_mailer: SorceryMailer)
       end
 
@@ -222,7 +222,7 @@ shared_examples_for 'rails_3_activation_model' do
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
-    before(:each) do
+    before do
       User.sorcery_adapter.delete_all
     end
 
@@ -263,7 +263,7 @@ shared_examples_for 'rails_3_activation_model' do
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
 
-    after(:each) do
+    after do
       Timecop.return
     end
 

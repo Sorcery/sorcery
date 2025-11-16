@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'Crypto Providers wrappers' do
   describe Sorcery::CryptoProviders::MD5 do
-    after(:each) do
+    after do
       Sorcery::CryptoProviders::MD5.reset!
     end
 
@@ -30,7 +30,7 @@ describe 'Crypto Providers wrappers' do
       Sorcery::CryptoProviders::SHA1.stretches.times { @digest = Digest::SHA1.hexdigest(@digest) }
     end
 
-    after(:each) do
+    after do
       Sorcery::CryptoProviders::SHA1.reset!
     end
 
@@ -63,7 +63,7 @@ describe 'Crypto Providers wrappers' do
       Sorcery::CryptoProviders::SHA256.stretches.times { @digest = Digest::SHA256.hexdigest(@digest) }
     end
 
-    after(:each) do
+    after do
       Sorcery::CryptoProviders::SHA256.reset!
     end
 
@@ -91,7 +91,7 @@ describe 'Crypto Providers wrappers' do
       Sorcery::CryptoProviders::SHA512.stretches.times { @digest = Digest::SHA512.hexdigest(@digest) }
     end
 
-    after(:each) do
+    after do
       Sorcery::CryptoProviders::SHA512.reset!
     end
 
@@ -151,7 +151,7 @@ describe 'Crypto Providers wrappers' do
       @tokens = %w[password gq18WBnJYNh2arkC1kgH]
     end
 
-    after(:each) do
+    after do
       Sorcery::CryptoProviders::BCrypt.reset!
     end
 
@@ -193,7 +193,7 @@ describe 'Crypto Providers wrappers' do
     end
 
     context 'when pepper is provided' do
-      before(:each) do
+      before do
         Sorcery::CryptoProviders::BCrypt.pepper = 'pepper'
         @digest = Sorcery::CryptoProviders::BCrypt.encrypt(@tokens) # a BCrypt::Password object
       end
@@ -218,7 +218,7 @@ describe 'Crypto Providers wrappers' do
     end
 
     context 'when pepper is an empty string (default)' do
-      before(:each) do
+      before do
         Sorcery::CryptoProviders::BCrypt.pepper = ''
         @digest = Sorcery::CryptoProviders::BCrypt.encrypt(@tokens) # a BCrypt::Password object
       end

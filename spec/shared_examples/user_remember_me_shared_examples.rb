@@ -6,7 +6,7 @@ shared_examples_for 'rails_3_remember_me_model' do
       sorcery_reload!([:remember_me])
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
     end
 

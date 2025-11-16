@@ -4,7 +4,7 @@ shared_examples_for 'rails_3_activity_logging_model' do
       sorcery_reload!([:activity_logging])
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
     end
 

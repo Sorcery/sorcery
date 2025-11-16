@@ -125,14 +125,6 @@ RSpec/InstanceVariable:
     - 'spec/shared_examples/user_shared_examples.rb'
     - 'spec/sorcery_crypto_providers_spec.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: it_behaves_like, it_should_behave_like
-RSpec/ItBehavesLike:
-  Exclude:
-    - 'spec/active_record/user_spec.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 RSpec/LeadingSubject:

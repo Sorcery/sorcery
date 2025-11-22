@@ -606,7 +606,7 @@ shared_examples_for 'external_user' do
     it 'supports nested attributes' do
       expect do
         User.create_from_provider('facebook', '123', username: 'Noam Ben Ari')
-      end.to change { User.count }.by(1)
+      end.to change(User, :count).by(1)
 
       expect(User.first.username).to eq 'Noam Ben Ari'
     end
@@ -615,13 +615,13 @@ shared_examples_for 'external_user' do
       it 'create user when block return true' do
         expect do
           User.create_from_provider('facebook', '123', username: 'Noam Ben Ari') { true }
-        end.to change { User.count }.by(1)
+        end.to change(User, :count).by(1)
       end
 
       it 'does not create user when block return false' do
         expect do
           User.create_from_provider('facebook', '123', username: 'Noam Ben Ari') { false }
-        end.not_to(change { User.count })
+        end.not_to(change(User, :count))
       end
     end
   end

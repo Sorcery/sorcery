@@ -198,12 +198,10 @@ describe SorceryController, type: :controller do
               .to receive(:referer).and_return('http://test.host/referer_action')
           end
 
-          context 'when Rails::VERSION::MAJOR >= 7', skip: Rails::VERSION::MAJOR < 7 do
-            it 'uses Rails 7 redirect_back_or_to method' do
-              get :test_redirect_back_or_to
+          it 'uses Rails 7 redirect_back_or_to method' do
+            get :test_redirect_back_or_to
 
-              expect(response).to redirect_to('http://test.host/referer_action')
-            end
+            expect(response).to redirect_to('http://test.host/referer_action')
           end
         end
 

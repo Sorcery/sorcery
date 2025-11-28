@@ -227,5 +227,32 @@ describe SorceryController, type: :controller do
         end
       end
     end
+
+    describe '#redirect_to_before_login_path' do
+      context 'when allow_other_host is true' do
+        it 'redirects to external host' do
+          get :test_redirect_to_before_login_path_with_allow_other_host
+
+          expect(response).to redirect_to('http://external.example.com/')
+          expect(flash[:notice]).to eq 'redirected!'
+        end
+
+        it 'redirects to session[:return_to_url] if present' do
+          session[:return_to_url] = 'http://other.example.com/saved_path'
+          get :test_redirect_to_before_login_path_with_allow_other_host
+
+          expect(response).to redirect_to('http://other.example.com/saved_path')
+          expect(session[:return_to_url]).to be_nil
+        end
+      end
+
+      context 'when allow_other_host is false' do
+        it 'raises an error when redirecting to external host' do
+          expect do
+            get :test_redirect_to_before_login_path_without_allow_other_host
+          end.to raise_error(ActionController::Redirecting::UnsafeRedirectError, /Unsafe redirect/)
+        end
+      end
+    end
   end
 end

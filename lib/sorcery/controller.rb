@@ -102,8 +102,11 @@ module Sorcery
         end
       end
 
-      def redirect_to_before_login_path(url, flash_hash = {})
-        redirect_to(session[:return_to_url] || url, flash: flash_hash)
+      def redirect_to_before_login_path(url, **options)
+        allow_other_host = options[:allow_other_host].nil? ? _allow_other_host : options[:allow_other_host]
+        flash = options.except(:allow_other_host)
+
+        redirect_to(session[:return_to_url] || url, flash:, allow_other_host:)
         session[:return_to_url] = nil
       end
 

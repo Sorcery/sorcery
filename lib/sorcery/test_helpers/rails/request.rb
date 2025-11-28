@@ -4,7 +4,7 @@ module Sorcery
       module Request
         # Accepts arguments for user to login, the password, route to use and HTTP method
         # Defaults - @user, 'secret', 'user_sessions_url' and http_method: POST
-        def login_user(user = nil, password = 'secret', route = nil, http_method = :post)
+        def login_user(user = nil, password = 'secret', route = nil, http_method = :post) # rubocop:disable Metrics/ParameterLists
           user ||= @user
           route ||= user_sessions_url
 

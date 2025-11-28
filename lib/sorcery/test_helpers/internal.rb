@@ -17,14 +17,14 @@ module Sorcery
       # a patch to fix a bug in testing that happens when you 'destroy' a session twice.
       # After the first destroy, the session is an ordinary hash, and then when destroy
       # is called again there's an exception.
-      class ::Hash # rubocop:disable Style/ClassAndModuleChildren
+      class ::Hash
         def destroy
           clear
         end
       end
 
       def build_new_user(attributes_hash = nil)
-        user_attributes_hash = attributes_hash || { username: 'gizmo', email: 'bla@bla.com', password: 'secret' }
+        user_attributes_hash = attributes_hash || { username: 'gizmo', email: 'bla@example.com', password: 'secret' }
         @user = User.new(user_attributes_hash)
       end
 
@@ -58,8 +58,8 @@ module Sorcery
         end
       end
 
-      def update_model(&block)
-        User.class_exec(&block)
+      def update_model(&)
+        User.class_exec(&)
       end
 
       private
@@ -69,8 +69,6 @@ module Sorcery
       def reload_user_class
         User && Object.send(:remove_const, 'User')
         load 'user.rb'
-
-        return unless User.respond_to?(:reset_column_information)
 
         User.reset_column_information
       end

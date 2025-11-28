@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SorceryController, type: :controller do
-  let!(:user) { double('user', id: 42) }
+  let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
   # ----------------- SESSION TIMEOUT -----------------------
   context 'with session timeout features' do
@@ -12,11 +12,6 @@ describe SorceryController, type: :controller do
 
     after(:each) do
       Timecop.return
-    end
-
-    before(:each) do
-      allow(user).to receive(:username)
-      allow(user).to receive_message_chain(:sorcery_config, :username_attribute_names, :first) { :username }
     end
 
     it 'does not reset session before session timeout' do
@@ -120,9 +115,9 @@ describe SorceryController, type: :controller do
     it 'works if the session is stored as a string or a Time' do
       session[:login_time] = Time.now.to_s
       # TODO: ???
-      expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
+      expect(User).to receive(:authenticate).with('bla@example.com', 'secret') { |&block| block.call(user, nil) }
 
-      get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
+      get :test_login, params: { email: 'bla@example.com', password: 'secret' }
 
       expect(session[:user_id]).not_to be_nil
       expect(response).to be_successful
@@ -130,12 +125,11 @@ describe SorceryController, type: :controller do
 
     context "with 'session_timeout_from_last_action'" do
       before { create_new_user }
-      after { User.delete_all }
 
       it 'does not logout if there was activity' do
         sorcery_controller_property_set(:session_timeout_from_last_action, true)
 
-        get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
+        get :test_login, params: { email: 'bla@example.com', password: 'secret' }
         Timecop.travel(Time.now.in_time_zone + 0.3)
         get :test_should_be_logged_in
 
@@ -150,7 +144,7 @@ describe SorceryController, type: :controller do
 
       it "with 'session_timeout_from_last_action' logs out if there was no activity" do
         sorcery_controller_property_set(:session_timeout_from_last_action, true)
-        get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
+        get :test_login, params: { email: 'bla@example.com', password: 'secret' }
         Timecop.travel(Time.now.in_time_zone + 0.6)
         get :test_should_be_logged_in
 

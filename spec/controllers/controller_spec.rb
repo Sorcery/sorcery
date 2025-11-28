@@ -22,11 +22,17 @@ describe SorceryController, type: :controller do
 
       expect(Sorcery::Controller::Config.not_authenticated_action).to eq :my_action
     end
+
+    it "enables configuration option 'use_redirect_back_or_to_by_rails'" do
+      sorcery_controller_property_set(:use_redirect_back_or_to_by_rails, true)
+
+      expect(Sorcery::Controller::Config.use_redirect_back_or_to_by_rails).to be true
+    end
   end
 
   # ----------------- PLUGIN ACTIVATED -----------------------
   context 'when activated with sorcery' do
-    let(:user) { double('user', id: 42) }
+    let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
     before(:all) do
       sorcery_reload!
@@ -52,8 +58,8 @@ describe SorceryController, type: :controller do
     describe '#login' do
       context 'when succeeds' do
         before do
-          expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
-          get :test_login, params: { email: 'bla@bla.com', password: 'secret' }
+          expect(User).to receive(:authenticate).with('bla@example.com', 'secret') { |&block| block.call(user, nil) }
+          get :test_login, params: { email: 'bla@example.com', password: 'secret' }
         end
 
         it 'assigns user to @user variable' do
@@ -67,8 +73,8 @@ describe SorceryController, type: :controller do
 
       context 'when fails' do
         before do
-          expect(User).to receive(:authenticate).with('bla@bla.com', 'opensesame!').and_return(nil)
-          get :test_login, params: { email: 'bla@bla.com', password: 'opensesame!' }
+          expect(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_return(nil)
+          get :test_login, params: { email: 'bla@example.com', password: 'opensesame!' }
         end
 
         it 'sets @user variable to nil' do
@@ -151,7 +157,6 @@ describe SorceryController, type: :controller do
       it 'clears the session' do
         cookies[:remember_me_token] = nil
         session[:user_id] = user.id.to_s
-        expect(User.sorcery_adapter).to receive(:find_by_id).with('42') { user }
         get :test_logout
 
         expect(session[:user_id]).to be_nil
@@ -161,7 +166,6 @@ describe SorceryController, type: :controller do
     describe '#logged_in?' do
       it 'returns true when user is logged in' do
         session[:user_id] = user.id.to_s
-        expect(User.sorcery_adapter).to receive(:find_by_id).with('42') { user }
 
         expect(subject.logged_in?).to be true
       end
@@ -176,14 +180,12 @@ describe SorceryController, type: :controller do
     describe '#current_user' do
       it 'current_user returns the user instance if logged in' do
         session[:user_id] = user.id.to_s
-        expect(User.sorcery_adapter).to receive(:find_by_id).once.with('42') { user }
 
         2.times { expect(subject.current_user).to eq user } # memoized!
       end
 
       it 'current_user returns false if not logged in' do
         session[:user_id] = nil
-        expect(User.sorcery_adapter).to_not receive(:find_by_id)
 
         2.times { expect(subject.current_user).to be_nil } # memoized!
       end
@@ -224,7 +226,7 @@ describe SorceryController, type: :controller do
 
     it 'on successful login the user is redirected to the url he originally wanted' do
       session[:return_to_url] = 'http://test.host/some_action'
-      post :test_return_to, params: { email: 'bla@bla.com', password: 'secret' }
+      post :test_return_to, params: { email: 'bla@example.com', password: 'secret' }
 
       expect(response).to redirect_to('http://test.host/some_action')
       expect(flash[:notice]).to eq 'haha!'
@@ -251,6 +253,45 @@ describe SorceryController, type: :controller do
       get :test_auto_login
 
       expect(assigns[:result]).to eq user
+    end
+
+    describe 'redirect_back_or_to' do
+      describe 'use_redirect_back_or_to_by_rails' do
+        context 'when true' do
+          before do
+            sorcery_controller_property_set(:use_redirect_back_or_to_by_rails, true)
+            allow_any_instance_of(ActionController::TestRequest) # rubocop:disable RSpec/AnyInstance
+              .to receive(:referer).and_return('http://test.host/referer_action')
+          end
+
+          context 'when Rails::VERSION::MAJOR >= 7', skip: Rails::VERSION::MAJOR < 7 do
+            it 'uses Rails 7 redirect_back_or_to method' do
+              get :test_redirect_back_or_to
+
+              expect(response).to redirect_to('http://test.host/referer_action')
+            end
+          end
+        end
+
+        context 'when false' do
+          before { sorcery_controller_property_set(:use_redirect_back_or_to_by_rails, false) }
+
+          it 'uses Sorcery redirect_back_or_to method and warns about overriding the Rails 7 method' do
+            deprecator = Sorcery.deprecator
+            expected_message = '`redirect_back_or_to` overrides the method of the same name defined in Rails 7. ' \
+                               'To avoid overriding, set `config.use_redirect_back_or_to_by_rails = true` and use `redirect_to_before_login_path`. ' \
+                               'In a future release, `config.use_redirect_back_or_to_by_rails = true` will become the default.'
+
+            expect(deprecator).to receive(:warn).with(expected_message)
+
+            session[:return_to_url] = 'http://test.host/some_action'
+            get :test_redirect_back_or_to
+
+            expect(response).to redirect_to('http://test.host/some_action')
+            expect(flash[:notice]).to eq 'haha!'
+          end
+        end
+      end
     end
   end
 end

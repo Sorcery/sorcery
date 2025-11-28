@@ -3,22 +3,17 @@ module Sorcery
     def self.included(klass)
       klass.class_eval do
         include InstanceMethods
+
         Config.submodules.each do |mod|
-          # FIXME: Is there a cleaner way to handle missing submodules?
-          # rubocop:disable Lint/HandleExceptions
-          begin
-            include Submodules.const_get(mod.to_s.split('_').map(&:capitalize).join)
-          rescue NameError
-            # don't stop on a missing submodule.
-          end
-          # rubocop:enable Lint/HandleExceptions
+          submodule_name = mod.to_s.split('_').map(&:capitalize).join
+          include Submodules.const_get(submodule_name) if Submodules.const_defined?(submodule_name, false)
         end
       end
       Config.update!
       Config.configure!
     end
 
-    module InstanceMethods
+    module InstanceMethods # rubocop:disable Metrics/ModuleLength
       # To be used as before_action.
       # Will trigger auto-login attempts via the call to logged_in?
       # If all attempts to auto-login fail, the failure callback will be called.
@@ -92,9 +87,7 @@ module Sorcery
       # attempts to auto-login from the sources defined (session, basic_auth, cookie, etc.)
       # returns the logged in user if found, nil if not
       def current_user
-        unless defined?(@current_user)
-          @current_user = login_from_session || login_from_other_sources || nil
-        end
+        @current_user = login_from_session || login_from_other_sources || nil unless defined?(@current_user)
         @current_user
       end
 
@@ -104,7 +97,20 @@ module Sorcery
 
       # used when a user tries to access a page while logged out, is asked to login,
       # and we want to return him back to the page he originally wanted.
-      def redirect_back_or_to(url, flash_hash = {})
+      def redirect_back_or_to(...)
+        if Config.use_redirect_back_or_to_by_rails
+          super
+        else
+          Sorcery.deprecator.warn(
+            '`redirect_back_or_to` overrides the method of the same name defined in Rails 7. ' \
+            'To avoid overriding, set `config.use_redirect_back_or_to_by_rails = true` and use `redirect_to_before_login_path`. ' \
+            'In a future release, `config.use_redirect_back_or_to_by_rails = true` will become the default.'
+          )
+          redirect_to_before_login_path(...)
+        end
+      end
+
+      def redirect_to_before_login_path(url, flash_hash = {})
         redirect_to(session[:return_to_url] || url, flash: flash_hash)
         session[:return_to_url] = nil
       end
@@ -144,9 +150,7 @@ module Sorcery
       end
 
       def login_from_session
-        @current_user = if session[:user_id]
-                          user_class.sorcery_adapter.find_by_id(session[:user_id])
-                        end
+        @current_user = (user_class.sorcery_adapter.find_by_id(session[:user_id]) if session[:user_id])
       end
 
       def after_login!(user, credentials = [])
@@ -167,6 +171,10 @@ module Sorcery
 
       def after_remember_me!(user)
         Config.after_remember_me.each { |c| send(c, user) }
+      end
+
+      def after_login_lock!(credentials)
+        Config.after_login_lock.each { |c| send(c, credentials) }
       end
 
       def user_class

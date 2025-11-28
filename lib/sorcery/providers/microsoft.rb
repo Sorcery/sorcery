@@ -28,7 +28,7 @@ module Sorcery
           response_type: 'code'
         }
         options.merge!(oauth_params)
-        super(options)
+        super
       end
 
       def get_user_hash(access_token)

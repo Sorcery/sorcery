@@ -1,37 +1,25 @@
 require 'spec_helper'
 
 describe SorceryController, type: :controller do
-  let!(:user) { double('user', id: 42) }
+  let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
   # ----------------- REMEMBER ME -----------------------
   context 'with remember me features' do
     before(:all) do
-      if SORCERY_ORM == :active_record
-        MigrationHelper.migrate("#{Rails.root}/db/migrate/remember_me")
-        User.reset_column_information
-      end
+      MigrationHelper.migrate("#{Rails.root}/db/migrate/remember_me")
 
       sorcery_reload!([:remember_me])
     end
 
     after(:all) do
-      if SORCERY_ORM == :active_record
-        MigrationHelper.rollback("#{Rails.root}/db/migrate/remember_me")
-      end
-    end
-
-    before(:each) do
-      allow(user).to receive(:remember_me_token)
-      allow(user).to receive(:remember_me_token_expires_at)
-      allow(user).to receive_message_chain(:sorcery_config, :remember_me_token_attribute_name).and_return(:remember_me_token)
-      allow(user).to receive_message_chain(:sorcery_config, :remember_me_token_expires_at_attribute_name).and_return(:remember_me_token_expires_at)
+      MigrationHelper.rollback("#{Rails.root}/db/migrate/remember_me")
     end
 
     it 'sets cookie on remember_me!' do
-      expect(User).to receive(:authenticate).with('bla@bla.com', 'secret') { |&block| block.call(user, nil) }
+      expect(User).to receive(:authenticate).with('bla@example.com', 'secret') { |&block| block.call(user, nil) }
       expect(user).to receive(:remember_me!)
 
-      post :test_login_with_remember, params: { email: 'bla@bla.com', password: 'secret' }
+      post :test_login_with_remember, params: { email: 'bla@example.com', password: 'secret' }
 
       expect(cookies.signed['remember_me_token']).to eq assigns[:current_user].remember_me_token
     end
@@ -51,11 +39,11 @@ describe SorceryController, type: :controller do
     end
 
     it 'login(email,password,remember_me) logs user in and remembers' do
-      expect(User).to receive(:authenticate).with('bla@bla.com', 'secret', '1') { |&block| block.call(user, nil) }
+      expect(User).to receive(:authenticate).with('bla@example.com', 'secret', '1') { |&block| block.call(user, nil) }
       expect(user).to receive(:remember_me!)
       expect(user).to receive(:remember_me_token).and_return('abracadabra').twice
 
-      post :test_login_with_remember_in_login, params: { email: 'bla@bla.com', password: 'secret', remember: '1' }
+      post :test_login_with_remember_in_login, params: { email: 'bla@example.com', password: 'secret', remember: '1' }
 
       expect(cookies.signed['remember_me_token']).not_to be_nil
       expect(cookies.signed['remember_me_token']).to eq assigns[:user].remember_me_token
@@ -73,10 +61,7 @@ describe SorceryController, type: :controller do
 
     it 'logs user in from cookie' do
       session[:user_id] = user.id.to_s
-      expect(User.sorcery_adapter).to receive(:find_by_id).with(user.id.to_s).and_return(user)
-      expect(user).to receive(:remember_me!)
-      expect(user).to receive(:remember_me_token).and_return('token').twice
-      expect(user).to receive(:has_remember_me_token?) { true }
+      user.remember_me!
 
       subject.remember_me!
       subject.instance_eval do
@@ -84,23 +69,20 @@ describe SorceryController, type: :controller do
       end
       session[:user_id] = nil
 
-      expect(User.sorcery_adapter).to receive(:find_by_remember_me_token).with('token').and_return(user)
-
-      expect(subject).to receive(:after_remember_me!).with(user)
-
+      # The real token will be used to find the user from cookie
       get :test_login_from_cookie
 
       expect(assigns[:current_user]).to eq user
     end
 
     it 'doest not remember_me! when not asked to, even if third parameter is used' do
-      post :test_login_with_remember_in_login, params: { email: 'bla@bla.com', password: 'secret', remember: '0' }
+      post :test_login_with_remember_in_login, params: { email: 'bla@example.com', password: 'secret', remember: '0' }
 
       expect(cookies['remember_me_token']).to be_nil
     end
 
     it 'doest not remember_me! when not asked to' do
-      post :test_login, params: { email: 'bla@bla.com', password: 'secret' }
+      post :test_login, params: { email: 'bla@example.com', password: 'secret' }
       expect(cookies['remember_me_token']).to be_nil
     end
 

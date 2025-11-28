@@ -13,7 +13,7 @@ shared_examples_for 'rails_3_oauth_model' do
       sorcery_model_property_set(:authentications_class, Authentication)
       sorcery_controller_external_property_set(:twitter, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:twitter, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:twitter, :callback_url, 'http://blabla.com')
+      sorcery_controller_external_property_set(:twitter, :callback_url, 'http://example.com')
     end
 
     it "responds to 'load_from_provider'" do

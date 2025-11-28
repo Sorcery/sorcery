@@ -34,16 +34,16 @@ module Sorcery
           end
 
           base.sorcery_config.instance_eval do
-            @defaults.merge!(:@reset_password_token_attribute_name            => :reset_password_token,
+            @defaults.merge!(:@reset_password_token_attribute_name => :reset_password_token,
                              :@reset_password_token_expires_at_attribute_name => :reset_password_token_expires_at,
                              :@reset_password_page_access_count_attribute_name =>
                                  :access_count_to_reset_password_page,
-                             :@reset_password_email_sent_at_attribute_name    => :reset_password_email_sent_at,
-                             :@reset_password_mailer                          => nil,
-                             :@reset_password_mailer_disabled                 => false,
-                             :@reset_password_email_method_name               => :reset_password_email,
-                             :@reset_password_expiration_period               => nil,
-                             :@reset_password_time_between_emails             => 5 * 60)
+                             :@reset_password_email_sent_at_attribute_name => :reset_password_email_sent_at,
+                             :@reset_password_mailer => nil,
+                             :@reset_password_mailer_disabled => false,
+                             :@reset_password_email_method_name => :reset_password_email,
+                             :@reset_password_expiration_period => nil,
+                             :@reset_password_time_between_emails => 5 * 60)
 
             reset!
           end
@@ -59,12 +59,12 @@ module Sorcery
         module ClassMethods
           # Find user by token, also checks for expiration.
           # Returns the user if token found and is valid.
-          def load_from_reset_password_token(token, &block)
+          def load_from_reset_password_token(token, &)
             load_from_token(
               token,
               @sorcery_config.reset_password_token_attribute_name,
               @sorcery_config.reset_password_token_expires_at_attribute_name,
-              &block
+              &
             )
           end
 
@@ -74,7 +74,9 @@ module Sorcery
           # when reset_password_mailer_disabled is false
           def validate_mailer_defined
             message = 'To use reset_password submodule, you must define a mailer (config.reset_password_mailer = YourMailerClass).'
-            raise ArgumentError, message if @sorcery_config.reset_password_mailer.nil? && @sorcery_config.reset_password_mailer_disabled == false
+            if @sorcery_config.reset_password_mailer.nil? && @sorcery_config.reset_password_mailer_disabled == false
+              raise ArgumentError, message
+            end
           end
 
           def define_reset_password_fields
@@ -90,7 +92,9 @@ module Sorcery
             config = sorcery_config
             attributes = { config.reset_password_token_attribute_name => TemporaryToken.generate_random_token,
                            config.reset_password_email_sent_at_attribute_name => Time.now.in_time_zone }
-            attributes[config.reset_password_token_expires_at_attribute_name] = Time.now.in_time_zone + config.reset_password_expiration_period if config.reset_password_expiration_period
+            if config.reset_password_expiration_period
+              attributes[config.reset_password_token_expires_at_attribute_name] = Time.now.in_time_zone + config.reset_password_expiration_period
+            end
 
             sorcery_adapter.update_attributes(attributes)
           end
@@ -100,7 +104,9 @@ module Sorcery
             mail = false
             config = sorcery_config
             # hammering protection
-            return false if config.reset_password_time_between_emails.present? && send(config.reset_password_email_sent_at_attribute_name) && send(config.reset_password_email_sent_at_attribute_name) > config.reset_password_time_between_emails.seconds.ago.utc
+            if config.reset_password_time_between_emails.present? && send(config.reset_password_email_sent_at_attribute_name) && send(config.reset_password_email_sent_at_attribute_name) > config.reset_password_time_between_emails.seconds.ago.utc
+              return false
+            end
 
             self.class.sorcery_adapter.transaction do
               generate_reset_password_token!
@@ -146,7 +152,9 @@ module Sorcery
           def clear_reset_password_token
             config = sorcery_config
             send(:"#{config.reset_password_token_attribute_name}=", nil)
-            send(:"#{config.reset_password_token_expires_at_attribute_name}=", nil) if config.reset_password_expiration_period
+            return unless config.reset_password_expiration_period
+
+            send(:"#{config.reset_password_token_expires_at_attribute_name}=", nil)
           end
         end
       end

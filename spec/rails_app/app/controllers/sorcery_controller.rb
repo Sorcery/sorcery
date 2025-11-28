@@ -60,6 +60,11 @@ class SorceryController < ApplicationController
 
   def test_return_to
     @user = login(params[:email], params[:password])
+    redirect_to_before_login_path(:index, notice: 'haha!')
+  end
+
+  def test_redirect_back_or_to
+    @user = login(params[:email], params[:password])
     redirect_back_or_to(:index, notice: 'haha!')
   end
 
@@ -142,7 +147,7 @@ class SorceryController < ApplicationController
   end
 
   def login_at_test_wechat
-    login_at(:wechat)
+    login_at(:wechat, state: 'teststate')
   end
 
   def login_at_test_microsoft
@@ -312,7 +317,7 @@ class SorceryController < ApplicationController
   end
 
   def test_login_from_line
-    if @user = login_from(:line)
+    if (@user = login_from(:line))
       redirect_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
@@ -337,7 +342,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_twitter
     if (@user = login_from(:twitter))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -345,7 +350,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_jira
     if (@user = login_from(:jira))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -355,7 +360,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_facebook
     if (@user = login_from(:facebook))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -363,7 +368,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_github
     if (@user = login_from(:github))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -371,7 +376,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_paypal
     if (@user = login_from(:paypal))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -379,7 +384,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_wechat
     if (@user = login_from(:wechat))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -387,7 +392,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_microsoft
     if (@user = login_from(:microsoft))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -395,7 +400,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_google
     if (@user = login_from(:google))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -403,7 +408,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_liveid
     if (@user = login_from(:liveid))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -411,7 +416,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_vk
     if (@user = login_from(:vk))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -419,7 +424,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_salesforce
     if (@user = login_from(:salesforce))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -427,7 +432,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_slack
     if (@user = login_from(:slack))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -435,7 +440,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_instagram
     if (@user = login_from(:instagram))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -443,15 +448,15 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_auth0
     if (@user = login_from(:auth0))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
   end
 
   def test_return_to_with_external_line
-    if @user = login_from(:line)
-      redirect_back_or_to 'bla', notice: 'Success!'
+    if (@user = login_from(:line))
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -459,7 +464,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_discord
     if (@user = login_from(:discord))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end
@@ -467,7 +472,7 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_battlenet
     if (@user = login_from(:battlenet))
-      redirect_back_or_to 'bla', notice: 'Success!'
+      redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
     end

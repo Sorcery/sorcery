@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe SorceryController, type: :controller do
-  let(:user) { double('user', id: 42, email: 'bla@bla.com') }
+  let!(:user) { User.create!(username: 'test_user', email: 'bla@example.com', password: 'password') }
 
   describe 'with http basic auth features' do
     before(:all) do
@@ -21,11 +21,8 @@ describe SorceryController, type: :controller do
     end
 
     it 'authenticates from http basic if credentials are sent' do
-      # dirty hack for rails 4
-      allow(subject).to receive(:register_last_activity_time_to_db)
-
       @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{user.email}:secret")}"
-      expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
+      expect(User).to receive('authenticate').with('bla@example.com', 'secret').and_return(user)
       get :test_http_basic_auth, params: {}, session: { http_authentication_used: true }
 
       expect(response).to be_successful
@@ -33,7 +30,7 @@ describe SorceryController, type: :controller do
 
     it 'fails authentication if credentials are wrong' do
       @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{user.email}:wrong!")}"
-      expect(User).to receive('authenticate').with('bla@bla.com', 'wrong!').and_return(nil)
+      expect(User).to receive('authenticate').with('bla@example.com', 'wrong!').and_return(nil)
       get :test_http_basic_auth, params: {}, session: { http_authentication_used: true }
 
       expect(response).to redirect_to root_url
@@ -53,15 +50,12 @@ describe SorceryController, type: :controller do
     end
 
     it "signs in the user's session on successful login" do
-      # dirty hack for rails 4
-      allow(controller).to receive(:register_last_activity_time_to_db)
-
       @request.env['HTTP_AUTHORIZATION'] = "Basic #{Base64.encode64("#{user.email}:secret")}"
-      expect(User).to receive('authenticate').with('bla@bla.com', 'secret').and_return(user)
+      expect(User).to receive('authenticate').with('bla@example.com', 'secret').and_return(user)
 
       get :test_http_basic_auth, params: {}, session: { http_authentication_used: true }
 
-      expect(session[:user_id]).to eq '42'
+      expect(session[:user_id]).to eq user.id.to_s
     end
   end
 end

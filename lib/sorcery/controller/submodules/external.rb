@@ -39,9 +39,9 @@ module Sorcery
 
                 providers.each do |name|
                   class_eval <<-RUBY, __FILE__, __LINE__ + 1
-                    def self.#{name}
-                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.camelcase).new
-                    end
+                    def self.#{name}                                                          # def self.github
+                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.camelcase).new #   @github ||= Sorcery::Providers.const_get('github'.to_s.camelcase).new
+                    end                                                                       # end
                   RUBY
                 end
               end
@@ -186,21 +186,21 @@ module Sorcery
           #
           #   create_from(provider) {|user| user.some_check }
           #
-          def create_from(provider_name, &block)
+          def create_from(provider_name, &)
             sorcery_fetch_user_hash provider_name
             # config = user_class.sorcery_config # TODO: Unused, remove?
 
             attrs = user_attrs(@provider.user_info_mapping, @user_hash)
-            @user = user_class.create_from_provider(provider_name, @user_hash[:uid], attrs, &block)
+            @user = user_class.create_from_provider(provider_name, @user_hash[:uid], attrs, &)
           end
 
           # follows the same patterns as create_from, but builds the user instead of creating
-          def build_from(provider_name, &block)
+          def build_from(provider_name, &)
             sorcery_fetch_user_hash provider_name
             # config = user_class.sorcery_config # TODO: Unused, remove?
 
             attrs = user_attrs(@provider.user_info_mapping, @user_hash)
-            @user = user_class.build_from_provider(attrs, &block)
+            @user = user_class.build_from_provider(attrs, &)
           end
 
           def user_attrs(user_info_mapping, user_hash)
@@ -208,10 +208,10 @@ module Sorcery
             user_info_mapping.each do |k, v|
               if (varr = v.split('/')).size > 1
                 attribute_value = begin
-                                    varr.inject(user_hash[:user_info]) { |hash, value| hash[value] }
-                                  rescue StandardError
-                                    nil
-                                  end
+                  varr.inject(user_hash[:user_info]) { |hash, value| hash[value] }
+                rescue StandardError
+                  nil
+                end
                 attribute_value.nil? ? attrs : attrs.merge!(k => attribute_value)
               else
                 attrs.merge!(k => user_hash[:user_info][v])

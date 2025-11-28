@@ -9,6 +9,7 @@ module Sorcery
     # Please use any other provider offered by Sorcery.
     class MD5
       include Common
+
       class << self
         def secure_digest(digest)
           Digest::MD5.hexdigest(digest)

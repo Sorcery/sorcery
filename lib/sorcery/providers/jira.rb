@@ -13,6 +13,7 @@ module Sorcery
                     :user_info_path, :site, :signature_method, :private_key_file, :callback_url
 
       def initialize
+        super
         @configuration = {
           authorize_path: '/authorize',
           request_token_path: '/request-token',
@@ -59,8 +60,8 @@ module Sorcery
       # tries to login the user from access token
       def process_callback(params, session)
         args = {
-          oauth_verifier:       params[:oauth_verifier],
-          request_token:        session[:request_token],
+          oauth_verifier: params[:oauth_verifier],
+          request_token: session[:request_token],
           request_token_secret: session[:request_token_secret]
         }
 

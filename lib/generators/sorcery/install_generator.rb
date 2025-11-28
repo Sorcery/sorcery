@@ -4,6 +4,7 @@ require 'generators/sorcery/helpers'
 module Sorcery
   module Generators
     class InstallGenerator < Rails::Generators::Base
+      EXCLUDED_SUBMODULES = %w[http_basic_auth session_timeout core].freeze
       include Rails::Generators::Migration
       include Sorcery::Generators::Helpers
 
@@ -35,7 +36,7 @@ module Sorcery
         # Add submodules to the initializer file.
         return unless submodules
 
-        submodule_names = submodules.collect { |submodule| ':' + submodule }
+        submodule_names = submodules.collect { |submodule| ":#{submodule}" }
 
         gsub_file sorcery_config_path, /submodules = \[.*\]/ do |str|
           current_submodule_names = (str =~ /\[(.*)\]/ ? Regexp.last_match(1) : '').delete(' ').split(',')
@@ -61,12 +62,14 @@ module Sorcery
         # Copy core migration file in all cases except when you pass --only-submodules.
         return unless defined?(ActiveRecord)
 
-        migration_template 'migration/core.rb', 'db/migrate/sorcery_core.rb', migration_class_name: migration_class_name unless only_submodules?
+        unless only_submodules?
+          migration_template 'migration/core.rb', 'db/migrate/sorcery_core.rb', migration_class_name: migration_class_name
+        end
 
         return unless submodules
 
         submodules.each do |submodule|
-          unless %w[http_basic_auth session_timeout core].include?(submodule)
+          unless EXCLUDED_SUBMODULES.include?(submodule)
             migration_template "migration/#{submodule}.rb", "db/migrate/sorcery_#{submodule}.rb", migration_class_name: migration_class_name
           end
         end
@@ -78,11 +81,9 @@ module Sorcery
           sleep 1 # make sure each time we get a different timestamp
           Time.new.utc.strftime('%Y%m%d%H%M%S')
         else
-          format('%.3d', (current_migration_number(dirname) + 1))
+          format('%.3d', current_migration_number(dirname) + 1)
         end
       end
-
-      private
 
       def self.timestamped_migrations?
         if Rails::VERSION::MAJOR >= 7
@@ -91,6 +92,9 @@ module Sorcery
           ActiveRecord::Base.timestamped_migrations
         end
       end
+      private_class_method :timestamped_migrations?
+
+      private
 
       def only_submodules?
         options[:migrations] || options[:only_submodules]

@@ -42,7 +42,7 @@ shared_examples_for 'rails_3_remember_me_model' do
         user.remember_me!
       end
 
-      expect(user.remember_me_token_expires_at.utc.to_s).to eq((ts + 2 * 60 * 60 * 24).utc.to_s)
+      expect(user.remember_me_token_expires_at.utc.to_s).to eq((ts + (2 * 60 * 60 * 24)).utc.to_s)
     end
 
     context 'when not persisting globally' do

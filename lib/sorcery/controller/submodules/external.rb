@@ -40,7 +40,7 @@ module Sorcery
                 providers.each do |name|
                   class_eval <<-RUBY, __FILE__, __LINE__ + 1
                     def self.#{name}                                                          # def self.github
-                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.to_s.camelcase).new #   @github ||= Sorcery::Providers.const_get('github'.to_s.camelcase).new
+                      @#{name} ||= Sorcery::Providers.const_get('#{name}'.camelcase).new      #   @github ||= Sorcery::Providers.const_get('github'.camelcase).new
                     end                                                                       # end
                   RUBY
                 end

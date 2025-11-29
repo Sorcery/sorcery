@@ -180,11 +180,6 @@ RSpec/StubbedMock:
     - 'spec/controllers/controller_spec.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
 
-# Offense count: 1
-RSpec/SubjectStub:
-  Exclude:
-    - 'spec/controllers/controller_session_timeout_spec.rb'
-
 # Offense count: 3
 # Configuration parameters: IgnoreNameless, IgnoreSymbolicNames.
 RSpec/VerifiedDoubles:

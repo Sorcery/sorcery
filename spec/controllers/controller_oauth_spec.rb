@@ -66,7 +66,7 @@ describe SorceryController, type: :controller do
 
   # ----------------- OAuth -----------------------
   describe SorceryController, "'using external API to login'" do
-    before(:each) do
+    before do
       stub_all_oauth_requests!
     end
 
@@ -131,7 +131,7 @@ describe SorceryController, type: :controller do
 
   describe SorceryController do
     describe "using 'create_from'" do
-      before(:each) do
+      before do
         stub_all_oauth_requests!
       end
 
@@ -191,7 +191,7 @@ describe SorceryController, type: :controller do
     end
 
     context 'when twitter' do
-      before(:each) do
+      before do
         sorcery_controller_property_set(:register_login_time, true)
         sorcery_controller_property_set(:register_logout_time, false)
         sorcery_controller_property_set(:register_last_activity_time, false)
@@ -213,7 +213,7 @@ describe SorceryController, type: :controller do
         now = Time.now.in_time_zone
         Timecop.freeze(now)
         expect(User).to receive(:load_from_provider).and_return(user)
-        expect(user).to receive(:set_last_login_at).never
+        expect(user).not_to receive(:set_last_login_at)
         get :test_login_from
         Timecop.return
       end
@@ -231,13 +231,13 @@ describe SorceryController, type: :controller do
     end
 
     context 'when twitter' do
-      before(:each) do
+      before do
         sorcery_model_property_set(:authentications_class, Authentication)
         sorcery_controller_property_set(:session_timeout, 0.5)
         stub_all_oauth_requests!
       end
 
-      after(:each) do
+      after do
         Timecop.return
       end
 

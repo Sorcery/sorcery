@@ -19,37 +19,9 @@ RSpec/AnyInstance:
     - 'spec/controllers/controller_oauth2_spec.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
 
-# Offense count: 19
-# This cop supports unsafe autocorrection (--autocorrect-all).
-RSpec/BeEq:
-  Exclude:
-    - 'spec/shared_examples/user_activity_logging_shared_examples.rb'
-    - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-    - 'spec/shared_examples/user_remember_me_shared_examples.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-RSpec/BeEql:
-  Exclude:
-    - 'spec/shared_examples/user_activation_shared_examples.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: be, be_nil
-RSpec/BeNil:
-  Exclude:
-    - 'spec/shared_examples/user_shared_examples.rb'
-
 # Offense count: 66
 RSpec/BeforeAfterAll:
   Enabled: false
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ContextMethod:
-  Exclude:
-    - 'spec/shared_examples/user_brute_force_protection_shared_examples.rb'
 
 # Offense count: 35
 # Configuration parameters: Prefixes, AllowedPatterns.
@@ -111,13 +83,6 @@ RSpec/DescribedClass:
     - 'spec/sorcery_crypto_providers_spec.rb'
     - 'spec/sorcery_temporary_token_spec.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowConsecutiveOneLiners.
-RSpec/EmptyLineAfterHook:
-  Exclude:
-    - 'spec/controllers/controller_oauth2_spec.rb'
-
 # Offense count: 59
 # Configuration parameters: Max, CountAsOne.
 RSpec/ExampleLength:
@@ -136,20 +101,6 @@ RSpec/ExampleLength:
     - 'spec/shared_examples/user_reset_password_shared_examples.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: CustomTransform, IgnoredWords, DisallowedExamples.
-# DisallowedExamples: works
-RSpec/ExampleWording:
-  Exclude:
-    - 'spec/providers/vk_spec.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ExcessiveDocstringSpacing:
-  Exclude:
-    - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-
 # Offense count: 3
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: EnforcedStyle.
@@ -163,42 +114,6 @@ RSpec/ExpectInHook:
   Exclude:
     - 'spec/controllers/controller_spec.rb'
 
-# Offense count: 50
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: implicit, each, example
-RSpec/HookArgument:
-  Exclude:
-    - 'spec/controllers/controller_activity_logging_spec.rb'
-    - 'spec/controllers/controller_http_basic_auth_spec.rb'
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/controllers/controller_oauth_spec.rb'
-    - 'spec/controllers/controller_session_timeout_spec.rb'
-    - 'spec/controllers/controller_spec.rb'
-    - 'spec/shared_examples/user_activation_shared_examples.rb'
-    - 'spec/shared_examples/user_activity_logging_shared_examples.rb'
-    - 'spec/shared_examples/user_brute_force_protection_shared_examples.rb'
-    - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-    - 'spec/shared_examples/user_remember_me_shared_examples.rb'
-    - 'spec/shared_examples/user_reset_password_shared_examples.rb'
-    - 'spec/shared_examples/user_shared_examples.rb'
-    - 'spec/sorcery_crypto_providers_spec.rb'
-    - 'spec/spec_helper.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/HooksBeforeExamples:
-  Exclude:
-    - 'spec/controllers/controller_oauth2_spec.rb'
-
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: is_expected, should
-RSpec/ImplicitExpect:
-  Exclude:
-    - 'spec/controllers/controller_spec.rb'
-
 # Offense count: 72
 # Configuration parameters: AssignmentOnly.
 RSpec/InstanceVariable:
@@ -209,20 +124,6 @@ RSpec/InstanceVariable:
     - 'spec/shared_examples/user_activation_shared_examples.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
     - 'spec/sorcery_crypto_providers_spec.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: it_behaves_like, it_should_behave_like
-RSpec/ItBehavesLike:
-  Exclude:
-    - 'spec/active_record/user_spec.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/LeadingSubject:
-  Exclude:
-    - 'spec/sorcery_temporary_token_spec.rb'
 
 # Offense count: 4
 RSpec/LeakyConstantDeclaration:
@@ -240,23 +141,6 @@ RSpec/MessageChain:
 # SupportedStyles: have_received, receive
 RSpec/MessageSpies:
   EnforcedStyle: receive
-
-# Offense count: 10
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: hash, symbol
-RSpec/MetadataStyle:
-  Exclude:
-    - 'spec/active_record/user_activation_spec.rb'
-    - 'spec/active_record/user_activity_logging_spec.rb'
-    - 'spec/active_record/user_brute_force_protection_spec.rb'
-    - 'spec/active_record/user_magic_login_spec.rb'
-    - 'spec/active_record/user_oauth_spec.rb'
-    - 'spec/active_record/user_remember_me_spec.rb'
-    - 'spec/active_record/user_reset_password_spec.rb'
-    - 'spec/active_record/user_spec.rb'
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/shared_examples/user_shared_examples.rb'
 
 # Offense count: 104
 # Configuration parameters: Max.
@@ -295,35 +179,6 @@ RSpec/NestedGroups:
     - 'spec/shared_examples/user_magic_login_shared_examples.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
 
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: not_to, to_not
-RSpec/NotToNot:
-  Exclude:
-    - 'spec/shared_examples/user_activation_shared_examples.rb'
-    - 'spec/shared_examples/user_remember_me_shared_examples.rb'
-    - 'spec/shared_examples/user_reset_password_shared_examples.rb'
-
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ReceiveNever:
-  Exclude:
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/controllers/controller_oauth_spec.rb'
-    - 'spec/shared_examples/user_activation_shared_examples.rb'
-    - 'spec/shared_examples/user_reset_password_shared_examples.rb'
-
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: and_return, block
-RSpec/ReturnFromStub:
-  Exclude:
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/controllers/controller_session_timeout_spec.rb'
-    - 'spec/shared_examples/user_shared_examples.rb'
-
 # Offense count: 21
 # Configuration parameters: CustomTransform, IgnoreMethods, IgnoreMetadata.
 RSpec/SpecFilePathFormat:
@@ -350,15 +205,6 @@ RSpec/VerifiedDoubles:
   Exclude:
     - 'spec/controllers/controller_oauth2_spec.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
-
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/Yield:
-  Exclude:
-    - 'spec/controllers/controller_brute_force_protection_spec.rb'
-    - 'spec/controllers/controller_remember_me_spec.rb'
-    - 'spec/controllers/controller_session_timeout_spec.rb'
-    - 'spec/controllers/controller_spec.rb'
 
 # Offense count: 126
 # This cop supports unsafe autocorrection (--autocorrect-all).

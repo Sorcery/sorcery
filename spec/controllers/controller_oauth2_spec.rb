@@ -2,7 +2,7 @@ require 'spec_helper'
 
 # require 'shared_examples/controller_oauth2_shared_examples'
 
-describe SorceryController, active_record: true, type: :controller do
+describe SorceryController, :active_record, type: :controller do
   before(:all) do
     MigrationHelper.migrate("#{Rails.root}/db/migrate/external")
     MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
@@ -19,7 +19,7 @@ describe SorceryController, active_record: true, type: :controller do
   end
 
   describe 'using create_from' do
-    before(:each) do
+    before do
       stub_all_oauth2_requests!
     end
 
@@ -65,7 +65,7 @@ describe SorceryController, active_record: true, type: :controller do
   context 'with OAuth features' do
     let!(:user) { User.create!(username: 'test_user', email: 'test@example.com', password: 'password') }
 
-    before(:each) do
+    before do
       stub_all_oauth2_requests!
     end
 
@@ -73,6 +73,11 @@ describe SorceryController, active_record: true, type: :controller do
       before do
         sorcery_controller_external_property_set(:facebook, :callback_url, '/oauth/twitter/callback')
       end
+
+      after do
+        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
+      end
+
       it 'login_at redirects correctly' do
         get :login_at_test_facebook
         expect(response).to be_a_redirect
@@ -99,10 +104,6 @@ describe SorceryController, active_record: true, type: :controller do
         get :login_at_test_facebook
         expect(response).to redirect_to("https://www.facebook.com/v2.2/dialog/oauth?client_id=#{Sorcery::Controller::Config.facebook.key}&display=page&redirect_uri=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&response_type=code&scope=email&state")
       end
-
-      after do
-        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
-      end
     end
 
     context 'when callback_url begin with http://' do
@@ -111,15 +112,15 @@ describe SorceryController, active_record: true, type: :controller do
         sorcery_controller_external_property_set(:facebook, :api_version, 'v2.2')
       end
 
+      after do
+        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
+      end
+
       it 'login_at redirects correctly' do
         create_new_user
         get :login_at_test_facebook
         expect(response).to be_a_redirect
         expect(response).to redirect_to("https://www.facebook.com/v2.2/dialog/oauth?client_id=#{Sorcery::Controller::Config.facebook.key}&display=page&redirect_uri=http%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&response_type=code&scope=email&state")
-      end
-
-      after do
-        sorcery_controller_external_property_set(:facebook, :callback_url, 'http://example.com')
       end
     end
 
@@ -258,7 +259,7 @@ describe SorceryController, active_record: true, type: :controller do
       sorcery_controller_external_property_set(:battlenet, :callback_url, 'http://example.com')
     end
 
-    after(:each) do
+    after do
       User.sorcery_adapter.delete_all
     end
 
@@ -304,7 +305,7 @@ describe SorceryController, active_record: true, type: :controller do
 
     %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
       context "when #{provider}" do
-        before(:each) do
+        before do
           sorcery_controller_property_set(:register_login_time, true)
           sorcery_controller_property_set(:register_logout_time, false)
           sorcery_controller_property_set(:register_last_activity_time, false)
@@ -327,7 +328,7 @@ describe SorceryController, active_record: true, type: :controller do
           now = Time.now.in_time_zone
           Timecop.freeze(now)
           expect(User).to receive(:load_from_provider).and_return(user)
-          expect(user).to receive(:set_last_login_at).never
+          expect(user).not_to receive(:set_last_login_at)
           get :"test_login_from_#{provider}"
         end
       end
@@ -343,13 +344,13 @@ describe SorceryController, active_record: true, type: :controller do
 
     %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
       context "when #{provider}" do
-        before(:each) do
+        before do
           sorcery_model_property_set(:authentications_class, Authentication)
           sorcery_controller_property_set(:session_timeout, 0.5)
           stub_all_oauth2_requests!
         end
 
-        after(:each) do
+        after do
           Timecop.return
         end
 
@@ -379,7 +380,7 @@ describe SorceryController, active_record: true, type: :controller do
     access_token = double(OAuth2::AccessToken)
     allow(access_token).to receive(:token_param=)
     # Needed for Instagram
-    allow(access_token).to receive(:[]).with(:client_id) { 'eYVNBjBDi33aa9GkA3w' }
+    allow(access_token).to receive(:[]).with(:client_id).and_return('eYVNBjBDi33aa9GkA3w')
     response = double(OAuth2::Response)
     allow(response).to receive(:body) {
       {
@@ -451,9 +452,8 @@ describe SorceryController, active_record: true, type: :controller do
       }.to_json
     }
     allow(access_token).to receive(:get) { response }
-    allow(access_token).to receive(:token) { '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3' }
     # access_token params for VK auth
-    allow(access_token).to receive(:params) { { 'user_id' => '100500', 'email' => 'nbenari@example.com' } }
+    allow(access_token).to receive_messages(token: '187041a618229fdaf16613e96e1caabc1e86e46bbfad228de41520e63fe45873684c365a14417289599f3', params: { 'user_id' => '100500', 'email' => 'nbenari@example.com' })
     allow_any_instance_of(OAuth2::Strategy::AuthCode).to receive(:get_token) { access_token }
   end
 

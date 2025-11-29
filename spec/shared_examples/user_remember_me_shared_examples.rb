@@ -6,7 +6,7 @@ shared_examples_for 'rails_3_remember_me_model' do
       sorcery_reload!([:remember_me])
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
     end
 
@@ -25,7 +25,7 @@ shared_examples_for 'rails_3_remember_me_model' do
     it "allows configuration option 'remember_me_token_persist_globally'" do
       sorcery_model_property_set(:remember_me_token_persist_globally, true)
 
-      expect(User.sorcery_config.remember_me_token_persist_globally).to eq true
+      expect(User.sorcery_config.remember_me_token_persist_globally).to be true
     end
 
     specify { expect(user).to respond_to :remember_me! }
@@ -110,8 +110,8 @@ shared_examples_for 'rails_3_remember_me_model' do
 
         user.forget_me!
 
-        expect(user.remember_me_token).to_not be_nil
-        expect(user.remember_me_token_expires_at).to_not be_nil
+        expect(user.remember_me_token).not_to be_nil
+        expect(user.remember_me_token_expires_at).not_to be_nil
       end
 
       it "deletes the token and expiration on 'force_forget_me!'" do

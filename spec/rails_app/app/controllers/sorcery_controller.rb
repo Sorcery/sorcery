@@ -45,6 +45,14 @@ class SorceryController < ApplicationController
     redirect_back_or_to(:index, notice: 'haha!')
   end
 
+  def test_redirect_to_before_login_path_with_allow_other_host
+    redirect_to_before_login_path('http://external.example.com/', notice: 'redirected!', allow_other_host: true)
+  end
+
+  def test_redirect_to_before_login_path_without_allow_other_host
+    redirect_to_before_login_path('http://external.example.com/', notice: 'redirected!', allow_other_host: false)
+  end
+
   def test_logout
     logout
     head :ok

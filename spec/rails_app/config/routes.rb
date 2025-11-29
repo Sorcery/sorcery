@@ -7,6 +7,8 @@ AppRoot::Application.routes.draw do
     get :some_action
     post :test_return_to
     post :test_redirect_back_or_to
+    get :test_redirect_to_before_login_path_with_allow_other_host
+    get :test_redirect_to_before_login_path_without_allow_other_host
     get :test_auto_login
     post :test_login_with_remember_in_login
     get :test_login_from_cookie

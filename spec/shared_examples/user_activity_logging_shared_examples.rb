@@ -1,5 +1,5 @@
 shared_examples_for 'rails_3_activity_logging_model' do
-  context 'loaded plugin configuration' do
+  context 'with loaded plugin configuration' do
     before(:all) do
       sorcery_reload!([:activity_logging])
     end

@@ -106,7 +106,7 @@ shared_examples_for 'rails_3_core_model' do
         expect(User.authenticate(user.email, 'wrong!')).to be_nil
       end
 
-      context 'downcasing username' do
+      context 'when downcasing username' do
         after do
           sorcery_reload!
         end
@@ -140,7 +140,7 @@ shared_examples_for 'rails_3_core_model' do
         end
       end
 
-      context 'and model implements active_for_authentication?' do
+      context 'when model implements active_for_authentication?' do
         it 'authenticates returns user if active_for_authentication? returns true' do
           allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(true)
 
@@ -154,7 +154,7 @@ shared_examples_for 'rails_3_core_model' do
         end
       end
 
-      context 'in block mode' do
+      context 'when in block mode' do
         it 'yields the user if credentials are good' do
           User.authenticate(user.email, 'secret') do |user2, failure|
             expect(user2).to eq user

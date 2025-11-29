@@ -2,7 +2,7 @@ shared_examples_for 'rails_3_activation_model' do
   let(:user) { create_new_user }
   let(:new_user) { build_new_user }
 
-  context 'loaded plugin configuration' do
+  context 'with loaded plugin configuration' do
     before(:all) do
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
@@ -57,7 +57,7 @@ shared_examples_for 'rails_3_activation_model' do
     end
   end
 
-  context 'activation process' do
+  context 'when activating' do
     before(:all) do
       sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
     end
@@ -78,7 +78,7 @@ shared_examples_for 'rails_3_activation_model' do
       expect(User.sorcery_adapter.find_by_activation_token(activation_token)).to be_nil
     end
 
-    context 'mailer is enabled' do
+    context 'when mailer is enabled' do
       it 'sends the user an activation email' do
         old_size = ActionMailer::Base.deliveries.size
         create_new_user
@@ -139,7 +139,7 @@ shared_examples_for 'rails_3_activation_model' do
         expect(ActionMailer::Base.deliveries.size).to eq old_size
       end
 
-      context 'activation_needed_email is skipped' do
+      context 'when activation_needed_email is skipped' do
         before do
           @user = build_new_user
           @user.skip_activation_needed_email = true
@@ -166,7 +166,7 @@ shared_examples_for 'rails_3_activation_model' do
         end
       end
 
-      context 'activation_success_email is skipped' do
+      context 'when activation_success_email is skipped' do
         before do
           @user = build_new_user
           @user.skip_activation_success_email = true
@@ -182,7 +182,7 @@ shared_examples_for 'rails_3_activation_model' do
       end
     end
 
-    context 'mailer has been disabled' do
+    context 'when mailer has been disabled' do
       before do
         sorcery_reload!([:user_activation], activation_mailer_disabled: true, user_activation_mailer: SorceryMailer)
       end
@@ -236,7 +236,7 @@ shared_examples_for 'rails_3_activation_model' do
       expect(User.authenticate(user.email, 'secret')).to be_truthy
     end
 
-    context 'in block mode' do
+    context 'when in block mode' do
       it 'does not allow a non-active user to authenticate' do
         sorcery_model_property_set(:prevent_non_active_users_to_login, true)
 
@@ -302,7 +302,7 @@ shared_examples_for 'rails_3_activation_model' do
     end
 
     describe '#load_from_activation_token' do
-      context 'in block mode' do
+      context 'when in block mode' do
         it 'yields user when token is found' do
           User.load_from_activation_token(user.activation_token) do |user2, failure|
             expect(user2).to eq user

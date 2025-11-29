@@ -4,7 +4,7 @@ shared_examples_for 'magic_login_model' do
     User.sorcery_adapter.delete_all
   end
 
-  context 'loaded plugin configuration' do
+  context 'with loaded plugin configuration' do
     let(:config) { User.sorcery_config }
 
     before(:all) do
@@ -59,7 +59,7 @@ shared_examples_for 'magic_login_model' do
     end
 
     describe '#generate_magic_login_token!' do
-      context 'magic_login_token is nil' do
+      context 'when magic_login_token is nil' do
         it "magic_login_token_expires_at and magic_login_email_sent_at aren't nil" do
           user.generate_magic_login_token!
           expect(user.magic_login_token_expires_at).not_to be_nil
@@ -73,7 +73,7 @@ shared_examples_for 'magic_login_model' do
         end
       end
 
-      context 'magic_login_token is not nil' do
+      context 'when magic_login_token is not nil' do
         it 'changes `user.magic_login_token`' do
           token_before = user.magic_login_token
           user.generate_magic_login_token!
@@ -83,7 +83,7 @@ shared_examples_for 'magic_login_model' do
     end
 
     describe '#deliver_magic_login_instructions!' do
-      context 'success' do
+      context 'when successful' do
         before do
           sorcery_model_property_set(:magic_login_time_between_emails, 30 * 60)
           sorcery_model_property_set(:magic_login_mailer_disabled, false)
@@ -103,22 +103,22 @@ shared_examples_for 'magic_login_model' do
         end
       end
 
-      context 'failure' do
-        context 'magic_login_time_between_emails is nil' do
+      context 'when failing' do
+        context 'when magic_login_time_between_emails is nil' do
           it 'returns false' do
             sorcery_model_property_set(:magic_login_time_between_emails, nil)
             expect(user.deliver_magic_login_instructions!).to be false
           end
         end
 
-        context 'magic_login_email_sent_at is nil' do
+        context 'when magic_login_email_sent_at is nil' do
           it 'returns false' do
             user.send(:"#{config.magic_login_email_sent_at_attribute_name}=", nil)
             expect(user.deliver_magic_login_instructions!).to be false
           end
         end
 
-        context 'now is before magic_login_email_sent_at plus the interval' do
+        context 'when now is before magic_login_email_sent_at plus the interval' do
           it 'returns false' do
             user.send(:"#{config.magic_login_email_sent_at_attribute_name}=", DateTime.now)
             sorcery_model_property_set(:magic_login_time_between_emails, 30 * 60)
@@ -126,7 +126,7 @@ shared_examples_for 'magic_login_model' do
           end
         end
 
-        context 'magic_login_mailer_disabled is true' do
+        context 'when magic_login_mailer_disabled is true' do
           it 'returns false' do
             sorcery_model_property_set(:magic_login_mailer_disabled, true)
             expect(user.deliver_magic_login_instructions!).to be false

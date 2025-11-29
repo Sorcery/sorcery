@@ -8,7 +8,7 @@ describe Sorcery::Model::TemporaryToken do
       sorcery_reload!
     end
 
-    context 'token_randomness is 3' do
+    context 'when token_randomness is 3' do
       before do
         sorcery_model_property_set(:token_randomness, 3)
       end
@@ -16,7 +16,7 @@ describe Sorcery::Model::TemporaryToken do
       it { is_expected.to eq 4 }
     end
 
-    context 'token_randomness is 15' do
+    context 'when token_randomness is 15' do
       before do
         sorcery_model_property_set(:token_randomness, 15)
       end

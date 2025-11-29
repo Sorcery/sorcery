@@ -23,23 +23,6 @@ RSpec/AnyInstance:
 RSpec/BeforeAfterAll:
   Enabled: false
 
-# Offense count: 35
-# Configuration parameters: Prefixes, AllowedPatterns.
-# Prefixes: when, with, without
-RSpec/ContextWording:
-  Exclude:
-    - 'spec/providers/example_provider_spec.rb'
-    - 'spec/providers/example_spec.rb'
-    - 'spec/providers/examples_spec.rb'
-    - 'spec/providers/vk_spec.rb'
-    - 'spec/shared_examples/user_activation_shared_examples.rb'
-    - 'spec/shared_examples/user_activity_logging_shared_examples.rb'
-    - 'spec/shared_examples/user_brute_force_protection_shared_examples.rb'
-    - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-    - 'spec/shared_examples/user_reset_password_shared_examples.rb'
-    - 'spec/shared_examples/user_shared_examples.rb'
-    - 'spec/sorcery_temporary_token_spec.rb'
-
 # Offense count: 1
 # Configuration parameters: IgnoredMetadata.
 RSpec/DescribeClass:

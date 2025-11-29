@@ -11,7 +11,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       User.sorcery_config.reset!
     end
 
-    context 'API' do
+    context 'with API' do
       specify { expect(user).to respond_to :deliver_reset_password_instructions! }
 
       specify { expect(user).to respond_to :change_password }
@@ -131,7 +131,7 @@ shared_examples_for 'rails_3_reset_password_model' do
     end
 
     describe '#load_from_reset_password_token' do
-      context 'in block mode' do
+      context 'when in block mode' do
         it 'yields user when token is found' do
           user.generate_reset_password_token!
           updated_user = User.sorcery_adapter.find(user.id)
@@ -232,7 +232,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
     end
 
-    context 'mailer is enabled' do
+    context 'when mailer is enabled' do
       it 'sends an email on reset' do
         old_size = ActionMailer::Base.deliveries.size
         user.deliver_reset_password_instructions!
@@ -272,7 +272,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
     end
 
-    context 'mailer is disabled' do
+    context 'when mailer is disabled' do
       before(:all) do
         sorcery_reload!([:reset_password], reset_password_mailer_disabled: true, reset_password_mailer: SorceryMailer)
       end

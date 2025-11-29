@@ -9,7 +9,7 @@ describe Sorcery::Providers::ExampleProvider do
     sorcery_controller_property_set(:external_providers, [:example_provider])
   end
 
-  context 'fetching a multi-word custom provider' do
+  context 'when fetching a multi-word custom provider' do
     it 'returns the provider' do
       expect(Sorcery::Controller::Config.example_provider).to be_a(Sorcery::Providers::ExampleProvider)
     end

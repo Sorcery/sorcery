@@ -4,7 +4,7 @@ require 'shared_examples/user_magic_login_shared_examples'
 describe User, 'with magic_login submodule', :active_record do
   before(:all) do
     MigrationHelper.migrate("#{Rails.root}/db/migrate/magic_login")
-    User.reset_column_information
+    described_class.reset_column_information
   end
 
   after(:all) do

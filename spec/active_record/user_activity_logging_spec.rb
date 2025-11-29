@@ -4,7 +4,7 @@ require 'shared_examples/user_activity_logging_shared_examples'
 describe User, 'with activity logging submodule', :active_record do
   before(:all) do
     MigrationHelper.migrate("#{Rails.root}/db/migrate/activity_logging")
-    User.reset_column_information
+    described_class.reset_column_information
   end
 
   after(:all) do

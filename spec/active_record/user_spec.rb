@@ -13,7 +13,7 @@ describe User, 'with no submodules (core)', :active_record do
     end
 
     it 'User responds to .authenticates_with_sorcery!' do
-      expect(User).to respond_to :authenticates_with_sorcery!
+      expect(described_class).to respond_to :authenticates_with_sorcery!
     end
   end
 

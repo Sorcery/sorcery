@@ -11,7 +11,7 @@ describe Sorcery::Providers::ExampleProvider do
 
   context 'when fetching a multi-word custom provider' do
     it 'returns the provider' do
-      expect(Sorcery::Controller::Config.example_provider).to be_a(Sorcery::Providers::ExampleProvider)
+      expect(Sorcery::Controller::Config.example_provider).to be_a(described_class)
     end
   end
 end

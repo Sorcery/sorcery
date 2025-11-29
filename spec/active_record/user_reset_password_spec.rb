@@ -4,7 +4,7 @@ require 'shared_examples/user_reset_password_shared_examples'
 describe User, 'with reset_password submodule', :active_record do
   before(:all) do
     MigrationHelper.migrate("#{Rails.root}/db/migrate/reset_password")
-    User.reset_column_information
+    described_class.reset_column_information
   end
 
   after(:all) do

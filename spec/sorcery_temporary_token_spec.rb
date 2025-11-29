@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Sorcery::Model::TemporaryToken do
   describe '.generate_random_token' do
-    subject { Sorcery::Model::TemporaryToken.generate_random_token.length }
+    subject { described_class.generate_random_token.length }
 
     before do
       sorcery_reload!

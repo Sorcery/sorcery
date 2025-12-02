@@ -18,6 +18,10 @@ module Sorcery
         find_by_id(id)
       end
 
+      def self.collection
+        @klass.respond_to?(:scope_for_authentication) ? @klass.send(:scope_for_authentication) : @klass
+      end
+
       def increment(field)
         @model.increment(field)
       end

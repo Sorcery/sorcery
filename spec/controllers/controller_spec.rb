@@ -115,7 +115,7 @@ describe SorceryController, type: :controller do
         it 'raises InvalidCredentials exception' do
           expect do
             get :test_login_bang, params: { email: 'bla@example.com', password: 'opensesame!' }
-          end.to raise_error(Sorcery::Errors::InvalidCredentials)
+          end.to raise_error(Sorcery::InvalidCredentials)
         end
       end
     end
@@ -148,7 +148,7 @@ describe SorceryController, type: :controller do
         it 'raises InvalidCredentials exception' do
           expect do
             get :test_login_bang_with_block, params: { email: 'bla@example.com', password: 'opensesame!' }
-          end.to raise_error(Sorcery::Errors::InvalidCredentials)
+          end.to raise_error(Sorcery::InvalidCredentials)
         end
       end
     end

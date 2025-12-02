@@ -60,7 +60,7 @@ module Sorcery
       def login!(*credentials, &)
         user = login(*credentials, &)
 
-        raise Sorcery::Errors::InvalidCredentials if user.nil?
+        raise Sorcery::InvalidCredentials if user.nil?
 
         user
       end

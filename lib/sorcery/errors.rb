@@ -6,7 +6,5 @@ module Sorcery
   #
   class Error < StandardError; end
 
-  module Errors
-    class InvalidCredentials < Sorcery::Error; end
-  end
+  class InvalidCredentials < Sorcery::Error; end
 end

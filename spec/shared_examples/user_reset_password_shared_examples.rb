@@ -7,11 +7,11 @@ shared_examples_for 'rails_3_reset_password_model' do
       sorcery_reload!([:reset_password], reset_password_mailer: SorceryMailer)
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
     end
 
-    context 'API' do
+    context 'with API' do
       specify { expect(user).to respond_to :deliver_reset_password_instructions! }
 
       specify { expect(user).to respond_to :change_password }
@@ -46,7 +46,7 @@ shared_examples_for 'rails_3_reset_password_model' do
     end
 
     it 'if mailer is disabled and mailer is nil, do NOT throw exception' do
-      expect { sorcery_reload!([:reset_password], reset_password_mailer_disabled: true) }.to_not raise_error
+      expect { sorcery_reload!([:reset_password], reset_password_mailer_disabled: true) }.not_to raise_error
     end
 
     it "allows configuration option 'reset_password_email_method_name'" do
@@ -79,12 +79,12 @@ shared_examples_for 'rails_3_reset_password_model' do
       sorcery_reload!([:reset_password], reset_password_mailer: SorceryMailer)
     end
 
-    before(:each) do
+    before do
       User.sorcery_adapter.delete_all
       user
     end
 
-    after(:each) do
+    after do
       Timecop.return
     end
 
@@ -131,7 +131,7 @@ shared_examples_for 'rails_3_reset_password_model' do
     end
 
     describe '#load_from_reset_password_token' do
-      context 'in block mode' do
+      context 'when in block mode' do
         it 'yields user when token is found' do
           user.generate_reset_password_token!
           updated_user = User.sorcery_adapter.find(user.id)
@@ -232,7 +232,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
     end
 
-    context 'mailer is enabled' do
+    context 'when mailer is enabled' do
       it 'sends an email on reset' do
         old_size = ActionMailer::Base.deliveries.size
         user.deliver_reset_password_instructions!
@@ -272,7 +272,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
     end
 
-    context 'mailer is disabled' do
+    context 'when mailer is disabled' do
       before(:all) do
         sorcery_reload!([:reset_password], reset_password_mailer_disabled: true, reset_password_mailer: SorceryMailer)
       end
@@ -285,7 +285,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       end
 
       it 'does not call send_reset_password_email! on reset' do
-        expect(user).to receive(:send_reset_password_email!).never
+        expect(user).not_to receive(:send_reset_password_email!)
 
         user.deliver_reset_password_instructions!
       end
@@ -320,7 +320,7 @@ shared_examples_for 'rails_3_reset_password_model' do
       user.deliver_reset_password_instructions!
 
       expect(user.reset_password_token).not_to be_nil
-      expect(user).to_not receive(:save)
+      expect(user).not_to receive(:save)
       expect(user).to receive(:save!)
 
       user.change_password!('blabulsdf')
@@ -345,7 +345,7 @@ shared_examples_for 'rails_3_reset_password_model' do
 
       user.deliver_reset_password_instructions!
       expect(user.reset_password_token).not_to be_nil
-      expect(user).to_not receive(:save!)
+      expect(user).not_to receive(:save!)
       expect(user).to receive(:save)
 
       user.change_password(new_password)

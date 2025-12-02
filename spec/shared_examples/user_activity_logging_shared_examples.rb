@@ -1,10 +1,10 @@
 shared_examples_for 'rails_3_activity_logging_model' do
-  context 'loaded plugin configuration' do
+  context 'with loaded plugin configuration' do
     before(:all) do
       sorcery_reload!([:activity_logging])
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
     end
 
@@ -62,45 +62,45 @@ shared_examples_for 'rails_3_activity_logging_model' do
 
     it 'show if user logged in' do
       user = create_new_user
-      expect(user.logged_in?).to eq(false)
+      expect(user.logged_in?).to be(false)
 
       now = Time.now.in_time_zone
       user.set_last_login_at(now)
-      expect(user.logged_in?).to eq(true)
+      expect(user.logged_in?).to be(true)
 
       now = Time.now.in_time_zone
       user.set_last_logout_at(now)
-      expect(user.logged_in?).to eq(false)
+      expect(user.logged_in?).to be(false)
     end
 
     it 'show if user logged out' do
       user = create_new_user
-      expect(user.logged_out?).to eq(true)
+      expect(user.logged_out?).to be(true)
 
       now = Time.now.in_time_zone
       user.set_last_login_at(now)
-      expect(user.logged_out?).to eq(false)
+      expect(user.logged_out?).to be(false)
 
       now = Time.now.in_time_zone
       user.set_last_logout_at(now)
-      expect(user.logged_out?).to eq(true)
+      expect(user.logged_out?).to be(true)
     end
 
     it 'show online status of user' do
       user = create_new_user
-      expect(user.online?).to eq(false)
+      expect(user.online?).to be(false)
 
       now = Time.now.in_time_zone
       user.set_last_login_at(now)
       user.set_last_activity_at(now)
-      expect(user.online?).to eq(true)
+      expect(user.online?).to be(true)
 
       user.set_last_activity_at(now - 1.day)
-      expect(user.online?).to eq(false)
+      expect(user.online?).to be(false)
 
       now = Time.now.in_time_zone
       user.set_last_logout_at(now)
-      expect(user.online?).to eq(false)
+      expect(user.online?).to be(false)
     end
   end
 end

@@ -9,9 +9,9 @@ describe Sorcery::Providers::Examples do
     sorcery_controller_property_set(:external_providers, [:examples])
   end
 
-  context 'fetching a plural custom provider' do
+  context 'when fetching a plural custom provider' do
     it 'returns the provider' do
-      expect(Sorcery::Controller::Config.examples).to be_a(Sorcery::Providers::Examples)
+      expect(Sorcery::Controller::Config.examples).to be_a(described_class)
     end
   end
 end

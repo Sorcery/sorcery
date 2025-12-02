@@ -19,7 +19,7 @@ describe SorceryController, type: :controller do
     end
 
     it 'counts login retries' do
-      allow(User).to receive(:authenticate) { |&block| block.call(nil, :other) }
+      allow(User).to receive(:authenticate).and_yield(nil, :other)
       allow(User.sorcery_adapter).to receive(:find_by_credentials).with(['bla@example.com', 'blabla']).and_return(user)
 
       expect(user).to receive(:register_failed_login!).exactly(3).times
@@ -31,7 +31,7 @@ describe SorceryController, type: :controller do
       # Set failed_logins_count to a non-zero value first
       user.update!(failed_logins_count: 3)
 
-      allow(User).to receive(:authenticate) { |&block| block.call(user, nil) }
+      allow(User).to receive(:authenticate).and_yield(user, nil)
 
       get :test_login, params: { email: 'bla@example.com', password: 'secret' }
 

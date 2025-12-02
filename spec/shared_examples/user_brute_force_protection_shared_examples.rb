@@ -1,17 +1,17 @@
 shared_examples_for 'rails_3_brute_force_protection_model' do
   let(:user) { create_new_user }
-  before(:each) do
+  before do
     User.sorcery_adapter.delete_all
   end
 
-  context 'loaded plugin configuration' do
+  context 'with loaded plugin configuration' do
     let(:config) { User.sorcery_config }
 
     before(:all) do
       sorcery_reload!([:brute_force_protection])
     end
 
-    after(:each) do
+    after do
       User.sorcery_config.reset!
     end
 
@@ -62,7 +62,7 @@ shared_examples_for 'rails_3_brute_force_protection_model' do
       expect(lock_expires_at).not_to be_nil
     end
 
-    context 'unlock_token_mailer_disabled is true' do
+    context 'when unlock_token_mailer_disabled is true' do
       it 'does not automatically send unlock email' do
         sorcery_model_property_set(:unlock_token_mailer_disabled, true)
         sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
@@ -75,7 +75,7 @@ shared_examples_for 'rails_3_brute_force_protection_model' do
       end
     end
 
-    context 'unlock_token_mailer_disabled is false' do
+    context 'when unlock_token_mailer_disabled is false' do
       before do
         sorcery_model_property_set(:unlock_token_mailer_disabled, false)
         sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
@@ -97,7 +97,7 @@ shared_examples_for 'rails_3_brute_force_protection_model' do
     end
   end
 
-  context '.authenticate' do
+  describe '.authenticate' do
     it 'unlocks after lock time period passes' do
       sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
       sorcery_model_property_set(:login_lock_time_period, 0.2)

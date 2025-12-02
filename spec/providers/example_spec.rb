@@ -9,9 +9,9 @@ describe Sorcery::Providers::Example do
     sorcery_controller_property_set(:external_providers, [:example])
   end
 
-  context 'fetching a single-word custom provider' do
+  context 'when fetching a single-word custom provider' do
     it 'returns the provider' do
-      expect(Sorcery::Controller::Config.example).to be_a(Sorcery::Providers::Example)
+      expect(Sorcery::Controller::Config.example).to be_a(described_class)
     end
   end
 end

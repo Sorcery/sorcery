@@ -236,7 +236,7 @@ Feel free to ask questions using these contact details:
 **Current Maintainers:**
 
 - Shinichi Maeshima ([@willnet](https://github.com/willnet)) | [Email](mailto:netwillnet+sorcery@gmail.com?subject=Sorcery)
-- Brendon Muir ([@brendon](https://github.com/brendon)) | [Email](mailto:info+sorcery@spikeatschool.co.nz?subject=Sorcery)
+- Brendon Muir ([@brendon](https://github.com/brendon)) | [Email](mailto:brendon+sorcery@spike.net.nz?subject=Sorcery)
 
 **Past Maintainers:**
 

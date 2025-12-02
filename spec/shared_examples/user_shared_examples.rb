@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'rails_3_core_model' do
   let(:user) { create_new_user }
   let(:crypted_password) { user.send User.sorcery_config.crypted_password_attribute_name }

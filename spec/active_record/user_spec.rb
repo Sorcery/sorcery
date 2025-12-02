@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'rails_app/app/mailers/sorcery_mailer'
 require 'shared_examples/user_shared_examples'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sorcery
   # This module handles all plugin operations which are related to the Model layer in the MVC pattern.
   # It should be included into the ORM base class.

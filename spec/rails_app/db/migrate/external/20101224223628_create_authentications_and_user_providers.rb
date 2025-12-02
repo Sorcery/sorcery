@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateAuthenticationsAndUserProviders < ActiveRecord::Migration::Current
   def self.up
     create_table :authentications do |t|

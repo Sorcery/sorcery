@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sorcery
   module Controller
     def self.included(klass)

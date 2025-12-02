@@ -90,7 +90,7 @@ describe SorceryController, type: :controller do
     describe '#login!' do
       context 'when succeeds' do
         before do
-          expect(User).to receive(:authenticate).with('bla@example.com', 'secret') { |&block| block.call(user, nil) }
+          expect(User).to receive(:authenticate).with('bla@example.com', 'secret').and_yield(user, nil)
           get :test_login_bang, params: { email: 'bla@example.com', password: 'secret' }
         end
 
@@ -119,7 +119,7 @@ describe SorceryController, type: :controller do
     describe '#login! with block' do
       context 'when succeeds' do
         before do
-          expect(User).to receive(:authenticate).with('bla@example.com', 'secret') { |&block| block.call(user, nil) }
+          expect(User).to receive(:authenticate).with('bla@example.com', 'secret').and_yield(user, nil)
           get :test_login_bang_with_block, params: { email: 'bla@example.com', password: 'secret' }
         end
 

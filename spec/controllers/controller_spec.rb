@@ -87,6 +87,64 @@ describe SorceryController, type: :controller do
       end
     end
 
+    describe '#login!' do
+      context 'when succeeds' do
+        before do
+          expect(User).to receive(:authenticate).with('bla@example.com', 'secret').and_yield(user, nil)
+          get :test_login_bang, params: { email: 'bla@example.com', password: 'secret' }
+        end
+
+        it 'assigns user to @user variable' do
+          expect(assigns[:user]).to eq user
+        end
+
+        it 'writes user id in session' do
+          expect(session[:user_id]).to eq user.id.to_s
+        end
+      end
+
+      context 'when fails' do
+        before do
+          expect(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_return(nil)
+        end
+
+        it 'raises InvalidCredentials exception' do
+          expect do
+            get :test_login_bang, params: { email: 'bla@example.com', password: 'opensesame!' }
+          end.to raise_error(Sorcery::InvalidCredentials)
+        end
+      end
+    end
+
+    describe '#login! with block' do
+      context 'when succeeds' do
+        before do
+          expect(User).to receive(:authenticate).with('bla@example.com', 'secret').and_yield(user, nil)
+          get :test_login_bang_with_block, params: { email: 'bla@example.com', password: 'secret' }
+        end
+
+        it 'writes user id in session' do
+          expect(session[:user_id]).to eq user.id.to_s
+        end
+
+        it 'redirects to root' do
+          expect(response).to redirect_to(root_url)
+        end
+      end
+
+      context 'when fails' do
+        before do
+          expect(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_return(nil)
+        end
+
+        it 'raises InvalidCredentials exception' do
+          expect do
+            get :test_login_bang_with_block, params: { email: 'bla@example.com', password: 'opensesame!' }
+          end.to raise_error(Sorcery::InvalidCredentials)
+        end
+      end
+    end
+
     describe '#logout' do
       it 'clears the session' do
         cookies[:remember_me_token] = nil

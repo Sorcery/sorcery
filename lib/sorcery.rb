@@ -1,4 +1,5 @@
 require 'sorcery/version'
+require 'sorcery/errors'
 
 module Sorcery
   def self.deprecator

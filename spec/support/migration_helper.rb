@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MigrationHelper
   class << self
     def migrate(path)

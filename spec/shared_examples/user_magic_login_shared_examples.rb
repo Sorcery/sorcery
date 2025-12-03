@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'magic_login_model' do
   let(:user) { create_new_user }
   before do

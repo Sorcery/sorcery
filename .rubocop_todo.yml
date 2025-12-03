@@ -149,10 +149,3 @@ RSpec/VerifiedDoubles:
   Exclude:
     - 'spec/controllers/controller_oauth2_spec.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
-
-# Offense count: 126
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: always, always_true, never
-Style/FrozenStringLiteralComment:
-  Enabled: false

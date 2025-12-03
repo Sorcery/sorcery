@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 AppRoot::Application.routes.draw do
   root to: 'application#index'
 

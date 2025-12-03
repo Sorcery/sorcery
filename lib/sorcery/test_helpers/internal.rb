@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sorcery
   module TestHelpers
     # Internal TestHelpers are used to test the gem, internally, and should not be used to test apps *using* sorcery.

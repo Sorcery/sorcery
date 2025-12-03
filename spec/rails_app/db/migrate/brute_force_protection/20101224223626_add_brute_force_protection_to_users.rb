@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddBruteForceProtectionToUsers < ActiveRecord::Migration::Current
   def self.up
     add_column :users, :failed_logins_count, :integer, default: 0

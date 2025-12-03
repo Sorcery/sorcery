@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddInvalidateSessionsBeforeToUsers < ActiveRecord::Migration::Current
   def self.up
     add_column :users, :invalidate_sessions_before, :datetime, default: nil

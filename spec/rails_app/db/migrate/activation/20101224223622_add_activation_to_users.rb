@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddActivationToUsers < ActiveRecord::Migration::Current
   def self.up
     add_column :users, :activation_state, :string, default: nil

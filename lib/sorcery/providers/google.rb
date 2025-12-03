@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Sorcery
   module Providers
     # This class adds support for OAuth with google.com.

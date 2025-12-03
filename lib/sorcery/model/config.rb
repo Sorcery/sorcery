@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Each class which calls 'activate_sorcery!' receives an instance of this class.
 # Every submodule which gets loaded may add accessors to this class so that all
 # options will be configured from a single place.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User < ActiveRecord::Base
   has_many :authentications, dependent: :destroy
   has_many :user_providers, dependent: :destroy

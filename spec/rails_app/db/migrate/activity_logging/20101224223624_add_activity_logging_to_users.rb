@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddActivityLoggingToUsers < ActiveRecord::Migration::Current
   def self.up
     add_column :users, :last_login_at,     :datetime, default: nil

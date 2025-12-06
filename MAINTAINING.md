@@ -52,10 +52,9 @@ NOTE: `X.Y.Z` and `vX.Y.Z` are given as examples, and should be replaced with
 1. Stage your changes and create a commit
    1. `git add -A`
    1. `git commit -m "Release vX.Y.Z"`
-1. TODO: Gem Release (WIP)
+1. Gem Release
    1. `cd <dir>`
-   1. `gem build`
-   1. `gem push <filename>`
+   1. `bundle exec rake release`
 1. Create GitHub Release
    1. Create a new release via GitHub interface at https://github.com/Sorcery/sorcery/releases/new
    1. Use tag `vX.Y.Z` and title `vX.Y.Z`

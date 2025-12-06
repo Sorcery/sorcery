@@ -23,18 +23,6 @@ RSpec/AnyInstance:
 RSpec/BeforeAfterAll:
   Enabled: false
 
-# Offense count: 8
-RSpec/DescribeMethod:
-  Exclude:
-    - 'spec/active_record/user_activation_spec.rb'
-    - 'spec/active_record/user_activity_logging_spec.rb'
-    - 'spec/active_record/user_brute_force_protection_spec.rb'
-    - 'spec/active_record/user_magic_login_spec.rb'
-    - 'spec/active_record/user_oauth_spec.rb'
-    - 'spec/active_record/user_remember_me_spec.rb'
-    - 'spec/active_record/user_reset_password_spec.rb'
-    - 'spec/active_record/user_spec.rb'
-
 # Offense count: 59
 # Configuration parameters: Max, CountAsOne.
 RSpec/ExampleLength:

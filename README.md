@@ -60,7 +60,7 @@ auto_login(user) # Login without credentials
 logout
 logged_in? # Available in views
 current_user # Available in views
-redirect_back_or_to # Use when a user tries to access a page while logged out, is asked to login, and we want to return him back to the page he originally wanted
+redirect_to_before_login_path # Use when a user tries to access a page while logged out, is asked to login, and we want to return him back to the page he originally wanted
 @user.external? # Users who signed up using Facebook, Twitter, etc.
 @user.active_for_authentication? # Add this method to define behaviour that will prevent selected users from signing in
 @user.valid_password?('secret') # Compares 'secret' with the actual user's password, returns true if they match

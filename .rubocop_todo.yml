@@ -23,17 +23,6 @@ RSpec/AnyInstance:
 RSpec/BeforeAfterAll:
   Enabled: false
 
-# Offense count: 1
-# Configuration parameters: IgnoredMetadata.
-RSpec/DescribeClass:
-  Exclude:
-    - '**/spec/features/**/*'
-    - '**/spec/requests/**/*'
-    - '**/spec/routing/**/*'
-    - '**/spec/system/**/*'
-    - '**/spec/views/**/*'
-    - 'spec/sorcery_crypto_providers_spec.rb'
-
 # Offense count: 8
 RSpec/DescribeMethod:
   Exclude:

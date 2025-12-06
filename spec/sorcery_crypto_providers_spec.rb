@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe 'Crypto Providers wrappers' do
+describe Sorcery::CryptoProviders do
   describe Sorcery::CryptoProviders::MD5 do
     after do
       described_class.reset!

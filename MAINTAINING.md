@@ -7,10 +7,24 @@ triage issues and keep the CHANGELOG up-to-date.
 
 ## Table of Contents
 
+1. [Branch Protection & Direct Commits](#branch-protection--direct-commits)
 1. [Merging Pull Requests](#merging-pull-requests)
 1. [Versioning](#versioning)
    1. [Version Naming](#version-naming)
    1. [Releasing a New Version](#releasing-a-new-version)
+
+## Branch Protection & Direct Commits
+
+The `master` branch is protected to ensure code quality and prevent accidental changes. However, maintainers can bypass branch protection for routine tasks like version bumps.
+
+**For detailed instructions on configuring branch protection and bypass permissions, see:**
+[.github/BRANCH_PROTECTION.md](.github/BRANCH_PROTECTION.md)
+
+**Quick summary for maintainers:**
+- Maintainers with bypass permissions can commit directly to `master`
+- Use direct commits for: version bumps, minor documentation fixes, CHANGELOG updates
+- Use pull requests for: code changes, new features, bug fixes
+- See the branch protection documentation for troubleshooting if you're unable to push directly
 
 ## Merging Pull Requests
 
@@ -49,9 +63,19 @@ NOTE: `X.Y.Z` and `vX.Y.Z` are given as examples, and should be replaced with
       See [Version Naming](#version-naming) if unsure.
 1. Update Gem Version
    1. Update `./lib/sorcery/version.rb` to 'X.Y.Z'
-1. Stage your changes and create a commit
-   1. `git add -A`
+1. Commit directly to master (recommended for maintainers with bypass permissions)
+   1. `git checkout master`
+   1. `git pull origin master`
+   1. `git add lib/sorcery/version.rb`
    1. `git commit -m "Release vX.Y.Z"`
+   1. `git push origin master`
+   1. **Note:** If you get a branch protection error, see [Branch Protection & Direct Commits](#branch-protection--direct-commits)
+1. Alternative: Create a Pull Request (if you don't have bypass permissions)
+   1. Create a new branch: `git checkout -b release-vX.Y.Z`
+   1. `git add lib/sorcery/version.rb`
+   1. `git commit -m "Release vX.Y.Z"`
+   1. `git push origin release-vX.Y.Z`
+   1. Open a PR and merge it after CI passes
 1. TODO: Gem Release (WIP)
    1. `cd <dir>`
    1. `gem build`

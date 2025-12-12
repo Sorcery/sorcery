@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'rails_3_oauth_model' do
   # ----------------- PLUGIN CONFIGURATION -----------------------
 

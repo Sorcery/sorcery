@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddRememberMeTokenToUsers < ActiveRecord::Migration::Current
   def self.up
     add_column :users, :remember_me_token, :string, default: nil

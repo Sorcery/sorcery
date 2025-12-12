@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SorceryMailer < ActionMailer::Base
   default from: 'notifications@example.com'
 

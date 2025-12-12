@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'rails_3_reset_password_model' do
   # ----------------- PLUGIN CONFIGURATION -----------------------
   let(:user) { create_new_user }

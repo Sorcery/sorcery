@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'rails_3_activity_logging_model' do
   context 'with loaded plugin configuration' do
     before(:all) do

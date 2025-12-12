@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'rails_3_brute_force_protection_model' do
   let(:user) { create_new_user }
   before do

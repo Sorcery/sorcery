@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'shared_examples/user_oauth_shared_examples'
 

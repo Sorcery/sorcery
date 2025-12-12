@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddMagicLoginToUsers < ActiveRecord::Migration::Current
   def self.up
     add_column :users, :magic_login_token, :string, default: nil

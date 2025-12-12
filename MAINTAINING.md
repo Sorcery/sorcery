@@ -37,7 +37,7 @@ number represents a version of Sorcery. For example, `1.0.0` would become
 ### Releasing a New Version
 
 When it's time to release a new version, you'll want to ensure all the changes
-you need are on the master branch and that there is a passing build. Then follow
+you need are on the main branch and that there is a passing build. Then follow
 this checklist and prepare a release commit:
 
 NOTE: `X.Y.Z` and `vX.Y.Z` are given as examples, and should be replaced with

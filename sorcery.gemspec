@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
                  'rubygems_mfa_required' => 'true' }
   s.post_install_message = "As of version 1.0 oauth/oauth2 won't be automatically bundled " \
                            "so you may need to add those dependencies to your Gemfile.\n"
-  s.post_install_message += 'You may need oauth2 if you use external providers such as any of these: https://github.com/Sorcery/sorcery/tree/master/lib/sorcery/providers'
+  s.post_install_message += 'You may need oauth2 if you use external providers such as any of these: https://github.com/Sorcery/sorcery/tree/main/lib/sorcery/providers'
   s.files = Dir['lib/**/*'] + ['README.md', 'LICENSE.md', 'CHANGELOG.md']
   s.require_paths = ['lib']
 

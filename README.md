@@ -2,7 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/sorcery.svg)](https://rubygems.org/gems/sorcery)
 [![Gem Downloads](https://img.shields.io/gem/dt/sorcery.svg)](https://rubygems.org/gems/sorcery)
-[![Build Status](https://github.com/Sorcery/sorcery/actions/workflows/ruby.yml/badge.svg?branch=master)](https://github.com/Sorcery/sorcery/actions/workflows/ruby.yml)
+[![Build Status](https://github.com/Sorcery/sorcery/actions/workflows/ruby.yml/badge.svg?branch=main)](https://github.com/Sorcery/sorcery/actions/workflows/ruby.yml)
 
 Magical Authentication for Rails. Supports ActiveRecord, DataMapper, Mongoid and MongoMapper.
 
@@ -156,14 +156,14 @@ Inside the initializer, the comments will tell you what each setting does.
 
 ## Full Features List by Module
 
-**Core** (see [lib/sorcery/model.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/model.rb) and [lib/sorcery/controller.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/controller.rb)):
+**Core** (see [lib/sorcery/model.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/model.rb) and [lib/sorcery/controller.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/controller.rb)):
 
 - Login / logout, optional return user to requested url on login, configurable redirect for non-logged-in users.
 - Password encryption, algorithms: bcrypt (default), MD5, SHA-1, SHA-256, SHA-512, AES or custom. Configurable stretches and salt.
 - Configurable attribute names for username, password and email.
 - Allow multiple fields to serve as username.
 
-**User Activation** (see [lib/sorcery/model/submodules/user_activation.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/model/submodules/user_activation.rb)):
+**User Activation** (see [lib/sorcery/model/submodules/user_activation.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/model/submodules/user_activation.rb)):
 
 - User activation by email with optional success email
 - Configurable attribute names
@@ -171,42 +171,42 @@ Inside the initializer, the comments will tell you what each setting does.
 - Configurable temporary token expiration
 - Optionally prevent non-active users to login
 
-**Reset Password** (see [lib/sorcery/model/submodules/reset_password.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/model/submodules/reset_password.rb)):
+**Reset Password** (see [lib/sorcery/model/submodules/reset_password.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/model/submodules/reset_password.rb)):
 
 - Reset password with email verification
 - Configurable mailer, method name, and attribute name
 - Configurable temporary token expiration
 - Configurable time between emails (hammering protection)
 
-**Remember Me** (see [lib/sorcery/model/submodules/remember_me.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/model/submodules/remember_me.rb)):
+**Remember Me** (see [lib/sorcery/model/submodules/remember_me.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/model/submodules/remember_me.rb)):
 
 - Remember me with configurable expiration
 - Configurable attribute names
 - Configurable to persist globally (supporting multiple browsers at the same time), or starting anew after each login
 
-**Session Timeout** (see [lib/sorcery/controller/submodules/session_timeout.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/controller/submodules/session_timeout.rb)):
+**Session Timeout** (see [lib/sorcery/controller/submodules/session_timeout.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/controller/submodules/session_timeout.rb)):
 
 - Configurable session timeout
 - Optionally session timeout will be calculated from last user action
 - Optionally enable a method to clear all active sessions, expects an `invalidate_sessions_before` datetime attribute.
 
-**Brute Force Protection** (see [lib/sorcery/model/submodules/brute_force_protection.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/model/submodules/brute_force_protection.rb)):
+**Brute Force Protection** (see [lib/sorcery/model/submodules/brute_force_protection.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/model/submodules/brute_force_protection.rb)):
 
 - Brute force login hammering protection
 - configurable logins before lock and lock duration
 
-**Basic HTTP Authentication** (see [lib/sorcery/controller/submodules/http_basic_auth.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/controller/submodules/http_basic_auth.rb)):
+**Basic HTTP Authentication** (see [lib/sorcery/controller/submodules/http_basic_auth.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/controller/submodules/http_basic_auth.rb)):
 
 - A before action for requesting authentication with HTTP Basic
 - Automatic login from HTTP Basic
 - Automatic login is disabled if session key changed
 
-**Activity Logging** (see [lib/sorcery/model/submodules/activity_logging.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/model/submodules/activity_logging.rb)):
+**Activity Logging** (see [lib/sorcery/model/submodules/activity_logging.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/model/submodules/activity_logging.rb)):
 
 - Automatic logging of last login, last logout, last activity time and IP address for last login
 - Configurable timeout by which to decide whether to include a user in the list of logged in users
 
-**External** (see [lib/sorcery/controller/submodules/external.rb](https://github.com/Sorcery/sorcery/blob/master/lib/sorcery/controller/submodules/external.rb)):
+**External** (see [lib/sorcery/controller/submodules/external.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/controller/submodules/external.rb)):
 
 - OAuth1 and OAuth2 support (currently: Twitter, Facebook, Github, Google, Heroku, LinkedIn, VK, LiveID, Xing, Salesforce)
 - Configurable database column names

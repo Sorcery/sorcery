@@ -156,7 +156,7 @@ describe SorceryController, type: :controller do
     end
 
     it 'registers login time on remember_me callback' do
-      subject.send(:after_remember_me!, user)
+      controller.send(:after_remember_me!, user)
 
       expect(session[:login_time]).not_to be_nil
       expect(session[:last_action_time]).not_to be_nil

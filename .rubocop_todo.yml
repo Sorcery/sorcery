@@ -76,15 +76,6 @@ RSpec/MultipleExpectations:
     - 'spec/shared_examples/user_reset_password_shared_examples.rb'
     - 'spec/shared_examples/user_shared_examples.rb'
 
-# Offense count: 12
-# Configuration parameters: EnforcedStyle, IgnoreSharedExamples.
-# SupportedStyles: always, named_only
-RSpec/NamedSubject:
-  Exclude:
-    - 'spec/controllers/controller_remember_me_spec.rb'
-    - 'spec/controllers/controller_session_timeout_spec.rb'
-    - 'spec/controllers/controller_spec.rb'
-
 # Offense count: 18
 # Configuration parameters: Max, AllowedGroups.
 RSpec/NestedGroups:

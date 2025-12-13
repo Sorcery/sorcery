@@ -57,25 +57,6 @@ RSpec/InstanceVariable:
 RSpec/MessageSpies:
   EnforcedStyle: receive
 
-# Offense count: 107
-# Configuration parameters: Max.
-RSpec/MultipleExpectations:
-  Exclude:
-    - 'spec/controllers/controller_activity_logging_spec.rb'
-    - 'spec/controllers/controller_http_basic_auth_spec.rb'
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/controllers/controller_oauth_spec.rb'
-    - 'spec/controllers/controller_remember_me_spec.rb'
-    - 'spec/controllers/controller_session_timeout_spec.rb'
-    - 'spec/controllers/controller_spec.rb'
-    - 'spec/shared_examples/user_activation_shared_examples.rb'
-    - 'spec/shared_examples/user_activity_logging_shared_examples.rb'
-    - 'spec/shared_examples/user_brute_force_protection_shared_examples.rb'
-    - 'spec/shared_examples/user_magic_login_shared_examples.rb'
-    - 'spec/shared_examples/user_remember_me_shared_examples.rb'
-    - 'spec/shared_examples/user_reset_password_shared_examples.rb'
-    - 'spec/shared_examples/user_shared_examples.rb'
-
 # Offense count: 18
 # Configuration parameters: Max, AllowedGroups.
 RSpec/NestedGroups:

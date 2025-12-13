@@ -91,7 +91,7 @@ Rails.application.config.sorcery.configure do |config|
   # config.external_providers =
 
   # You can change it by your local ca_file. i.e. '/etc/pki/tls/certs/ca-bundle.crt'
-  # Path to ca_file. By default use a internal ca-bundle.crt.
+  # Path to ca_file. By default use a internal ca-bundle.pem.
   # Default: `'path/to/ca_file'`
   #
   # config.ca_file =

@@ -31,5 +31,28 @@ shared_examples_for 'rails_3_oauth_model' do
       external_user
       expect(User.load_from_provider(:twitter, 980_342)).to be_nil
     end
+
+    describe "#add_provider_to_user" do
+      let!(:user) { create_new_user }
+
+      subject { user.add_provider_to_user(:twitter, 123) }
+
+      context "when a provider is successfully added" do
+        it "returns an instance of authentication" do
+          expect {
+            expect(subject).to be_kind_of(Authentication)
+          }.to change(Authentication, :count).by(1)
+        end
+      end
+
+      context "when a provider already exists" do
+        let(:user) { create_new_external_user :twitter }
+
+        it "does not create a new authentication and returns false" do
+          expect { subject }.not_to change(Authentication, :count)
+          expect(subject).to be false
+        end
+      end
+    end
   end
 end

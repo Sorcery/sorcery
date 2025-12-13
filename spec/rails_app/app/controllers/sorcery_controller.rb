@@ -503,10 +503,10 @@ class SorceryController < ApplicationController
 
     return unless logged_in?
 
-    if (@user = add_provider_to_user(provider))
-      redirect_to 'bla', notice: 'Success!'
+    if (@authentication = add_provider_to_user(provider))
+      redirect_to "bla", notice: "Success!"
     else
-      redirect_to 'blu', alert: 'Failed!'
+      redirect_to "blu", alert: "Failed!"
     end
   end
 

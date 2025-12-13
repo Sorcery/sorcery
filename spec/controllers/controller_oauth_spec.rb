@@ -164,8 +164,8 @@ describe SorceryController, type: :controller do
       it 'binds new provider' do
         sorcery_model_property_set(:authentications_class, UserProvider)
 
-        allow(user).to receive_message_chain(:sorcery_config, :username_attribute_names, :first) { :username }
-        allow(user).to receive(:username).and_return('bla@example.com')
+        sorcery_config = instance_double(Sorcery::Model::Config, username_attribute_names: [:username])
+        allow(user).to receive_messages(sorcery_config: sorcery_config, username: 'bla@example.com')
         login_user(user)
 
         expect(user).to receive(:add_provider_to_user).with('twitter', '123')

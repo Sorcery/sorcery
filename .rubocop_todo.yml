@@ -57,11 +57,6 @@ RSpec/InstanceVariable:
     - 'spec/shared_examples/user_shared_examples.rb'
     - 'spec/sorcery_crypto_providers_spec.rb'
 
-# Offense count: 1
-RSpec/MessageChain:
-  Exclude:
-    - 'spec/controllers/controller_oauth_spec.rb'
-
 # Offense count: 75
 # Configuration parameters: .
 # SupportedStyles: have_received, receive

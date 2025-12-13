@@ -13,12 +13,6 @@ Gemspec/DevelopmentDependencies:
   Exclude:
     - 'sorcery.gemspec'
 
-# Offense count: 3
-RSpec/AnyInstance:
-  Exclude:
-    - 'spec/controllers/controller_oauth2_spec.rb'
-    - 'spec/shared_examples/user_shared_examples.rb'
-
 # Offense count: 66
 RSpec/BeforeAfterAll:
   Enabled: false

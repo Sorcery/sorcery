@@ -327,7 +327,7 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     before do
-      @mail = double('mail')
+      @mail = instance_double(ActionMailer::MessageDelivery)
       allow(SorceryMailer).to receive(:activation_success_email).and_return(@mail)
     end
 

@@ -65,8 +65,8 @@ describe SorceryController, type: :controller do
       session[:user_id] = user.id.to_s
       user.remember_me!
 
-      subject.remember_me!
-      subject.instance_eval do
+      controller.remember_me!
+      controller.instance_eval do
         remove_instance_variable :@current_user
       end
       session[:user_id] = nil
@@ -93,7 +93,7 @@ describe SorceryController, type: :controller do
 
     it 'auto_login(user) logs in an user instance without remembering' do
       session[:user_id] = nil
-      subject.auto_login(user)
+      controller.auto_login(user)
       get :test_login_from_cookie
 
       expect(assigns[:current_user]).to eq user
@@ -103,7 +103,7 @@ describe SorceryController, type: :controller do
     it 'auto_login(user, true) logs in an user instance with remembering' do
       session[:user_id] = nil
       expect(user).to receive(:remember_me!)
-      subject.auto_login(user, true)
+      controller.auto_login(user, true)
 
       get :test_login_from_cookie
 

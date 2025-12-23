@@ -144,13 +144,13 @@ shared_examples_for 'rails_3_core_model' do
 
       context 'when model implements active_for_authentication?' do
         it 'authenticates returns user if active_for_authentication? returns true' do
-          allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(true)
+          allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(true) # rubocop:disable RSpec/AnyInstance
 
           expect(User.authenticate(user.email, 'secret')).to eq user
         end
 
         it 'authenticate returns nil if active_for_authentication? returns false' do
-          allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(false)
+          allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(false) # rubocop:disable RSpec/AnyInstance
 
           expect(User.authenticate(user.email, 'secret')).to be_nil
         end
@@ -327,7 +327,7 @@ shared_examples_for 'rails_3_core_model' do
     end
 
     before do
-      @mail = double('mail')
+      @mail = instance_double(ActionMailer::MessageDelivery)
       allow(SorceryMailer).to receive(:activation_success_email).and_return(@mail)
     end
 

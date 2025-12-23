@@ -4,26 +4,28 @@ require 'spec_helper'
 require 'rails_app/app/mailers/sorcery_mailer'
 require 'shared_examples/user_shared_examples'
 
-describe User, 'with no submodules (core)', :active_record do
-  before(:all) do
-    sorcery_reload!
-  end
-
-  context 'when app has plugin loaded' do
-    it 'responds to the plugin activation class method' do
-      expect(ActiveRecord::Base).to respond_to :authenticates_with_sorcery!
+describe User, :active_record do
+  context 'with no submodules (core)' do
+    before(:all) do
+      sorcery_reload!
     end
 
-    it 'User responds to .authenticates_with_sorcery!' do
-      expect(described_class).to respond_to :authenticates_with_sorcery!
+    context 'when app has plugin loaded' do
+      it 'responds to the plugin activation class method' do
+        expect(ActiveRecord::Base).to respond_to :authenticates_with_sorcery!
+      end
+
+      it 'User responds to .authenticates_with_sorcery!' do
+        expect(described_class).to respond_to :authenticates_with_sorcery!
+      end
     end
-  end
 
-  # ----------------- PLUGIN CONFIGURATION -----------------------
+    # ----------------- PLUGIN CONFIGURATION -----------------------
 
-  it_behaves_like 'rails_3_core_model'
+    it_behaves_like 'rails_3_core_model'
 
-  describe 'external users' do
-    it_behaves_like 'external_user'
+    describe 'external users' do
+      it_behaves_like 'external_user'
+    end
   end
 end

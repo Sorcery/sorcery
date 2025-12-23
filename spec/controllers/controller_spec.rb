@@ -161,13 +161,13 @@ describe SorceryController, type: :controller do
       it 'returns true when user is logged in' do
         session[:user_id] = user.id.to_s
 
-        expect(subject.logged_in?).to be true
+        expect(controller.logged_in?).to be true
       end
 
       it 'returns false when user is not logged in' do
         session[:user_id] = nil
 
-        expect(subject.logged_in?).to be false
+        expect(controller.logged_in?).to be false
       end
     end
 
@@ -175,13 +175,13 @@ describe SorceryController, type: :controller do
       it 'current_user returns the user instance if logged in' do
         session[:user_id] = user.id.to_s
 
-        2.times { expect(subject.current_user).to eq user } # memoized!
+        2.times { expect(controller.current_user).to eq user } # memoized!
       end
 
       it 'current_user returns false if not logged in' do
         session[:user_id] = nil
 
-        2.times { expect(subject.current_user).to be_nil } # memoized!
+        2.times { expect(controller.current_user).to be_nil } # memoized!
       end
     end
 
@@ -231,16 +231,16 @@ describe SorceryController, type: :controller do
 
     it 'auto_login(user) logs in a user instance' do
       session[:user_id] = nil
-      subject.auto_login(user)
+      controller.auto_login(user)
 
-      expect(subject.logged_in?).to be true
+      expect(controller.logged_in?).to be true
     end
 
     it 'auto_login(user) works even if current_user was already set to false' do
       get :test_logout
 
       expect(session[:user_id]).to be_nil
-      expect(subject.current_user).to be_nil
+      expect(controller.current_user).to be_nil
 
       expect(User).to receive(:first) { user }
 

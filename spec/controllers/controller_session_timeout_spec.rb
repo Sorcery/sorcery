@@ -83,7 +83,7 @@ describe SorceryController, type: :controller do
         expect(response).to be_a_redirect
       end
 
-      it 'allows login after invalidate_active_sessions! is called' do
+      it 'allows login after invalidate_active_sessions! is called' do # rubocop:disable RSpec/MultipleExpectations
         sorcery_controller_property_set(:session_timeout_invalidate_active_sessions_enabled, true)
         # precondition that the user is logged in
         login_user user
@@ -156,7 +156,7 @@ describe SorceryController, type: :controller do
     end
 
     it 'registers login time on remember_me callback' do
-      subject.send(:after_remember_me!, user)
+      controller.send(:after_remember_me!, user)
 
       expect(session[:login_time]).not_to be_nil
       expect(session[:last_action_time]).not_to be_nil

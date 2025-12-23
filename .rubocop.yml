@@ -62,3 +62,11 @@ Style/Documentation:
 Style/OptionalBooleanParameter:
   Exclude:
     - 'lib/**/*'
+
+####################
+## RSpec Style    ##
+####################
+
+# Allow up to 5 expectations per test for integration tests
+RSpec/MultipleExpectations:
+  Max: 5

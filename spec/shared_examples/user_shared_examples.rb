@@ -637,7 +637,7 @@ shared_examples_for 'external_user' do
       User.sorcery_adapter.delete_all
     end
 
-    %i[facebook github google liveid slack].each do |provider|
+    %i[facebook github google slack].each do |provider|
       it 'does not send activation email to external users' do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user(provider)

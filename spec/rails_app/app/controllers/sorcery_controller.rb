@@ -168,10 +168,6 @@ class SorceryController < ApplicationController
     login_at(:google)
   end
 
-  def login_at_test_liveid
-    login_at(:liveid)
-  end
-
   def login_at_test_jira
     login_at(:jira)
   end
@@ -264,14 +260,6 @@ class SorceryController < ApplicationController
 
   def test_login_from_google
     if (@user = login_from(:google))
-      redirect_to 'bla', notice: 'Success!'
-    else
-      redirect_to 'blu', alert: 'Failed!'
-    end
-  end
-
-  def test_login_from_liveid
-    if (@user = login_from(:liveid))
       redirect_to 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'
@@ -410,14 +398,6 @@ class SorceryController < ApplicationController
 
   def test_return_to_with_external_google
     if (@user = login_from(:google))
-      redirect_to_before_login_path 'bla', notice: 'Success!'
-    else
-      redirect_to 'blu', alert: 'Failed!'
-    end
-  end
-
-  def test_return_to_with_external_liveid
-    if (@user = login_from(:liveid))
       redirect_to_before_login_path 'bla', notice: 'Success!'
     else
       redirect_to 'blu', alert: 'Failed!'

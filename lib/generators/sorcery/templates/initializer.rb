@@ -85,7 +85,7 @@ Rails.application.config.sorcery.configure do |config|
 
   # -- external --
   # What providers are supported by this app
-  # i.e. [:twitter, :facebook, :github, :linkedin, :xing, :google, :liveid, :salesforce, :slack, :line].
+  # i.e. [:twitter, :facebook, :github, :linkedin, :xing, :google, :salesforce, :slack, :line].
   # Default: `[]`
   #
   # config.external_providers =
@@ -194,15 +194,6 @@ Rails.application.config.sorcery.configure do |config|
   # config.slack.secret = ''
   # config.slack.user_info_mapping = {email: 'email'}
   #
-  # To use liveid in development mode you have to replace mydomain.com with
-  # a valid domain even in development. To use a valid domain in development
-  # simply add your domain in your /etc/hosts file in front of 127.0.0.1
-  #
-  # config.liveid.key = ""
-  # config.liveid.secret = ""
-  # config.liveid.callback_url = "http://mydomain.com:3000/oauth/callback?provider=liveid"
-  # config.liveid.user_info_mapping = {:username => "name"}
-
   # For information about JIRA API:
   # https://developer.atlassian.com/display/JIRADEV/JIRA+REST+API+Example+-+OAuth+authentication
   # To obtain the consumer key and the public key you can use the jira-ruby gem https://github.com/sumoheavy/jira-ruby

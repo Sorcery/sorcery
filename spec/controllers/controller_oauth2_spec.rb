@@ -151,7 +151,7 @@ describe SorceryController, :active_record, type: :controller do
       expect(flash[:notice]).to eq 'Success!'
     end
 
-    %i[github google liveid vk salesforce paypal slack wechat microsoft instagram auth0 discord battlenet].each do |provider|
+    %i[github google vk salesforce paypal slack wechat microsoft instagram auth0 discord battlenet].each do |provider|
       describe "with #{provider}" do
         it 'login_at redirects correctly' do
           get :"login_at_test_#{provider}"
@@ -197,7 +197,6 @@ describe SorceryController, :active_record, type: :controller do
           facebook
           github
           google
-          liveid
           vk
           salesforce
           paypal
@@ -222,9 +221,6 @@ describe SorceryController, :active_record, type: :controller do
       sorcery_controller_external_property_set(:google, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:google, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
       sorcery_controller_external_property_set(:google, :callback_url, 'http://example.com')
-      sorcery_controller_external_property_set(:liveid, :key, 'eYVNBjBDi33aa9GkA3w')
-      sorcery_controller_external_property_set(:liveid, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-      sorcery_controller_external_property_set(:liveid, :callback_url, 'http://example.com')
       sorcery_controller_external_property_set(:vk, :key, 'eYVNBjBDi33aa9GkA3w')
       sorcery_controller_external_property_set(:vk, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
       sorcery_controller_external_property_set(:vk, :callback_url, 'http://example.com')
@@ -281,7 +277,7 @@ describe SorceryController, :active_record, type: :controller do
       expect(ActionMailer::Base.deliveries.size).to eq old_size
     end
 
-    %i[github google liveid vk salesforce paypal wechat microsoft instagram auth0 discord battlenet].each do |provider|
+    %i[github google vk salesforce paypal wechat microsoft instagram auth0 discord battlenet].each do |provider|
       it "does not send activation email to external users (#{provider})" do
         old_size = ActionMailer::Base.deliveries.size
         create_new_external_user provider
@@ -305,7 +301,7 @@ describe SorceryController, :active_record, type: :controller do
       sorcery_reload!(%i[activity_logging external])
     end
 
-    %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
+    %w[facebook github google vk salesforce slack discord battlenet].each do |provider|
       context "when #{provider}" do
         before do
           sorcery_controller_property_set(:register_login_time, true)
@@ -344,7 +340,7 @@ describe SorceryController, :active_record, type: :controller do
 
     let!(:user) { User.create!(username: 'timeout_user', email: 'timeout@example.com', password: 'password') }
 
-    %w[facebook github google liveid vk salesforce slack discord battlenet].each do |provider|
+    %w[facebook github google vk salesforce slack discord battlenet].each do |provider|
       context "when #{provider}" do
         before do
           sorcery_model_property_set(:authentications_class, Authentication)
@@ -467,7 +463,6 @@ describe SorceryController, :active_record, type: :controller do
         facebook
         github
         google
-        liveid
         vk
         salesforce
         paypal
@@ -490,9 +485,6 @@ describe SorceryController, :active_record, type: :controller do
     sorcery_controller_external_property_set(:google, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:google, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
     sorcery_controller_external_property_set(:google, :callback_url, 'http://example.com')
-    sorcery_controller_external_property_set(:liveid, :key, 'eYVNBjBDi33aa9GkA3w')
-    sorcery_controller_external_property_set(:liveid, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
-    sorcery_controller_external_property_set(:liveid, :callback_url, 'http://example.com')
     sorcery_controller_external_property_set(:vk, :key, 'eYVNBjBDi33aa9GkA3w')
     sorcery_controller_external_property_set(:vk, :secret, 'XpbeSdCoaKSmQGSeokz5qcUATClRW5u08QWNfv71N8')
     sorcery_controller_external_property_set(:vk, :callback_url, 'http://example.com')
@@ -544,9 +536,6 @@ describe SorceryController, :active_record, type: :controller do
               "client_id=#{config.google.key}&display&redirect_uri=#{redirect_uri}" \
               '&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email%20' \
               'https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&state',
-      liveid: 'https://oauth.live.com/authorize?' \
-              "client_id=#{config.liveid.key}&display&redirect_uri=#{redirect_uri}" \
-              '&response_type=code&scope=wl.basic%20wl.emails%20wl.offline_access&state',
       vk: 'https://oauth.vk.com/authorize?' \
           "client_id=#{config.vk.key}&display&redirect_uri=#{redirect_uri}" \
           "&response_type=code&scope=#{config.vk.scope}&state",

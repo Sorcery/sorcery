@@ -208,7 +208,7 @@ Inside the initializer, the comments will tell you what each setting does.
 
 **External** (see [lib/sorcery/controller/submodules/external.rb](https://github.com/Sorcery/sorcery/blob/main/lib/sorcery/controller/submodules/external.rb)):
 
-- OAuth1 and OAuth2 support (currently: Twitter, Facebook, Github, Google, Heroku, LinkedIn, VK, LiveID, Xing, Salesforce)
+- OAuth1 and OAuth2 support (currently: Twitter, Facebook, Github, Google, Heroku, LinkedIn, VK, Xing, Salesforce)
 - Configurable database column names
 - Authentications table
 

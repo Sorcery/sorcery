@@ -14,7 +14,6 @@ module Sorcery
           require 'sorcery/providers/twitter'
           require 'sorcery/providers/vk'
           require 'sorcery/providers/linkedin'
-          require 'sorcery/providers/xing'
           require 'sorcery/providers/github'
           require 'sorcery/providers/heroku'
           require 'sorcery/providers/google'

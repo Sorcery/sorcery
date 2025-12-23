@@ -85,7 +85,7 @@ Rails.application.config.sorcery.configure do |config|
 
   # -- external --
   # What providers are supported by this app
-  # i.e. [:twitter, :facebook, :github, :linkedin, :xing, :google, :salesforce, :slack, :line].
+  # i.e. [:twitter, :facebook, :github, :linkedin, :google, :salesforce, :slack, :line].
   # Default: `[]`
   #
   # config.external_providers =
@@ -111,13 +111,7 @@ Rails.application.config.sorcery.configure do |config|
   # config.linkedin.scope = "r_liteprofile r_emailaddress"
   #
   #
-  # For information about XING API:
-  # - user info fields go to https://dev.xing.com/docs/get/users/me
-  #
-  # config.xing.key = ""
-  # config.xing.secret = ""
-  # config.xing.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=xing"
-  # config.xing.user_info_mapping = {first_name: "first_name", last_name: "last_name"}
+  # (XING OAuth support has been removed)
   #
   #
   # Twitter will not accept any requests nor redirect uri containing localhost,

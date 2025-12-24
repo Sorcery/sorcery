@@ -375,11 +375,10 @@ describe SorceryController, :active_record, type: :controller do
   end
 
   def stub_all_oauth2_requests!
-    access_token = double(OAuth2::AccessToken) # rubocop:disable RSpec/VerifiedDoubles
-    allow(access_token).to receive(:token_param=)
+    access_token = instance_double(OAuth2::AccessToken)
     # Needed for Instagram
     allow(access_token).to receive(:[]).with(:client_id).and_return('eYVNBjBDi33aa9GkA3w')
-    response = double(OAuth2::Response) # rubocop:disable RSpec/VerifiedDoubles
+    response = instance_double(OAuth2::Response)
     allow(response).to receive(:body) {
       {
         'id' => '123',

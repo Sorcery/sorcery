@@ -53,12 +53,6 @@ RSpec/InstanceVariable:
     - 'spec/controllers/controller_remember_me_spec.rb'
     - 'spec/sorcery_crypto_providers_spec.rb'
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/LetBeforeExamples:
-  Exclude:
-    - 'spec/active_record/user_spec.rb'
-
 # Offense count: 75
 # Configuration parameters: .
 # SupportedStyles: have_received, receive

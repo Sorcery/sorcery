@@ -2,8 +2,6 @@
 
 require 'spec_helper'
 
-# require 'shared_examples/controller_oauth2_shared_examples'
-
 describe SorceryController, :active_record, type: :controller do
   before(:all) do
     MigrationHelper.migrate("#{Rails.root}/db/migrate/external")

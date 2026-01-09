@@ -23,7 +23,6 @@ class TestMailer < ActionMailer::Base; end
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
 RSpec.configure do |config|
-  config.include RSpec::Rails::ControllerExampleGroup, file_path: /controller(.)*_spec.rb$/
   config.mock_with :rspec
 
   config.use_transactional_fixtures = true
@@ -34,8 +33,4 @@ RSpec.configure do |config|
 
   config.include Sorcery::TestHelpers::Internal
   config.include Sorcery::TestHelpers::Internal::Rails
-
-  config.include Rails::Controller::Testing::TestProcess, type: :controller
-  config.include Rails::Controller::Testing::TemplateAssertions, type: :controller
-  config.include Rails::Controller::Testing::Integration, type: :controller
 end

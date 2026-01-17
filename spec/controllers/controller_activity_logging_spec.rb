@@ -34,8 +34,6 @@ describe SorceryController, type: :controller do
       login_user(user)
 
       expect(user.reload.last_login_at).to be_within(0.1).of(now)
-
-      Timecop.return
     end
 
     it 'logs logout time on logout' do
@@ -46,8 +44,6 @@ describe SorceryController, type: :controller do
       logout_user
 
       expect(user.reload.last_logout_at).to be_within(0.1).of(now)
-
-      Timecop.return
     end
 
     it 'logs last activity time when logged in' do
@@ -60,8 +56,6 @@ describe SorceryController, type: :controller do
       get :some_action
 
       expect(user.reload.last_activity_at).to be_within(0.1).of(now)
-
-      Timecop.return
     end
 
     it 'logs last IP address when logged in' do

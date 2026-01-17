@@ -12,10 +12,6 @@ describe SorceryController, type: :controller do
       sorcery_controller_property_set(:session_timeout, 0.5)
     end
 
-    after do
-      Timecop.return
-    end
-
     it 'does not reset session before session timeout' do
       login_user user
       get :test_should_be_logged_in

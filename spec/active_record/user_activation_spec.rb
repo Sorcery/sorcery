@@ -279,10 +279,6 @@ describe User, :active_record do
         sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
       end
 
-      after do
-        Timecop.return
-      end
-
       it 'load_from_activation_token returns user when token is found' do
         expect(User.load_from_activation_token(user.activation_token)).to eq user
       end

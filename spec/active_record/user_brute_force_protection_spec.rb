@@ -126,7 +126,6 @@ describe User, :active_record do
 
         lock_expires_at = User.sorcery_adapter.find_by_id(user.id).lock_expires_at
         expect(lock_expires_at).to be_nil
-        Timecop.return
       end
 
       it 'doest not unlock if time period is 0 (permanent lock)' do
@@ -141,7 +140,6 @@ describe User, :active_record do
         user.register_failed_login!
 
         expect(user.lock_expires_at.to_s).to eq unlock_date.to_s
-        Timecop.return
       end
     end
 

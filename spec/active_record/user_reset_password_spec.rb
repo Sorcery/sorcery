@@ -98,10 +98,6 @@ describe User, :active_record do
         user
       end
 
-      after do
-        Timecop.return
-      end
-
       it 'load_from_reset_password_token returns user when token is found' do
         user.generate_reset_password_token!
         updated_user = User.sorcery_adapter.find(user.id)

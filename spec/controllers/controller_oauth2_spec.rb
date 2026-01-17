@@ -318,7 +318,6 @@ describe SorceryController, :active_record, type: :controller do
           expect(User).to receive(:load_from_provider).and_return(user)
           expect(user).to receive(:set_last_login_at).with(be_within(0.1).of(now))
           get :"test_login_from_#{provider}"
-          Timecop.return
         end
 
         it 'does not register login time if configured so' do
@@ -346,10 +345,6 @@ describe SorceryController, :active_record, type: :controller do
           sorcery_model_property_set(:authentications_class, Authentication)
           sorcery_controller_property_set(:session_timeout, 0.5)
           stub_all_oauth2_requests!
-        end
-
-        after do
-          Timecop.return
         end
 
         it 'does not reset session before session timeout' do

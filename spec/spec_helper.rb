@@ -30,6 +30,7 @@ RSpec.configure do |config|
   config.before(:suite) { setup_orm }
   config.after(:suite) { teardown_orm }
   config.before { ActionMailer::Base.deliveries.clear }
+  config.after { Timecop.return }
 
   config.include Sorcery::TestHelpers::Internal
   config.include Sorcery::TestHelpers::Internal::Rails

@@ -122,9 +122,9 @@ describe User, :active_record do
       it 'load_from_reset_password_token does NOT return user when token is found and expired' do
         sorcery_model_property_set(:reset_password_expiration_period, 0.1)
         user.generate_reset_password_token!
-        Timecop.travel(Time.now.in_time_zone + 0.5)
-
-        expect(User.load_from_reset_password_token(user.reset_password_token)).to be_nil
+        Timecop.travel(Time.now.in_time_zone + 0.5) do
+          expect(User.load_from_reset_password_token(user.reset_password_token)).to be_nil
+        end
       end
 
       it 'load_from_reset_password_token is always valid if expiration period is nil' do
@@ -175,11 +175,11 @@ describe User, :active_record do
           it 'yields user and failure reason when token is found and expired' do
             sorcery_model_property_set(:reset_password_expiration_period, 0.1)
             user.generate_reset_password_token!
-            Timecop.travel(Time.now.in_time_zone + 0.5)
-
-            User.load_from_reset_password_token(user.reset_password_token) do |user2, failure|
-              expect(user2).to eq user
-              expect(failure).to eq :token_expired
+            Timecop.travel(Time.now.in_time_zone + 0.5) do
+              User.load_from_reset_password_token(user.reset_password_token) do |user2, failure|
+                expect(user2).to eq user
+                expect(failure).to eq :token_expired
+              end
             end
           end
 
@@ -275,8 +275,9 @@ describe User, :active_record do
 
           expect(ActionMailer::Base.deliveries.size).to eq old_size + 1
 
-          Timecop.travel(Time.now.in_time_zone + 0.5)
-          user.deliver_reset_password_instructions!
+          Timecop.travel(Time.now.in_time_zone + 0.5) do
+            user.deliver_reset_password_instructions!
+          end
 
           expect(ActionMailer::Base.deliveries.size).to eq old_size + 2
         end
@@ -319,8 +320,9 @@ describe User, :active_record do
 
           expect(ActionMailer::Base.deliveries.size).to eq old_size
 
-          Timecop.travel(Time.now.in_time_zone + 0.5)
-          user.deliver_reset_password_instructions!
+          Timecop.travel(Time.now.in_time_zone + 0.5) do
+            user.deliver_reset_password_instructions!
+          end
 
           expect(ActionMailer::Base.deliveries.size).to eq old_size
         end

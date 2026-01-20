@@ -28,22 +28,22 @@ describe SorceryController, type: :controller do
 
     it 'logs login time on login' do
       now = Time.now.in_time_zone
-      Timecop.freeze(now)
+      Timecop.freeze(now) do
+        sorcery_controller_property_set(:register_login_time, true)
+        login_user(user)
 
-      sorcery_controller_property_set(:register_login_time, true)
-      login_user(user)
-
-      expect(user.reload.last_login_at).to be_within(0.1).of(now)
+        expect(user.reload.last_login_at).to be_within(0.1).of(now)
+      end
     end
 
     it 'logs logout time on logout' do
       login_user(user)
       now = Time.now.in_time_zone
-      Timecop.freeze(now)
+      Timecop.freeze(now) do
+        logout_user
 
-      logout_user
-
-      expect(user.reload.last_logout_at).to be_within(0.1).of(now)
+        expect(user.reload.last_logout_at).to be_within(0.1).of(now)
+      end
     end
 
     it 'logs last activity time when logged in' do
@@ -51,11 +51,11 @@ describe SorceryController, type: :controller do
 
       login_user(user)
       now = Time.now.in_time_zone
-      Timecop.freeze(now)
+      Timecop.freeze(now) do
+        get :some_action
 
-      get :some_action
-
-      expect(user.reload.last_activity_at).to be_within(0.1).of(now)
+        expect(user.reload.last_activity_at).to be_within(0.1).of(now)
+      end
     end
 
     it 'logs last IP address when logged in' do

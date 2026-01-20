@@ -121,11 +121,12 @@ describe User, :active_record do
         lock_expires_at = User.sorcery_adapter.find_by_id(user.id).lock_expires_at
         expect(lock_expires_at).not_to be_nil
 
-        Timecop.travel(Time.now.in_time_zone + 0.3)
-        User.authenticate('bla@example.com', 'secret')
+        Timecop.travel(Time.now.in_time_zone + 0.3) do
+          User.authenticate('bla@example.com', 'secret')
 
-        lock_expires_at = User.sorcery_adapter.find_by_id(user.id).lock_expires_at
-        expect(lock_expires_at).to be_nil
+          lock_expires_at = User.sorcery_adapter.find_by_id(user.id).lock_expires_at
+          expect(lock_expires_at).to be_nil
+        end
       end
 
       it 'doest not unlock if time period is 0 (permanent lock)' do
@@ -135,11 +136,11 @@ describe User, :active_record do
         2.times { user.register_failed_login! }
 
         unlock_date = user.lock_expires_at
-        Timecop.travel(Time.now.in_time_zone + 1)
+        Timecop.travel(Time.now.in_time_zone + 1) do
+          user.register_failed_login!
 
-        user.register_failed_login!
-
-        expect(user.lock_expires_at.to_s).to eq unlock_date.to_s
+          expect(user.lock_expires_at.to_s).to eq unlock_date.to_s
+        end
       end
     end
 

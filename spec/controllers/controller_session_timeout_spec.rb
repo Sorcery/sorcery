@@ -22,11 +22,12 @@ describe SorceryController, type: :controller do
 
     it 'resets session after session timeout' do
       login_user user
-      Timecop.travel(Time.now.in_time_zone + 0.6)
-      get :test_should_be_logged_in
+      Timecop.travel(Time.now.in_time_zone + 0.6) do
+        get :test_should_be_logged_in
 
-      expect(session[:user_id]).to be_nil
-      expect(response).to be_a_redirect
+        expect(session[:user_id]).to be_nil
+        expect(response).to be_a_redirect
+      end
     end
 
     context "with 'invalidate_active_sessions_enabled'" do
@@ -128,26 +129,29 @@ describe SorceryController, type: :controller do
         sorcery_controller_property_set(:session_timeout_from_last_action, true)
 
         get :test_login, params: { email: 'bla@example.com', password: 'secret' }
-        Timecop.travel(Time.now.in_time_zone + 0.3)
-        get :test_should_be_logged_in
+        Timecop.travel(Time.now.in_time_zone + 0.3) do
+          get :test_should_be_logged_in
 
-        expect(session[:user_id]).not_to be_nil
+          expect(session[:user_id]).not_to be_nil
+        end
 
-        Timecop.travel(Time.now.in_time_zone + 0.3)
-        get :test_should_be_logged_in
+        Timecop.travel(Time.now.in_time_zone + 0.3) do
+          get :test_should_be_logged_in
 
-        expect(session[:user_id]).not_to be_nil
-        expect(response).to be_successful
+          expect(session[:user_id]).not_to be_nil
+          expect(response).to be_successful
+        end
       end
 
       it "with 'session_timeout_from_last_action' logs out if there was no activity" do
         sorcery_controller_property_set(:session_timeout_from_last_action, true)
         get :test_login, params: { email: 'bla@example.com', password: 'secret' }
-        Timecop.travel(Time.now.in_time_zone + 0.6)
-        get :test_should_be_logged_in
+        Timecop.travel(Time.now.in_time_zone + 0.6) do
+          get :test_should_be_logged_in
 
-        expect(session[:user_id]).to be_nil
-        expect(response).to be_a_redirect
+          expect(session[:user_id]).to be_nil
+          expect(response).to be_a_redirect
+        end
       end
     end
 

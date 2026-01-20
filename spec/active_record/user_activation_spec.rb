@@ -279,10 +279,6 @@ describe User, :active_record do
         sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
       end
 
-      after do
-        Timecop.return
-      end
-
       it 'load_from_activation_token returns user when token is found' do
         expect(User.load_from_activation_token(user.activation_token)).to eq user
       end
@@ -301,9 +297,9 @@ describe User, :active_record do
         sorcery_model_property_set(:activation_token_expiration_period, 0.1)
         user
 
-        Timecop.travel(Time.now.in_time_zone + 0.5)
-
-        expect(User.load_from_activation_token(user.activation_token)).to be_nil
+        Timecop.travel(Time.now.in_time_zone + 0.5) do
+          expect(User.load_from_activation_token(user.activation_token)).to be_nil
+        end
       end
 
       it 'load_from_activation_token returns nil if token is blank' do
@@ -346,11 +342,11 @@ describe User, :active_record do
             sorcery_model_property_set(:activation_token_expiration_period, 0.1)
             user
 
-            Timecop.travel(Time.now.in_time_zone + 0.5)
-
-            User.load_from_activation_token(user.activation_token) do |user2, failure|
-              expect(user2).to eq user
-              expect(failure).to eq :token_expired
+            Timecop.travel(Time.now.in_time_zone + 0.5) do
+              User.load_from_activation_token(user.activation_token) do |user2, failure|
+                expect(user2).to eq user
+                expect(failure).to eq :token_expired
+              end
             end
           end
 

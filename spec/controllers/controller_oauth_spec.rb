@@ -203,21 +203,21 @@ describe SorceryController, type: :controller do
 
       it 'registers login time' do
         now = Time.now.in_time_zone
-        Timecop.freeze(now)
-        expect(User).to receive(:load_from_provider).and_return(user)
-        expect(user).to receive(:set_last_login_at).with(be_within(0.1).of(now))
-        get :test_login_from
-        Timecop.return
+        Timecop.freeze(now) do
+          expect(User).to receive(:load_from_provider).and_return(user)
+          expect(user).to receive(:set_last_login_at).with(be_within(0.1).of(now))
+          get :test_login_from
+        end
       end
 
       it 'does not register login time if configured so' do
         sorcery_controller_property_set(:register_login_time, false)
         now = Time.now.in_time_zone
-        Timecop.freeze(now)
-        expect(User).to receive(:load_from_provider).and_return(user)
-        expect(user).not_to receive(:set_last_login_at)
-        get :test_login_from
-        Timecop.return
+        Timecop.freeze(now) do
+          expect(User).to receive(:load_from_provider).and_return(user)
+          expect(user).not_to receive(:set_last_login_at)
+          get :test_login_from
+        end
       end
     end
   end
@@ -239,10 +239,6 @@ describe SorceryController, type: :controller do
         stub_all_oauth_requests!
       end
 
-      after do
-        Timecop.return
-      end
-
       it 'does not reset session before session timeout' do
         expect(User).to receive(:load_from_provider).with(:twitter, '123').and_return(user)
         get :test_login_from
@@ -253,11 +249,12 @@ describe SorceryController, type: :controller do
 
       it 'resets session after session timeout' do
         get :test_login_from
-        Timecop.travel(Time.now.in_time_zone + 0.6)
-        get :test_should_be_logged_in
+        Timecop.travel(Time.now.in_time_zone + 0.6) do
+          get :test_should_be_logged_in
 
-        expect(session[:user_id]).to be_nil
-        expect(response).to be_a_redirect
+          expect(session[:user_id]).to be_nil
+          expect(response).to be_a_redirect
+        end
       end
     end
   end

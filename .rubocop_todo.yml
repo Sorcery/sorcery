@@ -37,11 +37,6 @@ RSpec/DescribedClass:
 RSpec/ExampleLength:
   Max: 18
 
-# Offense count: 6
-RSpec/ExpectInHook:
-  Exclude:
-    - 'spec/controllers/sorcery_controller_spec.rb'
-
 # Offense count: 72
 # Configuration parameters: AssignmentOnly.
 RSpec/InstanceVariable:

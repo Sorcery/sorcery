@@ -2,8 +2,6 @@
 
 require 'spec_helper'
 
-# require 'shared_examples/controller_oauth_shared_examples'
-
 def stub_all_oauth_requests!
   consumer = OAuth::Consumer.new('key', 'secret', site: 'http://api.example.com')
   req_token = OAuth::RequestToken.new(consumer)

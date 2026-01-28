@@ -9,6 +9,10 @@ describe User, :active_record do
       sorcery_reload!
     end
 
+    # ----------------- PLUGIN CONFIGURATION -----------------------
+    let(:crypted_password) { user.send User.sorcery_config.crypted_password_attribute_name }
+    let(:user) { create_new_user }
+
     context 'when app has plugin loaded' do
       it 'responds to the plugin activation class method' do
         expect(ActiveRecord::Base).to respond_to :authenticates_with_sorcery!
@@ -18,11 +22,6 @@ describe User, :active_record do
         expect(described_class).to respond_to :authenticates_with_sorcery!
       end
     end
-
-    # ----------------- PLUGIN CONFIGURATION -----------------------
-
-    let(:user) { create_new_user }
-    let(:crypted_password) { user.send User.sorcery_config.crypted_password_attribute_name }
 
     describe 'loaded plugin configuration' do
       after { User.sorcery_config.reset! }

@@ -16,15 +16,6 @@ module Sorcery
         end
       end
 
-      # a patch to fix a bug in testing that happens when you 'destroy' a session twice.
-      # After the first destroy, the session is an ordinary hash, and then when destroy
-      # is called again there's an exception.
-      class ::Hash
-        def destroy
-          clear
-        end
-      end
-
       def build_new_user(attributes_hash = nil)
         user_attributes_hash = attributes_hash || { username: 'gizmo', email: 'bla@example.com', password: 'secret' }
         @user = User.new(user_attributes_hash)

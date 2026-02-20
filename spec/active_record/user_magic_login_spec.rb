@@ -215,6 +215,17 @@ describe User, :active_record do
             end
           end
 
+          it 'yields user when expiration period is nil' do
+            sorcery_model_property_set(:magic_login_expiration_period, nil)
+            user.generate_magic_login_token!
+            found_user = User.sorcery_adapter.find(user.id)
+
+            User.load_from_magic_login_token(user.magic_login_token) do |loaded_user, failure|
+              expect(loaded_user).to eq found_user
+              expect(failure).to be_nil
+            end
+          end
+
           it 'does NOT yield user when token is NOT found' do
             User.load_from_magic_login_token('a') do |loaded_user, failure|
               expect(loaded_user).to be_nil

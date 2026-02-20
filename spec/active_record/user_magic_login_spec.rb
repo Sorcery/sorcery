@@ -161,6 +161,89 @@ describe User, :active_record do
           expect(user.magic_login_token_expires_at).to be_nil
         end
       end
+
+      describe '.load_from_magic_login_token' do
+        before { user.generate_magic_login_token! }
+
+        it 'returns user when token is found' do
+          found_user = User.sorcery_adapter.find(user.id)
+
+          expect(User.load_from_magic_login_token(user.magic_login_token)).to eq found_user
+        end
+
+        it 'does NOT return user when token is NOT found' do
+          expect(User.load_from_magic_login_token('a')).to be_nil
+        end
+
+        it 'returns user when token is found and not expired' do
+          sorcery_model_property_set(:magic_login_expiration_period, 500)
+          user.generate_magic_login_token!
+          found_user = User.sorcery_adapter.find(user.id)
+
+          expect(User.load_from_magic_login_token(user.magic_login_token)).to eq found_user
+        end
+
+        it 'does NOT return user when token is found and expired' do
+          sorcery_model_property_set(:magic_login_expiration_period, 0.1)
+          user.generate_magic_login_token!
+
+          Timecop.travel(Time.now.in_time_zone + 0.5) do
+            expect(User.load_from_magic_login_token(user.magic_login_token)).to be_nil
+          end
+        end
+
+        it 'is always valid if expiration period is nil' do
+          sorcery_model_property_set(:magic_login_expiration_period, nil)
+          user.generate_magic_login_token!
+          found_user = User.sorcery_adapter.find(user.id)
+
+          expect(User.load_from_magic_login_token(user.magic_login_token)).to eq found_user
+        end
+
+        it 'returns nil if token is blank' do
+          expect(User.load_from_magic_login_token(nil)).to be_nil
+          expect(User.load_from_magic_login_token('')).to be_nil
+        end
+
+        context 'when in block mode' do
+          it 'yields user when token is found' do
+            found_user = User.sorcery_adapter.find(user.id)
+
+            User.load_from_magic_login_token(user.magic_login_token) do |loaded_user, failure|
+              expect(loaded_user).to eq found_user
+              expect(failure).to be_nil
+            end
+          end
+
+          it 'does NOT yield user when token is NOT found' do
+            User.load_from_magic_login_token('a') do |loaded_user, failure|
+              expect(loaded_user).to be_nil
+              expect(failure).to eq :user_not_found
+            end
+          end
+
+          it 'yields user and failure reason when token is found and expired' do
+            sorcery_model_property_set(:magic_login_expiration_period, 0.1)
+            user.generate_magic_login_token!
+
+            Timecop.travel(Time.now.in_time_zone + 0.5) do
+              User.load_from_magic_login_token(user.magic_login_token) do |loaded_user, failure|
+                expect(loaded_user).to eq user
+                expect(failure).to eq :token_expired
+              end
+            end
+          end
+
+          it 'yields a failure reason if token is blank' do
+            [nil, ''].each do |token|
+              User.load_from_magic_login_token(token) do |loaded_user, failure|
+                expect(loaded_user).to be_nil
+                expect(failure).to eq :invalid_token
+              end
+            end
+          end
+        end
+      end
     end
   end
 end

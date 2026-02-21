@@ -157,6 +157,41 @@ describe SorceryController, type: :controller do
       end
     end
 
+    describe '#handle_unverified_request' do
+      # CSRF protection is disabled by default in test environment
+      # We test the behavior by directly triggering the CSRF failure path
+      around do |example|
+        original_value = ActionController::Base.allow_forgery_protection
+        ActionController::Base.allow_forgery_protection = true
+        original_forgery_strategy = described_class.forgery_protection_strategy
+        # `protect_from_forgery` is defined in SorceryController, so for testing, it is temporarily changed to behave like `with: :reset_session`.
+        described_class.forgery_protection_strategy = ActionController::RequestForgeryProtection::ProtectionMethods::ResetSession
+        example.run
+      ensure
+        ActionController::Base.allow_forgery_protection = original_value
+        described_class.forgery_protection_strategy = original_forgery_strategy
+      end
+
+      it 'clears the remember_me_token cookie when CSRF token is invalid' do
+        session[:user_id] = user.id.to_s
+        request.cookies[:remember_me_token] = 'test_token'
+        post :test_csrf_protected_action
+        # In a controller test, even if you set `request.cookies[:remember_me_token] = 'test_token'` in advance,
+        # `response.cookies[:remember_me_token]` will be nil unless the action modifies the remember_me_token.
+        # However, if you set `cookies[:remember_me_token] = nil`, a key with the same name will still be created.
+        # So by checking whether the key exists, we are indirectly confirming that `cookies[:remember_me_token] = nil` was called.
+        expect(response.cookies).to have_key('remember_me_token')
+        expect(response.cookies[:remember_me_token]).to be_nil
+      end
+
+      it 'clears the current_user instance variable when CSRF token is invalid' do
+        session[:user_id] = user.id.to_s
+        controller.instance_variable_set(:@current_user, user)
+        post :test_csrf_protected_action
+        expect(assigns(:current_user)).to be_nil
+      end
+    end
+
     describe '#logged_in?' do
       it 'returns true when user is logged in' do
         session[:user_id] = user.id.to_s

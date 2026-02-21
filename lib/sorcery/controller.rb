@@ -140,7 +140,7 @@ module Sorcery
       def handle_unverified_request
         cookies[:remember_me_token] = nil
         @current_user = nil
-        super # call the default behaviour which resets the session
+        super # call the default behaviour
       end
 
       protected

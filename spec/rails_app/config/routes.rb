@@ -81,5 +81,6 @@ AppRoot::Application.routes.draw do
     post :test_login_with_remember
     get :test_create_from_provider_with_block
     get :login_at_test_with_state
+    post :test_csrf_protected_action
   end
 end

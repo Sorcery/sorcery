@@ -163,12 +163,14 @@ describe SorceryController, type: :controller do
       around do |example|
         original_value = ActionController::Base.allow_forgery_protection
         ActionController::Base.allow_forgery_protection = true
+        original_forgery_strategy = described_class.forgery_protection_strategy
+        # `protect_from_forgery` is defined in SorceryController, so for testing, it is temporarily changed to behave like `with: :reset_session`.
+        described_class.forgery_protection_strategy = ActionController::RequestForgeryProtection::ProtectionMethods::ResetSession
         example.run
       ensure
         ActionController::Base.allow_forgery_protection = original_value
+        described_class.forgery_protection_strategy = original_forgery_strategy
       end
-
-      before { controller.class.protect_from_forgery with: :reset_session }
 
       it 'clears the remember_me_token cookie when CSRF token is invalid' do
         session[:user_id] = user.id.to_s

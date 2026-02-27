@@ -184,6 +184,16 @@ describe SorceryController, type: :controller do
         expect(response.cookies[:remember_me_token]).to be_nil
       end
 
+      it 'does not clear the remember_me_token cookie when CSRF token is valid' do
+        session[:user_id] = user.id.to_s
+        request.cookies[:remember_me_token] = 'test_token'
+        authenticity_token = controller.send(:form_authenticity_token)
+
+        post :test_csrf_protected_action, params: { authenticity_token: }
+
+        expect(response.cookies).not_to have_key('remember_me_token')
+      end
+
       it 'clears the current_user instance variable when CSRF token is invalid' do
         session[:user_id] = user.id.to_s
         controller.instance_variable_set(:@current_user, user)

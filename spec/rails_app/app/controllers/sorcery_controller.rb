@@ -504,4 +504,9 @@ class SorceryController < ApplicationController
       redirect_to 'blu', alert: 'Failed!'
     end
   end
+
+  # Action to test CSRF protection behavior
+  def test_csrf_protected_action
+    head :ok
+  end
 end

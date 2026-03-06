@@ -175,6 +175,7 @@ describe SorceryController, type: :controller do
       it 'clears the remember_me_token cookie when CSRF token is invalid' do
         session[:user_id] = user.id.to_s
         request.cookies[:remember_me_token] = 'test_token'
+        expect(request.cookies[:remember_me_token]).to eq 'test_token'
         post :test_csrf_protected_action
         # In a controller test, even if you set `request.cookies[:remember_me_token] = 'test_token'` in advance,
         # `response.cookies[:remember_me_token]` will be nil unless the action modifies the remember_me_token.

@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+if ENV['COVERAGE'] == 'true'
+  require 'simplecov'
+
+  SimpleCov.start do
+    enable_coverage :branch
+    coverage_dir ENV.fetch('COVERAGE_DIR', 'coverage')
+    add_filter '/spec/'
+    add_filter '/gemfiles/'
+    track_files 'lib/**/*.rb'
+  end
+end
+
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 

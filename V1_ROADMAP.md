@@ -26,11 +26,15 @@ internal structural changes.
 
 ### 1.1 — Audit Existing Test Coverage
 
-- [ ] Add `simplecov` to the test suite and generate a baseline coverage report.
-- [ ] Document which modules, classes, and methods have insufficient or no
+- [x] Add `simplecov` to the test suite and generate a baseline coverage report.
+- [x] Document which modules, classes, and methods have insufficient or no
       coverage.
-- [ ] Identify critical code paths (authentication, password hashing, session
+- [x] Identify critical code paths (authentication, password hashing, session
       management) that must have thorough tests before any refactoring begins.
+
+> **Completed** — see [`COVERAGE_BASELINE.md`](COVERAGE_BASELINE.md) for the
+> full report. Baseline: **79.73 % line coverage**, **75.66 % branch coverage**
+> across 490 passing examples.
 
 ### 1.2 — Improve Model Submodule Test Coverage
 

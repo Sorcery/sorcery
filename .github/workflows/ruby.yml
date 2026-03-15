@@ -26,6 +26,8 @@ jobs:
           - '81'
     env:
       BUNDLE_GEMFILE: gemfiles/rails_${{ matrix.rails }}.gemfile
+      COVERAGE: 'true'
+      COVERAGE_DIR: coverage/ruby_${{ matrix.ruby }}_rails_${{ matrix.rails }}
     steps:
       - uses: actions/checkout@v5
       - name: Set up Ruby
@@ -35,6 +37,13 @@ jobs:
           bundler-cache: true
       - name: Run tests
         run: bundle exec rake spec
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-ruby-${{ matrix.ruby }}-rails-${{ matrix.rails }}
+          path: coverage/
+          if-no-files-found: ignore
 
   rubocop:
     runs-on: ubuntu-latest

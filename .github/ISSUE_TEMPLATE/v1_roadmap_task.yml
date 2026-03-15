@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Use this template to create a tracking issue for a task from the
-        [V1 Roadmap](../blob/master/V1_ROADMAP.md). Each issue should correspond
+        [V1 Roadmap](https://github.com/Sorcery/sorcery/blob/master/V1_ROADMAP.md). Each issue should correspond
         to a section (e.g. Phase 1.1, Phase 2.3) from the roadmap.
   - type: dropdown
     id: phase

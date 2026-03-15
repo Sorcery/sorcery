@@ -9,8 +9,8 @@
 
 | Metric          | Value              |
 |-----------------|--------------------|
-| **Line Coverage**   | **79.73%** (1 672 / 2 097 relevant lines) |
-| **Branch Coverage** | **75.66%** (230 / 304 branches)           |
+| **Line Coverage**   | **79.73%** (1,672 / 2,097 relevant lines) |
+| **Branch Coverage** | **75.66%** (230 / 304 branches)            |
 | **Test Count**      | 490 examples, 0 failures                  |
 
 Coverage was collected with SimpleCov (`~> 0.22.0`) using `COVERAGE=true bundle

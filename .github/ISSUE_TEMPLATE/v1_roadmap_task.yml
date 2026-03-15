@@ -1,0 +1,69 @@
+name: V1 Roadmap Task
+description: Track a task from the Sorcery v1.0 Roadmap
+labels: ["v1-roadmap"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to create a tracking issue for a task from the
+        [V1 Roadmap](../blob/master/V1_ROADMAP.md). Each issue should correspond
+        to a section (e.g. Phase 1.1, Phase 2.3) from the roadmap.
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Roadmap Phase
+      description: Which phase does this task belong to?
+      options:
+        - "Phase 1: Improve Test Coverage"
+        - "Phase 2: Introduce the Plugin Architecture"
+        - "Phase 3: Refactor Configuration System"
+        - "Phase 4: Switch from Engine to Railtie"
+        - "Phase 5: Extract OAuth into Separate Gem"
+        - "Phase 6: Add New Capabilities (JWT, MFA)"
+        - "Phase 7: Cleanup and Release"
+    validations:
+      required: true
+  - type: input
+    id: section
+    attributes:
+      label: Roadmap Section
+      description: The specific section from the roadmap (e.g. "1.1", "2.3").
+      placeholder: e.g. 1.1
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Describe what this task involves. Copy or reference the relevant checklist
+        items from V1_ROADMAP.md.
+    validations:
+      required: true
+  - type: textarea
+    id: tasks
+    attributes:
+      label: Tasks
+      description: Break the work into individual checklist items.
+      placeholder: |
+        - [ ] Task 1
+        - [ ] Task 2
+        - [ ] Task 3
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: |
+        List any issues or roadmap sections that must be completed before this
+        task can begin.
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: How will we know this task is complete?
+    validations:
+      required: false

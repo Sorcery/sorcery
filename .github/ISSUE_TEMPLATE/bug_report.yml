@@ -1,0 +1,61 @@
+name: Bug Report
+description: Report a bug in Sorcery
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug! Please fill out the sections below.
+  - type: input
+    id: sorcery-version
+    attributes:
+      label: Sorcery Version
+      placeholder: e.g. 0.17.0
+    validations:
+      required: true
+  - type: input
+    id: ruby-version
+    attributes:
+      label: Ruby Version
+      placeholder: e.g. 3.3.0
+    validations:
+      required: true
+  - type: input
+    id: framework
+    attributes:
+      label: Framework
+      placeholder: e.g. Rails 7.1.3
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+      placeholder: e.g. Ubuntu 22.04
+    validations:
+      required: false
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: Tell us what should happen.
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: Tell us what happens instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Please list all steps to reproduce the issue.
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true

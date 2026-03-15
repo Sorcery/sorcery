@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: V1 Roadmap
+    url: https://github.com/Sorcery/sorcery/blob/master/V1_ROADMAP.md
+    about: View the full Sorcery v1.0 Roadmap for planned restructuring work
+  - name: Sorcery Wiki
+    url: https://github.com/Sorcery/sorcery/wiki
+    about: Check the wiki for documentation and guides

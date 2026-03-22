@@ -274,7 +274,8 @@ Each migration should:
 - [ ] Remove old `Sorcery::Controller::Submodules` namespace.
 - [ ] Remove old `Sorcery::Controller::Config` redirect.
 - [ ] Remove `Sorcery::Engine` (fully replaced by Railtie).
-- [ ] Remove Mongoid adapter if not maintained (or extract to separate gem).
+- [ ] Remove Mongoid adapter, `BaseAdapter` abstraction, and Mongoid loading
+      path in `lib/sorcery.rb` (V1 will support Active Record only).
 - [ ] Clean up any remaining `require` calls replaced by `autoload`.
 
 ### 7.2 — Finalize Public API
@@ -363,7 +364,7 @@ sorcery/
 │   │       │   ├── session_timeout/
 │   │       │   └── user_activation/
 │   │       ├── crypto_providers/
-│   │       └── orm_adapters/
+│   │       └── active_record_adapter.rb  # Active Record only (no adapter abstraction)
 │   └── sorcery-core.gemspec
 ├── sorcery-oauth/
 │   ├── lib/

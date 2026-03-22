@@ -46,7 +46,7 @@ These files are never exercised by the current test suite.
 | `lib/generators/sorcery/templates/migration/remember_me.rb` | 7 | Migration template |
 | `lib/generators/sorcery/templates/migration/reset_password.rb` | 9 | Migration template |
 | `lib/generators/sorcery/templates/migration/user_activation.rb` | 8 | Migration template |
-| `lib/sorcery/adapters/mongoid_adapter.rb` | 89 | Entire Mongoid adapter untested |
+| `lib/sorcery/adapters/mongoid_adapter.rb` | 89 | Slated for removal in V1 (Active Record only) |
 | `lib/sorcery/version.rb` | 3 | Version constant |
 
 ### Files With Low Coverage (< 80 % Line Coverage)
@@ -66,11 +66,11 @@ These files are never exercised by the current test suite.
 | File | Line Coverage | Branch Coverage | Key Gaps |
 |------|-------------|----------------|----------|
 | `lib/sorcery/crypto_providers/bcrypt.rb` | 80.6 % (25/31) | 25.0 % (1/4) | `cost` default, `matches?` edge case (nil/empty hash), `reset` method |
-| `lib/sorcery/test_helpers/internal.rb` | 84.2 % (32/38) | 100 % | Mongoid-related helpers untested |
+| `lib/sorcery/test_helpers/internal.rb` | 84.2 % (32/38) | 100 % | Mongoid-related helpers untested (Mongoid slated for removal in V1) |
 | `lib/sorcery/providers/github.rb` | 86.2 % (25/29) | 50.0 % (3/6) | `get_user_hash` with organizations check |
 | `lib/sorcery/protocols/oauth.rb` | 87.5 % (14/16) | 100 % | One-time callback URL creation flow |
 | `lib/sorcery/controller/submodules/external.rb` | 89.5 % (94/105) | 72.2 % (13/18) | `create_from_provider`, `build_from_provider`, `access_token` accessor |
-| `lib/sorcery.rb` | 90.6 % (58/64) | 50.0 % (3/6) | Mongoid adapter loading path, `user_class` error path |
+| `lib/sorcery.rb` | 90.6 % (58/64) | 50.0 % (3/6) | Mongoid adapter loading path (slated for removal in V1), `user_class` error path |
 | `lib/sorcery/providers/base.rb` | 90.5 % (19/21) | 80.0 % (8/10) | Edge cases in `auth_hash` and `original_callback_url` |
 | `lib/sorcery/test_helpers/rails/controller.rb` | 91.7 % (11/12) | 100 % | One untested helper method |
 | `lib/sorcery/adapters/active_record_adapter.rb` | 92.6 % (50/54) | 70.0 % (7/10) | `define_field` length parameter, `username_id_mapping` edge case |
@@ -116,7 +116,7 @@ These files are never exercised by the current test suite.
 | Category | Lines Covered | Line Coverage | Priority |
 |----------|-------------|-------------|----------|
 | Generators | 0 / 180 | 0.0 % | Low — templates rarely change |
-| Adapters | 65 / 159 | 40.9 % | Medium — Mongoid adapter entirely untested |
+| Adapters | 65 / 159 | 40.9 % | Low — Mongoid adapter (0 %) is slated for removal in V1; only Active Record adapter needs coverage |
 | Test Helpers | 81 / 102 | 79.4 % | Low — only used internally |
 | Providers | 550 / 627 | 87.7 % | Medium — LinkedIn, Heroku, LINE, Jira have gaps |
 | Other (sorcery.rb, version, errors) | 74 / 83 | 89.2 % | Low |
@@ -250,5 +250,8 @@ Based on this audit, the following areas should be prioritized:
 6. **Generator tests** (0 %) — While low priority for refactoring safety, the
    install generator and migration templates are completely untested.
 
-7. **Mongoid adapter** (0 %) — Entirely untested. Should be tested or marked for
-   removal per V1_ROADMAP.md Phase 7.1.
+7. **Mongoid adapter** (0 %) — Entirely untested but **slated for removal in
+   V1** (Active Record will be the only supported ORM). No new tests needed;
+   the Mongoid adapter, its loading path in `lib/sorcery.rb`, and the
+   `BaseAdapter` abstraction layer will be removed as part of V1_ROADMAP.md
+   Phase 7.1.

@@ -9,9 +9,9 @@
 
 | Metric          | Value              |
 |-----------------|--------------------|
-| **Line Coverage**   | **79.73%** (1,672 / 2,097 relevant lines) |
-| **Branch Coverage** | **75.66%** (230 / 304 branches)            |
-| **Test Count**      | 490 examples, 0 failures                  |
+| **Line Coverage**   | **80.88%** (1,696 / 2,097 relevant lines) |
+| **Branch Coverage** | **80.59%** (245 / 304 branches)            |
+| **Test Count**      | 570 examples, 0 failures                  |
 
 Coverage was collected with SimpleCov (`~> 0.22.0`) using `COVERAGE=true bundle
 exec rake spec`. The configuration lives in `spec/spec_helper.rb` and tracks
@@ -58,7 +58,7 @@ These files are never exercised by the current test suite.
 | `lib/sorcery/test_helpers/rails/request.rb` | 45.5 % (5/11) | 100 % | `login_user`/`logout_user` helpers untested |
 | `lib/sorcery/test_helpers/rails/integration.rb` | 46.2 % (6/13) | 100 % | `login_user`/`logout_user` helpers untested |
 | `lib/sorcery/providers/line.rb` | 59.3 % (16/27) | 0.0 % (0/4) | `process_callback`, `get_user_hash` untested |
-| `lib/sorcery/model/submodules/external.rb` | 67.4 % (31/46) | 50.0 % (4/8) | `create_and_validate_from_provider`, `build_from_provider`, `link_from_provider` untested |
+| `lib/sorcery/model/submodules/external.rb` | ~~67.4 %~~ → **100 %** | ~~50.0 %~~ → **100 %** | ✅ All methods now tested (Stage 1.2) |
 | `lib/sorcery/providers/jira.rb` | 73.1 % (19/26) | 0.0 % (0/2) | `process_callback`, `get_user_hash` untested |
 
 ### Files With Moderate Coverage (80–94 % Line Coverage)
@@ -88,16 +88,16 @@ These files are never exercised by the current test suite.
 | `lib/sorcery/crypto_providers/aes256.rb` | 95.5 % (21/22) | 100 % |
 | `lib/sorcery/test_helpers/internal/rails.rb` | 96.4 % (27/28) | 100 % |
 | `lib/sorcery/providers/instagram.rb` | 96.7 % (29/30) | 50.0 % |
-| `lib/sorcery/model/config.rb` | 97.7 % (43/44) | 90.9 % |
-| `lib/sorcery/model.rb` | 98.0 % (100/102) | 85.0 % |
-| `lib/sorcery/model/submodules/magic_login.rb` | 98.0 % (48/49) | 87.5 % |
-| `lib/sorcery/model/submodules/reset_password.rb` | 98.6 % (69/70) | 91.7 % |
+| `lib/sorcery/model/config.rb` | 100 % | 100 % |
+| `lib/sorcery/model.rb` | 100 % | 100 % |
+| `lib/sorcery/model/submodules/magic_login.rb` | 100 % | 100 % |
+| `lib/sorcery/model/submodules/reset_password.rb` | 100 % | 100 % |
 | `lib/sorcery/errors.rb` | 100 % | 100 % |
 | `lib/sorcery/model/temporary_token.rb` | 100 % | 100 % |
 | `lib/sorcery/model/submodules/user_activation.rb` | 100 % | 100 % |
 | `lib/sorcery/model/submodules/remember_me.rb` | 100 % | 100 % |
 | `lib/sorcery/model/submodules/activity_logging.rb` | 100 % | 100 % |
-| `lib/sorcery/model/submodules/brute_force_protection.rb` | 100 % | 85.7 % |
+| `lib/sorcery/model/submodules/brute_force_protection.rb` | 100 % | 100 % |
 | `lib/sorcery/controller/submodules/session_timeout.rb` | 100 % | 85.7 % |
 | `lib/sorcery/controller/submodules/brute_force_protection.rb` | 100 % | 75.0 % |
 | `lib/sorcery/controller/submodules/activity_logging.rb` | 100 % | 90.0 % |
@@ -123,8 +123,8 @@ These files are never exercised by the current test suite.
 | Protocols (OAuth/OAuth2) | 28 / 31 | 90.3 % | Medium |
 | Controller Submodules | 250 / 265 | 94.3 % | High — security-critical |
 | Controller (Core) | 107 / 113 | 94.7 % | **High** — authentication core |
-| Model Submodules | 349 / 366 | 95.4 % | High — password/token handling |
-| Model (Core) | 168 / 171 | 98.2 % | **High** — password hashing core |
+| Model Submodules | ~~349 / 366~~ → **366 / 366** | ~~95.4 %~~ → **100 %** | ✅ Complete — password/token handling |
+| Model (Core) | ~~168 / 171~~ → **171 / 171** | ~~98.2 %~~ → **100 %** | ✅ Complete — password hashing core |
 | Crypto Providers | 130 / 134 | 97.0 % | **High** — password hashing |
 
 ---
@@ -179,14 +179,7 @@ coverage before any refactoring begins.
 
 ### 4. Password Reset (`Sorcery::Model::Submodules::ResetPassword`)
 
-**Current coverage:** 98.6 % line, 91.7 % branch
-
-| Method / Path | Status | Gap |
-|---------------|--------|-----|
-| `deliver_reset_password_instructions!` | ✅ Covered | — |
-| `change_password` / `change_password!` | ✅ Covered | — |
-| Token generation and expiry | ✅ Covered | — |
-| `clear_reset_password_token` | ⚠️ Partial | Line 159 — clearing expiry timestamp |
+**Current coverage:** 100 % line, 100 % branch ✅
 
 ### 5. User Activation (`Sorcery::Model::Submodules::UserActivation`)
 
@@ -194,45 +187,24 @@ coverage before any refactoring begins.
 
 ### 6. Brute Force Protection
 
-**Current coverage:** Model 100 % (85.7 % branch), Controller 100 % (75 % branch)
-
-| Method / Path | Status | Gap |
-|---------------|--------|-----|
-| `login_lock!` / `login_unlock!` | ✅ Covered | — |
-| Lock duration / consecutive failures | ✅ Covered | — |
-| Branch: unlock when threshold not reached | ⚠️ Not covered | Branch-only gap |
+**Current coverage:** Model 100 % line/branch ✅, Controller 100 % (75 % branch)
 
 ### 7. External / OAuth (`Sorcery::Model::Submodules::External` + Controller)
 
-**Current coverage:** Model 67.4 %, Controller 89.5 %
-
-| Method / Path | Status | Gap |
-|---------------|--------|-----|
-| `create_and_validate_from_provider` | ⚠️ Not covered | Lines 52–58 |
-| `build_from_provider` | ⚠️ Not covered | Lines 83–90 |
-| `link_from_provider` | ⚠️ Not covered | Lines 96–106 |
-| Controller `create_from_provider` | ⚠️ Not covered | Lines 156–170 |
-| Controller `build_from_provider` | ⚠️ Not covered | Lines 199–203 |
-| Controller `access_token` accessor | ⚠️ Not covered | Line 101 |
+**Current coverage:** Model 100 % ✅, Controller 89.5 %
 
 ### 8. Magic Login (`Sorcery::Model::Submodules::MagicLogin`)
 
-**Current coverage:** 98.0 % line, 87.5 % branch
-
-| Method / Path | Status | Gap |
-|---------------|--------|-----|
-| Token generation / delivery | ✅ Covered | — |
-| Token expiry branch | ⚠️ Not covered | Branch-only gap at line 72 |
+**Current coverage:** 100 % line, 100 % branch ✅
 
 ---
 
-## Recommendations for Phase 1.2–1.5
+## Recommendations for Phase 1.3–1.5
 
 Based on this audit, the following areas should be prioritized:
 
-1. **External/OAuth model submodule** (67.4 %) — `create_and_validate_from_provider`,
-   `build_from_provider`, and `link_from_provider` are entirely untested. These
-   are called during OAuth sign-up and account-linking flows.
+1. ~~**External/OAuth model submodule** (67.4 %)~~ — ✅ **Completed in Stage 1.2**
+   All model methods now at 100% line and branch coverage.
 
 2. **BCrypt crypto provider** (80.6 %) — The `matches?` edge case with nil/empty
    hashes and the `cost`/`reset` methods need tests.
@@ -249,9 +221,3 @@ Based on this audit, the following areas should be prioritized:
 
 6. **Generator tests** (0 %) — While low priority for refactoring safety, the
    install generator and migration templates are completely untested.
-
-7. **Mongoid adapter** (0 %) — Entirely untested but **slated for removal in
-   V1** (Active Record will be the only supported ORM). No new tests needed;
-   the Mongoid adapter, its loading path in `lib/sorcery.rb`, and the
-   `BaseAdapter` abstraction layer will be removed as part of V1_ROADMAP.md
-   Phase 7.1.

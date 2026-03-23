@@ -110,6 +110,42 @@ describe User, :active_record do
           expect(ActionMailer::Base.deliveries.last.body.to_s.match(user.unlock_token)).not_to be_nil
         end
       end
+
+      it 'does not increment counter when user is already locked' do
+        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
+        sorcery_model_property_set(:login_lock_time_period, 0)
+
+        2.times { user.register_failed_login! }
+
+        expect(user.login_locked?).to be true
+
+        locked_count = User.sorcery_adapter.find_by_id(user.id).failed_logins_count
+
+        user.register_failed_login!
+
+        # Counter should not increment when already locked
+        expect(User.sorcery_adapter.find_by_id(user.id).failed_logins_count).to eq locked_count
+      end
+
+      it 'increments failed logins count when below threshold' do
+        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 5)
+
+        user.register_failed_login!
+        reloaded_user = User.sorcery_adapter.find_by_id(user.id)
+
+        expect(reloaded_user.failed_logins_count).to eq 1
+        expect(reloaded_user.lock_expires_at).to be_nil
+      end
+
+      it 'does not lock when below the threshold' do
+        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 5)
+
+        3.times { user.register_failed_login! }
+        reloaded_user = User.sorcery_adapter.find_by_id(user.id)
+
+        expect(reloaded_user.failed_logins_count).to eq 3
+        expect(reloaded_user.lock_expires_at).to be_nil
+      end
     end
 
     describe '.authenticate' do
@@ -196,44 +232,6 @@ describe User, :active_record do
       end
     end
 
-    describe '#register_failed_login!' do
-      it 'does not increment counter when user is already locked' do
-        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
-        sorcery_model_property_set(:login_lock_time_period, 0)
-
-        2.times { user.register_failed_login! }
-
-        expect(user.login_locked?).to be true
-
-        locked_count = User.sorcery_adapter.find_by_id(user.id).failed_logins_count
-
-        user.register_failed_login!
-
-        # Counter should not increment when already locked
-        expect(User.sorcery_adapter.find_by_id(user.id).failed_logins_count).to eq locked_count
-      end
-
-      it 'increments failed logins count when below threshold' do
-        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 5)
-
-        user.register_failed_login!
-        reloaded_user = User.sorcery_adapter.find_by_id(user.id)
-
-        expect(reloaded_user.failed_logins_count).to eq 1
-        expect(reloaded_user.lock_expires_at).to be_nil
-      end
-
-      it 'does not lock when below the threshold' do
-        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 5)
-
-        3.times { user.register_failed_login! }
-        reloaded_user = User.sorcery_adapter.find_by_id(user.id)
-
-        expect(reloaded_user.failed_logins_count).to eq 3
-        expect(reloaded_user.lock_expires_at).to be_nil
-      end
-    end
-
     describe '#login_locked?' do
       it 'returns true when user is locked' do
         sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
@@ -305,6 +303,34 @@ describe User, :active_record do
         sorcery_model_property_set(:unlock_token_mailer_disabled, true)
 
         expect(User.sorcery_config.unlock_token_mailer_disabled).to be true
+      end
+    end
+
+    describe '#send_unlock_token_email!' do
+      it 'does not send email when unlock_token_email_method_name is nil' do
+        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
+        sorcery_model_property_set(:login_lock_time_period, 0)
+        sorcery_model_property_set(:unlock_token_mailer_disabled, false)
+        sorcery_model_property_set(:unlock_token_mailer, SorceryMailer)
+        sorcery_model_property_set(:unlock_token_email_method_name, nil)
+
+        old_size = ActionMailer::Base.deliveries.size
+        3.times { user.register_failed_login! }
+
+        expect(ActionMailer::Base.deliveries.size).to eq old_size
+      end
+    end
+
+    describe '.authenticate with locked user' do
+      it 'returns locked failure when user is permanently locked' do
+        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
+        sorcery_model_property_set(:login_lock_time_period, 0)
+
+        2.times { user.register_failed_login! }
+
+        User.authenticate(user.email, 'secret') do |_user2, failure|
+          expect(failure).to eq :locked
+        end
       end
     end
   end

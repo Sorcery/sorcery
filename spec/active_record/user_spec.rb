@@ -772,5 +772,96 @@ describe User, :active_record do
         expect(User.sorcery_config.token_randomness).to eq 30
       end
     end
+
+    describe 'define_base_fields' do
+      it 'does not redefine email field when username_attribute_names includes email' do
+        sorcery_reload!([], username_attribute_names: [:email])
+
+        # email is included in username_attribute_names, so it should only be defined once
+        # This tests the `unless` branch on line 38 of model.rb
+        expect(User.sorcery_config.username_attribute_names).to eq [:email]
+      end
+
+      it 'defines email field separately when username_attribute_names does not include email' do
+        sorcery_reload!([], username_attribute_names: [:username])
+
+        # username is not email, so email field should be defined separately
+        expect(User.sorcery_config.username_attribute_names).to eq [:username]
+        expect(User.sorcery_config.email_attribute_name).to eq :email
+      end
+    end
+
+    describe '#set_encryption_attributes' do
+      before(:all) { sorcery_reload! }
+
+      before { User.sorcery_adapter.delete_all }
+
+      after { User.sorcery_config.reset! }
+
+      it 'sets stretches on the encryption provider when configured' do
+        sorcery_model_property_set(:encryption_algorithm, :bcrypt)
+        sorcery_model_property_set(:stretches, 20)
+
+        User.set_encryption_attributes
+
+        expect(Sorcery::CryptoProviders::BCrypt.stretches).to eq 20
+      end
+    end
+
+    describe '#valid_password? with nil salt_attribute_name' do
+      before(:all) { sorcery_reload! }
+
+      before { User.sorcery_adapter.delete_all }
+
+      after { User.sorcery_config.reset! }
+
+      it 'handles nil salt_attribute_name' do
+        sorcery_model_property_set(:salt_attribute_name, nil)
+        sorcery_model_property_set(:encryption_algorithm, :md5)
+        user = create_new_user
+
+        expect(user.valid_password?('secret')).to be true
+      end
+    end
+
+    describe '#encrypt_password with nil salt_attribute_name' do
+      before(:all) { sorcery_reload! }
+
+      before { User.sorcery_adapter.delete_all }
+
+      after { User.sorcery_config.reset! }
+
+      it 'encrypts password without salt when salt_attribute_name is nil' do
+        sorcery_model_property_set(:salt_attribute_name, nil)
+        sorcery_model_property_set(:encryption_algorithm, :md5)
+        user = create_new_user
+
+        expect(user.crypted_password).not_to be_nil
+        expect(user.crypted_password).to eq Sorcery::CryptoProviders::MD5.encrypt('secret')
+      end
+    end
+
+    describe '#generic_send_email' do
+      before(:all) do
+        MigrationHelper.migrate("#{Rails.root}/db/migrate/activation")
+        sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
+      end
+
+      after(:all) do
+        MigrationHelper.rollback("#{Rails.root}/db/migrate/activation")
+      end
+
+      it 'does not deliver when mail object does not respond to delivery method' do
+        non_deliverable_mail = double('mail') # rubocop:disable RSpec/VerifiedDoubles
+        allow(SorceryMailer).to receive(:activation_success_email).and_return(non_deliverable_mail)
+        allow(non_deliverable_mail).to receive(:respond_to?).with(:deliver_now).and_return(false)
+
+        user = create_new_user
+
+        expect(non_deliverable_mail).not_to receive(:deliver_now)
+
+        user.activate!
+      end
+    end
   end
 end

@@ -95,6 +95,29 @@ describe User, :active_record do
             expect(user.magic_login_token).not_to eq token_before
           end
         end
+
+        it 'sets expiration timestamp when expiration period is configured' do
+          sorcery_model_property_set(:magic_login_expiration_period, 3600)
+          user.generate_magic_login_token!
+
+          expect(user.magic_login_token).not_to be_nil
+          expect(user.magic_login_token_expires_at).not_to be_nil
+          expect(user.magic_login_token_expires_at).to be > Time.now.in_time_zone
+        end
+
+        it 'does not set expiration timestamp when expiration period is nil' do
+          sorcery_model_property_set(:magic_login_expiration_period, nil)
+          user.generate_magic_login_token!
+
+          expect(user.magic_login_token).not_to be_nil
+          expect(user.magic_login_token_expires_at).to be_nil
+        end
+
+        it 'sets the email_sent_at timestamp' do
+          user.generate_magic_login_token!
+
+          expect(user.magic_login_email_sent_at).not_to be_nil
+        end
       end
 
       describe '#deliver_magic_login_instructions!' do
@@ -253,31 +276,6 @@ describe User, :active_record do
               end
             end
           end
-        end
-      end
-
-      describe '#generate_magic_login_token!' do
-        it 'sets expiration timestamp when expiration period is configured' do
-          sorcery_model_property_set(:magic_login_expiration_period, 3600)
-          user.generate_magic_login_token!
-
-          expect(user.magic_login_token).not_to be_nil
-          expect(user.magic_login_token_expires_at).not_to be_nil
-          expect(user.magic_login_token_expires_at).to be > Time.now.in_time_zone
-        end
-
-        it 'does not set expiration timestamp when expiration period is nil' do
-          sorcery_model_property_set(:magic_login_expiration_period, nil)
-          user.generate_magic_login_token!
-
-          expect(user.magic_login_token).not_to be_nil
-          expect(user.magic_login_token_expires_at).to be_nil
-        end
-
-        it 'sets the email_sent_at timestamp' do
-          user.generate_magic_login_token!
-
-          expect(user.magic_login_email_sent_at).not_to be_nil
         end
       end
 

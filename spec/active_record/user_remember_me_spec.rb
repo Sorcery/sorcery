@@ -139,6 +139,29 @@ describe User, :active_record do
           expect(user.remember_me_token_expires_at).to be_nil
         end
       end
+
+      it "allows configuration option 'remember_me_for'" do
+        sorcery_model_property_set(:remember_me_for, 48 * 60 * 60)
+
+        expect(User.sorcery_config.remember_me_for).to eq 48 * 60 * 60
+      end
+
+      it 'has_remember_me_token? returns false when no token is set' do
+        expect(user.has_remember_me_token?).to be false
+      end
+
+      it 'has_remember_me_token? returns true after remember_me! is called' do
+        user.remember_me!
+
+        expect(user.has_remember_me_token?).to be true
+      end
+
+      it 'force_forget_me! works even when no token is set' do
+        expect { user.force_forget_me! }.not_to raise_error
+
+        expect(user.remember_me_token).to be_nil
+        expect(user.remember_me_token_expires_at).to be_nil
+      end
     end
   end
 end

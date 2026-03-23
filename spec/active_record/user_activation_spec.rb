@@ -370,5 +370,49 @@ describe User, :active_record do
         end
       end
     end
+
+    describe 'activation edge cases' do
+      before(:all) do
+        sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
+      end
+
+      it 'generates an activation token on user creation' do
+        new_user = build_new_user
+        new_user.sorcery_adapter.save(raise_on_failure: true)
+
+        expect(new_user.activation_token).not_to be_nil
+      end
+
+      it 'sets activation state to pending on creation' do
+        new_user = build_new_user
+        new_user.sorcery_adapter.save(raise_on_failure: true)
+
+        expect(new_user.activation_state).to eq 'pending'
+      end
+
+      it 'changes activation state to active on activate!' do
+        user.activate!
+
+        expect(user.activation_state).to eq 'active'
+      end
+
+      it 'clears activation token on activate!' do
+        user.activate!
+
+        expect(user.activation_token).to be_nil
+      end
+
+      it "allows configuration option 'activation_token_expiration_period'" do
+        sorcery_model_property_set(:activation_token_expiration_period, 3600)
+
+        expect(User.sorcery_config.activation_token_expiration_period).to eq 3600
+      end
+
+      it "allows configuration option 'prevent_non_active_users_to_login'" do
+        sorcery_model_property_set(:prevent_non_active_users_to_login, false)
+
+        expect(User.sorcery_config.prevent_non_active_users_to_login).to be false
+      end
+    end
   end
 end

@@ -674,5 +674,103 @@ describe User, :active_record do
         end
       end
     end
+
+    describe '#authenticate' do
+      before(:all) do
+        sorcery_reload!
+      end
+
+      before do
+        User.sorcery_adapter.delete_all
+      end
+
+      it 'raises ArgumentError when fewer than 2 arguments are given' do
+        expect { User.authenticate('only_one') }.to raise_error(ArgumentError, 'at least 2 arguments required')
+      end
+
+      it 'returns false for blank username without block' do
+        expect(User.authenticate(nil, 'password')).to be false
+        expect(User.authenticate('', 'password')).to be false
+      end
+    end
+
+    describe '#encrypt' do
+      before(:all) do
+        sorcery_reload!
+      end
+
+      it 'returns the token directly when encryption_provider is nil' do
+        sorcery_model_property_set(:encryption_algorithm, :none)
+
+        expect(User.encrypt('raw_token')).to eq 'raw_token'
+      end
+    end
+
+    describe '#valid_password?' do
+      before(:all) do
+        sorcery_reload!
+      end
+
+      before { User.sorcery_adapter.delete_all }
+
+      it 'does simple comparison when encryption_provider is nil' do
+        sorcery_model_property_set(:encryption_algorithm, :none)
+        user = create_new_user
+
+        expect(user.valid_password?('secret')).to be true
+        expect(user.valid_password?('wrong')).to be false
+      end
+    end
+
+    describe 'submodule inclusion' do
+      before { User.sorcery_adapter.delete_all }
+
+      it 'silently ignores submodules that do not exist in model namespace' do
+        # session_timeout is a controller-only submodule that doesn't exist in model submodules
+        expect { sorcery_reload!([:session_timeout]) }.not_to raise_error
+      end
+    end
+
+    describe '#sorcery_config' do
+      before(:all) { sorcery_reload! }
+
+      it 'is accessible from instances' do
+        user = create_new_user
+
+        expect(user.sorcery_config).to eq User.sorcery_config
+      end
+
+      it 'is accessible from the class' do
+        expect(User.sorcery_config).not_to be_nil
+      end
+    end
+
+    describe 'model config' do
+      before(:all) { sorcery_reload! }
+
+      after do
+        User.sorcery_config.reset!
+      end
+
+      it 'raises error for invalid encryption algorithm' do
+        expect do
+          sorcery_model_property_set(:encryption_algorithm, :invalid_algo)
+        end.to raise_error(ArgumentError, /Encryption algorithm supplied, invalid_algo, is invalid/)
+      end
+
+      it 'config.reset! restores default values' do
+        sorcery_model_property_set(:stretches, 99)
+        expect(User.sorcery_config.stretches).to eq 99
+
+        User.sorcery_config.reset!
+        expect(User.sorcery_config.stretches).to be_nil
+      end
+
+      it 'allows setting token_randomness' do
+        sorcery_model_property_set(:token_randomness, 30)
+
+        expect(User.sorcery_config.token_randomness).to eq 30
+      end
+    end
   end
 end

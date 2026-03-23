@@ -255,6 +255,51 @@ describe User, :active_record do
           end
         end
       end
+
+      describe '#generate_magic_login_token!' do
+        it 'sets expiration timestamp when expiration period is configured' do
+          sorcery_model_property_set(:magic_login_expiration_period, 3600)
+          user.generate_magic_login_token!
+
+          expect(user.magic_login_token).not_to be_nil
+          expect(user.magic_login_token_expires_at).not_to be_nil
+          expect(user.magic_login_token_expires_at).to be > Time.now.in_time_zone
+        end
+
+        it 'does not set expiration timestamp when expiration period is nil' do
+          sorcery_model_property_set(:magic_login_expiration_period, nil)
+          user.generate_magic_login_token!
+
+          expect(user.magic_login_token).not_to be_nil
+          expect(user.magic_login_token_expires_at).to be_nil
+        end
+
+        it 'sets the email_sent_at timestamp' do
+          user.generate_magic_login_token!
+
+          expect(user.magic_login_email_sent_at).not_to be_nil
+        end
+      end
+
+      describe 'mailer validation' do
+        it 'raises an error if mailer is nil and mailer is enabled' do
+          expect do
+            sorcery_reload!([:magic_login], magic_login_mailer_disabled: false)
+          end.to raise_error(ArgumentError, /must define a mailer/)
+        end
+
+        it 'does NOT raise an error if mailer is disabled and mailer is nil' do
+          expect do
+            sorcery_reload!([:magic_login], magic_login_mailer_disabled: true)
+          end.not_to raise_error
+        end
+
+        it 'does NOT raise an error if mailer is provided and mailer is enabled' do
+          expect do
+            sorcery_reload!([:magic_login], magic_login_mailer_disabled: false, magic_login_mailer_class: SorceryMailer)
+          end.not_to raise_error
+        end
+      end
     end
   end
 end

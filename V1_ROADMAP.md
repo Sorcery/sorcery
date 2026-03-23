@@ -38,17 +38,17 @@ internal structural changes.
 
 ### 1.2 — Improve Model Submodule Test Coverage
 
-- [ ] Review and expand tests for `Sorcery::Model` core (user creation,
+- [x] Review and expand tests for `Sorcery::Model` core (user creation,
       password hashing, authentication).
-- [ ] Improve coverage for each model submodule:
-  - [ ] `user_activation`
-  - [ ] `reset_password`
-  - [ ] `remember_me`
-  - [ ] `activity_logging`
-  - [ ] `brute_force_protection`
-  - [ ] `external` (OAuth)
-  - [ ] `magic_login`
-- [ ] Ensure edge cases are covered (e.g., expired tokens, invalid inputs,
+- [x] Improve coverage for each model submodule:
+  - [x] `user_activation`
+  - [x] `reset_password`
+  - [x] `remember_me`
+  - [x] `activity_logging`
+  - [x] `brute_force_protection`
+  - [x] `external` (OAuth)
+  - [x] `magic_login`
+- [x] Ensure edge cases are covered (e.g., expired tokens, invalid inputs,
       concurrent sessions).
 
 ### 1.3 — Improve Controller Submodule Test Coverage

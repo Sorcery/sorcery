@@ -378,6 +378,68 @@ describe User, :active_record do
 
         expect(Sorcery::CryptoProviders::BCrypt.matches?(user.crypted_password, 'blagu', user.salt)).to be true
       end
+
+      describe '#clear_reset_password_token (via change_password)' do
+        it 'clears expiration timestamp when expiration period is set' do
+          sorcery_model_property_set(:reset_password_expiration_period, 500)
+          user.deliver_reset_password_instructions!
+
+          expect(user.reset_password_token).not_to be_nil
+          expect(user.reset_password_token_expires_at).not_to be_nil
+
+          user.change_password!('newpassword')
+
+          expect(user.reset_password_token).to be_nil
+          expect(user.reset_password_token_expires_at).to be_nil
+        end
+
+        it 'does not clear expiration timestamp when expiration period is nil' do
+          sorcery_model_property_set(:reset_password_expiration_period, nil)
+          user.deliver_reset_password_instructions!
+
+          expect(user.reset_password_token).not_to be_nil
+
+          user.change_password!('newpassword')
+
+          expect(user.reset_password_token).to be_nil
+          # When expiration_period is nil, token_expires_at was never set,
+          # so there's nothing to clear
+        end
+      end
+
+      describe '#generate_reset_password_token!' do
+        it 'sets expiration timestamp when expiration period is configured' do
+          sorcery_model_property_set(:reset_password_expiration_period, 3600)
+          user.generate_reset_password_token!
+
+          expect(user.reset_password_token).not_to be_nil
+          expect(user.reset_password_token_expires_at).not_to be_nil
+          expect(user.reset_password_token_expires_at).to be > Time.now.in_time_zone
+        end
+
+        it 'does not set expiration timestamp when expiration period is nil' do
+          sorcery_model_property_set(:reset_password_expiration_period, nil)
+          user.generate_reset_password_token!
+
+          expect(user.reset_password_token).not_to be_nil
+          expect(user.reset_password_token_expires_at).to be_nil
+        end
+
+        it 'sets the email_sent_at timestamp' do
+          user.generate_reset_password_token!
+
+          expect(user.reset_password_email_sent_at).not_to be_nil
+        end
+      end
+
+      describe '#change_password' do
+        it 'returns truthy on successful save' do
+          user.deliver_reset_password_instructions!
+          result = user.change_password('newpassword123')
+
+          expect(result).to be_truthy
+        end
+      end
     end
   end
 end

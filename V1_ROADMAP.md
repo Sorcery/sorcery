@@ -26,11 +26,15 @@ internal structural changes.
 
 ### 1.1 — Audit Existing Test Coverage
 
-- [ ] Add `simplecov` to the test suite and generate a baseline coverage report.
-- [ ] Document which modules, classes, and methods have insufficient or no
+- [x] Add `simplecov` to the test suite and generate a baseline coverage report.
+- [x] Document which modules, classes, and methods have insufficient or no
       coverage.
-- [ ] Identify critical code paths (authentication, password hashing, session
+- [x] Identify critical code paths (authentication, password hashing, session
       management) that must have thorough tests before any refactoring begins.
+
+> **Completed** — see [`COVERAGE_BASELINE.md`](COVERAGE_BASELINE.md) for the
+> full report. Baseline: **79.73 % line coverage**, **75.66 % branch coverage**
+> across 490 passing examples.
 
 ### 1.2 — Improve Model Submodule Test Coverage
 
@@ -270,7 +274,8 @@ Each migration should:
 - [ ] Remove old `Sorcery::Controller::Submodules` namespace.
 - [ ] Remove old `Sorcery::Controller::Config` redirect.
 - [ ] Remove `Sorcery::Engine` (fully replaced by Railtie).
-- [ ] Remove Mongoid adapter if not maintained (or extract to separate gem).
+- [ ] Remove Mongoid adapter, `BaseAdapter` abstraction, and Mongoid loading
+      path in `lib/sorcery.rb` (V1 will support Active Record only).
 - [ ] Clean up any remaining `require` calls replaced by `autoload`.
 
 ### 7.2 — Finalize Public API
@@ -359,7 +364,7 @@ sorcery/
 │   │       │   ├── session_timeout/
 │   │       │   └── user_activation/
 │   │       ├── crypto_providers/
-│   │       └── orm_adapters/
+│   │       └── active_record_adapter.rb  # Active Record only (no adapter abstraction)
 │   └── sorcery-core.gemspec
 ├── sorcery-oauth/
 │   ├── lib/

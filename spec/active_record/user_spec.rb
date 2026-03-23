@@ -852,15 +852,14 @@ describe User, :active_record do
       end
 
       it 'does not deliver when mail object does not respond to delivery method' do
-        non_deliverable_mail = double('mail') # rubocop:disable RSpec/VerifiedDoubles
+        non_deliverable_mail = Object.new
         allow(SorceryMailer).to receive(:activation_success_email).and_return(non_deliverable_mail)
-        allow(non_deliverable_mail).to receive(:respond_to?).with(:deliver_now).and_return(false)
 
         user = create_new_user
 
-        expect(non_deliverable_mail).not_to receive(:deliver_now)
-
-        user.activate!
+        # The mail object does not respond to deliver_now, so delivery should be skipped.
+        # Verify activate! completes successfully without error.
+        expect { user.activate! }.not_to raise_error
       end
     end
   end

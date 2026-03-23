@@ -119,12 +119,10 @@ describe User, :active_record do
 
         expect(user.login_locked?).to be true
 
-        locked_count = User.sorcery_adapter.find_by_id(user.id).failed_logins_count
-
         user.register_failed_login!
 
-        # Counter should not increment when already locked
-        expect(User.sorcery_adapter.find_by_id(user.id).failed_logins_count).to eq locked_count
+        # Counter should not increment when already locked (stays at limit)
+        expect(User.sorcery_adapter.find_by_id(user.id).failed_logins_count).to eq 2
       end
 
       it 'increments failed logins count when below threshold' do

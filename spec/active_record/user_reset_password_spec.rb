@@ -235,7 +235,7 @@ describe User, :active_record do
       end
 
       describe '#reset_password_reset_page_access_counter' do
-        it 'reset reset_password_page_access_count_attribute_name into 0' do
+        it 'resets reset_password_page_access_count_attribute_name to 0' do
           user.update(access_count_to_reset_password_page: 10)
           user.reset_password_reset_page_access_counter
           expect(user.access_count_to_reset_password_page).to eq 0
@@ -288,7 +288,7 @@ describe User, :active_record do
           sorcery_reload!([:reset_password], reset_password_mailer_disabled: true, reset_password_mailer: SorceryMailer)
         end
 
-        it 'sends an email on reset' do
+        it 'does not send an email on reset' do
           old_size = ActionMailer::Base.deliveries.size
           user.deliver_reset_password_instructions!
 

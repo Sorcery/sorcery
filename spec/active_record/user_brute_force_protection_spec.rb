@@ -163,7 +163,7 @@ describe User, :active_record do
         end
       end
 
-      it 'doest not unlock if time period is 0 (permanent lock)' do
+      it 'does not unlock if time period is 0 (permanent lock)' do
         sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
         sorcery_model_property_set(:login_lock_time_period, 0)
 
@@ -196,7 +196,7 @@ describe User, :active_record do
         expect(User.load_from_unlock_token(user.unlock_token)).to be_nil
       end
 
-      it 'resets failed_logins_count to 0' do
+      it 'resets failed_logins_count, clears lock_expires_at, and clears unlock_token' do
         sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
         sorcery_model_property_set(:login_lock_time_period, 0)
         3.times { user.register_failed_login! }
@@ -205,27 +205,7 @@ describe User, :active_record do
         reloaded_user = User.sorcery_adapter.find_by_id(user.id)
 
         expect(reloaded_user.failed_logins_count).to eq 0
-      end
-
-      it 'clears the lock_expires_at' do
-        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
-        sorcery_model_property_set(:login_lock_time_period, 0)
-        3.times { user.register_failed_login! }
-
-        user.login_unlock!
-        reloaded_user = User.sorcery_adapter.find_by_id(user.id)
-
         expect(reloaded_user.lock_expires_at).to be_nil
-      end
-
-      it 'clears the unlock_token' do
-        sorcery_model_property_set(:consecutive_login_retries_amount_limit, 2)
-        sorcery_model_property_set(:login_lock_time_period, 0)
-        3.times { user.register_failed_login! }
-
-        user.login_unlock!
-        reloaded_user = User.sorcery_adapter.find_by_id(user.id)
-
         expect(reloaded_user.unlock_token).to be_nil
       end
     end

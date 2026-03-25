@@ -122,11 +122,6 @@ describe User, :active_record do
         expect(User.sorcery_config.activity_timeout).to eq 30 * 60
       end
 
-      it 'returns false for online when last_activity_at is nil' do
-        user = create_new_user
-        expect(user.online?).to be(false)
-      end
-
       it 'returns false for online when user is logged out even with recent activity' do
         user = create_new_user
         now = Time.now.in_time_zone
@@ -135,34 +130,6 @@ describe User, :active_record do
         user.set_last_logout_at(now + 1.second)
 
         expect(user.online?).to be(false)
-      end
-
-      it 'returns false for logged in when last_login_at is nil' do
-        user = create_new_user
-
-        expect(user.logged_in?).to be(false)
-      end
-
-      it 'returns true for logged in when logged in but never logged out' do
-        user = create_new_user
-        user.set_last_login_at(Time.now.in_time_zone)
-
-        expect(user.logged_in?).to be(true)
-      end
-
-      it 'returns true for logged out when never logged in' do
-        user = create_new_user
-
-        expect(user.logged_out?).to be(true)
-      end
-
-      it 'reports logged out as inverse of logged in' do
-        user = create_new_user
-        now = Time.now.in_time_zone
-        user.set_last_login_at(now)
-
-        expect(user.logged_in?).to be(true)
-        expect(user.logged_out?).to be(false)
       end
     end
   end

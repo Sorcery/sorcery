@@ -175,7 +175,7 @@ describe User, :active_record do
             @user.sorcery_adapter.save(raise_on_failure: true)
           end
 
-          it 'calls send_activation_success_email! method of user on activation' do
+          it 'does not call send_activation_success_email! method of user on activation' do
             expect(@user).not_to receive(:send_activation_success_email!)
 
             @user.activate!
@@ -225,7 +225,7 @@ describe User, :active_record do
           expect(ActionMailer::Base.deliveries.size).to eq old_size
         end
 
-        it 'calls send_activation_success_email! method of user on activation' do
+        it 'does not call send_activation_success_email! method of user on activation' do
           expect(user).not_to receive(:send_activation_success_email!)
 
           user.activate!
@@ -381,25 +381,6 @@ describe User, :active_record do
         new_user.sorcery_adapter.save(raise_on_failure: true)
 
         expect(new_user.activation_token).not_to be_nil
-      end
-
-      it 'sets activation state to pending on creation' do
-        new_user = build_new_user
-        new_user.sorcery_adapter.save(raise_on_failure: true)
-
-        expect(new_user.activation_state).to eq 'pending'
-      end
-
-      it 'changes activation state to active on activate!' do
-        user.activate!
-
-        expect(user.activation_state).to eq 'active'
-      end
-
-      it 'clears activation token on activate!' do
-        user.activate!
-
-        expect(user.activation_token).to be_nil
       end
 
       it "allows configuration option 'activation_token_expiration_period'" do

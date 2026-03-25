@@ -162,13 +162,13 @@ describe User, :active_record do
         end
 
         context 'when model implements active_for_authentication?' do
-          it 'authenticates returns user if active_for_authentication? returns true' do
+          it 'returns user when active_for_authentication? returns true' do
             allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(true) # rubocop:disable RSpec/AnyInstance
 
             expect(User.authenticate(user.email, 'secret')).to eq user
           end
 
-          it 'authenticate returns nil if active_for_authentication? returns false' do
+          it 'returns nil when active_for_authentication? returns false' do
             allow_any_instance_of(User).to receive(:active_for_authentication?).and_return(false) # rubocop:disable RSpec/AnyInstance
 
             expect(User.authenticate(user.email, 'secret')).to be_nil
@@ -425,7 +425,7 @@ describe User, :active_record do
         expect(User.authenticate(username, 'secret')).to be_truthy
       end
 
-      it 'if encryption algo is aes256, it sets key to crypto provider' do
+      it 'sets key to crypto provider when encryption algo is aes256' do
         sorcery_model_property_set(:encryption_algorithm, :aes256)
         sorcery_model_property_set(:encryption_key, nil)
 
@@ -436,7 +436,7 @@ describe User, :active_record do
         expect { User.encrypt @text }.not_to raise_error
       end
 
-      it 'if encryption algo is aes256, it sets key to crypto provider, even if attributes are set in reverse' do
+      it 'sets key to crypto provider for aes256, even if attributes are set in reverse' do
         sorcery_model_property_set(:encryption_key, nil)
         sorcery_model_property_set(:encryption_algorithm, :none)
         sorcery_model_property_set(:encryption_key, 'asd234dfs423fddsmndsflktsdf32343')
@@ -445,31 +445,31 @@ describe User, :active_record do
         expect { User.encrypt @text }.not_to raise_error
       end
 
-      it 'if encryption algo is md5 it works' do
+      it 'encrypts correctly with md5 algorithm' do
         sorcery_model_property_set(:encryption_algorithm, :md5)
 
         expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::MD5.encrypt(@text)
       end
 
-      it 'if encryption algo is sha1 it works' do
+      it 'encrypts correctly with sha1 algorithm' do
         sorcery_model_property_set(:encryption_algorithm, :sha1)
 
         expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA1.encrypt(@text)
       end
 
-      it 'if encryption algo is sha256 it works' do
+      it 'encrypts correctly with sha256 algorithm' do
         sorcery_model_property_set(:encryption_algorithm, :sha256)
 
         expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA256.encrypt(@text)
       end
 
-      it 'if encryption algo is sha512 it works' do
+      it 'encrypts correctly with sha512 algorithm' do
         sorcery_model_property_set(:encryption_algorithm, :sha512)
 
         expect(User.encrypt(@text)).to eq Sorcery::CryptoProviders::SHA512.encrypt(@text)
       end
 
-      it 'if encryption algo is bcrypt it works' do
+      it 'encrypts correctly with bcrypt algorithm' do
         sorcery_model_property_set(:encryption_algorithm, :bcrypt)
 
         # comparison is done using BCrypt::Password#==(raw_token), not by String#==
@@ -483,7 +483,7 @@ describe User, :active_record do
         expect(user.salt).not_to be_nil
       end
 
-      it 'if salt is set uses it to encrypt' do
+      it 'uses salt to encrypt when salt is set' do
         sorcery_model_property_set(:salt_attribute_name, :salt)
         sorcery_model_property_set(:encryption_algorithm, :sha512)
 
@@ -491,7 +491,7 @@ describe User, :active_record do
         expect(user.crypted_password).to eq Sorcery::CryptoProviders::SHA512.encrypt('secret', user.salt)
       end
 
-      it 'if salt_join_token is set uses it to encrypt' do
+      it 'uses salt_join_token to encrypt when set' do
         sorcery_model_property_set(:salt_attribute_name, :salt)
         sorcery_model_property_set(:salt_join_token, '-@=>')
         sorcery_model_property_set(:encryption_algorithm, :sha512)
@@ -507,7 +507,7 @@ describe User, :active_record do
         expect(user.crypted_password).to eq Sorcery::CryptoProviders::SHA512.encrypt('secret', user.salt)
       end
 
-      it 'if pepper is set uses it to encrypt' do
+      it 'uses pepper to encrypt when set' do
         sorcery_model_property_set(:salt_attribute_name, :salt)
         sorcery_model_property_set(:pepper, '++@^$')
         sorcery_model_property_set(:encryption_algorithm, :bcrypt)
@@ -531,7 +531,7 @@ describe User, :active_record do
         expect(user.crypted_password).to eq Sorcery::CryptoProviders::BCrypt.encrypt('secret', user.salt)
       end
 
-      it 'if pepper is empty string (default) does not use pepper to encrypt' do
+      it 'does not use pepper to encrypt when pepper is empty string (default)' do
         sorcery_model_property_set(:salt_attribute_name, :salt)
         sorcery_model_property_set(:pepper, '')
         sorcery_model_property_set(:encryption_algorithm, :bcrypt)
@@ -569,19 +569,19 @@ describe User, :active_record do
         User.sorcery_config.reset!
       end
 
-      it 'find_by_username works as expected' do
+      it 'finds user by username' do
         sorcery_model_property_set(:username_attribute_names, [:username])
 
         expect(User.sorcery_adapter.find_by_username('gizmo')).to eq user
       end
 
-      it 'find_by_username works as expected with multiple username attributes' do
+      it 'finds user by username with multiple username attributes' do
         sorcery_model_property_set(:username_attribute_names, %i[username email])
 
         expect(User.sorcery_adapter.find_by_username('gizmo')).to eq user
       end
 
-      it 'find_by_email works as expected' do
+      it 'finds user by email' do
         expect(User.sorcery_adapter.find_by_email('bla@example.com')).to eq user
       end
     end
@@ -609,11 +609,11 @@ describe User, :active_record do
         expect(user).to respond_to(:external?)
       end
 
-      it 'external? is false for regular users' do
+      it 'returns false for external when user is regular' do
         expect(user.external?).to be false
       end
 
-      it 'external? is true for external users' do
+      it 'returns true for external when user is external' do
         expect(external_user.external?).to be true
       end
 

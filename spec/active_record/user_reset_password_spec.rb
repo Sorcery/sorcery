@@ -55,11 +55,11 @@ describe User, :active_record do
         expect(User.sorcery_config.reset_password_mailer_disabled).to eq :my_reset_password_mailer_disabled
       end
 
-      it 'if mailer is nil and mailer is enabled, throw exception!' do
+      it 'raises an exception when mailer is nil and mailer is enabled' do
         expect { sorcery_reload!([:reset_password], reset_password_mailer_disabled: false) }.to raise_error(ArgumentError)
       end
 
-      it 'if mailer is disabled and mailer is nil, do NOT throw exception' do
+      it 'does NOT raise an exception when mailer is disabled and mailer is nil' do
         expect { sorcery_reload!([:reset_password], reset_password_mailer_disabled: true) }.not_to raise_error
       end
 
@@ -98,20 +98,20 @@ describe User, :active_record do
         user
       end
 
-      it 'load_from_reset_password_token returns user when token is found' do
+      it 'returns user when token is found' do
         user.generate_reset_password_token!
         updated_user = User.sorcery_adapter.find(user.id)
 
         expect(User.load_from_reset_password_token(user.reset_password_token)).to eq updated_user
       end
 
-      it 'load_from_reset_password_token does NOT return user when token is NOT found' do
+      it 'does NOT return user when token is NOT found' do
         user.generate_reset_password_token!
 
         expect(User.load_from_reset_password_token('a')).to be_nil
       end
 
-      it 'load_from_reset_password_token returns user when token is found and not expired' do
+      it 'returns user when token is found and not expired' do
         sorcery_model_property_set(:reset_password_expiration_period, 500)
         user.generate_reset_password_token!
         updated_user = User.sorcery_adapter.find(user.id)
@@ -119,7 +119,7 @@ describe User, :active_record do
         expect(User.load_from_reset_password_token(user.reset_password_token)).to eq updated_user
       end
 
-      it 'load_from_reset_password_token does NOT return user when token is found and expired' do
+      it 'does NOT return user when token is found and expired' do
         sorcery_model_property_set(:reset_password_expiration_period, 0.1)
         user.generate_reset_password_token!
         Timecop.travel(Time.now.in_time_zone + 0.5) do
@@ -127,7 +127,7 @@ describe User, :active_record do
         end
       end
 
-      it 'load_from_reset_password_token is always valid if expiration period is nil' do
+      it 'is always valid when expiration period is nil' do
         sorcery_model_property_set(:reset_password_expiration_period, nil)
         user.generate_reset_password_token!
         updated_user = User.sorcery_adapter.find(user.id)
@@ -135,7 +135,7 @@ describe User, :active_record do
         expect(User.load_from_reset_password_token(user.reset_password_token)).to eq updated_user
       end
 
-      it 'load_from_reset_password_token returns nil if token is blank' do
+      it 'returns nil when token is blank' do
         expect(User.load_from_reset_password_token(nil)).to be_nil
         expect(User.load_from_reset_password_token('')).to be_nil
       end
@@ -328,7 +328,7 @@ describe User, :active_record do
         end
       end
 
-      it 'when change_password! is called, deletes reset_password_token and calls #save!' do
+      it 'deletes reset_password_token and calls #save! on change_password!' do
         user.deliver_reset_password_instructions!
 
         expect(user.reset_password_token).not_to be_nil
@@ -340,19 +340,19 @@ describe User, :active_record do
         expect(user.reset_password_token).to be_nil
       end
 
-      it 'when change_password! is called with empty argument, raise an exception' do
+      it 'raises an exception when change_password! is called with empty argument' do
         expect do
           user.change_password!('')
         end.to raise_error(ArgumentError, 'Blank password passed to change_password!')
       end
 
-      it 'when change_password! is called with nil argument, raise an exception' do
+      it 'raises an exception when change_password! is called with nil argument' do
         expect do
           user.change_password!(nil)
         end.to raise_error(ArgumentError, 'Blank password passed to change_password!')
       end
 
-      it 'when change_password is called, deletes reset_password_token and calls #save' do
+      it 'deletes reset_password_token and calls #save on change_password' do
         new_password = 'blabulsdf'
 
         user.deliver_reset_password_instructions!

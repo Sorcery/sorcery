@@ -78,27 +78,13 @@ describe User, :active_record do
         expect(user.authentications.first.uid).to eq '456'
       end
 
-      it 'returns false for saved when validation fails' do
-        User.class_eval do
-          validates :email, presence: true
-        end
+      it 'returns the unsaved user object when validation fails' do
+        User.validates :email, presence: true
 
         user, saved = User.create_and_validate_from_provider(:twitter, '789', username: 'no_email_user')
 
         expect(saved).to be false
         expect(user).not_to be_persisted
-      ensure
-        # Remove the validation we added
-        User.clear_validators!
-      end
-
-      it 'returns the user object even when save fails' do
-        User.class_eval do
-          validates :email, presence: true
-        end
-
-        user, _saved = User.create_and_validate_from_provider(:twitter, '789', username: 'no_email_user')
-
         expect(user).to be_a User
         expect(user.username).to eq 'no_email_user'
       ensure

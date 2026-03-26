@@ -777,15 +777,12 @@ describe User, :active_record do
       it 'does not redefine email field when username_attribute_names includes email' do
         sorcery_reload!([], username_attribute_names: [:email])
 
-        # email is included in username_attribute_names, so it should only be defined once
-        # This tests the `unless` branch on line 38 of model.rb
         expect(User.sorcery_config.username_attribute_names).to eq [:email]
       end
 
       it 'defines email field separately when username_attribute_names does not include email' do
         sorcery_reload!([], username_attribute_names: [:username])
 
-        # username is not email, so email field should be defined separately
         expect(User.sorcery_config.username_attribute_names).to eq [:username]
         expect(User.sorcery_config.email_attribute_name).to eq :email
       end

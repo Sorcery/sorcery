@@ -306,7 +306,7 @@ describe User, :active_record do
 
         2.times { user.register_failed_login! }
 
-        User.authenticate(user.email, 'secret') do |_user2, failure|
+        User.authenticate(user.email, 'secret') do |_user, failure|
           expect(failure).to eq :locked
         end
       end

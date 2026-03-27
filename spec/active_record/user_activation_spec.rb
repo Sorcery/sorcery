@@ -64,11 +64,11 @@ describe User, :active_record do
         expect(User.sorcery_config.activation_mailer_disabled).to eq :my_activation_mailer_disabled
       end
 
-      it 'if mailer is nil and mailer is enabled, throw exception!' do
+      it 'raises an exception when mailer is nil and mailer is enabled' do
         expect { sorcery_reload!([:user_activation], activation_mailer_disabled: false) }.to raise_error(ArgumentError)
       end
 
-      it 'if mailer is disabled and mailer is nil, do NOT throw exception' do
+      it 'does NOT raise an exception when mailer is disabled and mailer is nil' do
         expect { sorcery_reload!([:user_activation], activation_mailer_disabled: true) }.not_to raise_error
       end
     end
@@ -175,7 +175,7 @@ describe User, :active_record do
             @user.sorcery_adapter.save(raise_on_failure: true)
           end
 
-          it 'calls send_activation_success_email! method of user on activation' do
+          it 'does not call send_activation_success_email! method of user on activation' do
             expect(@user).not_to receive(:send_activation_success_email!)
 
             @user.activate!
@@ -225,7 +225,7 @@ describe User, :active_record do
           expect(ActionMailer::Base.deliveries.size).to eq old_size
         end
 
-        it 'calls send_activation_success_email! method of user on activation' do
+        it 'does not call send_activation_success_email! method of user on activation' do
           expect(user).not_to receive(:send_activation_success_email!)
 
           user.activate!
@@ -279,21 +279,21 @@ describe User, :active_record do
         sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
       end
 
-      it 'load_from_activation_token returns user when token is found' do
+      it 'returns user when token is found' do
         expect(User.load_from_activation_token(user.activation_token)).to eq user
       end
 
-      it 'load_from_activation_token does NOT return user when token is NOT found' do
+      it 'does NOT return user when token is NOT found' do
         expect(User.load_from_activation_token('a')).to be_nil
       end
 
-      it 'load_from_activation_token returas user when token is found and not expired' do
+      it 'returns user when token is found and not expired' do
         sorcery_model_property_set(:activation_token_expiration_period, 500)
 
         expect(User.load_from_activation_token(user.activation_token)).to eq user
       end
 
-      it 'load_from_activation_token does NOT return user when token is found and expired' do
+      it 'does NOT return user when token is found and expired' do
         sorcery_model_property_set(:activation_token_expiration_period, 0.1)
         user
 
@@ -302,12 +302,12 @@ describe User, :active_record do
         end
       end
 
-      it 'load_from_activation_token returns nil if token is blank' do
+      it 'returns nil when token is blank' do
         expect(User.load_from_activation_token(nil)).to be_nil
         expect(User.load_from_activation_token('')).to be_nil
       end
 
-      it 'load_from_activation_token is always valid if expiration period is nil' do
+      it 'is always valid when expiration period is nil' do
         sorcery_model_property_set(:activation_token_expiration_period, nil)
 
         expect(User.load_from_activation_token(user.activation_token)).to eq user
@@ -368,6 +368,31 @@ describe User, :active_record do
             end
           end
         end
+      end
+    end
+
+    describe 'activation edge cases' do
+      before(:all) do
+        sorcery_reload!([:user_activation], user_activation_mailer: SorceryMailer)
+      end
+
+      it 'generates an activation token on user creation' do
+        new_user = build_new_user
+        new_user.sorcery_adapter.save(raise_on_failure: true)
+
+        expect(new_user.activation_token).not_to be_nil
+      end
+
+      it "allows configuration option 'activation_token_expiration_period'" do
+        sorcery_model_property_set(:activation_token_expiration_period, 3600)
+
+        expect(User.sorcery_config.activation_token_expiration_period).to eq 3600
+      end
+
+      it "allows configuration option 'prevent_non_active_users_to_login'" do
+        sorcery_model_property_set(:prevent_non_active_users_to_login, false)
+
+        expect(User.sorcery_config.prevent_non_active_users_to_login).to be false
       end
     end
   end

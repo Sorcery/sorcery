@@ -55,11 +55,11 @@ describe User, :active_record do
         expect(User.sorcery_config.reset_password_mailer_disabled).to eq :my_reset_password_mailer_disabled
       end
 
-      it 'if mailer is nil and mailer is enabled, throw exception!' do
+      it 'raises an exception when mailer is nil and mailer is enabled' do
         expect { sorcery_reload!([:reset_password], reset_password_mailer_disabled: false) }.to raise_error(ArgumentError)
       end
 
-      it 'if mailer is disabled and mailer is nil, do NOT throw exception' do
+      it 'does NOT raise an exception when mailer is disabled and mailer is nil' do
         expect { sorcery_reload!([:reset_password], reset_password_mailer_disabled: true) }.not_to raise_error
       end
 
@@ -98,20 +98,20 @@ describe User, :active_record do
         user
       end
 
-      it 'load_from_reset_password_token returns user when token is found' do
+      it 'returns user when token is found' do
         user.generate_reset_password_token!
         updated_user = User.sorcery_adapter.find(user.id)
 
         expect(User.load_from_reset_password_token(user.reset_password_token)).to eq updated_user
       end
 
-      it 'load_from_reset_password_token does NOT return user when token is NOT found' do
+      it 'does NOT return user when token is NOT found' do
         user.generate_reset_password_token!
 
         expect(User.load_from_reset_password_token('a')).to be_nil
       end
 
-      it 'load_from_reset_password_token returns user when token is found and not expired' do
+      it 'returns user when token is found and not expired' do
         sorcery_model_property_set(:reset_password_expiration_period, 500)
         user.generate_reset_password_token!
         updated_user = User.sorcery_adapter.find(user.id)
@@ -119,7 +119,7 @@ describe User, :active_record do
         expect(User.load_from_reset_password_token(user.reset_password_token)).to eq updated_user
       end
 
-      it 'load_from_reset_password_token does NOT return user when token is found and expired' do
+      it 'does NOT return user when token is found and expired' do
         sorcery_model_property_set(:reset_password_expiration_period, 0.1)
         user.generate_reset_password_token!
         Timecop.travel(Time.now.in_time_zone + 0.5) do
@@ -127,7 +127,7 @@ describe User, :active_record do
         end
       end
 
-      it 'load_from_reset_password_token is always valid if expiration period is nil' do
+      it 'is always valid when expiration period is nil' do
         sorcery_model_property_set(:reset_password_expiration_period, nil)
         user.generate_reset_password_token!
         updated_user = User.sorcery_adapter.find(user.id)
@@ -135,7 +135,7 @@ describe User, :active_record do
         expect(User.load_from_reset_password_token(user.reset_password_token)).to eq updated_user
       end
 
-      it 'load_from_reset_password_token returns nil if token is blank' do
+      it 'returns nil when token is blank' do
         expect(User.load_from_reset_password_token(nil)).to be_nil
         expect(User.load_from_reset_password_token('')).to be_nil
       end
@@ -235,7 +235,7 @@ describe User, :active_record do
       end
 
       describe '#reset_password_reset_page_access_counter' do
-        it 'reset reset_password_page_access_count_attribute_name into 0' do
+        it 'resets reset_password_page_access_count_attribute_name to 0' do
           user.update(access_count_to_reset_password_page: 10)
           user.reset_password_reset_page_access_counter
           expect(user.access_count_to_reset_password_page).to eq 0
@@ -288,7 +288,7 @@ describe User, :active_record do
           sorcery_reload!([:reset_password], reset_password_mailer_disabled: true, reset_password_mailer: SorceryMailer)
         end
 
-        it 'sends an email on reset' do
+        it 'does not send an email on reset' do
           old_size = ActionMailer::Base.deliveries.size
           user.deliver_reset_password_instructions!
 
@@ -328,7 +328,7 @@ describe User, :active_record do
         end
       end
 
-      it 'when change_password! is called, deletes reset_password_token and calls #save!' do
+      it 'deletes reset_password_token and calls #save! on change_password!' do
         user.deliver_reset_password_instructions!
 
         expect(user.reset_password_token).not_to be_nil
@@ -340,19 +340,19 @@ describe User, :active_record do
         expect(user.reset_password_token).to be_nil
       end
 
-      it 'when change_password! is called with empty argument, raise an exception' do
+      it 'raises an exception when change_password! is called with empty argument' do
         expect do
           user.change_password!('')
         end.to raise_error(ArgumentError, 'Blank password passed to change_password!')
       end
 
-      it 'when change_password! is called with nil argument, raise an exception' do
+      it 'raises an exception when change_password! is called with nil argument' do
         expect do
           user.change_password!(nil)
         end.to raise_error(ArgumentError, 'Blank password passed to change_password!')
       end
 
-      it 'when change_password is called, deletes reset_password_token and calls #save' do
+      it 'deletes reset_password_token and calls #save on change_password' do
         new_password = 'blabulsdf'
 
         user.deliver_reset_password_instructions!
@@ -377,6 +377,68 @@ describe User, :active_record do
         user.change_password!('blagu')
 
         expect(Sorcery::CryptoProviders::BCrypt.matches?(user.crypted_password, 'blagu', user.salt)).to be true
+      end
+
+      describe '#clear_reset_password_token (via change_password)' do
+        it 'clears expiration timestamp when expiration period is set' do
+          sorcery_model_property_set(:reset_password_expiration_period, 500)
+          user.deliver_reset_password_instructions!
+
+          expect(user.reset_password_token).not_to be_nil
+          expect(user.reset_password_token_expires_at).not_to be_nil
+
+          user.change_password!('newpassword')
+
+          expect(user.reset_password_token).to be_nil
+          expect(user.reset_password_token_expires_at).to be_nil
+        end
+
+        it 'does not clear expiration timestamp when expiration period is nil' do
+          sorcery_model_property_set(:reset_password_expiration_period, nil)
+          user.deliver_reset_password_instructions!
+
+          expect(user.reset_password_token).not_to be_nil
+
+          user.change_password!('newpassword')
+
+          expect(user.reset_password_token).to be_nil
+          # When expiration_period is nil, token_expires_at was never set,
+          # so there's nothing to clear
+        end
+      end
+
+      describe '#generate_reset_password_token!' do
+        it 'sets expiration timestamp when expiration period is configured' do
+          sorcery_model_property_set(:reset_password_expiration_period, 3600)
+          user.generate_reset_password_token!
+
+          expect(user.reset_password_token).not_to be_nil
+          expect(user.reset_password_token_expires_at).not_to be_nil
+          expect(user.reset_password_token_expires_at).to be > Time.now.in_time_zone
+        end
+
+        it 'does not set expiration timestamp when expiration period is nil' do
+          sorcery_model_property_set(:reset_password_expiration_period, nil)
+          user.generate_reset_password_token!
+
+          expect(user.reset_password_token).not_to be_nil
+          expect(user.reset_password_token_expires_at).to be_nil
+        end
+
+        it 'sets the email_sent_at timestamp' do
+          user.generate_reset_password_token!
+
+          expect(user.reset_password_email_sent_at).not_to be_nil
+        end
+      end
+
+      describe '#change_password' do
+        it 'returns truthy on successful save' do
+          user.deliver_reset_password_instructions!
+          result = user.change_password('newpassword123')
+
+          expect(result).to be_truthy
+        end
       end
     end
   end

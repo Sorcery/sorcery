@@ -43,7 +43,7 @@ describe User, :active_record do
         expect(User.sorcery_config.last_login_from_ip_address_name).to eq :ip_address
       end
 
-      it '.set_last_login_at update last_login_at' do
+      it 'updates last_login_at via set_last_login_at' do
         user = create_new_user
         now = Time.now.in_time_zone
         expect(user.sorcery_adapter).to receive(:update_attribute).with(:last_login_at, now)
@@ -51,7 +51,7 @@ describe User, :active_record do
         user.set_last_login_at(now)
       end
 
-      it '.set_last_logout_at update last_logout_at' do
+      it 'updates last_logout_at via set_last_logout_at' do
         user = create_new_user
         now = Time.now.in_time_zone
         expect(user.sorcery_adapter).to receive(:update_attribute).with(:last_logout_at, now)
@@ -59,7 +59,7 @@ describe User, :active_record do
         user.set_last_logout_at(now)
       end
 
-      it '.set_last_activity_at update last_activity_at' do
+      it 'updates last_activity_at via set_last_activity_at' do
         user = create_new_user
         now = Time.now.in_time_zone
         expect(user.sorcery_adapter).to receive(:update_attribute).with(:last_activity_at, now)
@@ -67,14 +67,14 @@ describe User, :active_record do
         user.set_last_activity_at(now)
       end
 
-      it '.set_last_ip_address update last_login_from_ip_address' do
+      it 'updates last_login_from_ip_address via set_last_ip_address' do
         user = create_new_user
         expect(user.sorcery_adapter).to receive(:update_attribute).with(:last_login_from_ip_address, '0.0.0.0')
 
         user.set_last_ip_address('0.0.0.0')
       end
 
-      it 'show if user logged in' do
+      it 'shows if user is logged in' do
         user = create_new_user
         expect(user.logged_in?).to be(false)
 
@@ -87,7 +87,7 @@ describe User, :active_record do
         expect(user.logged_in?).to be(false)
       end
 
-      it 'show if user logged out' do
+      it 'shows if user is logged out' do
         user = create_new_user
         expect(user.logged_out?).to be(true)
 
@@ -100,7 +100,7 @@ describe User, :active_record do
         expect(user.logged_out?).to be(true)
       end
 
-      it 'show online status of user' do
+      it 'shows online status of user' do
         user = create_new_user
         expect(user.online?).to be(false)
 
@@ -114,6 +114,21 @@ describe User, :active_record do
 
         now = Time.now.in_time_zone
         user.set_last_logout_at(now)
+        expect(user.online?).to be(false)
+      end
+
+      it "allows configuration option 'activity_timeout'" do
+        sorcery_model_property_set(:activity_timeout, 30 * 60)
+        expect(User.sorcery_config.activity_timeout).to eq 30 * 60
+      end
+
+      it 'returns false for online when user is logged out even with recent activity' do
+        user = create_new_user
+        now = Time.now.in_time_zone
+        user.set_last_login_at(now)
+        user.set_last_activity_at(now)
+        user.set_last_logout_at(now + 1.second)
+
         expect(user.online?).to be(false)
       end
     end

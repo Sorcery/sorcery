@@ -48,5 +48,13 @@ describe SorceryController, type: :controller do
       expect(controller).to receive(:after_login_lock!).once
       request_test_login
     end
+
+    it 'does not increment failed logins for an already locked user' do
+      allow(User.sorcery_adapter).to receive(:find_by_credentials).with(['bla@example.com', 'blabla']).and_return(user)
+      allow(user).to receive(:login_locked?).and_return(true)
+      expect(user).not_to receive(:register_failed_login!)
+
+      controller.send(:update_failed_logins_count!, ['bla@example.com', 'blabla'])
+    end
   end
 end

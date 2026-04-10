@@ -87,6 +87,18 @@ describe SorceryController, type: :controller do
           expect(session[:user_id]).to be_nil
         end
       end
+
+      it 'yields the failure reason when authentication fails with a reason' do
+        yielded = nil
+        allow(User).to receive(:authenticate).with('bla@example.com', 'wrong').and_yield(nil, :invalid_password)
+
+        result = controller.login('bla@example.com', 'wrong') do |user, failure_reason|
+          yielded = [user, failure_reason]
+        end
+
+        expect(result).to be_nil
+        expect(yielded).to eq([nil, :invalid_password])
+      end
     end
 
     describe '#login!' do
@@ -228,6 +240,35 @@ describe SorceryController, type: :controller do
         session[:user_id] = nil
 
         2.times { expect(controller.current_user).to be_nil } # memoized!
+      end
+
+      it 'allows assigning current_user directly' do
+        controller.current_user = user
+
+        expect(controller.current_user).to eq(user)
+      end
+    end
+
+    describe 'after_login_lock callback' do
+      it 'runs configured callbacks' do
+        yielded_credentials = nil
+        sorcery_controller_property_set(:after_login_lock, [:capture_login_lock_credentials])
+        controller.define_singleton_method(:capture_login_lock_credentials) do |credentials|
+          yielded_credentials = credentials
+        end
+
+        controller.send(:after_login_lock!, ['bla@example.com', 'wrong'])
+
+        expect(yielded_credentials).to eq(['bla@example.com', 'wrong'])
+      end
+    end
+
+    describe '#user_class' do
+      it 'raises a helpful error when configured user_class is invalid' do
+        sorcery_controller_property_set(:user_class, 'MissingUserClass')
+
+        expect { controller.send(:user_class) }
+          .to raise_error(ArgumentError, /incorrectly defined user_class/)
       end
     end
 

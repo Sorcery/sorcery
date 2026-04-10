@@ -161,5 +161,19 @@ describe SorceryController, type: :controller do
       expect(session[:login_time]).not_to be_nil
       expect(session[:last_action_time]).not_to be_nil
     end
+
+    it 'does nothing when invalidating active sessions is disabled' do
+      sorcery_controller_property_set(:session_timeout_invalidate_active_sessions_enabled, false)
+      controller.current_user = user
+      expect(user).not_to receive(:save)
+
+      controller.send(:invalidate_active_sessions!)
+    end
+
+    it 'does nothing when there is no current user to invalidate' do
+      sorcery_controller_property_set(:session_timeout_invalidate_active_sessions_enabled, true)
+
+      expect { controller.send(:invalidate_active_sessions!) }.not_to raise_error
+    end
   end
 end

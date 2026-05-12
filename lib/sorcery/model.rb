@@ -12,7 +12,7 @@ module Sorcery
     def authenticates_with_sorcery!
       @sorcery_config = Config.new
 
-      extend ClassMethods # included here, before submodules, so they can be overriden by them.
+      extend ClassMethods # included here, before submodules, so they can be overridden by them.
       include InstanceMethods
       include TemporaryToken
 

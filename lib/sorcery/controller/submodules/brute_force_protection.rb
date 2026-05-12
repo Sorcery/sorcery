@@ -4,7 +4,7 @@ module Sorcery
   module Controller
     module Submodules
       # This module helps protect user accounts by locking them down after too
-      # many failed attemps to login were detected.
+      # many failed attempts to login were detected.
       # This is the controller part of the submodule which takes care of
       # updating the failed logins and resetting them.
       # See Sorcery::Model::Submodules::BruteForceProtection for configuration

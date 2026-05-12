@@ -7,7 +7,7 @@ module Sorcery
       # This is the model part which handles finding the user using access tokens.
       # For the controller options see Sorcery::Controller::External.
       #
-      # Socery assumes (read: requires) you will create external users in the same table where
+      # Sorcery assumes (read: requires) you will create external users in the same table where
       # you keep your regular users,
       # but that you will have a separate table for keeping their external authentication data,
       # and that that separate table has a few rows for each user, facebook and twitter

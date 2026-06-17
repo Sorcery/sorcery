@@ -127,12 +127,64 @@ describe SorceryController, type: :controller do
         expect(response).to be_a_redirect
       end
     end
+
+    it 'returns nil for unsupported providers' do
+      expect(controller.send(:sorcery_get_provider, :unknown)).to be_nil
+    end
+
+    it 'returns nil when a provider has no callback flow' do
+      provider = Object.new
+      provider.singleton_class.attr_accessor :callback_url, :original_callback_url, :state
+      provider.callback_url = nil
+      provider.original_callback_url = nil
+      def provider.has_callback?
+        false
+      end
+
+      allow(controller).to receive(:sorcery_get_provider).with('twitter').and_return(provider)
+
+      expect(controller.send(:sorcery_login_url, 'twitter')).to be_nil
+    end
+
+    it 'uses https in callback urls behind a forwarded https proxy' do
+      sorcery_controller_external_property_set(:twitter, :callback_url, '/oauth/twitter/callback')
+      request.env['HTTP_X_FORWARDED_PROTO'] = 'https'
+
+      get :login_at_test
+
+      expect(response).to redirect_to('http://api.example.com/oauth/authorize?oauth_callback=https%3A%2F%2Ftest.host%2Foauth%2Ftwitter%2Fcallback&oauth_token=')
+    end
+
+    it 'exposes the fetched access token through the compatibility accessor' do
+      controller.send(:sorcery_fetch_user_hash, :twitter)
+
+      expect(controller.send(:access_token)).to be_a(OAuth::AccessToken)
+    end
   end
 
   describe SorceryController do
     describe "using 'create_from'" do
       before do
         stub_all_oauth_requests!
+      end
+
+      it 'stores incomplete external user data when validation fails' do
+        sorcery_controller_external_property_set(:twitter, :user_info_mapping, username: 'screen_name')
+        unsaved_user = User.new
+        expect(User).to receive(:create_and_validate_from_provider)
+          .with(:twitter, '123', { username: 'nbenari' })
+          .and_return([unsaved_user, false])
+
+        result = controller.send(:create_and_validate_from, :twitter)
+
+        expect(result).to eq(unsaved_user)
+        expect(session[:incomplete_user]).to eq(
+          provider: {
+            User.sorcery_config.provider_uid_attribute_name => '123',
+            User.sorcery_config.provider_attribute_name => :twitter
+          },
+          user_hash: { username: 'nbenari' }
+        )
       end
 
       it 'creates a new user' do
@@ -181,6 +233,15 @@ describe SorceryController, type: :controller do
 
           get :test_create_from_provider_with_block, params: { provider: 'twitter' }
         end
+      end
+
+      it 'builds a user from provider data' do
+        sorcery_controller_external_property_set(:twitter, :user_info_mapping, username: 'screen_name')
+        built_user = User.new
+        expect(User).to receive(:build_from_provider).with({ username: 'nbenari' }).and_return(built_user)
+
+        expect(controller.send(:build_from, :twitter)).to eq(built_user)
+        expect(controller.instance_variable_get(:@user)).to eq(built_user)
       end
     end
   end

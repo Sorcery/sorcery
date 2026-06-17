@@ -3,7 +3,7 @@
 module Sorcery
   module Model
     module Submodules
-      # This module helps protect user accounts by locking them down after too many failed attemps
+      # This module helps protect user accounts by locking them down after too many failed attempts
       # to login were detected.
       # This is the model part of the submodule which provides configuration options and methods
       # for locking and unlocking the user.
@@ -18,7 +18,7 @@ module Sorcery
                           # in seconds. 0 for permanent.
                           :unlock_token_attribute_name,               # Unlock token attribute name
                           :unlock_token_email_method_name,            # Mailer method name
-                          :unlock_token_mailer_disabled,              # When true, dont send unlock token via email
+                          :unlock_token_mailer_disabled,              # When true, don't send unlock token via email
                           :unlock_token_mailer                        # Mailer class
           end
 

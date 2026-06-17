@@ -4,7 +4,7 @@ module Sorcery
   module Model
     module Submodules
       # This submodule adds the ability to make the user activate his account via email
-      # or any other way in which he can recieve an activation code.
+      # or any other way in which he can receive an activation code.
       # with the activation code the user may activate his account.
       # When using this submodule, supplying a mailer is mandatory.
       module UserActivation
@@ -101,7 +101,7 @@ module Sorcery
             send(:"#{config.activation_token_expires_at_attribute_name}=", Time.now.in_time_zone + config.activation_token_expiration_period)
           end
 
-          # clears activation code, sets the user as 'active' and optionaly sends a success email.
+          # clears activation code, sets the user as 'active' and optionally sends a success email.
           def activate!
             config = sorcery_config
             send(:"#{config.activation_token_attribute_name}=", nil)

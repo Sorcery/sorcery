@@ -11,7 +11,7 @@ module Sorcery
       # This is the controller part of the submodule, which adds hooks
       # to register user events,
       # and methods to collect active users data for use in the app.
-      # see Socery::Model::Submodules::ActivityLogging for configuration
+      # see Sorcery::Model::Submodules::ActivityLogging for configuration
       # options.
       module ActivityLogging
         def self.included(base)

@@ -26,6 +26,7 @@ module Sorcery
       require 'sorcery/model/submodules/brute_force_protection'
       require 'sorcery/model/submodules/external'
       require 'sorcery/model/submodules/magic_login'
+      require 'sorcery/model/submodules/single_session'
     end
   end
 
@@ -40,6 +41,7 @@ module Sorcery
       require 'sorcery/controller/submodules/http_basic_auth'
       require 'sorcery/controller/submodules/activity_logging'
       require 'sorcery/controller/submodules/external'
+      require 'sorcery/controller/submodules/single_session'
     end
   end
 

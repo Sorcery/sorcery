@@ -107,7 +107,7 @@ describe SorceryController, type: :controller do
 
       context 'when fails' do
         before do
-          allow(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_return(nil)
+          allow(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_yield(user, :invalid_password)
         end
 
         it 'raises InvalidCredentials exception' do

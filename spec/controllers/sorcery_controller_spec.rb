@@ -107,7 +107,7 @@ describe SorceryController, type: :controller do
 
       context 'when fails' do
         before do
-          allow(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_yield(user, :invalid_password)
+          allow(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_return(nil)
         end
 
         it 'raises InvalidCredentials exception' do
@@ -129,6 +129,10 @@ describe SorceryController, type: :controller do
           expect(session[:user_id]).to eq user.id.to_s
         end
 
+        it 'assigns user to @user variable' do
+          expect(assigns[:user]).to eq user
+        end
+
         it 'redirects to root' do
           expect(response).to redirect_to(root_url)
         end
@@ -136,7 +140,7 @@ describe SorceryController, type: :controller do
 
       context 'when fails' do
         before do
-          allow(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_return(nil)
+          allow(User).to receive(:authenticate).with('bla@example.com', 'opensesame!').and_yield(user, :invalid_password)
         end
 
         it 'raises InvalidCredentials exception' do

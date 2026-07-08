@@ -64,7 +64,9 @@ module Sorcery
 
         raise Sorcery::InvalidCredentials if user.nil?
 
-        block_given? ? yield(user, nil) : user
+        yield(user, nil) if block_given?
+
+        user
       end
 
       def reset_sorcery_session

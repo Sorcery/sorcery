@@ -6,13 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 5
-# Configuration parameters: EnforcedStyle, AllowedGems.
-# SupportedStyles: Gemfile, gems.rb, gemspec
-Gemspec/DevelopmentDependencies:
-  Exclude:
-    - 'sorcery.gemspec'
-
 # Offense count: 66
 RSpec/BeforeAfterAll:
   Enabled: false

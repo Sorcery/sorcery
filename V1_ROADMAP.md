@@ -53,16 +53,16 @@ internal structural changes.
 
 ### 1.3 — Improve Controller Submodule Test Coverage
 
-- [ ] Review and expand tests for `Sorcery::Controller` core (login, logout,
+- [x] Review and expand tests for `Sorcery::Controller` core (login, logout,
       session management).
-- [ ] Improve coverage for each controller submodule:
-  - [ ] `remember_me`
-  - [ ] `session_timeout`
-  - [ ] `brute_force_protection`
-  - [ ] `http_basic_auth`
-  - [ ] `activity_logging`
-  - [ ] `external` (OAuth)
-- [ ] Add integration tests that exercise multiple submodules working together.
+- [x] Improve coverage for each controller submodule:
+  - [x] `remember_me`
+  - [x] `session_timeout`
+  - [x] `brute_force_protection`
+  - [x] `http_basic_auth`
+  - [x] `activity_logging`
+  - [x] `external` (OAuth)
+- [x] Add integration tests that exercise multiple submodules working together.
 
 ### 1.4 — Improve Provider Test Coverage
 

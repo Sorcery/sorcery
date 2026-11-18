@@ -111,5 +111,12 @@ describe SorceryController, type: :controller do
 
       expect(user.reload.last_login_from_ip_address).to be_nil
     end
+
+    it 'does not register last activity time when nobody is logged in' do
+      sorcery_controller_property_set(:register_last_activity_time, true)
+      expect(user).not_to receive(:set_last_activity_at)
+
+      controller.send(:register_last_activity_time_to_db)
+    end
   end
 end

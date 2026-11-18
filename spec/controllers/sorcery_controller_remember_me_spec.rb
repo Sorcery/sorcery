@@ -33,11 +33,15 @@ describe SorceryController, type: :controller do
       expect(response.cookies[:remember_me_token]).to be_nil
     end
 
-    it 'clears cookie on force_forget_me!' do
-      request.cookies[:remember_me_token] = { value: 'asd54234dsfsd43534', expires: 3600 }
+    it 'clears cookie and token on force_forget_me!' do
+      session[:user_id] = user.id.to_s
+      user.remember_me!
+      expect(user.reload.remember_me_token).not_to be_nil
+      request.cookies[:remember_me_token] = { value: user.remember_me_token, expires: 3600 }
       get :test_logout_with_force_forget_me
 
       expect(response.cookies[:remember_me_token]).to be_nil
+      expect(user.reload.remember_me_token).to be_nil
     end
 
     it 'login(email,password,remember_me) logs user in and remembers' do
@@ -75,6 +79,10 @@ describe SorceryController, type: :controller do
       get :test_login_from_cookie
 
       expect(assigns[:current_user]).to eq user
+    end
+
+    it 'returns false when logging in from cookie without a cookie' do
+      expect(controller.send(:login_from_cookie)).to be false
     end
 
     it 'doest not remember_me! when not asked to, even if third parameter is used' do
